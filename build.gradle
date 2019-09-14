@@ -24,13 +24,13 @@ test {
 
 jacoco {
     toolVersion = "0.8.4"
-    reportsDir = file("$buildDir/customJacocoReportDir")
+    reportsDir = file("$buildDir/reports/customJacocoReportDir")
 }
 
 jacocoTestReport {
     reports {
         xml.enabled false
         csv.enabled false
-        html.destination file("${buildDir}/jacocoHtml")
+        html.destination file("${buildDir}/reports/jacocoHtml")
     }
 }
