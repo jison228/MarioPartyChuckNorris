@@ -8,10 +8,6 @@ public class PlayerTest {
         if (value) {
             System.out.println("pepe");
         } else
-            try {
-                System.out.println("sarlanga");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            System.out.println("sarlanga");.
     }
 }
