@@ -8,6 +8,6 @@ public class PlayerTest {
         if (value) {
             System.out.println("pepe");
         } else
-            System.out.println("sarlanga");.
+            System.out.println("sarlanga");
     }
 }
