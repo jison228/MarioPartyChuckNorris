@@ -1,4 +1,4 @@
-package com.chucknorris.game.player;
+package com.chucknorris.player;
 
 import org.junit.Test;
 
