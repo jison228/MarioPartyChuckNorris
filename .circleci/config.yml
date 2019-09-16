@@ -17,8 +17,6 @@ jobs:
       - checkout
       - name: Testing app
       - run: ./gradlew test
-      - store_test_results:
-        path: ~/test-results/test/
 workflows:
   version: 2
   build_and_test:
