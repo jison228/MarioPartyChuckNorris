@@ -8,14 +8,12 @@ jobs:
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     steps:
       - checkout
-      - name: "Building app"
       - run: ./gradlew clean build
   test:
     docker:
       - image: openjdk:8
     steps:
       - checkout
-      - name: "Testing app"
       - run: ./gradlew test
 workflows:
   version: 2
