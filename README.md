@@ -1,6 +1,9 @@
 # chuckNorrisPrograAvanzada
 Trabajo practico para programacion avanzada 2C2019 UNLaM
 
+Requerimientos:
+https://github.com/programacion-avanzada/2019b/blob/master/taller/99-tp-mario-party/consigna.md
+
 Importar el proyecto como gradle ECLIPSE:
 https://steffenschaefer.github.io/gwt-gradle-plugin/doc/latest/eclipse
 
