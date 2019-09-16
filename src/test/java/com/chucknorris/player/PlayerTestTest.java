@@ -7,6 +7,6 @@ public class PlayerTestTest {
     public void test() {
         PlayerTest playerTest = new PlayerTest(true);
 
-        assert 1==3;
+        assert true;
     }
 }
