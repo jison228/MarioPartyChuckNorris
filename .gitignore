@@ -2,3 +2,5 @@
 /build/
 /.idea/
 .project
+/bin/
+.classpath
