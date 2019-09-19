@@ -1,4 +1,4 @@
-package src.main.java.com.chucknorris.player;
+package com.chucknorris.player;
 
 public class Player {
 	private String character;
