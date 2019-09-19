@@ -18,6 +18,9 @@ public class Player {
 		return coins;
 	}
 	
+	public void addCoins(int coins) {
+		this.coins = this.coins + coins;
+	}
 
 	public String getCharacter() {
 		return this.character;
