@@ -38,4 +38,8 @@ public class Player {
 	}
 */
 	
+	public String toString() {
+		return this.character + " " + this.coins; //+ Nodo.toString();
+	}
+	
 }
