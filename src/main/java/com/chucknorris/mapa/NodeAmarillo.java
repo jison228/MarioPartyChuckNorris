@@ -17,7 +17,7 @@ public class NodeAmarillo extends Node {
 	
 
 	public NodeAmarillo(ArrayList<Node> next, Position pos) {
-		super(next, pos, "ROJO");
+		super(next, pos, "AMARILLO");
 	}
 	
 	@Override
