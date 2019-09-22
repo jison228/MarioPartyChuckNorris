@@ -23,13 +23,26 @@ public class Map {
 		}
 	}
 	
+	//Pendiente de modificar cuando se lea el mapa mediante un .txt
+	public Map(ArrayList<Node> nodes, Node start) {
+		this.nodes = new HashMap<Position,Node>();
+		for (Node node : nodes) {
+			this.nodes.put(node.getPos(), node);
+		}
+		this.start = start;
+	}
+
+
+
+
 	public Response mover(Player p, int movs) {
 		Node node = nodes.get(p.getPos());
 		int leftMovs = movs;
 		while(node.nextNodes().size() == 1 && leftMovs > 0) {
 			node = node.nextNodes().get(0);
+			leftMovs--;
 		}
-		p.setPos(node.getPos().getX(), node.getPos().getX());
+		p.setPos(node.getPos().getX(), node.getPos().getY());
 
 		ArrayList<Position> availablePositions = new ArrayList<Position>();
 		
