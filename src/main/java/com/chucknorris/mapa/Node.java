@@ -17,10 +17,25 @@ public abstract class Node {
 	private Position pos;
 	private String type;
 
-	public abstract ArrayList<Node> nextNodes();
-	public abstract Position getPos();
-	public abstract String getType();
+
+	public ArrayList<Node> nextNodes() {
+		return next;
+	}
 	
+	public Position getPos() {
+		return pos;
+	}
+	
+
+	public String getType() {
+		return type;
+	}
+	
+	public Node(ArrayList<Node> next, Position pos, String type) {
+		this.next = next;
+		this.pos = pos;
+		this.type = type;
+	}
 	public abstract void applyRewards(Player p);
 	
 }
