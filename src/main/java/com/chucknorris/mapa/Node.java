@@ -13,7 +13,7 @@ import com.chucknorris.player.Player;
  *
  */
 public abstract class Node {
-	private ArrayList<Node> next;
+	protected ArrayList<Node> next;
 	private Position pos;
 	private String type;
 
