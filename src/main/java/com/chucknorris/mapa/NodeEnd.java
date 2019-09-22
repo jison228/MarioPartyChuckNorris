@@ -16,8 +16,8 @@ public class NodeEnd extends Node {
 
 	
 
-	public NodeEnd(ArrayList<Node> next, Position pos) {
-		super(next, pos, "END");
+	public NodeEnd(Position pos) {
+		super(null, pos, "END");
 	}
 	
 	@Override
