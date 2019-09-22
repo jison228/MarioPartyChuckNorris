@@ -15,10 +15,15 @@ import com.chucknorris.player.Player;
  */
 public class Map {
 	HashMap<Position,Node> nodes;
+	Node start;
 	
+	public void initializePlayers(ArrayList<Player> players) {
+		for(Player p: players) {
+			p.setPos(start.getPos().getX(), start.getPos().getY());
+		}
+	}
 	
 	public Response mover(Player p, int movs) {
-		Response res;
 		Node node = nodes.get(p.getPos());
 		int leftMovs = movs;
 		while(node.nextNodes().size() == 1 && leftMovs > 0) {
