@@ -45,4 +45,11 @@ public class Map {
 		
 		return new Response(node.getPos(),node.getType(),availablePositions,leftMovs);
 	}
+	
+	public Response mover(Player p, int movs, Position pos) {
+		p.setPos(pos.getX(), pos.getY());
+		return mover(p,movs-1);
+	}
+	
+	
 }
