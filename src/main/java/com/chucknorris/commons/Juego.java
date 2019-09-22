@@ -9,7 +9,7 @@ public class Juego {
 	ArrayList<Player> players;
 	int turno;
 	Map mapa;
-	Dice dice;
+	Dice dice = new Dice(1,6);
 	//ArrayList de minijuegos
 	
 	public void main() {
@@ -19,6 +19,10 @@ public class Juego {
 	private void endTurn() {
 		//verificar si alguien gano (por ahora no hay corte)
 		turno++;
+	}
+	
+	private int roll() {
+		return dice.roll();
 	}
 	
 	
