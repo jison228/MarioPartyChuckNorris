@@ -50,9 +50,7 @@ public class Map {
 			for(Node pos : node.nextNodes()) {
 				availablePositions.add(pos.getPos());
 			}
-		}
-		
-		if(movs == 0) {
+		}else {
 			node.applyRewards(p);
 		}
 		
