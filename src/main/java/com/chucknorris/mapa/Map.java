@@ -14,8 +14,8 @@ import com.chucknorris.player.Player;
  *
  */
 public class Map {
-	HashMap<Position,Node> nodes;
-	Node start;
+	private HashMap<Position,Node> nodes;
+	private Node start;
 	
 	public void initializePlayers(ArrayList<Player> players) {
 		for(Player p: players) {
