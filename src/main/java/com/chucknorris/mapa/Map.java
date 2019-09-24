@@ -19,7 +19,7 @@ public class Map {
 	
 	public void initializePlayers(ArrayList<Player> players) {
 		for(Player p: players) {
-			p.setPos(start.getPos().getX(), start.getPos().getY());
+			p.setPos(start);
 		}
 	}
 	
@@ -42,7 +42,7 @@ public class Map {
 			node = node.nextNodes().get(0);
 			leftMovs--;
 		}
-		p.setPos(node.getPos().getX(), node.getPos().getY());
+		p.setPos(node);
 
 		ArrayList<Position> availablePositions = new ArrayList<Position>();
 		
@@ -57,8 +57,8 @@ public class Map {
 		return new Response(node.getPos(),node.getType(),availablePositions,leftMovs);
 	}
 	
-	public Response mover(Player p, int movs, Position pos) {
-		p.setPos(pos.getX(), pos.getY());
+	public Response mover(Player p, int movs, Node pos) {
+		p.setPos(pos);
 		return mover(p,movs-1);
 	}
 	
