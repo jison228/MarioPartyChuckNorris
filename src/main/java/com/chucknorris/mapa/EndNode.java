@@ -4,20 +4,25 @@ import java.util.ArrayList;
 import com.chucknorris.commons.Position;
 import com.chucknorris.player.Player;
 
-public class NodeYellow extends Node {
+public class EndNode extends Node {
 
-	public NodeYellow(ArrayList<Node> next, Position pos) {
-		super(next, pos);
+	public EndNode(Position pos) {
+		super(null, pos);
 	}
 	
 	@Override
 	public void applyRewards(Player p) {
-		p.addCoins(10);
+		//por ahora nada
+	}
+	
+	public void setStart(Node n) {
+		this.next = new ArrayList<Node>();
+		this.next.add(n);
 	}
 
 	@Override
 	public String getType() {
-		return "YELLOW";
+		return "END";
 	}
 
 }

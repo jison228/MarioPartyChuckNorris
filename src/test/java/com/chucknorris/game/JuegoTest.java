@@ -10,10 +10,10 @@ import com.chucknorris.commons.Game;
 import com.chucknorris.commons.Position;
 import com.chucknorris.mapa.Map;
 import com.chucknorris.mapa.Node;
-import com.chucknorris.mapa.NodeYellow;
-import com.chucknorris.mapa.NodeEnd;
-import com.chucknorris.mapa.NodeRed;
-import com.chucknorris.mapa.NodeWhite;
+import com.chucknorris.mapa.YellowNode;
+import com.chucknorris.mapa.EndNode;
+import com.chucknorris.mapa.RedNode;
+import com.chucknorris.mapa.WhiteNode;
 import com.chucknorris.mapa.Response;
 import com.chucknorris.player.Player;
 
@@ -24,83 +24,83 @@ public class JuegoTest {
 	       
 	       Position pNodoEnd = new Position(1,0);
 	       ArrayList<Node> nodoEndNexts = new ArrayList<Node>();
-	       NodeEnd nodoEnd = new NodeEnd(pNodoEnd);
+	       EndNode nodoEnd = new EndNode(pNodoEnd);
 	       
 	       Position pNodo15 = new Position(2,0);
 	       ArrayList<Node> nodo15Nexts = new ArrayList<Node>();
 	       nodo15Nexts.add(nodoEnd);
-	       NodeYellow nodo15 = new NodeYellow(nodo15Nexts, pNodo15);
+	       YellowNode nodo15 = new YellowNode(nodo15Nexts, pNodo15);
 	       
 	       Position pNodo14 = new Position(3,0);
 	       ArrayList<Node> nodo14Nexts = new ArrayList<Node>();
 	       nodo14Nexts.add(nodo15);
-	       NodeYellow nodo14 = new NodeYellow(nodo14Nexts, pNodo14);
+	       YellowNode nodo14 = new YellowNode(nodo14Nexts, pNodo14);
 	       
 	       Position pNodo13 = new Position(3,1);
 	       ArrayList<Node> nodo13Nexts = new ArrayList<Node>();
 	       nodo13Nexts.add(nodo14);
-	       NodeWhite nodo13 = new NodeWhite(nodo13Nexts, pNodo13);
+	       WhiteNode nodo13 = new WhiteNode(nodo13Nexts, pNodo13);
 	       
 	       Position pNodo12 = new Position(3,2);
 	       ArrayList<Node> nodo12Nexts = new ArrayList<Node>();
 	       nodo12Nexts.add(nodo13);
-	       NodeWhite nodo12 = new NodeWhite(nodo12Nexts, pNodo12);
+	       WhiteNode nodo12 = new WhiteNode(nodo12Nexts, pNodo12);
 	       
 	       Position pNodo11 = new Position(3,3);
 	       ArrayList<Node> nodo11Nexts = new ArrayList<Node>();
 	       nodo11Nexts.add(nodo12);
-	       NodeWhite nodo11 = new NodeWhite(nodo11Nexts, pNodo11);
+	       WhiteNode nodo11 = new WhiteNode(nodo11Nexts, pNodo11);
 	       
 	       Position pNodo10 = new Position(2,1);
 	       ArrayList<Node> nodo10Nexts = new ArrayList<Node>();
 	       nodo10Nexts.add(nodo14);
-	       NodeWhite nodo10 = new NodeWhite(nodo10Nexts, pNodo10);
+	       WhiteNode nodo10 = new WhiteNode(nodo10Nexts, pNodo10);
 	       
 	       Position pNodo9 = new Position(2,2);
 	       ArrayList<Node> nodo9Nexts = new ArrayList<Node>();
 	       nodo9Nexts.add(nodo10);
-	       NodeWhite nodo9 = new NodeWhite(nodo9Nexts, pNodo9);
+	       WhiteNode nodo9 = new WhiteNode(nodo9Nexts, pNodo9);
 	       
 	       Position pNodo8 = new Position(2,3);
 	       ArrayList<Node> nodo8Nexts = new ArrayList<Node>();
 	       nodo8Nexts.add(nodo9);
-	       NodeRed nodo8 = new NodeRed(nodo8Nexts, pNodo8);
+	       RedNode nodo8 = new RedNode(nodo8Nexts, pNodo8);
 	       
 	       Position pNodo7 = new Position(3,4);
 	       ArrayList<Node> nodo7Nexts = new ArrayList<Node>();
 	       nodo7Nexts.add(nodo8);
 	       nodo7Nexts.add(nodo11);
-	       NodeYellow nodo7 = new NodeYellow(nodo7Nexts, pNodo7);
+	       YellowNode nodo7 = new YellowNode(nodo7Nexts, pNodo7);
 	       
 	       Position pNodo6 = new Position(3,5);
 	       ArrayList<Node> nodo6Nexts = new ArrayList<Node>();
 	       nodo6Nexts.add(nodo7);
-	       NodeWhite nodo6 = new NodeWhite(nodo6Nexts, pNodo6);
+	       WhiteNode nodo6 = new WhiteNode(nodo6Nexts, pNodo6);
 	       
 	       Position pNodo5 = new Position(2,5);
 	       ArrayList<Node> nodo5Nexts = new ArrayList<Node>();
 	       nodo5Nexts.add(nodo6);
-	       NodeWhite nodo5 = new NodeWhite(nodo5Nexts, pNodo5);
+	       WhiteNode nodo5 = new WhiteNode(nodo5Nexts, pNodo5);
 	       
 	       Position pNodo4 = new Position(0,5);
 	       ArrayList<Node> nodo4Nexts = new ArrayList<Node>();
 	       nodo4Nexts.add(nodo5);
-	       NodeYellow nodo4 = new NodeYellow(nodo4Nexts, pNodo4);
+	       YellowNode nodo4 = new YellowNode(nodo4Nexts, pNodo4);
 	       
 	       Position pNodo3 = new Position(0,3);
 	       ArrayList<Node> nodo3Nexts = new ArrayList<Node>();
 	       nodo3Nexts.add(nodo4);
-	       NodeWhite nodo3 = new NodeWhite(nodo3Nexts, pNodo3);
+	       WhiteNode nodo3 = new WhiteNode(nodo3Nexts, pNodo3);
 	       
 	       Position pNodo2 = new Position(0,1);
 	       ArrayList<Node> nodo2Nexts = new ArrayList<Node>();
 	       nodo2Nexts.add(nodo3);
-	       NodeWhite nodo2 = new NodeWhite(nodo2Nexts, pNodo2);
+	       WhiteNode nodo2 = new WhiteNode(nodo2Nexts, pNodo2);
 	       
 	       Position pNodo1 = new Position(0,0);
 	       ArrayList<Node> nodo1Nexts = new ArrayList<Node>();
 	       nodo1Nexts.add(nodo2);
-	       NodeRed nodo1 = new NodeRed(nodo1Nexts, pNodo1);
+	       RedNode nodo1 = new RedNode(nodo1Nexts, pNodo1);
 	       
 	       nodoEnd.setStart(nodo1);
 	       ArrayList<Node> nodos = new ArrayList<Node>();
