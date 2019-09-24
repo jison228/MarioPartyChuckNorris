@@ -34,6 +34,11 @@ public class Position {
 		this.posY = posY;
 	}
 	
+	public void setPos(Position pos) {
+		this.posX = pos.posX;
+		this.posY = pos.posY;
+	}
+	
 	public void setPos(int posX, int posY) {
 		this.posX = posX;
 		this.posY = posY;
