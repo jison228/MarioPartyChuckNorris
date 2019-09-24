@@ -124,8 +124,8 @@ public class JuegoTest {
 	       Map mapa1 = new Map(nodos,nodo1);
 	       // MAPA CREADO
 	       
-	       Player p1 = new Player("Javier Milei",0);
-	       Player p2 = new Player("MauriCEOMcree",0);
+	       Player p1 = new Player( "Javier Milei" , 0 );
+	       Player p2 = new Player( "MauriCEOMcree" , 0 );
 	       ArrayList<Player> playerList = new ArrayList<Player>();
 	       playerList.add(p1);
 	       playerList.add(p2);
@@ -134,39 +134,35 @@ public class JuegoTest {
 	       
 	       //TIRA JUGADOR 1
 	      
-	       Response respuestaReal = mapa1.movePlayer(p1, 4);
-	       Position pesperada = new Position(2,5);
-	       Position pesperadaDisp = new Position(3,5);
-
-	       ArrayList<Position> arrayPosicionesDisponibles = new ArrayList<Position>();
-	       arrayPosicionesDisponibles.add(pesperadaDisp);
-	       Response rEsperada = new Response(nodo5,null,0);
+	       Response respuestaReal = mapa1.movePlayer( p1 , 4);
+	       Position pesperada = new Position( 2 , 5 );
+	       Response rEsperada = new Response( nodo5 , null , 0 );
 	       assertEquals(pesperada, p1.getPos().getPos());
-	       assertEquals(rEsperada, respuestaReal);
+	       assertEquals(rEsperada , respuestaReal);
 	       
 	       //TIRA JUGADOR 2
 	       
-	       Response respuestaReal2 = mapa1.movePlayer(p2, 8);
-	       Position pesperada2 = new Position(3,4);
-	       Position pesperadaDisp1 = new Position(2,3);
-	       Position pesperadaDisp2 = new Position(3,3);
+	       Response respuestaReal2 = mapa1.movePlayer( p2 , 8);
+	       Position pesperada2 = new Position( 3 , 4 );
+	       Position pesperadaDisp1 = new Position( 2 , 3 );
+	       Position pesperadaDisp2 = new Position( 3 , 3 );
 	       ArrayList<Position> arrayPosicionesDisponibles2 = new ArrayList<Position>();
 	       arrayPosicionesDisponibles2.add(pesperadaDisp1);
 	       arrayPosicionesDisponibles2.add(pesperadaDisp2);
-	       Response rEsperada2 = new Response(nodo7,arrayPosicionesDisponibles2,2);
+	       Response rEsperada2 = new Response(nodo7 , arrayPosicionesDisponibles2 , 2 );
 	       assertEquals(pesperada2, p2.getPos().getPos());
-	       assertEquals(rEsperada2, respuestaReal2);
+	       assertEquals(rEsperada2 , respuestaReal2);
 	       
 	       //ELIGE JUGADOR 2
 
-	       Response respuestaReal3 = mapa1.movePlayer(p2,2,nodo8);
-	       Position pesperada3 = new Position(2,2);
-	       Response rEsperada3 = new Response(nodo9,null,0);
+	       Response respuestaReal3 = mapa1.movePlayer( p2 , 2 , nodo8 );
+	       Position pesperada3 = new Position( 2 , 2 );
+	       Response rEsperada3 = new Response( nodo9 , null , 0 );
 	       assertEquals(pesperada3, p2.getPos().getPos());
-	       assertEquals(rEsperada3, respuestaReal3);
+	       assertEquals(rEsperada3 , respuestaReal3);
 	       
 	       //CHEQUEO QUE P2 TENGA 0 MONEDAS Y P1 0
-	       assertEquals(0,p2.getCoins());
-	       assertEquals(0,p1.getCoins());
+	       assertEquals(0 , p2.getCoins());
+	       assertEquals(0 , p1.getCoins());
 	    }
 }
