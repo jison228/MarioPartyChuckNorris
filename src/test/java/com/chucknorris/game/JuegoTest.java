@@ -153,7 +153,7 @@ public class JuegoTest {
 	       ArrayList<Position> arrayPosicionesDisponibles2 = new ArrayList<Position>();
 	       arrayPosicionesDisponibles2.add(pesperadaDisp1);
 	       arrayPosicionesDisponibles2.add(pesperadaDisp2);
-	       Response rEsperada2 = new Response(nodo7,arrayPosicionesDisponibles2,1);
+	       Response rEsperada2 = new Response(nodo7,arrayPosicionesDisponibles2,2);
 	       assertEquals(pesperada2, p2.getPos().getPos());
 	       assertEquals(rEsperada2, respuestaReal2);
 	       
@@ -161,17 +161,12 @@ public class JuegoTest {
 
 	       Response respuestaReal3 = mapa1.movePlayer(p2,2,nodo8);
 	       Position pesperada3 = new Position(2,2);
-	       ArrayList<Position> arrayPosicionesDisponibles3 = new ArrayList<Position>();
-	       Position pesperadaDisp3 = new Position(2,1);
-	       arrayPosicionesDisponibles3.add(pesperadaDisp3);
-	       Response rEsperada3 = new Response(nodo10,arrayPosicionesDisponibles3,0);
+	       Response rEsperada3 = new Response(nodo9,null,0);
 	       assertEquals(pesperada3, p2.getPos().getPos());
 	       assertEquals(rEsperada3, respuestaReal3);
 	       
-	      // assertEquals(rEsperada3, respuestaReal3);
-	       
-	       //CHEQUEO QUE P2 TENGA 2 MONEDAS Y P1 0
-	       //assertEquals(3,p2.getCoins());
-	       //assertEquals(0,p1.getCoins());
+	       //CHEQUEO QUE P2 TENGA 0 MONEDAS Y P1 0
+	       assertEquals(0,p2.getCoins());
+	       assertEquals(0,p1.getCoins());
 	    }
 }
