@@ -140,7 +140,7 @@ public class JuegoTest {
 
 	       ArrayList<Position> arrayPosicionesDisponibles = new ArrayList<Position>();
 	       arrayPosicionesDisponibles.add(pesperadaDisp);
-	       Response rEsperada = new Response(nodo5,arrayPosicionesDisponibles,0);
+	       Response rEsperada = new Response(nodo5,null,0);
 	       assertEquals(pesperada, p1.getPos().getPos());
 	       assertEquals(rEsperada, respuestaReal);
 	       
@@ -159,7 +159,7 @@ public class JuegoTest {
 	       
 	       //ELIGE JUGADOR 2
 
-	       Response respuestaReal3 = mapa1.movePlayer(p2,1,nodo8);
+	       Response respuestaReal3 = mapa1.movePlayer(p2,2,nodo8);
 	       Position pesperada3 = new Position(2,2);
 	       ArrayList<Position> arrayPosicionesDisponibles3 = new ArrayList<Position>();
 	       Position pesperadaDisp3 = new Position(2,1);

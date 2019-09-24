@@ -30,7 +30,7 @@ public class NodeTest {
     	lista.add(node2);
     	Node nodeTest = new RedNode(lista,new Position(4, 4));
     	
-    	assertEquals(nodeTest.getType(), "ROJO");
+    	assertEquals(nodeTest.getType(), "RED");
     	assertEquals(nodeTest.nextNodes(), lista);
     }
 	

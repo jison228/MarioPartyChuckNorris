@@ -41,6 +41,7 @@ public class Map {
 			}
 		}else {
 			node.applyRewards(p);
+			availablePositions = null;
 		}
 		
 		return new Response( node , availablePositions , leftMovs );
