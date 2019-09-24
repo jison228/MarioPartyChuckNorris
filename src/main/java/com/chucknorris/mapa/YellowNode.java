@@ -6,8 +6,8 @@ import com.chucknorris.player.Player;
 
 public class YellowNode extends Node {
 
-	public YellowNode(ArrayList<Node> next, Position pos) {
-		super(next, pos);
+	public YellowNode(ArrayList<Node> next , Position pos) {
+		super( next , pos);
 	}
 	
 	@Override

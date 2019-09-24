@@ -6,8 +6,8 @@ import com.chucknorris.player.Player;
 
 public class WhiteNode extends Node {
 
-	public WhiteNode(ArrayList<Node> next, Position pos) {
-		super(next, pos);
+	public WhiteNode(ArrayList<Node> next , Position pos) {
+		super( next , pos);
 	}
 	
 	@Override

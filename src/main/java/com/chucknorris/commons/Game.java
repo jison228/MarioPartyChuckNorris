@@ -8,7 +8,7 @@ public class Game {
 	ArrayList<Player> players;
 	int turn;
 	Map map;
-	Dice dice = new Dice(1,6);
+	Dice dice = new Dice( 1 , 6 );
 	//ArrayList de minijuegos
 	
 	public void main() {

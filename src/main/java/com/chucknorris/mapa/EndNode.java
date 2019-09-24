@@ -7,7 +7,7 @@ import com.chucknorris.player.Player;
 public class EndNode extends Node {
 
 	public EndNode(Position pos) {
-		super(null, pos);
+		super( null , pos);
 	}
 	
 	@Override

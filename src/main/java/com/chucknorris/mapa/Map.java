@@ -19,15 +19,15 @@ public class Map {
 	public Map(ArrayList<Node> nodes, Node start) {
 		this.nodes = new HashMap<Position,Node>();
 		for (Node node : nodes) {
-			this.nodes.put(node.getPos(), node);
+			this.nodes.put( node.getPos() , node);
 		}
 		this.start = start;
 	}
 
 	public Response movePlayer(Player p, int movs) {
-		Node node = nodes.get(p.getPos().getPos());
+		Node node = nodes.get( p.getPos().getPos() );
 		int leftMovs = movs;
-		while(node.nextNodes().size() == 1 && leftMovs > 0) {
+		while( node.nextNodes().size() == 1 && leftMovs > 0) {
 			node = node.nextNodes().get(0);
 			leftMovs--;
 		}
@@ -37,18 +37,18 @@ public class Map {
 		
 		if(leftMovs>0) {
 			for(Node pos : node.nextNodes()) {
-				availablePositions.add(pos.getPos());
+				availablePositions.add( pos.getPos() );
 			}
 		}else {
 			node.applyRewards(p);
 		}
 		
-		return new Response(node.getPos(),node.getType(),availablePositions,leftMovs);
+		return new Response( node.getPos() , node.getType() , availablePositions , leftMovs );
 	}
 	
 	public Response movePlayer(Player p, int movs, Node pos) {
 		p.setPos(pos);
-		return movePlayer(p,movs-1);
+		return movePlayer( p , movs-1 );
 	}
 	
 	

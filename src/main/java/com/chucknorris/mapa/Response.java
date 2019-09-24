@@ -44,7 +44,7 @@ public class Response {
 		return true;
 	}
 
-	public Response(Position pos, String nodeType, ArrayList<Position> availablePositions, int movs) {
+	public Response(Position pos , String nodeType , ArrayList<Position> availablePositions , int movs) {
 		super();
 		this.pos = pos;
 		NodeType = nodeType;
