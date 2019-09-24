@@ -17,12 +17,17 @@ public class NodeRojo extends Node {
 	
 
 	public NodeRojo(ArrayList<Node> next, Position pos) {
-		super(next, pos, "ROJO");
+		super(next, pos);
 	}
 	
 	@Override
 	public void applyRewards(Player p) {
 		p.addCoins(3);
+	}
+
+	@Override
+	public String getType() {
+		return "RED";
 	}
 
 }

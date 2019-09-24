@@ -17,7 +17,7 @@ public class NodeEnd extends Node {
 	
 
 	public NodeEnd(Position pos) {
-		super(null, pos, "END");
+		super(null, pos);
 	}
 	
 	@Override
@@ -28,6 +28,11 @@ public class NodeEnd extends Node {
 	public void setStart(Node n) {
 		this.next = new ArrayList<Node>();
 		this.next.add(n);
+	}
+
+	@Override
+	public String getType() {
+		return "END";
 	}
 
 }
