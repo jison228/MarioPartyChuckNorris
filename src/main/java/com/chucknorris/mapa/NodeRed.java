@@ -12,22 +12,22 @@ import com.chucknorris.player.Player;
  * @author agufa
  *
  */
-public class NodeAmarillo extends Node {
+public class NodeRed extends Node {
 
 	
 
-	public NodeAmarillo(ArrayList<Node> next, Position pos) {
+	public NodeRed(ArrayList<Node> next, Position pos) {
 		super(next, pos);
 	}
 	
 	@Override
 	public void applyRewards(Player p) {
-		p.addCoins(10);
+		p.addCoins(3);
 	}
 
 	@Override
 	public String getType() {
-		return "YELLOW";
+		return "RED";
 	}
 
 }

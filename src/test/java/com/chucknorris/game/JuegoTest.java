@@ -10,9 +10,9 @@ import com.chucknorris.commons.Juego;
 import com.chucknorris.commons.Position;
 import com.chucknorris.mapa.Map;
 import com.chucknorris.mapa.Node;
-import com.chucknorris.mapa.NodeAmarillo;
+import com.chucknorris.mapa.NodeYellow;
 import com.chucknorris.mapa.NodeEnd;
-import com.chucknorris.mapa.NodeRojo;
+import com.chucknorris.mapa.NodeRed;
 import com.chucknorris.mapa.NodeWhite;
 import com.chucknorris.mapa.Response;
 import com.chucknorris.player.Player;
@@ -29,12 +29,12 @@ public class JuegoTest {
 	       Position pNodo15 = new Position(2,0);
 	       ArrayList<Node> nodo15Nexts = new ArrayList<Node>();
 	       nodo15Nexts.add(nodoEnd);
-	       NodeAmarillo nodo15 = new NodeAmarillo(nodo15Nexts, pNodo15);
+	       NodeYellow nodo15 = new NodeYellow(nodo15Nexts, pNodo15);
 	       
 	       Position pNodo14 = new Position(3,0);
 	       ArrayList<Node> nodo14Nexts = new ArrayList<Node>();
 	       nodo14Nexts.add(nodo15);
-	       NodeAmarillo nodo14 = new NodeAmarillo(nodo14Nexts, pNodo14);
+	       NodeYellow nodo14 = new NodeYellow(nodo14Nexts, pNodo14);
 	       
 	       Position pNodo13 = new Position(3,1);
 	       ArrayList<Node> nodo13Nexts = new ArrayList<Node>();
@@ -64,13 +64,13 @@ public class JuegoTest {
 	       Position pNodo8 = new Position(2,3);
 	       ArrayList<Node> nodo8Nexts = new ArrayList<Node>();
 	       nodo8Nexts.add(nodo9);
-	       NodeRojo nodo8 = new NodeRojo(nodo8Nexts, pNodo8);
+	       NodeRed nodo8 = new NodeRed(nodo8Nexts, pNodo8);
 	       
 	       Position pNodo7 = new Position(3,4);
 	       ArrayList<Node> nodo7Nexts = new ArrayList<Node>();
 	       nodo7Nexts.add(nodo8);
 	       nodo7Nexts.add(nodo11);
-	       NodeAmarillo nodo7 = new NodeAmarillo(nodo7Nexts, pNodo7);
+	       NodeYellow nodo7 = new NodeYellow(nodo7Nexts, pNodo7);
 	       
 	       Position pNodo6 = new Position(3,5);
 	       ArrayList<Node> nodo6Nexts = new ArrayList<Node>();
@@ -85,7 +85,7 @@ public class JuegoTest {
 	       Position pNodo4 = new Position(0,5);
 	       ArrayList<Node> nodo4Nexts = new ArrayList<Node>();
 	       nodo4Nexts.add(nodo5);
-	       NodeAmarillo nodo4 = new NodeAmarillo(nodo4Nexts, pNodo4);
+	       NodeYellow nodo4 = new NodeYellow(nodo4Nexts, pNodo4);
 	       
 	       Position pNodo3 = new Position(0,3);
 	       ArrayList<Node> nodo3Nexts = new ArrayList<Node>();
@@ -100,7 +100,7 @@ public class JuegoTest {
 	       Position pNodo1 = new Position(0,0);
 	       ArrayList<Node> nodo1Nexts = new ArrayList<Node>();
 	       nodo1Nexts.add(nodo2);
-	       NodeRojo nodo1 = new NodeRojo(nodo1Nexts, pNodo1);
+	       NodeRed nodo1 = new NodeRed(nodo1Nexts, pNodo1);
 	       
 	       nodoEnd.setStart(nodo1);
 	       ArrayList<Node> nodos = new ArrayList<Node>();

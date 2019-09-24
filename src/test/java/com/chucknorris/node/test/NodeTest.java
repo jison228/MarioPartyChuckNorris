@@ -23,12 +23,12 @@ public class NodeTest {
 	
     @Test
     public void nodeTest() {
-    	Node node1 = new NodeAmarillo(null,new Position(3, 3));
-    	Node node2 = new NodeRojo(null,new Position(3, 4));
+    	Node node1 = new NodeYellow(null,new Position(3, 3));
+    	Node node2 = new NodeRed(null,new Position(3, 4));
     	ArrayList<Node> lista = new ArrayList<Node>();
     	lista.add(node1);
     	lista.add(node2);
-    	Node nodeTest = new NodeRojo(lista,new Position(4, 4));
+    	Node nodeTest = new NodeRed(lista,new Position(4, 4));
     	
     	assertEquals(nodeTest.getType(), "ROJO");
     	assertEquals(nodeTest.nextNodes(), lista);
@@ -36,7 +36,7 @@ public class NodeTest {
 	
     @Test
     public void nodeRedTest() {
-    	Node nodeTest = new NodeRojo(null,new Position(4, 4));
+    	Node nodeTest = new NodeRed(null,new Position(4, 4));
     	
     	nodeTest.applyRewards(p);
     	assertEquals(p.getCoins(), 3);
@@ -44,7 +44,7 @@ public class NodeTest {
 	
     @Test
     public void nodeYellowTest() {
-    	Node nodeTest = new NodeAmarillo(null,new Position(4, 4));
+    	Node nodeTest = new NodeYellow(null,new Position(4, 4));
     	
     	nodeTest.applyRewards(p);
     	assertEquals(p.getCoins(), 10);
