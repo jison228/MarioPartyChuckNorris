@@ -20,10 +20,8 @@ import com.chucknorris.player.Player;
 public class JuegoTest {
 	@Test
 	 public void test() {
-	       Game juego1 = new Game();
 	       
 	       Position pNodoEnd = new Position(1,0);
-	       ArrayList<Node> nodoEndNexts = new ArrayList<Node>();
 	       EndNode nodoEnd = new EndNode(pNodoEnd);
 	       
 	       Position pNodo15 = new Position(2,0);
@@ -129,6 +127,9 @@ public class JuegoTest {
 	       ArrayList<Player> playerList = new ArrayList<Player>();
 	       playerList.add(p1);
 	       playerList.add(p2);
+	       
+	       
+	       Game juego1 = new Game(playerList,mapa1);
 	       mapa1.initializePlayers(playerList);
 	       // LISTO PARA JUGAR
 	       

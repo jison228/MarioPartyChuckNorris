@@ -6,7 +6,7 @@ import com.chucknorris.player.Player;
 
 public class Game {
 	private ArrayList<Player> players;
-	private int turn;
+	private int turn = 1;
 	private Map map;
 	private Dice dice = new Dice( 1 , 6 );
 	//ArrayList de minijuegos
@@ -16,6 +16,11 @@ public class Game {
 		turn++;
 	}
 	
+	public Game(ArrayList<Player> players, Map map) {
+		this.players = players;
+		this.map = map;
+	}
+
 	private int roll() {
 		return dice.roll();
 	}
