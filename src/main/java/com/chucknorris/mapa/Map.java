@@ -43,7 +43,7 @@ public class Map {
 			node.applyRewards(p);
 		}
 		
-		return new Response( node.getPos() , node.getType() , availablePositions , leftMovs );
+		return new Response( node , availablePositions , leftMovs );
 	}
 	
 	public Response movePlayer(Player p, int movs, Node pos) {
