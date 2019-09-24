@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import com.chucknorris.commons.Juego;
+import com.chucknorris.commons.Game;
 import com.chucknorris.commons.Position;
 import com.chucknorris.mapa.Map;
 import com.chucknorris.mapa.Node;
@@ -20,7 +20,7 @@ import com.chucknorris.player.Player;
 public class JuegoTest {
 	@Test
 	 public void test() {
-	       Juego juego1 = new Juego();
+	       Game juego1 = new Game();
 	       
 	       Position pNodoEnd = new Position(1,0);
 	       ArrayList<Node> nodoEndNexts = new ArrayList<Node>();

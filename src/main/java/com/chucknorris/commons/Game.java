@@ -1,14 +1,13 @@
 package com.chucknorris.commons;
 
 import java.util.ArrayList;
-
 import com.chucknorris.mapa.Map;
 import com.chucknorris.player.Player;
 
-public class Juego {
+public class Game {
 	ArrayList<Player> players;
-	int turno;
-	Map mapa;
+	int turn;
+	Map map;
 	Dice dice = new Dice(1,6);
 	//ArrayList de minijuegos
 	
@@ -18,7 +17,7 @@ public class Juego {
 	
 	private void endTurn() {
 		//verificar si alguien gano (por ahora no hay corte)
-		turno++;
+		turn++;
 	}
 	
 	private int roll() {
