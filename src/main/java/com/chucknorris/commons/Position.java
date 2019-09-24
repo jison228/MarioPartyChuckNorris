@@ -1,8 +1,8 @@
 package com.chucknorris.commons;
 
 public class Position {
-	int posX;
-	int posY;
+	private int posX;
+	private int posY;
 	
 	@Override
 	public int hashCode() {
