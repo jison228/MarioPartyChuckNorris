@@ -128,9 +128,9 @@ public class JuegoTest {
 	       playerList.add(p1);
 	       playerList.add(p2);
 	       
-	       
 	       Game juego1 = new Game(playerList,mapa1);
-	       mapa1.initializePlayers(playerList);
+	       
+	       mapa1.initializePlayers(juego1.getPlayerList());
 	       // LISTO PARA JUGAR
 	       
 	       //TIRA JUGADOR 1
