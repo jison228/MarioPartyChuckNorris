@@ -1,6 +1,5 @@
 package com.chucknorris.player;
 
-import com.chucknorris.commons.Position;
 import com.chucknorris.mapa.Node;
 
 public class Player {
