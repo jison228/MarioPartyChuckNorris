@@ -134,7 +134,7 @@ public class JuegoTest {
 	       
 	       //TIRA JUGADOR 1
 	      
-	       Response respuestaReal = mapa1.mover(p1, 4);
+	       Response respuestaReal = mapa1.movePlayer(p1, 4);
 	       Position pesperada = new Position(2,5);
 	       Position pesperadaDisp = new Position(3,5);
 
@@ -146,7 +146,7 @@ public class JuegoTest {
 	       
 	       //TIRA JUGADOR 2
 	       
-	       Response respuestaReal2 = mapa1.mover(p2, 7);
+	       Response respuestaReal2 = mapa1.movePlayer(p2, 7);
 	       Position pesperada2 = new Position(3,4);
 	       Position pesperadaDisp1 = new Position(2,3);
 	       Position pesperadaDisp2 = new Position(3,3);
@@ -161,7 +161,7 @@ public class JuegoTest {
 	       
 	       Position posicionElegida = new Position(2, 3);
 	       
-	       Response respuestaReal3 = mapa1.mover(p2,1,posicionElegida);
+	       Response respuestaReal3 = mapa1.movePlayer(p2,1,posicionElegida);
 	       Position pesperada3 = new Position(2,3);
 	       ArrayList<Position> arrayPosicionesDisponibles3 = new ArrayList<Position>();
 	       Position pesperadaDisp3 = new Position(3,2);

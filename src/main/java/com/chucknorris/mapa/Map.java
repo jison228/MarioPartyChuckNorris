@@ -1,18 +1,10 @@
-/**
- * 
- */
 package com.chucknorris.mapa;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import com.chucknorris.commons.Position;
 import com.chucknorris.player.Player;
 
-/**
- * @author agufa
- *
- */
 public class Map {
 	private HashMap<Position,Node> nodes;
 	private Node start;
@@ -32,11 +24,8 @@ public class Map {
 		this.start = start;
 	}
 
-
-
-
-	public Response mover(Player p, int movs) {
-		Node node = nodes.get(p.getPos());
+	public Response movePlayer(Player p, int movs) {
+		Node node = nodes.get(p.getPos().getPos());
 		int leftMovs = movs;
 		while(node.nextNodes().size() == 1 && leftMovs > 0) {
 			node = node.nextNodes().get(0);
@@ -57,9 +46,9 @@ public class Map {
 		return new Response(node.getPos(),node.getType(),availablePositions,leftMovs);
 	}
 	
-	public Response mover(Player p, int movs, Node pos) {
+	public Response movePlayer(Player p, int movs, Node pos) {
 		p.setPos(pos);
-		return mover(p,movs-1);
+		return movePlayer(p,movs-1);
 	}
 	
 	
