@@ -15,8 +15,6 @@ import com.chucknorris.player.Player;
 public abstract class Node {
 	protected ArrayList<Node> next;
 	private Position pos;
-	private String type;
-
 
 	public ArrayList<Node> nextNodes() {
 		return next;
@@ -27,15 +25,12 @@ public abstract class Node {
 	}
 	
 
-	public String getType() {
-		return type;
-	}
-	
-	public Node(ArrayList<Node> next, Position pos, String type) {
+
+	public Node(ArrayList<Node> next, Position pos) {
 		this.next = next;
 		this.pos = pos;
-		this.type = type;
 	}
 	public abstract void applyRewards(Player p);
+	public abstract String getType();
 	
 }
