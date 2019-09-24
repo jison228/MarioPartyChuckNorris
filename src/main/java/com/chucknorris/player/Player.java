@@ -1,16 +1,17 @@
 package com.chucknorris.player;
 
 import com.chucknorris.commons.Position;
+import com.chucknorris.mapa.Node;
 
 public class Player {
 	private String character;
 	private int coins;
-	private Position pos;
+	private Node pos;
 	
 	public Player(String character, int coins) {
 		this.character = character;
 		this.coins = coins; 
-		this.pos = new Position(0, 0);
+		this.pos = null;
 		//despues de avanzar en el proyecto podriamos setear las
 		//monedas en el constructor a un valor fijo como 10 o 0
 		//podriamos setearla aca en una posicion inicial como al principio del tablero
@@ -28,13 +29,13 @@ public class Player {
 		return this.character;
 	}
 	
-	public void setPos(int x, int y) {
-		this.pos.setPos(x, y);; 
+	public void setPos(Node newPos ) {
+		this.pos = newPos; 
 	}
 //por si queremos setear al jugador en areas distintas a la seteada en el constructor
 //sin llamar a un metodo del mapa(por ahora solo para ser utilizada en testeos)	
 	
-	public Position getPos() {
+	public Node getPos() {
 		return this.pos;
 	}
 	
