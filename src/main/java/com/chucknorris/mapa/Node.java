@@ -6,7 +6,7 @@ import com.chucknorris.player.Player;
 
 public abstract class Node {
 	protected ArrayList<Node> next;
-	private Position pos;
+	private Position pos;//utilizado para la matriz de nodos únicamente
 
 	public ArrayList<Node> nextNodes() {
 		return next;
