@@ -1,20 +1,10 @@
-/**
- * 
- */
 package com.chucknorris.mapa;
 
 import java.util.ArrayList;
-
 import com.chucknorris.commons.Position;
 import com.chucknorris.player.Player;
 
-/**
- * @author agufa
- *
- */
 public class NodeYellow extends Node {
-
-	
 
 	public NodeYellow(ArrayList<Node> next, Position pos) {
 		super(next, pos);

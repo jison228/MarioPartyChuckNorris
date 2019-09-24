@@ -1,20 +1,10 @@
-/**
- * 
- */
 package com.chucknorris.mapa;
 
 import java.util.ArrayList;
-
 import com.chucknorris.commons.Position;
 import com.chucknorris.player.Player;
 
-/**
- * @author agufa
- *
- */
 public class NodeEnd extends Node {
-
-	
 
 	public NodeEnd(Position pos) {
 		super(null, pos);
