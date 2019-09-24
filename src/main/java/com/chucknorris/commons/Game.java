@@ -5,10 +5,10 @@ import com.chucknorris.mapa.Map;
 import com.chucknorris.player.Player;
 
 public class Game {
-	ArrayList<Player> players;
-	int turn;
-	Map map;
-	Dice dice = new Dice( 1 , 6 );
+	private ArrayList<Player> players;
+	private int turn;
+	private Map map;
+	private Dice dice = new Dice( 1 , 6 );
 	//ArrayList de minijuegos
 	
 	private void endTurn() {
