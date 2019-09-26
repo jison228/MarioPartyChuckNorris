@@ -1,27 +1,29 @@
 package com.chucknorris.mapa;
 
-import java.util.ArrayList;
 import com.chucknorris.commons.Position;
 import com.chucknorris.player.Player;
 
-public abstract class Node {
-	protected ArrayList<Node> next;
-	private Position pos;//utilizado para la matriz de nodos únicamente
+import java.util.ArrayList;
 
-	public ArrayList<Node> nextNodes() {
-		return next;
-	}
-	
-	public Position getPos() {
-		return pos;
-	}
-	
-	public Node(ArrayList<Node> next, Position pos) {
-		this.next = next;
-		this.pos = pos;
-	}
-	
-	public abstract void applyRewards(Player p);
-	public abstract String getType();
-	
+public abstract class Node {
+    protected ArrayList<Node> next;
+    private Position pos;//utilizado para la matriz de nodos ï¿½nicamente
+
+    public Node(ArrayList<Node> next, Position pos) {
+        this.next = next;
+        this.pos = pos;
+    }
+
+    public ArrayList<Node> nextNodes() {
+        return next;
+    }
+
+    public Position getPos() {
+        return pos;
+    }
+
+    public abstract void applyRewards(Player p);
+
+    public abstract String getType();
+
 }
