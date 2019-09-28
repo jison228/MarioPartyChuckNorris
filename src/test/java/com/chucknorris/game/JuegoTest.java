@@ -164,5 +164,9 @@ public class JuegoTest {
 		Response respuestaReal4 = mapa1.movePlayer(p2, 5);
 		Response respuestaEsp4 = new Response(nodo1, null, 0);
 		assertEquals(respuestaEsp4, respuestaReal4);
+		
+		//CHECKEO QUE EL PLAYER 2 TENGA 3 MONEDAS
+		
+		assertEquals( 3 , p2.getCoins());
 	}
 }
