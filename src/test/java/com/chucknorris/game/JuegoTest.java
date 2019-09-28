@@ -162,5 +162,7 @@ public class JuegoTest {
 		// TIRA JUGADOR 2
 
 		Response respuestaReal4 = mapa1.movePlayer(p2, 5);
+		Response respuestaEsp4 = new Response(nodo1, null, 0);
+		assertEquals(respuestaEsp4, respuestaReal4);
 	}
 }
