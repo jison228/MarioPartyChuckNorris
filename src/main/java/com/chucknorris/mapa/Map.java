@@ -13,7 +13,6 @@ public class Map {
     private HashMap<Position, Node> nodes;
     private Node start;
 
-    //Pendiente de modificar cuando se lea el mapa mediante un .txt
     public Map(String tablero) throws FileNotFoundException {
     	Scanner sc = new Scanner(new File("maps/" + tablero));
     	this.nodes = new HashMap<Position , Node>();
