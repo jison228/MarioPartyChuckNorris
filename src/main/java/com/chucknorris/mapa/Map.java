@@ -25,7 +25,7 @@ public class Map {
         }
     }
 
-    public Response movePlayer(Player p, int movs) {
+    public int movePlayer(Player p, int movs) {
         Node node = nodes.get(p.getPos().getPos());
         int leftMovs = movs;
         while (node.nextNodes().size() == 1 && leftMovs > 0) {
@@ -34,21 +34,14 @@ public class Map {
         }
         p.setPos(node);
 
-        ArrayList<Position> availablePositions = new ArrayList<Position>();
-
-        if (leftMovs > 0) {
-            for (Node pos : node.nextNodes()) {
-                availablePositions.add(pos.getPos());
-            }
-        } else {
-            node.applyRewards(p);
-            availablePositions = null;
+        if (leftMovs == 0) {
+        	node.applyRewards(p);
         }
 
-        return new Response(node, availablePositions, leftMovs);
+        return leftMovs;
     }
 
-    public Response movePlayer(Player p, int movs, Node pos) {
+    public int movePlayer(Player p, int movs, Node pos) {
         p.setPos(pos);
         return movePlayer(p, movs - 1);
     }
