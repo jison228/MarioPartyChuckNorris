@@ -128,45 +128,38 @@ public class JuegoTest {
 
 		// TIRA JUGADOR 1
 
-		Response respuestaReal = mapa1.movePlayer(p1, 4);
-		Position pesperada = new Position(2, 5);
-		Response rEsperada = new Response(nodo5, null, 0);
-		assertEquals(pesperada, p1.getPos().getPos());
-		assertEquals(rEsperada, respuestaReal);
+		int respuestaReal = mapa1.movePlayer(p1, 4);
+		
+		assertEquals(new Position(2, 5), p1.getPos().getPos());
+		assertEquals(0, respuestaReal);
 
 		// TIRA JUGADOR 2
 
-		Response respuestaReal2 = mapa1.movePlayer(p2, 8);
-		Position pesperada2 = new Position(3, 4);
-		Position pesperadaDisp1 = new Position(2, 3);
-		Position pesperadaDisp2 = new Position(3, 3);
-		ArrayList<Position> arrayPosicionesDisponibles2 = new ArrayList<Position>();
-		arrayPosicionesDisponibles2.add(pesperadaDisp1);
-		arrayPosicionesDisponibles2.add(pesperadaDisp2);
-		Response rEsperada2 = new Response(nodo7, arrayPosicionesDisponibles2, 2);
-		assertEquals(pesperada2, p2.getPos().getPos());
-		assertEquals(rEsperada2, respuestaReal2);
+		int respuestaReal2 = mapa1.movePlayer(p2, 8);
+		
+		assertEquals(new Position(3, 4), p2.getPos().getPos());
+		assertEquals(2, respuestaReal2);
 
 		// ELIGE JUGADOR 2
 
-		Response respuestaReal3 = mapa1.movePlayer(p2, 2, nodo8);
-		Position pesperada3 = new Position(2, 2);
-		Response rEsperada3 = new Response(nodo9, null, 0);
-		assertEquals(pesperada3, p2.getPos().getPos());
-		assertEquals(rEsperada3, respuestaReal3);
+		int respuestaReal3 = mapa1.movePlayer(p2, 2, nodo8);
+
+		assertEquals(new Position(2, 2), p2.getPos().getPos());
+		assertEquals(0, respuestaReal3);
 
 		// CHEQUEO QUE P2 TENGA 0 MONEDAS Y P1 0
+		
 		assertEquals(0, p2.getCoins());
 		assertEquals(0, p1.getCoins());
 
 		// TIRA JUGADOR 2
 
-		Response respuestaReal4 = mapa1.movePlayer(p2, 5);
-		Response respuestaEsp4 = new Response(nodo1, null, 0);
-		assertEquals(respuestaEsp4, respuestaReal4);
+		int respuestaReal4 = mapa1.movePlayer(p2, 5);
 		
-		//CHECKEO QUE EL PLAYER 2 TENGA 3 MONEDAS
-		
-		assertEquals( 3 , p2.getCoins());
+		assertEquals(0, respuestaReal4);
+
+		// CHECKEO QUE EL PLAYER 2 TENGA 3 MONEDAS
+
+		assertEquals(3, p2.getCoins());
 	}
 }
