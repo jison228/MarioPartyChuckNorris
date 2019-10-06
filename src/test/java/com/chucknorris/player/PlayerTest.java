@@ -1,8 +1,8 @@
 package com.chucknorris.player;
 
 import com.chucknorris.commons.Position;
-import com.chucknorris.mapa.Node;
-import com.chucknorris.mapa.RedNode;
+import com.chucknorris.gamemap.Node;
+import com.chucknorris.gamemap.RedNode;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.ArrayList;

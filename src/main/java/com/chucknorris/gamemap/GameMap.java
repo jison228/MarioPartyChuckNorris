@@ -1,4 +1,4 @@
-package com.chucknorris.mapa;
+package com.chucknorris.gamemap;
 
 import com.chucknorris.commons.Position;
 import com.chucknorris.player.Player;
@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class Map {
+public class GameMap {
 	private HashMap<Position, Node> nodes;
 	private Node start;
 
-	public Map(String tablero) throws FileNotFoundException {
+	public GameMap(String tablero) throws FileNotFoundException {
 		Scanner sc = new Scanner(new File("maps/" + tablero));
 		this.nodes = new HashMap<Position, Node>();
 

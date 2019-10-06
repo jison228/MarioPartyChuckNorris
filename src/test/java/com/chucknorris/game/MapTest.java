@@ -1,7 +1,7 @@
 package com.chucknorris.game;
 
 import com.chucknorris.commons.Position;
-import com.chucknorris.mapa.*;
+import com.chucknorris.gamemap.*;
 import com.chucknorris.player.Player;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 public class MapTest {
-	Map mapa1;
+	GameMap mapa1;
 	Player p1, p2;
 	ArrayList<Player> playerList;
 
 	@Before
 	public void executedBeforeEach() throws FileNotFoundException {
-		mapa1 = new Map("mapa1.txt");
+		mapa1 = new GameMap("mapa1.txt");
 		p1 = new Player("Javier Milei", 0);
 		p2 = new Player("MauriCEOMcree", 0);
 		playerList = new ArrayList<Player>();

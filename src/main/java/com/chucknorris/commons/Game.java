@@ -1,6 +1,6 @@
 package com.chucknorris.commons;
 
-import com.chucknorris.mapa.Map;
+import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.player.Player;
 
 import java.util.ArrayList;
@@ -8,14 +8,14 @@ import java.util.ArrayList;
 public class Game {
     private ArrayList<Player> players;
     private int turn;
-    private Map map;
+    private GameMap gameMap;
     private Dice dice;
     //ArrayList de minijuegos
 
-    public Game(ArrayList<Player> players, Map map) {
+    public Game(ArrayList<Player> players, GameMap gameMap) {
         this.players = players;
         this.turn = 1;
-        this.map = map;
+        this.gameMap = gameMap;
         this.dice = new Dice(1, 6);
     }
 
@@ -32,8 +32,8 @@ public class Game {
         return players;
     }
 
-    public Map getMap() {
-        return map;
+    public GameMap getMap() {
+        return gameMap;
     }
 
     public int getCurrentTurn() {

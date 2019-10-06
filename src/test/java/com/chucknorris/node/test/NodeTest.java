@@ -1,10 +1,10 @@
 package com.chucknorris.node.test;
 
 import com.chucknorris.commons.Position;
-import com.chucknorris.mapa.Node;
-import com.chucknorris.mapa.RedNode;
-import com.chucknorris.mapa.WhiteNode;
-import com.chucknorris.mapa.YellowNode;
+import com.chucknorris.gamemap.Node;
+import com.chucknorris.gamemap.RedNode;
+import com.chucknorris.gamemap.WhiteNode;
+import com.chucknorris.gamemap.YellowNode;
 import com.chucknorris.player.Player;
 import org.junit.Before;
 import org.junit.Test;
