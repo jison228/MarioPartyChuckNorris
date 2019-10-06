@@ -49,4 +49,8 @@ public class Position {
     public int getY() {
         return this.posY;
     }
+
+	public String printPosition() {
+		return String.format("X = %s, Y = %s", posX, posY);
+	}
 }
