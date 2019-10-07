@@ -1,14 +1,14 @@
 package com.chucknorris.gamemap.initiallizer.file.reader.csv;
 
 import com.chucknorris.commons.Position;
-import com.chucknorris.gamemap.EndNode;
 import com.chucknorris.gamemap.GameMap;
-import com.chucknorris.gamemap.Node;
-import com.chucknorris.gamemap.NodeFactory;
 import com.chucknorris.gamemap.initiallizer.file.reader.LineDataDto;
 import com.chucknorris.gamemap.initiallizer.file.reader.MapFileReadable;
 import com.chucknorris.gamemap.initiallizer.file.reader.position.PositionReadable;
 import com.chucknorris.gamemap.initiallizer.file.reader.position.PositionReader;
+import com.chucknorris.gamemap.nodes.EndNode;
+import com.chucknorris.gamemap.nodes.Node;
+import com.chucknorris.gamemap.nodes.NodeFactory;
 
 import java.io.BufferedReader;
 import java.io.File;

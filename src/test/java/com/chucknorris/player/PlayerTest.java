@@ -1,11 +1,13 @@
 package com.chucknorris.player;
 
 import com.chucknorris.commons.Position;
-import com.chucknorris.gamemap.Node;
-import com.chucknorris.gamemap.RedNode;
+import com.chucknorris.gamemap.nodes.Node;
+import com.chucknorris.gamemap.nodes.RedNode;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.ArrayList;
+
 import static org.junit.Assert.assertEquals;
 
 public class PlayerTest {

@@ -1,6 +1,7 @@
 package com.chucknorris.gamemap;
 
 import com.chucknorris.commons.Position;
+import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.player.Player;
 
 import java.util.ArrayList;

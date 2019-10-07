@@ -1,4 +1,4 @@
-package com.chucknorris.gamemap;
+package com.chucknorris.gamemap.nodes;
 
 import com.chucknorris.commons.Position;
 import com.chucknorris.player.Player;

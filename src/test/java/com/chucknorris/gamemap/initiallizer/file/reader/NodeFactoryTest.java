@@ -1,7 +1,7 @@
 package com.chucknorris.gamemap.initiallizer.file.reader;
 
 import com.chucknorris.commons.Position;
-import com.chucknorris.gamemap.*;
+import com.chucknorris.gamemap.nodes.*;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
