@@ -1,6 +1,8 @@
 package com.chucknorris.gamemap.initiallizer.file.reader;
 
 import com.chucknorris.commons.Position;
+import com.chucknorris.gamemap.initiallizer.file.reader.position.PositionReadable;
+import com.chucknorris.gamemap.initiallizer.file.reader.position.PositionReader;
 import org.junit.Assert;
 import org.junit.Test;
 

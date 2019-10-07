@@ -1,56 +1,65 @@
 package com.chucknorris.commons;
 
-public class Position {
-    private int posX;
-    private int posY;
+import com.chucknorris.gamemap.presenter.PositionPresenter;
 
-    public Position(int posX, int posY) {
-        this.posX = posX;
-        this.posY = posY;
-    }
+import java.util.Objects;
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + posX;
-        result = prime * result + posY;
-        return result;
-    }
+public class Position implements Comparable<Position> {
+	private int posX;
+	private int posY;
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Position other = (Position) obj;
-        if (posX != other.posX)
-            return false;
-        return posY == other.posY;
-    }
+	public Position(int posX, int posY) {
+		this.posX = posX;
+		this.posY = posY;
+	}
 
-    public void setPos(Position pos) {
-        this.posX = pos.posX;
-        this.posY = pos.posY;
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null) return false;
 
-    public void setPos(int posX, int posY) {
-        this.posX = posX;
-        this.posY = posY;
-    }
+		Position position = (Position) o;
+		return posX == position.posX &&
+				posY == position.posY;
+	}
 
-    public int getX() {
-        return this.posX;
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(posX, posY);
+	}
 
-    public int getY() {
-        return this.posY;
-    }
+	public void setPos(Position pos) {
+		this.posX = pos.posX;
+		this.posY = pos.posY;
+	}
+
+	public void setPos(int posX, int posY) {
+		this.posX = posX;
+		this.posY = posY;
+	}
+
+	public int getX() {
+		return this.posX;
+	}
+
+	public int getY() {
+		return this.posY;
+	}
 
 	public String printPosition() {
 		return String.format("X = %s, Y = %s", posX, posY);
+	}
+
+	@Override
+	public int compareTo(Position o) {
+		return Double.compare(calculateLength(), o.calculateLength());
+	}
+
+	private double calculateLength() {
+		return Math.sqrt((Math.pow(posX, 2) + Math.pow(posY, 2)));
+	}
+
+	public String present(PositionPresenter positionPresenter) {
+		return positionPresenter.present(posX, posY);
 	}
 }

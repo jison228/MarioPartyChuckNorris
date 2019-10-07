@@ -1,12 +1,8 @@
 package com.chucknorris.gamemap.initiallizer.file.reader;
 
 import com.chucknorris.commons.Position;
-import com.chucknorris.gamemap.Node;
-import com.chucknorris.gamemap.RedNode;
-import com.chucknorris.gamemap.WhiteNode;
-import com.chucknorris.gamemap.YellowNode;
+import com.chucknorris.gamemap.*;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -34,7 +30,6 @@ public class NodeFactoryTest {
 			Node node = nodeFactory.buildNode(new Position(0, 0), entry.getKey(), new ArrayList<>());
 			Assert.assertEquals(entry.getValue().getName(), node.getClass().getName());
 		}
-
 	}
 
 	@Test

@@ -7,12 +7,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class GameMap {
-	private HashMap<Position, Node> nodes;
+	private Map<Position, Node> nodes;
 	private Node start;
 
+	@Deprecated
 	public GameMap(String tablero) throws FileNotFoundException {
 		Scanner sc = new Scanner(new File("maps/" + tablero));
 		this.nodes = new HashMap<Position, Node>();
@@ -34,15 +36,15 @@ public class GameMap {
 
 			String type = sc.next();
 			String nextChar = sc.next();
-			
+
 			next = new ArrayList<Node>();
-			
+
 			while (nextChar.charAt(0) != '|') {
 				X = sc.nextInt();
 				Y = sc.nextInt();
-				
+
 				next.add(this.nodes.get(new Position(X, Y)));
-				
+
 				nextChar = sc.next();
 			}
 			if (type.equals("RED")) {
@@ -52,14 +54,18 @@ public class GameMap {
 			} else {
 				node = new WhiteNode(next, pos);
 			}
-			
+
 			nodes.put(pos, node);
 		}
 		sc.close();
 		this.start = node;
 		nodeEnd.setStart(node);
-		
+
 		this.nodes.replace(nodeEnd.getPos(), nodeEnd);
+	}
+
+	public GameMap(Map<Position, Node> nodesRead) {
+		this.nodes = nodesRead;
 	}
 
 	public void initializePlayers(ArrayList<Player> players) {
@@ -89,4 +95,11 @@ public class GameMap {
 		return movePlayer(p, movs - 1);
 	}
 
+	public int nodesSize() {
+		return nodes.size();
+	}
+
+	public Node getNode(Position position) {
+		return nodes.get(position);
+	}
 }

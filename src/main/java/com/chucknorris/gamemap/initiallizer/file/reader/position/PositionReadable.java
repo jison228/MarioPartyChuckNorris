@@ -1,4 +1,4 @@
-package com.chucknorris.gamemap.initiallizer.file.reader;
+package com.chucknorris.gamemap.initiallizer.file.reader.position;
 
 import com.chucknorris.commons.Position;
 
