@@ -40,27 +40,9 @@ public class MapFileReader implements MapFileReadable {
 	public GameMap buildGameMap() throws Exception {
 		readFileAndLoadFlatNodes();
 
-		buildNodes();
+		Node firstNode = buildNodes();
 
-		return new GameMap(nodesRead);
-	}
-
-	private void buildNodes() throws Exception {
-
-		for (LineDataDto lineDataDto : nodeLinesRead) {
-			Position position = lineDataDto.position;
-
-			if (nodesRead.isEmpty()) {
-				nodesRead.put(position, new EndNode(position));
-			}
-
-			List<Node> nextNodes = getNextNodes(lineDataDto.nextNodes);
-
-			Node node = nodeFactory.buildNode(position, lineDataDto.nodeType, nextNodes);
-
-			nodesRead.put(position, node);
-		}
-
+		return new GameMap(nodesRead, firstNode);
 	}
 
 	private void readFileAndLoadFlatNodes() throws IOException {
@@ -87,6 +69,37 @@ public class MapFileReader implements MapFileReadable {
 		}
 
 		bufferedReader.close();
+	}
+
+	private Node buildNodes() throws Exception {
+
+		Node firstNode = null;
+
+		for (LineDataDto lineDataDto : nodeLinesRead) {
+			Position position = lineDataDto.position;
+
+			if (nodesRead.isEmpty()) {
+				nodesRead.put(position, new EndNode(position));
+			}
+
+			List<Node> nextNodes = getNextNodes(lineDataDto.nextNodes);
+
+			Node node = nodeFactory.buildNode(position, lineDataDto.nodeType, nextNodes);
+
+			if (firstNode == null) {
+				firstNode = node;
+			}
+			nodesRead.put(position, node);
+		}
+
+		fixFirstNode(nodesRead, firstNode);
+
+		return firstNode;
+	}
+
+	private void fixFirstNode(Map<Position, Node> nodesRead, Node firstNode) {
+		nodesRead.values()
+				.forEach(node -> node.replaceWithThisNodeIfNextHasOneWithSamePosition(firstNode));
 	}
 
 	private List<Node> getNextNodes(String lineData) throws Exception {
@@ -122,23 +135,4 @@ public class MapFileReader implements MapFileReadable {
 
 		return node;
 	}
-
-//	private List<Node> buildNextNodesList(String[] nextNodesPositions) throws RuntimeException {
-//		List<Node> nextNodes = new ArrayList<>();
-//
-//		for (String positionData : nextNodesPositions) {
-//			Position position = positionReader.readPosition(positionData);
-//
-//			Node nextNode = nodesRead.get(position);
-//
-//			if (nextNode == null) {
-//				throw new RuntimeException(String.format("The node in position %s does not exists. Perhaps, this is because the node is used before being instanced",
-//						position.printPosition()));
-//			}
-//
-//			nextNodes.add(nextNode);
-//		}
-//
-//		return nextNodes;
-//	}
 }

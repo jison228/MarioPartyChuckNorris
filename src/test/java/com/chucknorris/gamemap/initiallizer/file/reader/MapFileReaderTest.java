@@ -37,7 +37,7 @@ public class MapFileReaderTest {
 
 	@Test
 	public void testMapReader_map_1() throws Exception {
-		MapFileReadable mapFileReader = new MapFileReader("mapa1.txt");
+		MapFileReadable mapFileReader = new MapFileReader("map_1.txt");
 
 		GameMap gameMap = mapFileReader.buildGameMap();
 
@@ -55,6 +55,10 @@ public class MapFileReaderTest {
 			assertNode(node, nodePresenter, positionPresenter, entry.getValue());
 		}
 
+		Node previusToFinalNode = gameMap.getNode(new Position(1, 0));
+		Node finalNode = gameMap.getNode(new Position(0, 0));
+
+		Assert.assertTrue(previusToFinalNode.isThereSameReferenceNextNode(finalNode));
 	}
 
 	private void assertNode(Node node, NodePresenter nodePresenter, PositionPresenter positionPresenter, String expected) {

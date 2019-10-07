@@ -19,6 +19,7 @@ public class NodeFactory {
 		CATALOGED_NODES.put("WHITE", WhiteNode.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Node buildNode(Position position, String type, List<Node> nextNodes) throws Exception {
 		Class nodeClass = CATALOGED_NODES.getOrDefault(type, DEFAULT_NODE_VALUE);
 

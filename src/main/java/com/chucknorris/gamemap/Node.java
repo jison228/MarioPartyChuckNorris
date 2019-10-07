@@ -6,6 +6,7 @@ import com.chucknorris.gamemap.presenter.PositionPresenter;
 import com.chucknorris.player.Player;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public abstract class Node {
@@ -17,10 +18,12 @@ public abstract class Node {
 		this.pos = pos;
 	}
 
+	@Deprecated
 	public List<Node> nextNodes() {
 		return next;
 	}
 
+	@Deprecated
 	public Position getPos() {
 		return pos;
 	}
@@ -35,5 +38,18 @@ public abstract class Node {
 				.collect(Collectors.toList());
 
 		return presenter.present(pos.present(positionPresenter), this, nextPositions);
+	}
+
+	public void replaceWithThisNodeIfNextHasOneWithSamePosition(Node firstNode) {
+		Optional<Node> nodeToReplace = next.stream().filter(node -> node.pos.equals(firstNode.pos)).findFirst();
+
+		nodeToReplace.ifPresent(node -> {
+			next.remove(node);
+			next.add(firstNode);
+		});
+	}
+
+	public boolean isThereSameReferenceNextNode(Node finalNode) {
+		return next.stream().anyMatch(nextNode -> nextNode == finalNode);
 	}
 }
