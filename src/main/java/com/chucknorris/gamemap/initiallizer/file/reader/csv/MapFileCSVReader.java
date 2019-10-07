@@ -1,10 +1,12 @@
-package com.chucknorris.gamemap.initiallizer.file.reader;
+package com.chucknorris.gamemap.initiallizer.file.reader.csv;
 
 import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.EndNode;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.Node;
 import com.chucknorris.gamemap.NodeFactory;
+import com.chucknorris.gamemap.initiallizer.file.reader.LineDataDto;
+import com.chucknorris.gamemap.initiallizer.file.reader.MapFileReadable;
 import com.chucknorris.gamemap.initiallizer.file.reader.position.PositionReadable;
 import com.chucknorris.gamemap.initiallizer.file.reader.position.PositionReader;
 
@@ -14,7 +16,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class MapFileReader implements MapFileReadable {
+public class MapFileCSVReader implements MapFileReadable {
 
 	private static final int POSITION_FIELD = 0;
 	private static final int NODE_TYPE_FIELD = 1;
@@ -33,7 +35,7 @@ public class MapFileReader implements MapFileReadable {
 
 	private final String fileName;
 
-	public MapFileReader(String fileName) {
+	public MapFileCSVReader(String fileName) {
 		this.fileName = fileName;
 	}
 

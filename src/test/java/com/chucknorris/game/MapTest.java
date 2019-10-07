@@ -2,7 +2,7 @@ package com.chucknorris.game;
 
 import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.GameMap;
-import com.chucknorris.gamemap.initiallizer.file.reader.MapFileReader;
+import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.player.Player;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,8 +18,8 @@ public class MapTest {
 
 	@Before
 	public void executedBeforeEach() throws Exception {
-		MapFileReader mapFileReader = new MapFileReader("map_1.txt");
-		mapa1 = mapFileReader.buildGameMap();
+		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("map_1.txt");
+		mapa1 = mapFileCSVReader.buildGameMap();
 		p1 = new Player("Javier Milei", 0);
 		p2 = new Player("MauriCEOMcree", 0);
 		playerList = new ArrayList<Player>();

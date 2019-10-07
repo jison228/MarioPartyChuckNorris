@@ -3,6 +3,7 @@ package com.chucknorris.gamemap.initiallizer.file.reader;
 import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.Node;
+import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.gamemap.presenter.NodeCSVPresenter;
 import com.chucknorris.gamemap.presenter.NodePresenter;
 import com.chucknorris.gamemap.presenter.PositionPresenter;
@@ -13,7 +14,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapFileReaderTest {
+public class MapFileCSVReaderTest {
 	private final Map<Position, String> expected_map_1_values = new HashMap<>();
 
 	{
@@ -37,7 +38,7 @@ public class MapFileReaderTest {
 
 	@Test
 	public void testMapReader_map_1() throws Exception {
-		MapFileReadable mapFileReader = new MapFileReader("map_1.txt");
+		MapFileReadable mapFileReader = new MapFileCSVReader("map_1.txt");
 
 		GameMap gameMap = mapFileReader.buildGameMap();
 
