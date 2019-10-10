@@ -39,7 +39,15 @@ public class Game {
 
 		applyRewardIfApplies(player, mapResponse.movementsLeft, mapResponse.endMovementNode);
 
-		return null;
+		return buildGameResponse(player, mapResponse.movementsLeft);
+	}
+
+	private GameResponse buildGameResponse(Player player, int movementsLeft) {
+		GameResponse gameResponse = new GameResponse();
+
+		gameResponse.movementsLeft = movementsLeft;
+
+		return gameResponse;
 	}
 
 	private void applyRewardIfApplies(Player player, int movementsLeft, Node endMovementNode) {

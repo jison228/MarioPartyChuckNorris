@@ -18,16 +18,17 @@ class GameSpec extends Specification {
 
         GameMap gameMap = MapUtils.buildGameMapThroughCSVAndInitiallizePositions("map_1.txt", playerList)
 
-        1 * dice.roll() >> 3
-
-        2 * dice.roll() >> 4
+        2 * dice.roll() >> 3 >> 4
 
         Game game = new Game(playerList, gameMap, dice)
 
         when:
-        GameResponse dummyResponse = game.play(macri)
+        game.play(macri)
+
+        GameResponse gameResponse = game.play(macri)
 
         then:
-        macri.getCoins() == 13
+        macri.getCoins() == 10
+        gameResponse.movementsLeft == 1
     }
 }
