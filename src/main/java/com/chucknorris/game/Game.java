@@ -27,11 +27,9 @@ public class Game {
 		turn++;
 	}
 
-	public int roll() {
-		return dice.roll();
-	}
+	public GameResponse play(Player player) {
+		int diceResult = dice.roll();
 
-	public GameResponse play(Player player, int diceResult) {
 		MapResponse mapResponse = gameMap.movePlayers(player, diceResult);
 
 		applyRewardIfApplies(player, mapResponse.movementsLeft, mapResponse.endMovementNode);
@@ -43,14 +41,6 @@ public class Game {
 		if (movementsLeft == 0) {
 			endMovementNode.applyReward(player, players, null);
 		}
-	}
-
-	public List<Player> getPlayerList() {
-		return players;
-	}
-
-	public GameMap getMap() {
-		return gameMap;
 	}
 
 	public int getCurrentTurn() {
