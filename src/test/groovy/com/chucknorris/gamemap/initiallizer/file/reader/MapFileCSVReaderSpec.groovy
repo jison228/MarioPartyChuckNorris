@@ -1,4 +1,4 @@
-package gamemap.initiallizer.file.reader
+package com.chucknorris.gamemap.initiallizer.file.reader
 
 import com.chucknorris.commons.Position
 import com.chucknorris.gamemap.GameMap

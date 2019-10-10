@@ -22,6 +22,11 @@ public class Game {
 		this.dice = new Dice(1, 6);
 	}
 
+	public Game(List<Player> players, GameMap gameMap, Dice dice) {
+		this(players, gameMap);
+		this.dice = dice;
+	}
+
 	public void endTurn() {
 		//verificar si alguien gano (por ahora no hay corte)
 		turn++;
