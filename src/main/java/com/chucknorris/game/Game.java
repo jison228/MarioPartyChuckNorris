@@ -39,10 +39,18 @@ public class Game {
 
 		applyRewardIfApplies(player, mapResponse.movementsLeft, mapResponse.endMovementNode);
 
-		return buildGameResponse(player, mapResponse.movementsLeft);
+		return buildGameResponse(mapResponse.movementsLeft);
 	}
 
-	private GameResponse buildGameResponse(Player player, int movementsLeft) {
+	public GameResponse resolveIntersection(Player player, Node nextNode, int movementsLeft) {
+		MapResponse mapResponse = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft);
+
+		applyRewardIfApplies(player, mapResponse.movementsLeft, mapResponse.endMovementNode);
+
+		return buildGameResponse(mapResponse.movementsLeft);
+	}
+
+	private GameResponse buildGameResponse(int movementsLeft) {
 		GameResponse gameResponse = new GameResponse();
 
 		gameResponse.movementsLeft = movementsLeft;

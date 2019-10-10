@@ -44,16 +44,22 @@ public class GameMap {
 		return movePlayer(p, movs - 1);
 	}
 
-	public MapResponse movePlayers(Player p, int leftMovements) {
-		Node node = nodes.get(p.getNodeLocation().getPositionCoords());
+	public MapResponse movePlayers(Player player, int leftMovements) {
+		Node node = nodes.get(player.getNodeLocation().getPositionCoords());
 
 		while (node.nextNodes().size() == 1 && leftMovements > 0) {
 			node = node.nextNodes().get(0);
 			leftMovements--;
 		}
-		p.setNodeLocation(node);
+		player.setNodeLocation(node);
 
 		return buildResponse(leftMovements, node);
+	}
+
+	public MapResponse movePlayerFromIntersection(Player player, Node nextNode, int leftMovements) {
+		player.setNodeLocation(nextNode);
+
+		return movePlayers(player, leftMovements - 1);
 	}
 
 	private MapResponse buildResponse(int leftMovements, Node node) {
