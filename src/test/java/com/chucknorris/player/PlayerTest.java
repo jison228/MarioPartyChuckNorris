@@ -35,9 +35,9 @@ public class PlayerTest {
 	public void setPosTest() {
 		ArrayList<Node> testNext = null;
 		Node testNode = new RedNode(testNext, new Position(3, 5));
-		playerTest.setPos(testNode);
+		playerTest.setNodeLocation(testNode);
 
-		assertEquals(new Position(3, 5), playerTest.getPos().getPos());
+		assertEquals(new Position(3, 5), playerTest.getNodeLocation().getPositionCoords());
 
 	}
 }

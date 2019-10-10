@@ -8,7 +8,7 @@ import spock.lang.Specification
 
 class GameSpec extends Specification {
 
-    void "test move players macri three positions in map_1, expected to win 10 coins"() {
+    void "test move players macri 3 positions and then 4 positions in map_1, expected to win 13 coins"() {
         given:
         Dice dice = Spy(new Dice(1, 6))
 
@@ -20,12 +20,14 @@ class GameSpec extends Specification {
 
         1 * dice.roll() >> 3
 
+        2 * dice.roll() >> 4
+
         Game game = new Game(playerList, gameMap, dice)
 
         when:
         GameResponse dummyResponse = game.play(macri)
 
         then:
-        macri.getCoins() == 10
+        macri.getCoins() == 13
     }
 }

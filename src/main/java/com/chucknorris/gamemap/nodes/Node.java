@@ -15,15 +15,15 @@ import java.util.stream.Collectors;
 public abstract class Node {
 	protected List<Node> next;
 	private RewardApplicable reward = new NoReward();
-	private Position pos;//utilizado para la matriz de nodos unicamente
+	private Position positionCoords;//utilizado para la matriz de nodos unicamente
 
-	public Node(List<Node> next, Position pos) {
+	public Node(List<Node> next, Position positionCoords) {
 		this.next = next;
-		this.pos = pos;
+		this.positionCoords = positionCoords;
 	}
 
-	public Node(List<Node> next, Position pos, RewardApplicable reward) {
-		this(next, pos);
+	public Node(List<Node> next, Position positionCoords, RewardApplicable reward) {
+		this(next, positionCoords);
 
 		this.reward = reward;
 	}
@@ -34,8 +34,8 @@ public abstract class Node {
 	}
 
 	@Deprecated
-	public Position getPos() {
-		return pos;
+	public Position getPositionCoords() {
+		return positionCoords;
 	}
 
 	public abstract String getType();
@@ -46,14 +46,14 @@ public abstract class Node {
 
 	public String present(NodePresenter presenter, PositionPresenter positionPresenter) {
 		List<Position> nextPositions = next.stream()
-				.map(it -> it.pos)
+				.map(it -> it.positionCoords)
 				.collect(Collectors.toList());
 
-		return presenter.present(pos.present(positionPresenter), this, nextPositions);
+		return presenter.present(positionCoords.present(positionPresenter), this, nextPositions);
 	}
 
 	public void replaceWithThisNodeIfNextHasOneWithSamePosition(Node firstNode) {
-		Optional<Node> nodeToReplace = next.stream().filter(node -> node.pos.equals(firstNode.pos)).findFirst();
+		Optional<Node> nodeToReplace = next.stream().filter(node -> node.positionCoords.equals(firstNode.positionCoords)).findFirst();
 
 		nodeToReplace.ifPresent(node -> {
 			next.remove(node);

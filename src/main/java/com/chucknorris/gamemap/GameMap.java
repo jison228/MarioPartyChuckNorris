@@ -18,18 +18,18 @@ public class GameMap {
 
 	public void initializePlayers(List<Player> players) {
 		for (Player p : players) {
-			p.setPos(start);
+			p.setNodeLocation(start);
 		}
 	}
 
 	public int movePlayer(Player p, int movs) {
-		Node node = nodes.get(p.getPos().getPos());
+		Node node = nodes.get(p.getNodeLocation().getPositionCoords());
 		int leftMovs = movs;
 		while (node.nextNodes().size() == 1 && leftMovs > 0) {
 			node = node.nextNodes().get(0);
 			leftMovs--;
 		}
-		p.setPos(node);
+		p.setNodeLocation(node);
 
 		if (leftMovs == 0) {
 			//TODO usar la nueva firma
@@ -40,18 +40,18 @@ public class GameMap {
 	}
 
 	public int movePlayer(Player p, int movs, Node pos) {
-		p.setPos(pos);
+		p.setNodeLocation(pos);
 		return movePlayer(p, movs - 1);
 	}
 
 	public MapResponse movePlayers(Player p, int leftMovements) {
-		Node node = nodes.get(p.getPos().getPos());
+		Node node = nodes.get(p.getNodeLocation().getPositionCoords());
 
 		while (node.nextNodes().size() == 1 && leftMovements > 0) {
 			node = node.nextNodes().get(0);
 			leftMovements--;
 		}
-		p.setPos(node);
+		p.setNodeLocation(node);
 
 		return buildResponse(leftMovements, node);
 	}
@@ -64,11 +64,6 @@ public class GameMap {
 		mapResponse.movementsLeft = leftMovements;
 
 		return mapResponse;
-	}
-
-	public MapResponse movePlayers(Player p, int movs, Node pos) {
-		p.setPos(pos);
-		return movePlayers(p, movs - 1);
 	}
 
 	public int nodesSize() {
