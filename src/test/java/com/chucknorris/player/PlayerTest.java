@@ -1,8 +1,9 @@
 package com.chucknorris.player;
 
 import com.chucknorris.commons.Position;
-import com.chucknorris.mapa.Node;
-import com.chucknorris.mapa.RedNode;
+import com.chucknorris.gamemap.nodes.Node;
+import com.chucknorris.gamemap.nodes.RedNode;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,19 +11,33 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 public class PlayerTest {
-    @Test
-    public void test() {
-        Player test = new Player("Cristi", 500);
+	Player playerTest;
 
-        test.addCoins(50);
+	@Before
+	public void executedBeforeEach() {
+		playerTest = new Player("Cristi", 500);
+	}
 
-        ArrayList<Node> testNext = null;
-        Node testNode = new RedNode(testNext, new Position(3, 5));
-        test.setPos(testNode);
+	@Test
+	public void constructorTest() {
+		assertEquals(500, playerTest.getCoins());
+		assertEquals("Cristi", playerTest.getCharacter());
+	}
 
-        assertEquals(550, test.getCoins());
-        assertEquals("Cristi", test.getCharacter());
-        assertEquals(new Position(3, 5), test.getPos().getPos());
+	@Test
+	public void addCoinsTest() {
+		playerTest.addCoins(50);
 
-    }
+		assertEquals(550, playerTest.getCoins());
+	}
+
+	@Test
+	public void setPosTest() {
+		ArrayList<Node> testNext = null;
+		Node testNode = new RedNode(testNext, new Position(3, 5));
+		playerTest.setPos(testNode);
+
+		assertEquals(new Position(3, 5), playerTest.getPos().getPos());
+
+	}
 }

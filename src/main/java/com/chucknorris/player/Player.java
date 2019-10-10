@@ -1,6 +1,6 @@
 package com.chucknorris.player;
 
-import com.chucknorris.mapa.Node;
+import com.chucknorris.gamemap.nodes.Node;
 
 public class Player {
     private String character;
