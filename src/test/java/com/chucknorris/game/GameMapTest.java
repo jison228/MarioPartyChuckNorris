@@ -9,10 +9,11 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class MapTest {
+public class GameMapTest {
 	GameMap mapa1;
 	Player p1, p2;
 	ArrayList<Player> playerList;
@@ -21,9 +22,11 @@ public class MapTest {
 	public void executedBeforeEach() throws Exception {
 		p1 = new Player("Javier Milei", 0);
 		p2 = new Player("MauriCEOMcree", 0);
+		List<Player> playerList = Arrays.asList(p1, p2);
 
 		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("map_1.txt");
-		mapa1 = mapFileCSVReader.buildGameMap(Arrays.asList(p1, p2));
+		mapa1 = mapFileCSVReader.buildGameMap();
+		mapa1.initializePlayers(playerList);
 	}
 
 	@Test

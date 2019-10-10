@@ -4,7 +4,7 @@ import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.player.Player;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class GameMap {
@@ -16,7 +16,7 @@ public class GameMap {
 		start = firstNode;
 	}
 
-	public void initializePlayers(ArrayList<Player> players) {
+	public void initializePlayers(List<Player> players) {
 		for (Player p : players) {
 			p.setPos(start);
 		}
@@ -32,7 +32,8 @@ public class GameMap {
 		p.setPos(node);
 
 		if (leftMovs == 0) {
-			node.applyRewards(p);
+			//TODO usar la nueva firma
+			node.applyReward(p, null, null);
 		}
 
 		return leftMovs;
@@ -41,6 +42,33 @@ public class GameMap {
 	public int movePlayer(Player p, int movs, Node pos) {
 		p.setPos(pos);
 		return movePlayer(p, movs - 1);
+	}
+
+	public MapResponse movePlayers(Player p, int leftMovements) {
+		Node node = nodes.get(p.getPos().getPos());
+
+		while (node.nextNodes().size() == 1 && leftMovements > 0) {
+			node = node.nextNodes().get(0);
+			leftMovements--;
+		}
+		p.setPos(node);
+
+		return buildResponse(leftMovements, node);
+	}
+
+	private MapResponse buildResponse(int leftMovements, Node node) {
+		MapResponse mapResponse = new MapResponse();
+
+		mapResponse.endMovementNode = node;
+
+		mapResponse.movementsLeft = leftMovements;
+
+		return mapResponse;
+	}
+
+	public MapResponse movePlayers(Player p, int movs, Node pos) {
+		p.setPos(pos);
+		return movePlayers(p, movs - 1);
 	}
 
 	public int nodesSize() {
