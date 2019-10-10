@@ -2,7 +2,6 @@ package com.chucknorris.game;
 
 import com.chucknorris.commons.Dice;
 import com.chucknorris.gamemap.GameMap;
-import com.chucknorris.gamemap.MapResponse;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.player.Player;
 
@@ -35,19 +34,19 @@ public class Game {
 	public GameResponse play(Player player) {
 		int diceResult = dice.roll();
 
-		MapResponse mapResponse = gameMap.movePlayers(player, diceResult);
+		int movementsLeft = gameMap.movePlayers(player, diceResult);
 
-		applyRewardIfApplies(player, mapResponse.movementsLeft, mapResponse.endMovementNode);
+		applyRewardIfApplies(player, movementsLeft);
 
-		return buildGameResponse(mapResponse.movementsLeft);
+		return buildGameResponse(movementsLeft);
 	}
 
 	public GameResponse resolveIntersection(Player player, Node nextNode, int movementsLeft) {
-		MapResponse mapResponse = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft);
+		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft);
 
-		applyRewardIfApplies(player, mapResponse.movementsLeft, mapResponse.endMovementNode);
+		applyRewardIfApplies(player, movementsLeft);
 
-		return buildGameResponse(mapResponse.movementsLeft);
+		return buildGameResponse(movementsLeft);
 	}
 
 	private GameResponse buildGameResponse(int movementsLeft) {
@@ -58,9 +57,9 @@ public class Game {
 		return gameResponse;
 	}
 
-	private void applyRewardIfApplies(Player player, int movementsLeft, Node endMovementNode) {
+	private void applyRewardIfApplies(Player player, int movementsLeft) {
 		if (movementsLeft == 0) {
-			endMovementNode.applyReward(player, players, null);
+			player.applyReward(players, null);
 		}
 	}
 

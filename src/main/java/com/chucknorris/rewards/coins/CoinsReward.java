@@ -15,7 +15,7 @@ public class CoinsReward implements RewardApplicable {
 	}
 
 	@Override
-	public void apply(Player playerExecutor, List<Player> player, GameContext context) {
+	public void apply(Player playerExecutor, List<Player> players, GameContext context) {
 		playerExecutor.addCoins(coins);
 	}
 }

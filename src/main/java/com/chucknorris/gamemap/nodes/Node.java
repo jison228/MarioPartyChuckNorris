@@ -14,17 +14,18 @@ import java.util.stream.Collectors;
 
 public abstract class Node {
 	protected List<Node> next;
-	private RewardApplicable reward = new NoReward();
+	private RewardApplicable reward;
 	private Position positionCoords;//utilizado para la matriz de nodos unicamente
 
 	public Node(List<Node> next, Position positionCoords) {
 		this.next = next;
 		this.positionCoords = positionCoords;
+		this.reward = new NoReward();
 	}
 
 	public Node(List<Node> next, Position positionCoords, RewardApplicable reward) {
-		this(next, positionCoords);
-
+		this.next = next;
+		this.positionCoords = positionCoords;
 		this.reward = reward;
 	}
 

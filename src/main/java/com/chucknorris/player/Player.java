@@ -1,6 +1,9 @@
 package com.chucknorris.player;
 
 import com.chucknorris.gamemap.nodes.Node;
+import com.chucknorris.rewards.GameContext;
+
+import java.util.List;
 
 public class Player {
     private String character;
@@ -39,4 +42,7 @@ public class Player {
         return this.character + " " + this.coins; //+ Nodo.toString();
     }
 
+	public void applyReward(List<Player> players, GameContext gameContext) {
+		nodeLocation.applyReward(this, players, gameContext);
+	}
 }

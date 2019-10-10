@@ -22,6 +22,7 @@ public class GameMap {
 		}
 	}
 
+	@Deprecated
 	public int movePlayer(Player p, int movs) {
 		Node node = nodes.get(p.getNodeLocation().getPositionCoords());
 		int leftMovs = movs;
@@ -39,37 +40,29 @@ public class GameMap {
 		return leftMovs;
 	}
 
+	@Deprecated
 	public int movePlayer(Player p, int movs, Node pos) {
 		p.setNodeLocation(pos);
 		return movePlayer(p, movs - 1);
 	}
 
-	public MapResponse movePlayers(Player player, int leftMovements) {
+	public int movePlayers(Player player, int leftMovements) {
 		Node node = nodes.get(player.getNodeLocation().getPositionCoords());
 
 		while (node.nextNodes().size() == 1 && leftMovements > 0) {
 			node = node.nextNodes().get(0);
 			leftMovements--;
 		}
+
 		player.setNodeLocation(node);
 
-		return buildResponse(leftMovements, node);
+		return leftMovements;
 	}
 
-	public MapResponse movePlayerFromIntersection(Player player, Node nextNode, int leftMovements) {
+	public int movePlayerFromIntersection(Player player, Node nextNode, int leftMovements) {
 		player.setNodeLocation(nextNode);
 
 		return movePlayers(player, leftMovements - 1);
-	}
-
-	private MapResponse buildResponse(int leftMovements, Node node) {
-		MapResponse mapResponse = new MapResponse();
-
-		mapResponse.endMovementNode = node;
-
-		mapResponse.movementsLeft = leftMovements;
-
-		return mapResponse;
 	}
 
 	public int nodesSize() {
