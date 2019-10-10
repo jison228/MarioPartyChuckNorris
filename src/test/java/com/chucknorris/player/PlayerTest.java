@@ -29,6 +29,7 @@ public class PlayerTest {
 		playerTest.addCoins(50);
 
 		assertEquals(550, playerTest.getCoins());
+		assertEquals("Crisiti 550", playerTest.toString());
 	}
 
 	@Test

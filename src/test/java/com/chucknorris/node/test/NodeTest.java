@@ -58,4 +58,13 @@ public class NodeTest {
 		nodeTest.applyReward(p, null, null);
 		assertEquals(p.getCoins(), 0);
 	}
+
+	@Test
+	public void EndNodeARTest() {
+		Node nodeTest = new WhiteNode(null, new Position(4, 4));
+
+		nodeTest.applyReward(p, null, null);
+		assertEquals(p.getCoins(), 0);
+		assertEquals("END", nodeTest.toString());
+	}
 }
