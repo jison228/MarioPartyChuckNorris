@@ -91,6 +91,7 @@ public class MapFileCSVReader implements MapFileReadable {
 			if (firstNode == null) {
 				firstNode = node;
 			}
+
 			nodesRead.put(position, node);
 		}
 

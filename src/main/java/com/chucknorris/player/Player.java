@@ -1,16 +1,19 @@
 package com.chucknorris.player;
 
 import com.chucknorris.gamemap.nodes.Node;
+import com.chucknorris.rewards.GameContext;
+
+import java.util.List;
 
 public class Player {
     private String character;
     private int coins;
-    private Node pos;
+	private Node nodeLocation;
 
     public Player(String character, int coins) {
         this.character = character;
         this.coins = coins;
-        this.pos = null;
+		this.nodeLocation = null;
         //despues de avanzar en el proyecto podriamos setear las
         //monedas en el constructor a un valor fijo como 10 o 0
     }
@@ -27,16 +30,19 @@ public class Player {
         return this.character;
     }
 
-    public Node getPos() {
-        return this.pos;
+	public Node getNodeLocation() {
+		return this.nodeLocation;
     }
 
-    public void setPos(Node newPos) {
-        this.pos = newPos;
+	public void setNodeLocation(Node newPos) {
+		this.nodeLocation = newPos;
     }
 
     public String toString() {
         return this.character + " " + this.coins; //+ Nodo.toString();
     }
 
+	public void applyReward(List<Player> players, GameContext gameContext) {
+		nodeLocation.applyReward(this, players, gameContext);
+	}
 }

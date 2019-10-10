@@ -1,10 +1,7 @@
 package com.chucknorris.node.test;
 
 import com.chucknorris.commons.Position;
-import com.chucknorris.gamemap.nodes.Node;
-import com.chucknorris.gamemap.nodes.RedNode;
-import com.chucknorris.gamemap.nodes.WhiteNode;
-import com.chucknorris.gamemap.nodes.YellowNode;
+import com.chucknorris.gamemap.nodes.*;
 import com.chucknorris.player.Player;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +36,7 @@ public class NodeTest {
 	public void redNodeARTest() {
 		Node nodeTest = new RedNode(null, new Position(4, 4));
 
-		nodeTest.applyRewards(p);
+		nodeTest.applyReward(p, null, null);
 		assertEquals(p.getCoins(), 3);
 	}
 
@@ -47,7 +44,7 @@ public class NodeTest {
 	public void yellowNodeARTest() {
 		Node nodeTest = new YellowNode(null, new Position(4, 4));
 
-		nodeTest.applyRewards(p);
+		nodeTest.applyReward(p, null, null);
 		assertEquals(p.getCoins(), 10);
 	}
 
@@ -55,7 +52,16 @@ public class NodeTest {
 	public void whiteNodeARTest() {
 		Node nodeTest = new WhiteNode(null, new Position(4, 4));
 
-		nodeTest.applyRewards(p);
+		nodeTest.applyReward(p, null, null);
 		assertEquals(p.getCoins(), 0);
+	}
+
+	@Test
+	public void EndNodeARTest() {
+		Node nodeTest = new EndNode(new Position(4, 4));
+
+		nodeTest.applyReward(p, null, null);
+		assertEquals(p.getCoins(), 0);
+		assertEquals("END", nodeTest.getType());
 	}
 }

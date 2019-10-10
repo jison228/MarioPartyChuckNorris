@@ -4,6 +4,9 @@ import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.presenter.NodePresenter;
 import com.chucknorris.gamemap.presenter.PositionPresenter;
 import com.chucknorris.player.Player;
+import com.chucknorris.rewards.GameContext;
+import com.chucknorris.rewards.NoReward;
+import com.chucknorris.rewards.RewardApplicable;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,11 +14,19 @@ import java.util.stream.Collectors;
 
 public abstract class Node {
 	protected List<Node> next;
-	private Position pos;//utilizado para la matriz de nodos unicamente
+	private RewardApplicable reward;
+	private Position positionCoords;//utilizado para la matriz de nodos unicamente
 
-	public Node(List<Node> next, Position pos) {
+	public Node(List<Node> next, Position positionCoords) {
 		this.next = next;
-		this.pos = pos;
+		this.positionCoords = positionCoords;
+		this.reward = new NoReward();
+	}
+
+	public Node(List<Node> next, Position positionCoords, RewardApplicable reward) {
+		this.next = next;
+		this.positionCoords = positionCoords;
+		this.reward = reward;
 	}
 
 	@Deprecated
@@ -24,24 +35,26 @@ public abstract class Node {
 	}
 
 	@Deprecated
-	public Position getPos() {
-		return pos;
+	public Position getPositionCoords() {
+		return positionCoords;
 	}
-
-	public abstract void applyRewards(Player p);
 
 	public abstract String getType();
 
+	public void applyReward(Player playerExecutor, List<Player> players, GameContext context) {
+		reward.apply(playerExecutor, players, context);
+	}
+
 	public String present(NodePresenter presenter, PositionPresenter positionPresenter) {
 		List<Position> nextPositions = next.stream()
-				.map(it -> it.pos)
+				.map(it -> it.positionCoords)
 				.collect(Collectors.toList());
 
-		return presenter.present(pos.present(positionPresenter), this, nextPositions);
+		return presenter.present(positionCoords.present(positionPresenter), this, nextPositions);
 	}
 
 	public void replaceWithThisNodeIfNextHasOneWithSamePosition(Node firstNode) {
-		Optional<Node> nodeToReplace = next.stream().filter(node -> node.pos.equals(firstNode.pos)).findFirst();
+		Optional<Node> nodeToReplace = next.stream().filter(node -> node.positionCoords.equals(firstNode.positionCoords)).findFirst();
 
 		nodeToReplace.ifPresent(node -> {
 			next.remove(node);
