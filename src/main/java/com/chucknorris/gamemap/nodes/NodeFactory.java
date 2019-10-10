@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class NodeFactory {
+public final class NodeFactory {
 	private static final Class<WhiteNode> DEFAULT_NODE_VALUE = WhiteNode.class;
 	private Map<String, Class> CATALOGED_NODES;
 
@@ -23,12 +23,12 @@ public class NodeFactory {
 	public Node buildNode(Position position, String type, List<Node> nextNodes) throws Exception {
 		Class nodeClass = CATALOGED_NODES.getOrDefault(type, DEFAULT_NODE_VALUE);
 
-		Constructor constructor = nodeClass.getConstructor(this.ensureClass(nextNodes), this.ensureClass(position));
+		Constructor constructor = nodeClass.getConstructor(ensureClass(nextNodes), ensureClass(position));
 
 		return (Node) constructor.newInstance(nextNodes, position);
 	}
 
-	private Class<?> ensureClass(Object arg) {
+	private Class ensureClass(Object arg) {
 		return arg.getClass();
 	}
 }
