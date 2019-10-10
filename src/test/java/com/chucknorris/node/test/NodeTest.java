@@ -1,10 +1,7 @@
 package com.chucknorris.node.test;
 
 import com.chucknorris.commons.Position;
-import com.chucknorris.gamemap.nodes.Node;
-import com.chucknorris.gamemap.nodes.RedNode;
-import com.chucknorris.gamemap.nodes.WhiteNode;
-import com.chucknorris.gamemap.nodes.YellowNode;
+import com.chucknorris.gamemap.nodes.*;
 import com.chucknorris.player.Player;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,10 +58,10 @@ public class NodeTest {
 
 	@Test
 	public void EndNodeARTest() {
-		Node nodeTest = new WhiteNode(null, new Position(4, 4));
+		Node nodeTest = new EndNode(new Position(4, 4));
 
 		nodeTest.applyReward(p, null, null);
 		assertEquals(p.getCoins(), 0);
-		assertEquals("END", nodeTest.toString());
+		assertEquals("END", nodeTest.getType());
 	}
 }
