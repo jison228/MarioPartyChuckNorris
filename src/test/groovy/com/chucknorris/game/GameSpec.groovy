@@ -8,7 +8,7 @@ import spock.lang.Specification
 
 class GameSpec extends Specification {
 
-    void "test move players macri 3 positions and then 4 positions in map_1, expected to win 13 coins"() {
+    void "test move players macri 3 positions and then 4 positions in map_1, expected to win 10 coins and to be in an intersection"() {
         given:
         Dice dice = Spy(new Dice(1, 6))
 
