@@ -39,7 +39,7 @@ public class NodeTest {
 	public void redNodeARTest() {
 		Node nodeTest = new RedNode(null, new Position(4, 4));
 
-		nodeTest.applyRewards(p);
+		nodeTest.applyReward(p, null, null);
 		assertEquals(p.getCoins(), 3);
 	}
 
@@ -47,7 +47,7 @@ public class NodeTest {
 	public void yellowNodeARTest() {
 		Node nodeTest = new YellowNode(null, new Position(4, 4));
 
-		nodeTest.applyRewards(p);
+		nodeTest.applyReward(p, null, null);
 		assertEquals(p.getCoins(), 10);
 	}
 
@@ -55,7 +55,7 @@ public class NodeTest {
 	public void whiteNodeARTest() {
 		Node nodeTest = new WhiteNode(null, new Position(4, 4));
 
-		nodeTest.applyRewards(p);
+		nodeTest.applyReward(p, null, null);
 		assertEquals(p.getCoins(), 0);
 	}
 }

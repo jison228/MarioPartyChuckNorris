@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,14 +19,11 @@ public class MapTest {
 
 	@Before
 	public void executedBeforeEach() throws Exception {
-		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("map_1.txt");
-		mapa1 = mapFileCSVReader.buildGameMap();
 		p1 = new Player("Javier Milei", 0);
 		p2 = new Player("MauriCEOMcree", 0);
-		playerList = new ArrayList<Player>();
-		playerList.add(p1);
-		playerList.add(p2);
-		mapa1.initializePlayers(playerList);
+
+		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("map_1.txt");
+		mapa1 = mapFileCSVReader.buildGameMap(Arrays.asList(p1, p2));
 	}
 
 	@Test

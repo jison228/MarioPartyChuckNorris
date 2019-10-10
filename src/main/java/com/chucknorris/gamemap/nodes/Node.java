@@ -4,6 +4,9 @@ import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.presenter.NodePresenter;
 import com.chucknorris.gamemap.presenter.PositionPresenter;
 import com.chucknorris.player.Player;
+import com.chucknorris.rewards.GameContext;
+import com.chucknorris.rewards.NoReward;
+import com.chucknorris.rewards.RewardApplicable;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,11 +14,18 @@ import java.util.stream.Collectors;
 
 public abstract class Node {
 	protected List<Node> next;
+	private RewardApplicable reward = new NoReward();
 	private Position pos;//utilizado para la matriz de nodos unicamente
 
 	public Node(List<Node> next, Position pos) {
 		this.next = next;
 		this.pos = pos;
+	}
+
+	public Node(List<Node> next, Position pos, RewardApplicable reward) {
+		this(next, pos);
+
+		this.reward = reward;
 	}
 
 	@Deprecated
@@ -28,9 +38,11 @@ public abstract class Node {
 		return pos;
 	}
 
-	public abstract void applyRewards(Player p);
-
 	public abstract String getType();
+
+	public void applyReward(Player playerExecutor, List<Player> players, GameContext context) {
+		reward.apply(playerExecutor, players, context);
+	}
 
 	public String present(NodePresenter presenter, PositionPresenter positionPresenter) {
 		List<Position> nextPositions = next.stream()

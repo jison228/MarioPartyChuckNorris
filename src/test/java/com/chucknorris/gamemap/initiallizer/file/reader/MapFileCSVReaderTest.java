@@ -11,6 +11,7 @@ import com.chucknorris.gamemap.presenter.WhiteSpacePositionPresenter;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +41,7 @@ public class MapFileCSVReaderTest {
 	public void testMapReader_map_1() throws Exception {
 		MapFileReadable mapFileReader = new MapFileCSVReader("map_1.txt");
 
-		GameMap gameMap = mapFileReader.buildGameMap();
+		GameMap gameMap = mapFileReader.buildGameMap(new ArrayList<>());
 
 		NodeCSVPresenter nodePresenter = new NodeCSVPresenter();
 
