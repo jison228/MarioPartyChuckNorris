@@ -53,20 +53,10 @@ public class GameMapTest {
 		assertEquals(2, respuestaReal2);
 
 		// ELIGE JUGADOR 2
-		int respuestaReal3 = mapa1.movePlayer(p2, 2, p2.getNodeLocation().nextNodes().get(0));
+		int respuestaReal3 = mapa1.movePlayerFromIntersection(p2, p2.getNodeLocation().nextNodes().get(0), 2);
 
 		assertEquals(new Position(2, 2), p2.getNodeLocation().getPositionCoords());
 		assertEquals(0, respuestaReal3);
 
-	}
-
-	public void circularMap() {
-		mapa1.movePlayer(p2, 8);
-		mapa1.movePlayer(p2, 2, p2.getNodeLocation().nextNodes().get(0));
-		// TIRA JUGADOR 2
-		int respuestaReal4 = mapa1.movePlayer(p2, 5);
-
-		assertEquals(0, respuestaReal4);
-		assertEquals(new Position(0, 0), p2.getNodeLocation().getPositionCoords());
 	}
 }
