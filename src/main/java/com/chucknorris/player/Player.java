@@ -2,7 +2,7 @@ package com.chucknorris.player;
 
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.rewards.GameContext;
-import com.chucknorris.substractor.pesos.PesosSubstractor;
+import com.chucknorris.rewards.substractor.pesos.PesosSubstractor;
 
 import java.util.List;
 

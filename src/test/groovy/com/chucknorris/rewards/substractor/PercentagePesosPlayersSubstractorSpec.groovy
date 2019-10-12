@@ -1,8 +1,8 @@
-package com.chucknorris.substractor
+package com.chucknorris.rewards.substractor
 
 import com.chucknorris.player.Player
-import com.chucknorris.substractor.pesos.PercentagePesosPlayersSubstractor
-import com.chucknorris.substractor.pesos.PesosSubstractor
+import com.chucknorris.rewards.substractor.pesos.PercentagePesosPlayersSubstractor
+import com.chucknorris.rewards.substractor.pesos.PesosSubstractor
 import spock.lang.Specification
 import spock.lang.Unroll
 
