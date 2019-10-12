@@ -64,8 +64,8 @@ public class Player {
         this.pesos -= pesos;
     }
 
-    public double substractCurrency(PesosSubstractor percentagePesosPlayersSubstractor) {
-        double pesosToSubstract = percentagePesosPlayersSubstractor.substract(pesos);
+    public double substractCurrency(PesosSubstractor pesosSubstractor) {
+        double pesosToSubstract = pesosSubstractor.substract(pesos);
 
         substractPesos(pesosToSubstract);
 
