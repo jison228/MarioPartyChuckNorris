@@ -22,7 +22,6 @@ import javax.swing.JFileChooser;
 public class TitleScreen extends JFrame {
 
 	private JPanel mainPane;
-	private JPanel newGamePane;
 
 	/**
 	 * Launch the application.
@@ -57,12 +56,6 @@ public class TitleScreen extends JFrame {
 		setContentPane(mainPane);
 		mainPane.setLayout(null);
 
-		// newGamePane config
-		newGamePane = new JPanel();
-		newGamePane.setBackground(SystemColor.cyan);
-		newGamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		newGamePane.setLayout(null);
-
 		// Titulo
 		JLabel Title = new JLabel("INDEFINIDO");
 		int titleW = 280;
@@ -88,35 +81,11 @@ public class TitleScreen extends JFrame {
 				btnH);
 		mainPane.add(btnQuit);
 		
-		//New Game Title
-		JLabel lblNombreMapa = new JLabel("New Game");
-		lblNombreMapa.setFont(new Font("Tahoma", Font.PLAIN, 37));
-		lblNombreMapa.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNombreMapa.setBounds((getWidth() / 2) - titleW / 2, getHeight() - (int) (getHeight() * 0.90), titleW, titleH);
-		newGamePane.add(lblNombreMapa);
-
-		// New Game Combo box
-		JComboBox mapCombo = new JComboBox<String>();
-		mapCombo.setFont(new Font("Tahoma",Font.PLAIN,15));
-		mapCombo.setBounds(50, 150, 200, 25);
-		newGamePane.add(mapCombo);
-		
-		// Map image
-		JButton mapImage = new JButton("MAP IMAGE");
-		mapImage.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		mapImage.setHorizontalAlignment(SwingConstants.CENTER);
-		mapImage.setVerticalAlignment(SwingConstants.CENTER);
-		mapImage.setBounds(50,200,300,300);
-		newGamePane.add(mapImage);
-		
-		
-		
 		// Acciones de los botones
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mainPane.setVisible(false);
-				setContentPane(newGamePane);
-				// newGamePane.setVisible(true);
+				setVisible(false);
+				new NewGameScreen().setVisible(true);
 			}
 		});
 
