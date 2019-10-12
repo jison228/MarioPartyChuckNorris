@@ -1,4 +1,4 @@
-package com.chucknorris.sustractor.pesos;
+package com.chucknorris.substractor.pesos;
 
 import com.chucknorris.player.Player;
 import com.chucknorris.rewards.GameContext;

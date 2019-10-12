@@ -1,4 +1,4 @@
-package com.chucknorris.sustractor;
+package com.chucknorris.substractor;
 
 import com.chucknorris.rewards.RewardApplicable;
 
