@@ -17,6 +17,8 @@ public final class NodeFactory {
 		CATALOGED_NODES.put("YELLOW", YellowNode.class);
 		CATALOGED_NODES.put("RED", RedNode.class);
 		CATALOGED_NODES.put("WHITE", WhiteNode.class);
+		CATALOGED_NODES.put("IPP", InvPesosPlusNode.class);
+		CATALOGED_NODES.put("IPM", InvPesosMinusNode.class);
 	}
 
 	@SuppressWarnings("unchecked")
