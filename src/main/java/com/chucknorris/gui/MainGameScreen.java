@@ -74,7 +74,7 @@ public class MainGameScreen extends JFrame {
 		chatPanel.add(chatLbl);
 		
 		//Panel del juego
-		JPanelGrafico gamePanel = new JPanelGrafico(partida.getGameMap().getMap(),null);
+		JPanelGame gamePanel = new JPanelGame(partida.getGameMap().getMap(),null);
 		gamePanel.setBackground(SystemColor.text);
 		gamePanel.setBounds(0, 0, 1280, 720);
 		contentPane.add(gamePanel);

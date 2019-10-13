@@ -14,7 +14,7 @@ import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.player.Player;
 import com.chucknorris.commons.Position;
 
-public class JPanelGrafico extends JPanel {
+public class JPanelGame extends JPanel {
 
 	private Map<Position, Node> mapa;
 	private List<Player> listaP;
@@ -22,12 +22,12 @@ public class JPanelGrafico extends JPanel {
 	private int iniX = 50;
 	private int iniY = 50;
 
-	public JPanelGrafico(Map mapa, List<Player> listaP) {
+	public JPanelGame(Map mapa, List<Player> listaP) {
 		this.mapa = mapa;
 		this.listaP = listaP;
 	}
 
-	public void paintComponent(Graphics g) {
+	public void paint(Graphics g) {
 
 		for (Map.Entry<Position, Node> entry : mapa.entrySet()) {
 
