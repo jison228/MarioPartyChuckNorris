@@ -1,7 +1,7 @@
 package com.chucknorris.player;
 
 import com.chucknorris.gamemap.nodes.Node;
-import com.chucknorris.rewards.GameContext;
+import com.chucknorris.game.GameContext;
 
 import java.util.List;
 
@@ -9,6 +9,9 @@ public class Player {
     private String character;
     private int coins;
 	private Node nodeLocation;
+	
+	private double pesos;
+	private double dolars;
 
     public Player(String character, int coins) {
         this.character = character;
@@ -45,4 +48,29 @@ public class Player {
 	public void applyReward(List<Player> players, GameContext gameContext) {
 		nodeLocation.applyReward(this, players, gameContext);
 	}
+
+	public void payUSD(double cant) {
+		this.dolars-=cant;
+	}	
+
+	public void payPesos(double cant) {
+		this.pesos-=cant;
+	}	
+
+	public void giveUSD(double cant) {
+		this.dolars+=cant;
+	}	
+
+	public void givePesos(double cant) {
+		this.pesos+=cant;
+	}	
+
+	public double getUSD() {
+		return this.dolars;
+	}	
+
+	public double getPesos() {
+		return this.pesos;
+	}	
+	
 }

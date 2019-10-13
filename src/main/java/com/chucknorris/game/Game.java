@@ -9,16 +9,16 @@ import java.util.List;
 
 public class Game {
 	private List<Player> players;
-	private int turn;
 	private GameMap gameMap;
 	private Dice dice;
+	private GameContext gameContextContext;
 	//ArrayList de minijuegos
 
 	public Game(List<Player> players, GameMap gameMap) {
 		this.players = players;
-		this.turn = 1;
 		this.gameMap = gameMap;
 		this.dice = new Dice(1, 6);
+		//crear game context
 	}
 
 	public Game(List<Player> players, GameMap gameMap, Dice dice) {

@@ -4,7 +4,7 @@ import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.presenter.NodePresenter;
 import com.chucknorris.gamemap.presenter.PositionPresenter;
 import com.chucknorris.player.Player;
-import com.chucknorris.rewards.GameContext;
+import com.chucknorris.game.GameContext;
 import com.chucknorris.rewards.NoReward;
 import com.chucknorris.rewards.RewardApplicable;
 
