@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +29,7 @@ public class NodeFactoryTest {
 		NodeFactory nodeFactory = new NodeFactory();
 
 		for (Map.Entry<String, Class> entry : EXPECTED_MAP_TYPE_AND_CLASS.entrySet()) {
-            Node node = nodeFactory.buildNode(new Position(0, 0), entry.getKey(), Collections.emptyList());
+            Node node = nodeFactory.buildNode(new Position(0, 0), entry.getKey(), new ArrayList<>());
 			Assert.assertEquals(entry.getValue().getName(), node.getClass().getName());
 		}
 	}
@@ -38,7 +38,7 @@ public class NodeFactoryTest {
 	public void test_node_factory_uncataloged_node_expected_default_node() throws Exception {
 		NodeFactory nodeFactory = new NodeFactory();
 
-        Node node = nodeFactory.buildNode(new Position(0, 0), "SARAZA", Collections.emptyList());
+        Node node = nodeFactory.buildNode(new Position(0, 0), "SARAZA", new ArrayList<>());
 
 		Assert.assertEquals(EXPECTED_MAP_TYPE_AND_CLASS.get("WHITE").getName(), node.getClass().getName());
 	}
