@@ -12,18 +12,22 @@ import com.chucknorris.player.Player;
 
 public class InvPesosMinusNodeTest {
 	Player p;
+	Node nodeTest;
 
 	@Before
 	public void executedBeforeEach() {
 		p = new Player("Cristi", 100, 150);
+		nodeTest = new InvPesosMinusNode(null, new Position(4, 4));
 	}
 
 	@Test
-	public void InvPesosMinusTest() {
-		Node nodeTest = new InvPesosMinusNode(null, new Position(4, 4));
-
+	public void invPesosMinusRewardTest() {
 		nodeTest.applyReward(p, null, null);
 		assertEquals(p.printWithPesos(), p.getCharacter() + " " + "90.0");
+	}
+
+	@Test
+	public void invPesosMinusTypeTest() {
 		assertEquals("IPM", nodeTest.getType());
 	}
 }
