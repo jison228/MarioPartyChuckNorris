@@ -1,7 +1,7 @@
 package com.chucknorris.rewards.coins;
 
 import com.chucknorris.player.Player;
-import com.chucknorris.rewards.GameContext;
+import com.chucknorris.game.GameContext;
 import com.chucknorris.rewards.RewardApplicable;
 
 import java.util.List;

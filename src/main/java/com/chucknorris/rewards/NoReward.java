@@ -1,7 +1,7 @@
 package com.chucknorris.rewards;
 
 import com.chucknorris.player.Player;
-
+import com.chucknorris.game.GameContext;
 import java.util.List;
 
 public class NoReward implements RewardApplicable {
