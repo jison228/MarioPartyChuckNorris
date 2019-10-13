@@ -72,4 +72,8 @@ public class GameMap {
 	public Node getNode(Position position) {
 		return nodes.get(position);
 	}
+	
+	public Map getMap() {
+		return nodes;
+	}
 }

@@ -66,4 +66,8 @@ public class Game {
 	public int getCurrentTurn() {
 		return turn;
 	}
+	
+	public GameMap getGameMap() {
+		return gameMap;
+	}
 }

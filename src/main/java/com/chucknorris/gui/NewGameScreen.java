@@ -12,6 +12,14 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import com.chucknorris.game.Game;
+import com.chucknorris.gamemap.GameMap;
+import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
+
+import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 public class NewGameScreen extends JFrame {
 
 	private JPanel newGamePane;
@@ -34,13 +42,14 @@ public class NewGameScreen extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws Exception 
 	 */
-	public NewGameScreen() {
+	public NewGameScreen() throws Exception {
+		setTitle("Empezar Nueva Partida");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0,0,1280,720);
+		setBounds(0, 0, 1280, 720);
 		setResizable(false);
-		
-		
+
 		newGamePane = new JPanel();
 		newGamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		newGamePane.setLayout(null);
@@ -50,11 +59,19 @@ public class NewGameScreen extends JFrame {
 		int titleH = 50;
 		// New Game Title
 		JLabel lblNombreMapa = new JLabel("New Game");
-		lblNombreMapa.setFont(new Font("Tahoma", Font.PLAIN, 37));
+		lblNombreMapa.setFont(new Font("Tahoma", Font.BOLD, 37));
 		lblNombreMapa.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNombreMapa.setBounds((getWidth() / 2) - titleW / 2, getHeight() - (int) (getHeight() * 0.90), titleW,
+		lblNombreMapa.setBounds((getWidth() / 2) - titleW / 2, getHeight() - (int) (getHeight() * 0.95), titleW,
 				titleH);
 		newGamePane.add(lblNombreMapa);
+
+		// GameOptions Title
+		JLabel gameOptionsLbl = new JLabel("Game Options");
+		gameOptionsLbl.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		gameOptionsLbl.setHorizontalAlignment(SwingConstants.CENTER);
+		gameOptionsLbl.setBounds((getWidth() / 2) + titleW / 2, getHeight() - (int) (getHeight() * 0.80), titleW,
+				titleH);// TODO cambiar este enchastre
+		newGamePane.add(gameOptionsLbl);
 
 		// New Game Combo box
 		JComboBox mapCombo = new JComboBox<String>();
@@ -70,6 +87,23 @@ public class NewGameScreen extends JFrame {
 		mapImage.setBounds(50, 200, 300, 300);
 		newGamePane.add(mapImage);
 
-	}
+		JButton btnJugar = new JButton("JUGAR");
+		btnJugar.setBackground(Color.RED);
+		btnJugar.setForeground(Color.DARK_GRAY);
+		btnJugar.setFont(new Font("Tahoma", Font.BOLD, 60));
+		btnJugar.setBounds(986, 576, 246, 86);
+		newGamePane.add(btnJugar);
 
+		GameMap mapa1;
+		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("map_1.txt");
+		mapa1 = mapFileCSVReader.buildGameMap();
+		
+		btnJugar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				new MainGameScreen(new Game(null, mapa1)).setVisible(true);;
+			}
+		});
+
+	}
 }
