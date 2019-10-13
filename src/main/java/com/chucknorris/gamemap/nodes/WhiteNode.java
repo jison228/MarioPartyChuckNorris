@@ -2,11 +2,11 @@ package com.chucknorris.gamemap.nodes;
 
 import com.chucknorris.commons.Position;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class WhiteNode extends Node {
 
-    public WhiteNode(List<Node> next, Position pos) {
+	public WhiteNode(ArrayList<Node> next, Position pos) {
 		super(next, pos);
 	}
 
