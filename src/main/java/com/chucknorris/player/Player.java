@@ -105,7 +105,4 @@ public class Player {
 		pesos = pesos * ((percentage / 100) + 1);
 	}
 
-	public double getPesos() {
-		return pesos;
-	}
 }

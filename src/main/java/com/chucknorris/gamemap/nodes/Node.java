@@ -46,14 +46,17 @@ public abstract class Node {
 	}
 
 	public String present(NodePresenter presenter, PositionPresenter positionPresenter) {
-		List<Position> nextPositions = next.stream().map(it -> it.positionCoords).collect(Collectors.toList());
+		List<Position> nextPositions = next.stream()
+						.map(it -> it.positionCoords)
+						.collect(Collectors.toList());
 
 		return presenter.present(positionCoords.present(positionPresenter), this, nextPositions);
 	}
 
 	public void replaceWithThisNodeIfNextHasOneWithSamePosition(Node firstNode) {
 		Optional<Node> nodeToReplace = next.stream()
-				.filter(node -> node.positionCoords.equals(firstNode.positionCoords)).findFirst();
+						.filter(node -> node.positionCoords
+						.equals(firstNode.positionCoords)).findFirst();
 
 		nodeToReplace.ifPresent(node -> {
 			next.remove(node);
