@@ -20,6 +20,8 @@ public class NodeFactoryTest {
 		EXPECTED_MAP_TYPE_AND_CLASS.put("YELLOW", YellowNode.class);
 		EXPECTED_MAP_TYPE_AND_CLASS.put("WHITE", WhiteNode.class);
 		EXPECTED_MAP_TYPE_AND_CLASS.put("RED", RedNode.class);
+		EXPECTED_MAP_TYPE_AND_CLASS.put("AFIPD", AfipDolarNode.class);
+		EXPECTED_MAP_TYPE_AND_CLASS.put("AFIPP", AfipPesosNode.class);
 	}
 
 	@Test
