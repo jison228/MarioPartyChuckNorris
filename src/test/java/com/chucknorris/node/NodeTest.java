@@ -1,4 +1,4 @@
-package com.chucknorris.node.test;
+package com.chucknorris.node;
 
 import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.nodes.*;
@@ -64,4 +64,5 @@ public class NodeTest {
 		assertEquals(p.getCoins(), 0);
 		assertEquals("END", nodeTest.getType());
 	}
+
 }
