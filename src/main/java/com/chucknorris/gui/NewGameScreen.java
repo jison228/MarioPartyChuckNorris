@@ -43,7 +43,8 @@ public class NewGameScreen extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	public NewGameScreen() throws Exception {
 		setTitle("Empezar Nueva Partida");
@@ -98,16 +99,21 @@ public class NewGameScreen extends JFrame {
 		GameMap mapa1;
 		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("map_1.txt");
 		mapa1 = mapFileCSVReader.buildGameMap();
-		
+
 		btnJugar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				Player p1 = new Player("Milei",1450,150);
-				Player p2 = new Player("Morsa",150,200);
+				Player p1 = new Player("Milei", 1450, 150);
+				Player p2 = new Player("Morsa", 150, 200);
+				Player p3 = new Player("Cristina", 500, 600);
+				Player p4 = new Player("Mauricio", 150, 900);
 				List<Player> listaP = new ArrayList<Player>();
-				listaP.add(p1); listaP.add(p2);
-				
-				new MainGameScreen(new GameInformation(listaP, mapa1,150,new Dice(1,6),20)).setVisible(true);
+				listaP.add(p1);
+				listaP.add(p2);
+				listaP.add(p3);
+				listaP.add(p4);
+
+				new MainGameScreen(new GameInformation(listaP, mapa1, 150, new Dice(1, 6), 20)).setVisible(true);
 				dispose();
 			}
 		});

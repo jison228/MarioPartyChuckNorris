@@ -24,8 +24,13 @@ public class JPanelPlayers extends JPanel {
 		g.setFont(new Font("Tahoma",Font.BOLD,24));
 		g.drawString("PLAYERS", 100, 30);
 		for(int i=0;i<listaP.size();i++) {
+			g.setColor(Color.BLACK);
 			g.setFont(new Font("Tahoma", Font.BOLD, 18));
-			g.drawString(listaP.get(i).getCharacter(), 50, 100 + i*100);
+			g.drawString(listaP.get(i).getCharacter(), 50, 75 + i*100);
+			g.setColor(Color.green);
+			g.setFont(new Font("Tahoma",Font.BOLD,15));
+			g.drawString("$" + listaP.get(i).getPesos(), 50, 120 + i*100);
+			g.drawString("U$" + listaP.get(i).getDolares(), 150, 120 + i*100);
 		}
 		
 	}
