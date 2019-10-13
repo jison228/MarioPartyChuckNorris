@@ -100,4 +100,8 @@ public class Player {
     public String printWithDolar() {
         return this.character + " " + this.dolar;
     }
+
+	public void addPesosByPercentage(double percentage) {
+		pesos = pesos * ((percentage / 100) + 1);
+	}
 }
