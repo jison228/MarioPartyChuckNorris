@@ -1,15 +1,14 @@
 package com.chucknorris.rewards.substractor
 
 import com.chucknorris.player.Player
-import com.chucknorris.rewards.substractor.pesos.PercentagePesosPlayersSubstractor
-import com.chucknorris.rewards.substractor.pesos.PesosSubstractor
+import com.chucknorris.rewards.substractor.pesos.PesosPercentagePlayersSubstractor
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class PercentagePesosPlayersSubstractorSpec extends Specification {
+class PesosPercentagePlayersSubstractorSpec extends Specification {
 
     @Unroll
-    void "test substract 10% players pesos"() {
+    void "test #testCase"() {
         given:
         Player milei = new Player("Milei", 1000.0)
         Player macri = new Player("Macri", 5000.0)
@@ -19,7 +18,7 @@ class PercentagePesosPlayersSubstractorSpec extends Specification {
                 milei, macri, cristina, alberto
         ]
 
-        PesosSubstractor pesosSubstractor = new PercentagePesosPlayersSubstractor(percentage)
+        PercentagePlayersCurrencySubstractor pesosSubstractor = new PesosPercentagePlayersSubstractor(percentage)
 
         when:
         pesosSubstractor.apply(alberto, playerList, null)

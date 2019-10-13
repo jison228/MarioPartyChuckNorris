@@ -3,5 +3,5 @@ package com.chucknorris.rewards.substractor;
 import com.chucknorris.rewards.RewardApplicable;
 
 public interface Substractor extends RewardApplicable {
-    double substract(double amountToBeSubstract);
+    double substract(double amountToSubstract);
 }

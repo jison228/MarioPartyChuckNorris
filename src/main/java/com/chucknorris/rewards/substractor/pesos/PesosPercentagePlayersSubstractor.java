@@ -2,15 +2,14 @@ package com.chucknorris.rewards.substractor.pesos;
 
 import com.chucknorris.player.Player;
 import com.chucknorris.rewards.GameContext;
+import com.chucknorris.rewards.substractor.PercentagePlayersCurrencySubstractor;
 
 import java.util.List;
 
-public class PercentagePesosPlayersSubstractor implements PesosSubstractor {
+public class PesosPercentagePlayersSubstractor extends PercentagePlayersCurrencySubstractor implements PesosSubstractor {
 
-    private double percentage;
-
-    public PercentagePesosPlayersSubstractor(int percentage) {
-        this.percentage = percentage;
+    public PesosPercentagePlayersSubstractor(int percentage) {
+        super(percentage);
     }
 
     @Override
@@ -22,10 +21,5 @@ public class PercentagePesosPlayersSubstractor implements PesosSubstractor {
         }
 
         playerExecutor.addPesos(pesos);
-    }
-
-    @Override
-    public double substract(double amountToBeSubstract) {
-        return amountToBeSubstract * (percentage / 100);
     }
 }
