@@ -16,7 +16,7 @@ public class Game {
 
 	public Game(List<Player> players, GameMap gameMap) {
 		this.players = players;
-		this.turn = 1;
+		this.turn = 0;
 		this.gameMap = gameMap;
 		this.dice = new Dice(1, 6);
 	}

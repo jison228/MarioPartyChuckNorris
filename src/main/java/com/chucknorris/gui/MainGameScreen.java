@@ -125,7 +125,8 @@ public class MainGameScreen extends JFrame {
 					}
 				}
 				if(key == KeyEvent.VK_ENTER) {
-					partida.play(partida.getPlayerList().get(partida.getCurrentTurn()%4 -1));
+					Player test = partida.getPlayerList().get(partida.getCurrentTurn()%4);
+					partida.play(test);
 					partida.endTurn();
 					contentPane.repaint();
 				}
