@@ -69,4 +69,8 @@ public class Game {
 	public List<Player> getPlayerList(){
 		return players;
 	}
+	
+	public void endTurn() {
+		turn++;
+	}
 }
