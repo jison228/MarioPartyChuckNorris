@@ -12,11 +12,12 @@ import static org.junit.Assert.assertEquals;
 
 public class NodeTest {
 
-	Player p;
+	Player p, p2;
 
 	@Before
 	public void executedBeforeEach() {
 		p = new Player("Milei", 0);
+		p2 = new Player("Cristi", 100, 150);
 	}
 
 	@Test
@@ -63,5 +64,23 @@ public class NodeTest {
 		nodeTest.applyReward(p, null, null);
 		assertEquals(p.getCoins(), 0);
 		assertEquals("END", nodeTest.getType());
+	}
+
+	@Test
+	public void InvPesosPlusNodeTest() {
+		Node nodeTest = new InvPesosPlusNode(null, new Position(4, 4));
+
+		nodeTest.applyReward(p2, null, null);
+		assertEquals((int) p2.getPesos(), (int) 120);
+		assertEquals("IPP", nodeTest.getType());
+	}
+
+	@Test
+	public void InvPesosMinusTest() {
+		Node nodeTest = new InvPesosMinusNode(null, new Position(4, 4));
+
+		nodeTest.applyReward(p2, null, null);
+		assertEquals((int) p2.getPesos(), (int) 90);
+		assertEquals("IPM", nodeTest.getType());
 	}
 }

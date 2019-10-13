@@ -15,9 +15,6 @@ public class PesosReward implements RewardApplicable{
 	
 	@Override
 	public void apply(Player playerExecutor, List<Player> players, GameContext context) {
-		//playerExecutor.multPesos(porcentajePesos); 
-		//el metodo de player tendria que multiplicar la cantidad de Pesos por esto
-		//otra opcion
-		//playerExecutor.setPesos(playerExecutor.getPesos()*porcentajePesos));
+		playerExecutor.addPesosByPercentage(porcentajePesos);
 	}
 }
