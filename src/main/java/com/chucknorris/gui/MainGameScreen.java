@@ -14,11 +14,14 @@ import com.chucknorris.gamemap.GameMap;
 import java.awt.SystemColor;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class MainGameScreen extends JFrame {
 
 	private JPanel contentPane;
 	private Game partida;
+	private boolean TAB;
 	/**
 	 * Launch the application.
 	 */
@@ -39,7 +42,7 @@ public class MainGameScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public MainGameScreen(Game partida) {
-		
+		TAB = false;
 		//JFrame config
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1280, 720);
@@ -53,6 +56,7 @@ public class MainGameScreen extends JFrame {
 		playersPanel.setBackground(Color.LIGHT_GRAY);
 		playersPanel.setBounds(1000, 0, 280, 450);
 		contentPane.add(playersPanel);
+		playersPanel.setVisible(false);
 		
 		JLabel playersLbl = new JLabel("PLAYERS");
 		playersLbl.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
@@ -63,6 +67,7 @@ public class MainGameScreen extends JFrame {
 		chatPanel.setBackground(Color.PINK);
 		chatPanel.setBounds(1000, 453, 280, 230);
 		contentPane.add(chatPanel);
+		chatPanel.setVisible(false);
 		
 		JLabel chatLbl = new JLabel("CHAT");
 		chatLbl.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
@@ -71,8 +76,29 @@ public class MainGameScreen extends JFrame {
 		//Panel del juego
 		JPanelGrafico gamePanel = new JPanelGrafico(partida.getGameMap().getMap(),null);
 		gamePanel.setBackground(SystemColor.text);
-		gamePanel.setBounds(0, 0, 1000, 683);
+		gamePanel.setBounds(0, 0, 1280, 720);
 		contentPane.add(gamePanel);
+		
+		//TAB
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+				int key = e.getKeyCode();
+				System.out.println(key);
+				if(key == KeyEvent.VK_ENTER) {
+					if(TAB) {
+						chatPanel.setVisible(false);
+						playersPanel.setVisible(false);
+						TAB = false;
+					} else {
+						chatPanel.setVisible(true);
+						playersPanel.setVisible(true);
+						TAB = true;
+					}
+				}
+			}
+		});
 		
 		
 	}
