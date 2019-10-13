@@ -30,28 +30,30 @@ public class JPanelGame extends JPanel {
 	public void paint(Graphics g) {
 
 		for (Map.Entry<Position, Node> entry : mapa.entrySet()) {
-
-			if (entry.getValue().getType() == "RED") {
-				g.setColor(Color.RED);
-			} else if (entry.getValue().getType() == "YELLOW") {
-				g.setColor(Color.YELLOW);
-			} else if (entry.getValue().getType() == "WHITE") {
-				g.setColor(Color.BLACK);
-			} else
-				g.setColor(Color.ORANGE);
-			g.fillOval(iniX + entry.getValue().getPositionCoords().getX() * 200,
-					iniY + entry.getValue().getPositionCoords().getY() * 100, 50, 50);
-
-			g.setColor(Color.RED);
-
 			Iterator<Node> recorrer = entry.getValue().nextNodes().iterator();
 			while (recorrer.hasNext()) {
+				g.setColor(Color.DARK_GRAY);
 				Node node = recorrer.next();
 				g.drawLine(iniX + iniX / 2 + entry.getValue().getPositionCoords().getX() * 200,
 						iniY + iniY / 2 + entry.getValue().getPositionCoords().getY() * 100,
 						iniX + iniX / 2 + node.getPositionCoords().getX() * 200,
 						iniY + iniY / 2 + node.getPositionCoords().getY() * 100);
 			}
+
+		}
+		for (Map.Entry<Position, Node> entry2 : mapa.entrySet()) {
+
+			if (entry2.getValue().getType() == "RED") {
+				g.setColor(Color.RED);
+			} else if (entry2.getValue().getType() == "YELLOW") {
+				g.setColor(Color.YELLOW);
+			} else if (entry2.getValue().getType() == "WHITE") {
+				g.setColor(Color.BLACK);
+			} else
+				g.setColor(Color.ORANGE);
+			g.fillOval(iniX + entry2.getValue().getPositionCoords().getX() * 200,
+					iniY + entry2.getValue().getPositionCoords().getY() * 100, 50, 50);
+
 		}
 
 	}

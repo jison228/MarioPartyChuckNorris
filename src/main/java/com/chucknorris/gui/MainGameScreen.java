@@ -33,7 +33,7 @@ public class MainGameScreen extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainGameScreen frame = new MainGameScreen(new Game(null,null));
+					MainGameScreen frame = new MainGameScreen(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,7 +45,10 @@ public class MainGameScreen extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MainGameScreen(Game partida) {
+	public MainGameScreen(GameInformation info) {
+		partida = new Game(info.players, info.gameMap);
+		
+		
 		TAB = false;
 		//JFrame config
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,33 +59,25 @@ public class MainGameScreen extends JFrame {
 		contentPane.setLayout(null);
 		
 		//Panel para jugadores
-		Player p1 = new Player("Milei",1450,150);
-		Player p2 = new Player("Morsa",150,200);
-		List<Player> listaP = new ArrayList<Player>();
-		listaP.add(p1); listaP.add(p2);
-		JPanelPlayers playersPanel = new JPanelPlayers(listaP);
-		playersPanel.setBackground(Color.LIGHT_GRAY);
+		JPanelPlayers playersPanel = new JPanelPlayers(info.players);
 		playersPanel.setBounds(1000, 0, 280, 450);
 		contentPane.add(playersPanel);
 		playersPanel.setVisible(false);
-		
-		JLabel playersLbl = new JLabel("PLAYERS");
-		playersLbl.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
-		playersPanel.add(playersLbl);
+	
 		
 		//Panel para chat (no implementado)
 		JPanel chatPanel = new JPanel();
-		chatPanel.setBackground(Color.PINK);
+		chatPanel.setBackground(Color.lightGray);
 		chatPanel.setBounds(1000, 453, 280, 230);
 		contentPane.add(chatPanel);
 		chatPanel.setVisible(false);
 		
 		JLabel chatLbl = new JLabel("CHAT");
-		chatLbl.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
+		chatLbl.setFont(new Font("Tahoma", Font.BOLD, 24));
 		chatPanel.add(chatLbl);
 		
 		//Panel del juego
-		JPanelGame gamePanel = new JPanelGame(partida.getGameMap().getMap(),null);
+		JPanelGame gamePanel = new JPanelGame(partida.getGameMap().getMap(),info.players);
 		gamePanel.setBackground(SystemColor.text);
 		gamePanel.setBounds(0, 0, 1280, 720);
 		contentPane.add(gamePanel);
@@ -92,8 +87,7 @@ public class MainGameScreen extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				
-				int key = e.getKeyCode();
-				System.out.println(key);
+				int key = e.getExtendedKeyCode();
 				if(key == KeyEvent.VK_ENTER) {
 					if(TAB) {
 						chatPanel.setVisible(false);

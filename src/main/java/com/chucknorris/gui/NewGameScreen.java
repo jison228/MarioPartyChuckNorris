@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import com.chucknorris.game.Game;
+import com.chucknorris.commons.Dice;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.player.Player;
@@ -107,7 +107,8 @@ public class NewGameScreen extends JFrame {
 				List<Player> listaP = new ArrayList<Player>();
 				listaP.add(p1); listaP.add(p2);
 				
-				new MainGameScreen(new Game(listaP, mapa1)).setVisible(true);;
+				new MainGameScreen(new GameInformation(listaP, mapa1,150,new Dice(1,6),20)).setVisible(true);
+				dispose();
 			}
 		});
 

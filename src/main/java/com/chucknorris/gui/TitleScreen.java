@@ -22,6 +22,7 @@ import javax.swing.JFileChooser;
 public class TitleScreen extends JFrame {
 
 	private JPanel mainPane;
+	private JFrame newGame;
 
 	/**
 	 * Launch the application.
@@ -84,9 +85,9 @@ public class TitleScreen extends JFrame {
 		// Acciones de los botones
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
 				try {
 					new NewGameScreen().setVisible(true);
+					dispose();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
