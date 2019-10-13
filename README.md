@@ -14,3 +14,7 @@ Para correr los test de todo el proyecto y verificar el <a href="https://www.adi
 gradlew jacocoTestReport. Esto generara un index.html en la carpeta build/reports/jacocoHtml/index.html, donde podran ver el coverage de cada file.
 
 Verifiquen que puedan correr los test. 
+
+
+Definiciones
+https://docs.google.com/document/d/11KtKTFufkLIPZ7K21IyzOuaYlwohRvTAsLvvUIJa__A/edit?ouid=104613001508365799352&usp=docs_home&ths=true

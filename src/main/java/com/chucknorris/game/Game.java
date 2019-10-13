@@ -26,15 +26,10 @@ public class Game {
 		this.dice = dice;
 	}
 
-	public void endTurn() {
-		//verificar si alguien gano (por ahora no hay corte)
-		turn++;
-	}
-
 	public GameResponse play(Player player) {
 		int diceResult = dice.roll();
 
-		int movementsLeft = gameMap.movePlayers(player, diceResult);
+		int movementsLeft = gameMap.movePlayer(player, diceResult);
 
 		applyRewardIfApplies(player, movementsLeft);
 
@@ -70,4 +65,5 @@ public class Game {
 	public GameMap getGameMap() {
 		return gameMap;
 	}
+
 }

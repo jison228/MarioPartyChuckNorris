@@ -22,31 +22,7 @@ public class GameMap {
 		}
 	}
 
-	@Deprecated
-	public int movePlayer(Player p, int movs) {
-		Node node = nodes.get(p.getNodeLocation().getPositionCoords());
-		int leftMovs = movs;
-		while (node.nextNodes().size() == 1 && leftMovs > 0) {
-			node = node.nextNodes().get(0);
-			leftMovs--;
-		}
-		p.setNodeLocation(node);
-
-		if (leftMovs == 0) {
-			//TODO usar la nueva firma
-			node.applyReward(p, null, null);
-		}
-
-		return leftMovs;
-	}
-
-	@Deprecated
-	public int movePlayer(Player p, int movs, Node pos) {
-		p.setNodeLocation(pos);
-		return movePlayer(p, movs - 1);
-	}
-
-	public int movePlayers(Player player, int leftMovements) {
+	public int movePlayer(Player player, int leftMovements) {
 		Node node = nodes.get(player.getNodeLocation().getPositionCoords());
 
 		while (node.nextNodes().size() == 1 && leftMovements > 0) {
@@ -62,7 +38,7 @@ public class GameMap {
 	public int movePlayerFromIntersection(Player player, Node nextNode, int leftMovements) {
 		player.setNodeLocation(nextNode);
 
-		return movePlayers(player, leftMovements - 1);
+		return movePlayer(player, leftMovements - 1);
 	}
 
 	public int nodesSize() {
