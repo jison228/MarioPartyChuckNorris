@@ -12,6 +12,8 @@ import com.chucknorris.commons.Position;
 import com.chucknorris.game.Game;
 import com.chucknorris.gamemap.GameMap;
 import java.awt.SystemColor;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 public class MainGameScreen extends JFrame {
 
@@ -52,11 +54,19 @@ public class MainGameScreen extends JFrame {
 		playersPanel.setBounds(1000, 0, 280, 450);
 		contentPane.add(playersPanel);
 		
+		JLabel playersLbl = new JLabel("PLAYERS");
+		playersLbl.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
+		playersPanel.add(playersLbl);
+		
 		//Panel para chat (no implementado)
 		JPanel chatPanel = new JPanel();
 		chatPanel.setBackground(Color.PINK);
 		chatPanel.setBounds(1000, 453, 280, 230);
 		contentPane.add(chatPanel);
+		
+		JLabel chatLbl = new JLabel("CHAT");
+		chatLbl.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
+		chatPanel.add(chatLbl);
 		
 		//Panel del juego
 		JPanelGrafico gamePanel = new JPanelGrafico(partida.getGameMap().getMap(),null);
@@ -71,5 +81,4 @@ public class MainGameScreen extends JFrame {
 
 		
 	}
-
 }
