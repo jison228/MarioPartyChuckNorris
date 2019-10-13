@@ -66,4 +66,7 @@ public class Game {
 		return gameMap;
 	}
 
+	public List<Player> getPlayerList(){
+		return players;
+	}
 }

@@ -18,7 +18,7 @@ public class JPanelGame extends JPanel {
 
 	private Map<Position, Node> mapa;
 	private List<Player> listaP;
-	private Circulo circuloDef;
+	private Color[] coloresP = { Color.CYAN, Color.BLUE, Color.GREEN, Color.ORANGE };
 	private int iniX = 50;
 	private int iniY = 50;
 
@@ -28,7 +28,7 @@ public class JPanelGame extends JPanel {
 	}
 
 	public void paint(Graphics g) {
-
+		
 		for (Map.Entry<Position, Node> entry : mapa.entrySet()) {
 			Iterator<Node> recorrer = entry.getValue().nextNodes().iterator();
 			while (recorrer.hasNext()) {
@@ -53,9 +53,13 @@ public class JPanelGame extends JPanel {
 				g.setColor(Color.ORANGE);
 			g.fillOval(iniX + entry2.getValue().getPositionCoords().getX() * 200,
 					iniY + entry2.getValue().getPositionCoords().getY() * 100, 50, 50);
-
 		}
 
+		for (int i = 0; i < listaP.size(); i++) {
+			g.setColor(coloresP[i]);
+			g.fillRect(iniX + listaP.get(i).getNodeLocation().getPositionCoords().getX()*200 + i*15,
+					iniX + listaP.get(i).getNodeLocation().getPositionCoords().getY()*100 + 20, 10, 10);
+		}
 	}
 
 }

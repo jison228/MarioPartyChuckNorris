@@ -15,8 +15,7 @@ public class JPanelPlayers extends JPanel {
 	public JPanelPlayers(List<Player> listaP) {
 		this.listaP = listaP;
 	}
-	
-	
+
 	public void paint(Graphics g) {
 		g.setColor(Color.PINK);
 		g.fillRect(0, 0, 280, 450);
@@ -30,7 +29,7 @@ public class JPanelPlayers extends JPanel {
 			g.setColor(Color.green);
 			g.setFont(new Font("Tahoma",Font.BOLD,15));
 			g.drawString("$" + listaP.get(i).getPesos(), 50, 120 + i*100);
-			g.drawString("U$" + listaP.get(i).getDolares(), 150, 120 + i*100);
+			g.drawString("U$S" + listaP.get(i).getDolares(), 150, 120 + i*100);
 		}
 		
 	}
