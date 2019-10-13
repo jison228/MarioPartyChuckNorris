@@ -11,11 +11,15 @@ import javax.swing.border.EmptyBorder;
 import com.chucknorris.commons.Position;
 import com.chucknorris.game.Game;
 import com.chucknorris.gamemap.GameMap;
+import com.chucknorris.player.Player;
+
 import java.awt.SystemColor;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainGameScreen extends JFrame {
 
@@ -52,7 +56,11 @@ public class MainGameScreen extends JFrame {
 		contentPane.setLayout(null);
 		
 		//Panel para jugadores
-		JPanel playersPanel = new JPanel();
+		Player p1 = new Player("Milei",1450,150);
+		Player p2 = new Player("Morsa",150,200);
+		List<Player> listaP = new ArrayList<Player>();
+		listaP.add(p1); listaP.add(p2);
+		JPanelPlayers playersPanel = new JPanelPlayers(listaP);
 		playersPanel.setBackground(Color.LIGHT_GRAY);
 		playersPanel.setBounds(1000, 0, 280, 450);
 		contentPane.add(playersPanel);

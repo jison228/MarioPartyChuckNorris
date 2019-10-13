@@ -11,4 +11,14 @@ public class GameInformation {
 	public double salarioInicial;
 	public Dice dice;
 	public double precioDolar;
+	public GameInformation(GameMap gameMap, List<Player> players, double salarioInicial, Dice dice,
+			double precioDolar) {
+		this.players = players;
+		this.gameMap = gameMap;
+		this.salarioInicial = salarioInicial;
+		this.dice = dice;
+		this.precioDolar = precioDolar;
+	}
+	
+
 }

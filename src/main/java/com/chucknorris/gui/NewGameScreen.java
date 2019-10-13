@@ -1,8 +1,12 @@
 package com.chucknorris.gui;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,10 +19,7 @@ import javax.swing.border.EmptyBorder;
 import com.chucknorris.game.Game;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
-
-import java.awt.Color;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import com.chucknorris.player.Player;
 
 public class NewGameScreen extends JFrame {
 
@@ -101,7 +102,12 @@ public class NewGameScreen extends JFrame {
 		btnJugar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				new MainGameScreen(new Game(null, mapa1)).setVisible(true);;
+				Player p1 = new Player("Milei",1450,150);
+				Player p2 = new Player("Morsa",150,200);
+				List<Player> listaP = new ArrayList<Player>();
+				listaP.add(p1); listaP.add(p2);
+				
+				new MainGameScreen(new Game(listaP, mapa1)).setVisible(true);;
 			}
 		});
 

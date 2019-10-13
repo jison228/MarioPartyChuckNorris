@@ -1,5 +1,6 @@
 package com.chucknorris.gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.List;
 
@@ -16,7 +17,8 @@ public class JPanelPlayers extends JPanel {
 	
 	public void paint(Graphics g) {
 		for(int i=0;i<listaP.size();i++) {
-			
+			g.setColor(Color.BLACK);
+			g.drawString(listaP.get(i).getCharacter(), 50, 50 + i*50);
 		}
 		
 	}
