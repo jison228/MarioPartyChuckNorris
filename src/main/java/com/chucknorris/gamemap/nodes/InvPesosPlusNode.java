@@ -3,11 +3,12 @@ package com.chucknorris.gamemap.nodes;
 import java.util.ArrayList;
 
 import com.chucknorris.commons.Position;
-import com.chucknorris.rewards.pesos.PesosReward;
+import com.chucknorris.rewards.PercentagePesosPlayerAdder;
+
 
 public class InvPesosPlusNode extends Node{
 	public InvPesosPlusNode(ArrayList<Node> next,Position pos) {
-		super(next,pos,new PesosReward(20));
+		super(next,pos,new PercentagePesosPlayerAdder(20));
 	}
 
 	@Override

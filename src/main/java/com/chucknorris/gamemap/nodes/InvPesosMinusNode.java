@@ -3,7 +3,6 @@ package com.chucknorris.gamemap.nodes;
 import java.util.ArrayList;
 
 import com.chucknorris.commons.Position;
-import com.chucknorris.rewards.pesos.PesosReward;
 import com.chucknorris.rewards.substractor.pesos.PesosPercentagePlayerSubstractor;
 import com.chucknorris.rewards.substractor.pesos.PesosPercentagePlayersSubstractor;
 

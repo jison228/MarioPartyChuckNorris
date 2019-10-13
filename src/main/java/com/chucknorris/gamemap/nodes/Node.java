@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public abstract class Node {
 	protected List<Node> next;
 	private RewardApplicable reward;
-	private Position positionCoords;//utilizado para la matriz de nodos unicamente
+	private Position positionCoords;// utilizado para la matriz de nodos unicamente
 
 	public Node(List<Node> next, Position positionCoords) {
 		this.next = next;
@@ -46,15 +46,14 @@ public abstract class Node {
 	}
 
 	public String present(NodePresenter presenter, PositionPresenter positionPresenter) {
-		List<Position> nextPositions = next.stream()
-				.map(it -> it.positionCoords)
-				.collect(Collectors.toList());
+		List<Position> nextPositions = next.stream().map(it -> it.positionCoords).collect(Collectors.toList());
 
 		return presenter.present(positionCoords.present(positionPresenter), this, nextPositions);
 	}
 
 	public void replaceWithThisNodeIfNextHasOneWithSamePosition(Node firstNode) {
-		Optional<Node> nodeToReplace = next.stream().filter(node -> node.positionCoords.equals(firstNode.positionCoords)).findFirst();
+		Optional<Node> nodeToReplace = next.stream()
+				.filter(node -> node.positionCoords.equals(firstNode.positionCoords)).findFirst();
 
 		nodeToReplace.ifPresent(node -> {
 			next.remove(node);
