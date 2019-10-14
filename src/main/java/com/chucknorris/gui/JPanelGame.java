@@ -1,6 +1,7 @@
 package com.chucknorris.gui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,16 +19,22 @@ public class JPanelGame extends JPanel {
 
 	private Map<Position, Node> mapa;
 	private List<Player> listaP;
+	private int turn;
 	private Color[] coloresP = { Color.CYAN, Color.BLUE, Color.GREEN, Color.ORANGE };
 	private int iniX = 50;
 	private int iniY = 50;
 
-	public JPanelGame(Map mapa, List<Player> listaP) {
+	public JPanelGame(Map mapa, List<Player> listaP, int turn) {
 		this.mapa = mapa;
 		this.listaP = listaP;
+		this.turn = turn;
 	}
 
 	public void paint(Graphics g) {
+		
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("Tahoma",Font.BOLD,24));
+		g.drawString("TURNO" + " " + (turn +1), 800, 50);
 		
 		for (Map.Entry<Position, Node> entry : mapa.entrySet()) {
 			Iterator<Node> recorrer = entry.getValue().nextNodes().iterator();
@@ -60,6 +67,10 @@ public class JPanelGame extends JPanel {
 			g.fillRect(iniX + listaP.get(i).getNodeLocation().getPositionCoords().getX()*200 + i*15,
 					iniX + listaP.get(i).getNodeLocation().getPositionCoords().getY()*100 + 20, 10, 10);
 		}
+	}
+	
+	public void actualizar(int turn) {
+		this.turn = turn;
 	}
 
 }

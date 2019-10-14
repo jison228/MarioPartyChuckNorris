@@ -1,9 +1,20 @@
 package com.chucknorris.gui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -12,22 +23,8 @@ import com.chucknorris.game.Game;
 import com.chucknorris.game.GameResponse;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
+import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.player.Player;
-
-import java.awt.SystemColor;
-import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.Icon;
-import javax.swing.JButton;
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class MainGameScreen extends JFrame {
 
@@ -38,6 +35,11 @@ public class MainGameScreen extends JFrame {
 	private JPanel contentPane;
 	private Game partida;
 	private boolean TAB;
+	JButton btnTirarDado;
+	JButton btnCamino1;
+	JButton btnCamino2;
+	Player currentPlayer;
+	GameResponse respuesta;
 
 	/**
 	 * Launch the application.
@@ -90,7 +92,8 @@ public class MainGameScreen extends JFrame {
 		contentPane.setLayout(null);
 
 		// Panel del juego
-		JPanelGame gamePanel = new JPanelGame(partida.getGameMap().getMap(), partida.getPlayerList());
+		JPanelGame gamePanel = new JPanelGame(partida.getGameMap().getMap(), partida.getPlayerList(),
+				partida.getCurrentTurn());
 		gamePanel.setBackground(SystemColor.text);
 		gamePanel.setBounds(0, 0, 1280, 600);
 		contentPane.add(gamePanel);
@@ -139,33 +142,90 @@ public class MainGameScreen extends JFrame {
 			}
 		});
 
-		JButton btnTirarDado = new JButton("TIRAR DADO");
+		// BOTON DE TIRAR DADO
+		btnTirarDado = new JButton("TIRAR DADO");
 		btnTirarDado.setForeground(Color.RED);
 		btnTirarDado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				playTurn();
 				repaint();
-				endTurn();
+				if (respuesta.movementsLeft > 0)
+					tomarDecision(currentPlayer);
+				else
+					endTurn();
+				gamePanel.actualizar(partida.getCurrentTurn());
+				repaint();
 			}
 		});
 		btnTirarDado.setBounds(800, 5, 150, 60);
 		buttonPanel.add(btnTirarDado);
 		btnTirarDado.setFocusable(false);
+
+//BOTONES DE DECISION (experimentacion)
+		// 1
+		btnCamino1 = new JButton("1");
+		btnCamino1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				respuesta = partida.resolveIntersection(currentPlayer, currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
+				repaint();
+				if(respuesta.movementsLeft>0) {
+					tomarDecision(currentPlayer);
+				}
+				btnTirarDado.setVisible(true);
+				btnCamino1.setVisible(false);
+				btnCamino2.setVisible(false);
+				endTurn();
+				gamePanel.actualizar(partida.getCurrentTurn());
+				repaint();
+			}
+		});
+		btnCamino1.setForeground(Color.red);
+		contentPane.add(btnCamino1);
+		btnCamino1.setFocusable(false);
+		btnCamino1.setVisible(false);
+
+		// 2
+		btnCamino2 = new JButton("2");
+		btnCamino2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				respuesta = partida.resolveIntersection(currentPlayer, currentPlayer.getNodeLocation().nextNodes().get(1), respuesta.movementsLeft);
+				repaint();
+				if(respuesta.movementsLeft>0) {
+					tomarDecision(currentPlayer);
+				}
+				btnTirarDado.setVisible(true);
+				btnCamino1.setVisible(false);
+				btnCamino2.setVisible(false);
+				endTurn();
+				gamePanel.actualizar(partida.getCurrentTurn());
+				repaint();
+			}
+		});
+		btnCamino2.setForeground(Color.red);
+		contentPane.add(btnCamino2);
+		btnCamino2.setFocusable(false);
+		btnCamino2.setVisible(false);
 	}
-	
+
 	public void playTurn() {
-		Player currentPlayer = partida.getPlayerList().get(partida.getCurrentTurn() % 4);
-		GameResponse respuesta = partida.play(currentPlayer);
-		if (respuesta.movementsLeft > 0) {
-			respuesta = partida.resolveIntersection(currentPlayer,
-					currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
-		}
+		currentPlayer = partida.getPlayerList().get(partida.getCurrentTurn() % 4);
+		respuesta = partida.play(currentPlayer);
 	}
-	
+
 	public void endTurn() {
-		if(partida.getCurrentTurn()%4==3) {
+		if (partida.getCurrentTurn() % 4 == 3) {
 			System.out.println("TODOS A JUGAR");
 		}
 		partida.endTurn();
+	}
+
+	public void tomarDecision(Player currentPlayer) {
+		btnTirarDado.setVisible(false);
+		btnCamino1.setBounds(50 + currentPlayer.getNodeLocation().nextNodes().get(0).getPositionCoords().getX() * 200,
+				50 + currentPlayer.getNodeLocation().nextNodes().get(0).getPositionCoords().getY() * 100, 50, 50);
+		btnCamino2.setBounds(50 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getX() * 200,
+				50 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getY() * 100, 50, 50);
+		btnCamino1.setVisible(true);
+		btnCamino2.setVisible(true);
 	}
 }
