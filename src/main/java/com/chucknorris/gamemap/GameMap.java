@@ -26,7 +26,7 @@ public class GameMap {
 		Node node = nodes.get(player.getNodeLocation().getPositionCoords());
 
 		while (node.nextNodes().size() == 1 && leftMovements > 0) {
-			node = node.nextNodes().get(0);
+			node = nodes.get(node.nextNodes().get(0).getPositionCoords());
 			leftMovements--;
 		}
 

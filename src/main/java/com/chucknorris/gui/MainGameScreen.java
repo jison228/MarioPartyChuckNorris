@@ -104,6 +104,7 @@ public class MainGameScreen extends JFrame {
 		chatPanel.setBounds(1000, 453, 280, 230);
 		contentPane.add(chatPanel);
 		chatPanel.setVisible(false);
+		chatPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel chatLbl = new JLabel("CHAT");
 		chatLbl.setFont(new Font("Tahoma", Font.BOLD, 24));
 		chatPanel.add(chatLbl);
@@ -114,6 +115,7 @@ public class MainGameScreen extends JFrame {
 			public void keyPressed(KeyEvent e) {
 				
 				int key = e.getExtendedKeyCode();
+				System.out.println(key);
 				if(key == KeyEvent.VK_SHIFT) {
 					if(TAB) {
 						chatPanel.setVisible(false);
