@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.chucknorris.commons.Dice;
 import com.chucknorris.game.Game;
+import com.chucknorris.game.GameResponse;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.player.Player;
@@ -125,8 +126,11 @@ public class MainGameScreen extends JFrame {
 					}
 				}
 				if(key == KeyEvent.VK_ENTER) {
-					Player test = partida.getPlayerList().get(partida.getCurrentTurn()%4);
-					partida.play(test);
+					Player currentPlayer = partida.getPlayerList().get(partida.getCurrentTurn()%4);
+					GameResponse respuesta = partida.play(currentPlayer);
+					if(respuesta.movementsLeft>0) {
+						respuesta = partida.resolveIntersection(currentPlayer, currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
+					}
 					partida.endTurn();
 					contentPane.repaint();
 				}
