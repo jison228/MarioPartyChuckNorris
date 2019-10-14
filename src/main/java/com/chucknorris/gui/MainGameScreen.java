@@ -1,6 +1,7 @@
 package com.chucknorris.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,11 +17,13 @@ import com.chucknorris.player.Player;
 import java.awt.SystemColor;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Icon;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
@@ -71,6 +74,7 @@ public class MainGameScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public MainGameScreen(GameInformation info) {
+		//Iniciar partida
 		partida = new Game(info.players, info.gameMap);
 		partida.getGameMap().initializePlayers(partida.getPlayerList());
 
@@ -87,7 +91,7 @@ public class MainGameScreen extends JFrame {
 		//Panel del juego
 		JPanelGame gamePanel = new JPanelGame(partida.getGameMap().getMap(),partida.getPlayerList());
 		gamePanel.setBackground(SystemColor.text);
-		gamePanel.setBounds(0, 0, 1280, 720);
+		gamePanel.setBounds(0, 0, 1280, 600);
 		contentPane.add(gamePanel);
 		gamePanel.setLayout(null);
 		
@@ -109,6 +113,12 @@ public class MainGameScreen extends JFrame {
 		chatLbl.setFont(new Font("Tahoma", Font.BOLD, 24));
 		chatPanel.add(chatLbl);
 		
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBounds(0, 600, 1000, 120);
+		contentPane.add(buttonPanel);
+		buttonPanel.setLayout(null);
+		
+		
 		//TAB
 		addKeyListener(new KeyAdapter() {
 			@Override
@@ -127,23 +137,26 @@ public class MainGameScreen extends JFrame {
 						TAB = true;
 					}
 				}
-				if(key == KeyEvent.VK_ENTER) {
-					Player currentPlayer = partida.getPlayerList().get(partida.getCurrentTurn()%4);
-					GameResponse respuesta = partida.play(currentPlayer);
-					if(respuesta.movementsLeft>0) {
-						respuesta = partida.resolveIntersection(currentPlayer, currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
-					}
-					partida.endTurn();
-					contentPane.repaint();
-				}
 			}
 		});
 		
-		//Boton de Tirar Dado
-		//JButton btnTirarDado = new JButton("Tirar Dado");
-		//btnTirarDado.setBounds(150, 150, 200, 200);
-		//contentPane.add(btnTirarDado);
+		JButton btnTirarDado = new JButton("TIRAR DADO");
+		btnTirarDado.setForeground(Color.RED);
+		btnTirarDado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Player currentPlayer = partida.getPlayerList().get(partida.getCurrentTurn()%4);
+				GameResponse respuesta = partida.play(currentPlayer);
+				if(respuesta.movementsLeft>0) {
+					respuesta = partida.resolveIntersection(currentPlayer, currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
+				}
+				partida.endTurn();
+				repaint();
+			}
+		});
+		btnTirarDado.setBounds(425, 5, 150, 60);
+		buttonPanel.add(btnTirarDado);
+		btnTirarDado.setFocusable(false);
+
 		
 	}
-
 }
