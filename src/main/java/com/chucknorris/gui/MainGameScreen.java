@@ -38,6 +38,7 @@ public class MainGameScreen extends JFrame {
 	private JPanel contentPane;
 	private Game partida;
 	private boolean TAB;
+
 	/**
 	 * Launch the application.
 	 */
@@ -46,7 +47,7 @@ public class MainGameScreen extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//SOLO PARA TESTEAR
+					// SOLO PARA TESTEAR
 					GameMap mapa1;
 					MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("map_1.txt");
 					mapa1 = mapFileCSVReader.buildGameMap();
@@ -60,7 +61,7 @@ public class MainGameScreen extends JFrame {
 					listaP.add(p3);
 					listaP.add(p4);
 					GameInformation test = new GameInformation(listaP, mapa1, 150, new Dice(1, 6), 20);
-					
+
 					MainGameScreen frame = new MainGameScreen(test);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -74,12 +75,12 @@ public class MainGameScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public MainGameScreen(GameInformation info) {
-		//Iniciar partida
+		// Iniciar partida
 		partida = new Game(info.players, info.gameMap);
 		partida.getGameMap().initializePlayers(partida.getPlayerList());
 
 		TAB = false;
-		//JFrame config
+		// JFrame config
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1280, 720);
@@ -87,22 +88,21 @@ public class MainGameScreen extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		//Panel del juego
-		JPanelGame gamePanel = new JPanelGame(partida.getGameMap().getMap(),partida.getPlayerList());
+
+		// Panel del juego
+		JPanelGame gamePanel = new JPanelGame(partida.getGameMap().getMap(), partida.getPlayerList());
 		gamePanel.setBackground(SystemColor.text);
 		gamePanel.setBounds(0, 0, 1280, 600);
 		contentPane.add(gamePanel);
 		gamePanel.setLayout(null);
-		
-		//Panel para jugadores
+
+		// Panel para jugadores
 		JPanelPlayers playersPanel = new JPanelPlayers(info.players);
 		playersPanel.setBounds(1000, 0, 280, 450);
 		contentPane.add(playersPanel);
 		playersPanel.setVisible(false);
-	
-		
-		//Panel para chat (no implementado)
+
+		// Panel para chat (no implementado)
 		JPanel chatPanel = new JPanel();
 		chatPanel.setBackground(Color.lightGray);
 		chatPanel.setBounds(1000, 453, 280, 230);
@@ -112,22 +112,21 @@ public class MainGameScreen extends JFrame {
 		JLabel chatLbl = new JLabel("CHAT");
 		chatLbl.setFont(new Font("Tahoma", Font.BOLD, 24));
 		chatPanel.add(chatLbl);
-		
+
+		// Panel para el boton
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBounds(0, 600, 1000, 120);
 		contentPane.add(buttonPanel);
 		buttonPanel.setLayout(null);
-		
-		
-		//TAB
+
+		// TAB
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				
+
 				int key = e.getExtendedKeyCode();
-				System.out.println(key);
-				if(key == KeyEvent.VK_SHIFT) {
-					if(TAB) {
+				if (key == KeyEvent.VK_SHIFT) {
+					if (TAB) {
 						chatPanel.setVisible(false);
 						playersPanel.setVisible(false);
 						TAB = false;
@@ -139,24 +138,34 @@ public class MainGameScreen extends JFrame {
 				}
 			}
 		});
-		
+
 		JButton btnTirarDado = new JButton("TIRAR DADO");
 		btnTirarDado.setForeground(Color.RED);
 		btnTirarDado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Player currentPlayer = partida.getPlayerList().get(partida.getCurrentTurn()%4);
-				GameResponse respuesta = partida.play(currentPlayer);
-				if(respuesta.movementsLeft>0) {
-					respuesta = partida.resolveIntersection(currentPlayer, currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
-				}
-				partida.endTurn();
+				playTurn();
 				repaint();
+				endTurn();
 			}
 		});
-		btnTirarDado.setBounds(425, 5, 150, 60);
+		btnTirarDado.setBounds(800, 5, 150, 60);
 		buttonPanel.add(btnTirarDado);
 		btnTirarDado.setFocusable(false);
-
-		
+	}
+	
+	public void playTurn() {
+		Player currentPlayer = partida.getPlayerList().get(partida.getCurrentTurn() % 4);
+		GameResponse respuesta = partida.play(currentPlayer);
+		if (respuesta.movementsLeft > 0) {
+			respuesta = partida.resolveIntersection(currentPlayer,
+					currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
+		}
+	}
+	
+	public void endTurn() {
+		if(partida.getCurrentTurn()%4==3) {
+			System.out.println("TODOS A JUGAR");
+		}
+		partida.endTurn();
 	}
 }
