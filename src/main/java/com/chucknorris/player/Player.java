@@ -105,4 +105,8 @@ public class Player {
 		pesos = pesos * ((percentage / 100) + 1);
 	}
 
+	public void addDolaresByPercentage(double percentage) {
+		dolar = dolar * ((percentage / 100) + 1);
+	}
+
 }
