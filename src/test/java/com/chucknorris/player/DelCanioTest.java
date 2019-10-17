@@ -1,6 +1,5 @@
 package com.chucknorris.player;
 
-
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -27,20 +26,20 @@ public class DelCanioTest {
 		players.add(p1);
 		players.add(p2);
 		players.add(p3);
+		nico.applyPowerup(players, null);
 	}
-	
+
 	@Test
 	public void getCharacterTest() {
-		assertEquals("Del Caño",nico.getCharacter());
+		assertEquals("Del Caño", nico.getCharacter());
 	}
-	
+
 	@Test
 	public void applyPowerupTest() {
-		nico.applyPowerup(players, null);
 		int test = 25;
-		assertEquals(test, (int)p1.getPesos());
-		assertEquals(test, (int)p2.getPesos());
-		assertEquals(test, (int)p3.getPesos());
-		assertEquals(test, (int)nico.getPesos());
+		assertEquals(test, (int) p1.getPesos());
+		assertEquals(test, (int) p2.getPesos());
+		assertEquals(test, (int) p3.getPesos());
+		assertEquals(test, (int) nico.getPesos());
 	}
 }

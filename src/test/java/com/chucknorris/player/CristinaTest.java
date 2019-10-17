@@ -14,7 +14,7 @@ public class CristinaTest {
 	Player p2;
 	Player p3;
 	List<Player> players;
-	
+
 	@Before
 	public void executedBeforeEach() {
 		cristi = new Cristina(30, 100);
@@ -26,19 +26,19 @@ public class CristinaTest {
 		players.add(p1);
 		players.add(p2);
 		players.add(p3);
+		cristi.applyPowerup(players, null);
 	}
-	
+
 	@Test
 	public void getCharacterTest() {
-		assertEquals("Cristina",cristi.getCharacter());
+		assertEquals("Cristina", cristi.getCharacter());
 	}
-	
+
 	@Test
 	public void applyPowerupTest() {
-		cristi.applyPowerup(players, null);
-		assertEquals(50, (int)p1.getPesos());
-		assertEquals(35, (int)p2.getPesos());
-		assertEquals(25, (int)p3.getPesos());
-		assertEquals(45, (int)cristi.getPesos());
+		assertEquals(50, (int) p1.getPesos());
+		assertEquals(35, (int) p2.getPesos());
+		assertEquals(25, (int) p3.getPesos());
+		assertEquals(45, (int) cristi.getPesos());
 	}
 }

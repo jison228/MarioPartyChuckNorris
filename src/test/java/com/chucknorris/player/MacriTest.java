@@ -14,7 +14,7 @@ public class MacriTest {
 	Player p2;
 	Player p3;
 	List<Player> players;
-	
+
 	@Before
 	public void executedBeforeEach() {
 		gato = new Macri(15, 100);
@@ -26,19 +26,19 @@ public class MacriTest {
 		players.add(p1);
 		players.add(p2);
 		players.add(p3);
+		gato.applyPowerup(players, null);
 	}
-	
+
 	@Test
 	public void getCharacterTest() {
-		assertEquals("Macri",gato.getCharacter());
+		assertEquals("Macri", gato.getCharacter());
 	}
-	
+
 	@Test
 	public void applyPowerupTest() {
-		gato.applyPowerup(players, null);
-		assertEquals(240, (int)p1.getDolares());
-		assertEquals(360, (int)p2.getDolares());
-		assertEquals(100, (int)p3.getDolares());
-		assertEquals(100, (int)gato.getDolares());
+		assertEquals(240, (int) p1.getDolares());
+		assertEquals(360, (int) p2.getDolares());
+		assertEquals(100, (int) p3.getDolares());
+		assertEquals(100, (int) gato.getDolares());
 	}
 }
