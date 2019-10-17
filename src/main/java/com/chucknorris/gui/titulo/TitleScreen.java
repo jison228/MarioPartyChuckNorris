@@ -1,28 +1,28 @@
-package com.chucknorris.gui;
+package com.chucknorris.gui.titulo;
 
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.chucknorris.gui.NewGameScreen;
+
 import java.awt.SystemColor;
 import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JEditorPane;
-import javax.swing.JTable;
-import javax.swing.JFileChooser;
 
 public class TitleScreen extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel mainPane;
-	private JFrame newGame;
 
 	/**
 	 * Launch the application.
@@ -51,33 +51,27 @@ public class TitleScreen extends JFrame {
 		setBounds(0, 0, 1280, 720);
 
 		// mainPane config
-		mainPane = new JPanel();
+		mainPane = new TitleImagePanel("images/portada.jpg");
 		mainPane.setBackground(SystemColor.scrollbar);
-		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		mainPane.setBorder(new EmptyBorder(0,0,0,0));
 		setContentPane(mainPane);
 		mainPane.setLayout(null);
-
-		// Titulo
-		JLabel Title = new JLabel("INDEFINIDO");
-		int titleW = 280;
-		int titleH = 50;
-		Title.setBounds((getWidth() / 2) - titleW / 2, getHeight() - (int) (getHeight() * 0.90), titleW, titleH);
-		Title.setFont(new Font("Microsoft Sans Serif", Font.PLAIN, 42));
-		Title.setHorizontalAlignment(SwingConstants.CENTER);
-		mainPane.add(Title);
-
+		
 		// Botones
 		int btnW = 400;
 		int btnH = 80;
 
 		// Nueva Partida
-		JButton btnNewGame = new JButton("Nueva partida");
+		JButton btnNewGame = new JButton("NUEVA PARTIDA");
+		btnNewGame.setFont(new Font("Courier", Font.BOLD, 25));
+		btnNewGame.setFocusable(false);
 		btnNewGame.setBounds((getWidth() / 2) - btnW / 2, getHeight() - (int) (getHeight() * 0.60), btnW, btnH);
 		mainPane.add(btnNewGame);
 
 		// Salir
-		JButton btnQuit = new JButton("Salir");
-
+		JButton btnQuit = new JButton("Irse del pais");
+		btnQuit.setFont(new Font("Courier", Font.BOLD, 25));
+		btnQuit.setFocusable(false);
 		btnQuit.setBounds((this.getWidth() / 2) - btnW / 2, this.getHeight() - (int) (this.getHeight() * 0.40), btnW,
 				btnH);
 		mainPane.add(btnQuit);

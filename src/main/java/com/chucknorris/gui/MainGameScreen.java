@@ -23,7 +23,6 @@ import com.chucknorris.game.Game;
 import com.chucknorris.game.GameResponse;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
-import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.player.Player;
 
 public class MainGameScreen extends JFrame {
