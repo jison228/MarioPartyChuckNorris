@@ -8,18 +8,18 @@ import java.util.List;
 
 public class DolarPercentagePlayersSubstractor extends PercentagePlayersCurrencySubstractor implements DolarSubstractor {
 
-    public DolarPercentagePlayersSubstractor(int percentage) {
-        super(percentage);
-    }
+	public DolarPercentagePlayersSubstractor(int percentage) {
+		super(percentage);
+	}
 
-    @Override
-    public void apply(Player playerExecutor, List<Player> players, GameContext context) {
-        double dolar = 0;
+	@Override
+	public void apply(Player playerExecutor, List<Player> players, GameContext context) {
+		double dolar = 0;
 
-        for (Player player : players) {
-            dolar += player.substractCurrency(this);
-        }
+		for (Player player : players) {
+			dolar += player.substractCurrency(this);
+		}
 
-        playerExecutor.addDolar(dolar);
-    }
+		playerExecutor.addDolar(dolar);
+	}
 }
