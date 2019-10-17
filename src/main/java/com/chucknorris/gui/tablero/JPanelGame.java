@@ -1,4 +1,4 @@
-package com.chucknorris.gui;
+package com.chucknorris.gui.tablero;
 
 import java.awt.Color;
 import java.awt.Font;

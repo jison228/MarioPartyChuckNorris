@@ -6,10 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.chucknorris.gui.NewGameScreen;
+import com.chucknorris.gui.gameoptions.NewGameScreen;
 
-import java.awt.SystemColor;
-import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JButton;
 
@@ -44,19 +42,18 @@ public class TitleScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public TitleScreen() {
-		// JPanel config
-		setResizable(false);
-		setBackground(Color.LIGHT_GRAY);
+		// JFrame config
+		setTitle("ELECCIONES PRESIDENCIALES 2019");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1280, 720);
+		setResizable(false);
 
 		// mainPane config
-		mainPane = new TitleImagePanel("images/portada.jpg");
-		mainPane.setBackground(SystemColor.scrollbar);
-		mainPane.setBorder(new EmptyBorder(0,0,0,0));
+		mainPane = new TitleImagePanel("images/backgrounds/portada.jpg");
+		mainPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		setContentPane(mainPane);
 		mainPane.setLayout(null);
-		
+
 		// Botones
 		int btnW = 400;
 		int btnH = 80;
@@ -75,7 +72,7 @@ public class TitleScreen extends JFrame {
 		btnQuit.setBounds((this.getWidth() / 2) - btnW / 2, this.getHeight() - (int) (this.getHeight() * 0.40), btnW,
 				btnH);
 		mainPane.add(btnQuit);
-		
+
 		// Acciones de los botones
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

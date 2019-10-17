@@ -1,4 +1,4 @@
-package com.chucknorris.gui;
+package com.chucknorris.gui.tablero;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -23,6 +23,7 @@ import com.chucknorris.game.Game;
 import com.chucknorris.game.GameResponse;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
+import com.chucknorris.gui.GameInformation;
 import com.chucknorris.player.Player;
 
 public class MainGameScreen extends JFrame {
@@ -61,7 +62,7 @@ public class MainGameScreen extends JFrame {
 					listaP.add(p2);
 					listaP.add(p3);
 					listaP.add(p4);
-					GameInformation test = new GameInformation(listaP, mapa1, 150, new Dice(1, 6), 20);
+					GameInformation test = new GameInformation(listaP, mapa1,new Dice(1, 6), 20,300,100,10);
 
 					MainGameScreen frame = new MainGameScreen(test);
 					frame.setVisible(true);

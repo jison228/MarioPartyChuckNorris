@@ -21,7 +21,7 @@ public class TitleImagePanel extends JPanel {
 		try {
 			image = ImageIO.read(new File(imagePath));
 		} catch (IOException ex) {
-			System.out.println("Fail to load image");
+			System.out.println(ex.getMessage());
 		}
 	}
 
