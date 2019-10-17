@@ -11,6 +11,7 @@ public class AlexCaniggia extends Player {
 		super("Alex Caniggia", pesos, dolares);
 	}
 
+	@Override
 	public void applyPowerup(List<Player> players, GameContext gameContext) {
 		double pesosP;
 		double dolaresP;

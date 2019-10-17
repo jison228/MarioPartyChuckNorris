@@ -116,5 +116,8 @@ public class Player {
 	public void addDolaresByPercentage(double percentage) {
 		dolar = dolar * ((percentage / 100) + 1);
 	}
-
+	
+	public void applyPowerup(List<Player> players, GameContext gameContext) {
+		//DO NOTHING
+	}
 }

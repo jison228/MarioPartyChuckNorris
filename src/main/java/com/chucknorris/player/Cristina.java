@@ -10,6 +10,7 @@ public class Cristina extends Player{
 		super("Cristina", pesos, dolar);
 	}
 	
+	@Override
 	public void applyPowerup(List<Player> players, GameContext gameContext) {
 		double pesosMax = 0;
 		for(Player player : players) {
