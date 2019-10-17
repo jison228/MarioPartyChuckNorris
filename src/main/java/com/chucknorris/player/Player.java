@@ -105,4 +105,12 @@ public class Player {
 		pesos = pesos * ((percentage / 100) + 1);
 	}
 
+	public double getPesos() {
+		return Math.round(pesos * 10) / 10.0;
+	}
+
+	public double getDolares() {
+		return Math.round(dolar * 10) / 10.0;
+	}
+
 }
