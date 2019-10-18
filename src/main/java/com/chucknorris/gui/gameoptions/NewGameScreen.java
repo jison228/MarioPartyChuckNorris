@@ -65,7 +65,7 @@ public class NewGameScreen extends JFrame {
 		setResizable(false);
 
 		// JPanel config
-		newGamePane = new NewGameImagePanel("images/backgrounds/nueva_partida.jpg");
+		newGamePane = new NewGameImagePanel("nueva_partida.jpg");
 		newGamePane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		newGamePane.setLayout(null);
 		setContentPane(newGamePane);
@@ -92,9 +92,9 @@ public class NewGameScreen extends JFrame {
 		dadoMinTF.setFont(new Font("Courier", Font.BOLD, 25));
 		dadoMinTF.setForeground(Color.RED);
 		dadoMinTF.setAlignmentX(CENTER_ALIGNMENT);
+		dadoMinTF.setColumns(10);
 		dadoMinTF.setBounds(461, 250, 32, 32);
 		newGamePane.add(dadoMinTF);
-		dadoMinTF.setColumns(10);
 
 		// dado max
 		dadoMaxTF = new JTextField();
@@ -167,7 +167,7 @@ public class NewGameScreen extends JFrame {
 		precioDolarTF.setEditable(false);
 
 		// Map image
-		MapImagePanel mapImage = new MapImagePanel("images/maps/" + mapCombo.getSelectedItem().toString() + ".jpg");
+		MapImagePanel mapImage = new MapImagePanel(mapCombo.getSelectedItem().toString() + ".jpg");
 		mapImage.setBounds(70, getHeight() - (int) (getHeight() * 0.65), 300, 300);
 		newGamePane.add(mapImage);
 

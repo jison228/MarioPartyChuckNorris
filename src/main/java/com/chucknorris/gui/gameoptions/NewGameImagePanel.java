@@ -20,7 +20,7 @@ public class NewGameImagePanel extends JPanel {
 
 	public NewGameImagePanel(String imagePath) {
 		try {
-			image = ImageIO.read(new File(imagePath));
+			image = ImageIO.read(new File("images/backgrounds/" + imagePath));
 		} catch (IOException ex) {
 			System.out.println(ex.getMessage());
 		}

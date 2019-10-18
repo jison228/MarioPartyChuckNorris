@@ -19,7 +19,7 @@ public class TitleImagePanel extends JPanel {
 
 	public TitleImagePanel(String imagePath) {
 		try {
-			image = ImageIO.read(new File(imagePath));
+			image = ImageIO.read(new File("images/backgrounds/" + imagePath));
 		} catch (IOException ex) {
 			System.out.println(ex.getMessage());
 		}

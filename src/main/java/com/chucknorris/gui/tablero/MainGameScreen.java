@@ -24,6 +24,8 @@ import com.chucknorris.game.GameResponse;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.gui.GameInformation;
+import com.chucknorris.gui.compradolares.CompraDolaresFrame;
+import com.chucknorris.gui.compradolares.CompraDolaresImagePanel;
 import com.chucknorris.player.Player;
 
 public class MainGameScreen extends JFrame {
@@ -40,7 +42,6 @@ public class MainGameScreen extends JFrame {
 	JButton btnCamino2;
 	Player currentPlayer;
 	GameResponse respuesta;
-
 	/**
 	 * Launch the application.
 	 */

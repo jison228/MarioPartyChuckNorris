@@ -49,7 +49,7 @@ public class TitleScreen extends JFrame {
 		setResizable(false);
 
 		// mainPane config
-		mainPane = new TitleImagePanel("images/backgrounds/portada.jpg");
+		mainPane = new TitleImagePanel("portada.jpg");
 		mainPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		setContentPane(mainPane);
 		mainPane.setLayout(null);
