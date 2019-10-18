@@ -6,9 +6,9 @@ import com.chucknorris.rewards.GameContext;
 import com.chucknorris.rewards.substractor.dolar.DolarPercentagePlayerSubstractor;
 import com.chucknorris.rewards.substractor.pesos.PesosPercentagePlayerSubstractor;
 
-public class AlexCaniggia extends Player {
-	public AlexCaniggia(double pesos, double dolares) {
-		super("Alex Caniggia", pesos, dolares);
+public class Espert extends Player {
+	public Espert(double pesos, double dolares) {
+		super("Espert", pesos, dolares);
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class AlexCaniggia extends Player {
 	}
 
 	public String getPowerupDescription() {
-		return "Resta un 50% de los pesos de todos los jugadores y los cambia con dólares\nSOY HYPER GROSO";
+		return "Resta un 50% de los pesos de todos los jugadores y los cambia con dólares\nQUIERO T*T*S";
 	}
 
 }

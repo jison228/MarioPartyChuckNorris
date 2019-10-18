@@ -11,17 +11,17 @@ import org.junit.Test;
 import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.gamemap.nodes.PowerupNode;
-import com.chucknorris.player.AlexCaniggia;
+import com.chucknorris.player.Espert;
 import com.chucknorris.player.Player;
 
 public class PowerupNodeTest {
-	AlexCaniggia p;
+	Espert p;
 	Node nodeTest;
 	List<Player> players;
 
 	@Before
 	public void executedBeforeEach() {
-		p = new AlexCaniggia(150, 100);
+		p = new Espert(150, 100);
 		players = new ArrayList<Player>();
 		players.add(p);
 		nodeTest = new PowerupNode(null, new Position(4, 4));

@@ -27,7 +27,7 @@ public class Cristina extends Player{
 	}
 	
 	public String getPowerupDescription() {
-		return "Regala planes sociales a los más pobres\n(30% del más rico)";
+		return "Regala planes sociales a los más pobres\n(30% del más rico)\nMACRI MACHIRULO";
 	}
 
 }

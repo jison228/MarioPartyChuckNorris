@@ -8,8 +8,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AlexCaniggiaTest {
-	AlexCaniggia alesi;
+public class EspertTest {
+	Espert alesi;
 	Player p1;
 	Player p2;
 	Player p3;
@@ -17,7 +17,7 @@ public class AlexCaniggiaTest {
 
 	@Before
 	public void executedBeforeEach() {
-		alesi = new AlexCaniggia(100, 50);
+		alesi = new Espert(100, 50);
 		p1 = new Player("Dummy", 200, 200);
 		p2 = new Player("Dummy", 400, 200);
 		p3 = new Player("Dummy", 50, 60);
@@ -31,7 +31,7 @@ public class AlexCaniggiaTest {
 
 	@Test
 	public void getCharacterTest() {
-		assertEquals("Alex Caniggia", alesi.getCharacter());
+		assertEquals("Espert", alesi.getCharacter());
 	}
 
 	@Test
