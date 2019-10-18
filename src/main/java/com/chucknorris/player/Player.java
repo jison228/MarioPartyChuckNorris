@@ -108,7 +108,11 @@ public class Player {
 	public String printWithDolar() {
 		return this.character + " " + (Math.round(this.dolar * 10) / 10.0);
 	}
-
+	
+	public String printWithSalario() {
+		return this.character + " " + (Math.round(this.salario * 10) / 10.0);
+	}
+	
 	public void addPesosByPercentage(double percentage) {
 		pesos = pesos * ((percentage / 100) + 1);
 	}
