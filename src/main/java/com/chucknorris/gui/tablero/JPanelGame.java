@@ -30,7 +30,8 @@ public class JPanelGame extends JPanel {
 		this.turn = turn;
 	}
 
-	public void paint(Graphics g) {
+	@Override
+	public void paintComponent(Graphics g) {
 		
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("Tahoma",Font.BOLD,24));

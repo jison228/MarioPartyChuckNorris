@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 import com.chucknorris.commons.Dice;
@@ -23,9 +24,8 @@ import com.chucknorris.game.Game;
 import com.chucknorris.game.GameResponse;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
+import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.gui.GameInformation;
-import com.chucknorris.gui.compradolares.CompraDolaresFrame;
-import com.chucknorris.gui.compradolares.CompraDolaresImagePanel;
 import com.chucknorris.player.Player;
 
 public class MainGameScreen extends JFrame {
@@ -42,6 +42,7 @@ public class MainGameScreen extends JFrame {
 	JButton btnCamino2;
 	Player currentPlayer;
 	GameResponse respuesta;
+
 	/**
 	 * Launch the application.
 	 */
@@ -63,7 +64,7 @@ public class MainGameScreen extends JFrame {
 					listaP.add(p2);
 					listaP.add(p3);
 					listaP.add(p4);
-					GameInformation test = new GameInformation(listaP, mapa1,new Dice(1, 6), 20,300,100,10);
+					GameInformation test = new GameInformation(listaP, mapa1, new Dice(1, 6), 20, 300, 100, 10);
 
 					MainGameScreen frame = new MainGameScreen(test);
 					frame.setVisible(true);
@@ -149,7 +150,19 @@ public class MainGameScreen extends JFrame {
 		btnTirarDado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				playTurn();
-				repaint();
+				Node transitionNode = respuesta.nodePath.poll();
+				int size = respuesta.nodePath.size();
+				for (int i = 0; i < size; i++) {
+					transitionNode = respuesta.nodePath.poll();
+					currentPlayer.setNodeLocation(transitionNode);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					contentPane.paintImmediately(0, 0, 1280, 720);
+				}
 				if (respuesta.movementsLeft > 0)
 					tomarDecision(currentPlayer);
 				else
@@ -167,15 +180,28 @@ public class MainGameScreen extends JFrame {
 		btnCamino1 = new JButton("1");
 		btnCamino1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				respuesta = partida.resolveIntersection(currentPlayer, currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
-				repaint();
-				if(respuesta.movementsLeft>0) {
-					tomarDecision(currentPlayer);
-				}
-				btnTirarDado.setVisible(true);
 				btnCamino1.setVisible(false);
 				btnCamino2.setVisible(false);
-				endTurn();
+				respuesta = partida.resolveIntersectionGUI(currentPlayer,
+						currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
+				Node transitionNode;
+				int size = respuesta.nodePath.size();
+				for (int i = 0; i < size; i++) {
+					transitionNode = respuesta.nodePath.poll();
+					currentPlayer.setNodeLocation(transitionNode);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					contentPane.paintImmediately(0, 0, 1280, 720);
+				}
+				if (respuesta.movementsLeft > 0) {
+					tomarDecision(currentPlayer);
+				} else
+					endTurn();
+				btnTirarDado.setVisible(true);
 				gamePanel.actualizar(partida.getCurrentTurn());
 				repaint();
 			}
@@ -189,15 +215,28 @@ public class MainGameScreen extends JFrame {
 		btnCamino2 = new JButton("2");
 		btnCamino2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				respuesta = partida.resolveIntersection(currentPlayer, currentPlayer.getNodeLocation().nextNodes().get(1), respuesta.movementsLeft);
-				repaint();
-				if(respuesta.movementsLeft>0) {
-					tomarDecision(currentPlayer);
-				}
-				btnTirarDado.setVisible(true);
 				btnCamino1.setVisible(false);
 				btnCamino2.setVisible(false);
-				endTurn();
+				respuesta = partida.resolveIntersectionGUI(currentPlayer,
+						currentPlayer.getNodeLocation().nextNodes().get(1), respuesta.movementsLeft);
+				Node transitionNode;
+				int size = respuesta.nodePath.size();
+				for (int i = 0; i < size; i++) {
+					transitionNode = respuesta.nodePath.poll();
+					currentPlayer.setNodeLocation(transitionNode);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					contentPane.paintImmediately(0, 0, 1280, 720);
+				}
+				if (respuesta.movementsLeft > 0) {
+					tomarDecision(currentPlayer);
+				} else 
+					endTurn();
+				btnTirarDado.setVisible(true);
 				gamePanel.actualizar(partida.getCurrentTurn());
 				repaint();
 			}
@@ -210,7 +249,7 @@ public class MainGameScreen extends JFrame {
 
 	public void playTurn() {
 		currentPlayer = partida.getPlayerList().get(partida.getCurrentTurn() % 4);
-		respuesta = partida.play(currentPlayer);
+		respuesta = partida.playGUI(currentPlayer);
 	}
 
 	public void endTurn() {
@@ -229,4 +268,5 @@ public class MainGameScreen extends JFrame {
 		btnCamino1.setVisible(true);
 		btnCamino2.setVisible(true);
 	}
+
 }
