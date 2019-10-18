@@ -13,6 +13,7 @@ public class Player {
 	private Node nodeLocation;
 	private double pesos;
 	private double dolar;
+	private double salario;
 
 	public Player(String character, int coins) {
 		this.character = character;
@@ -30,6 +31,13 @@ public class Player {
 		this.character = character;
 		this.pesos = pesos;
 		this.dolar = dolar;
+	}
+	
+	public Player(String character, double pesos, double dolar, double salario) {
+		this.character = character;
+		this.pesos = pesos;
+		this.dolar = dolar;
+		this.salario = salario;
 	}
 
 	public int getCoins() {
@@ -107,6 +115,10 @@ public class Player {
 
 	public void addDolaresByPercentage(double percentage) {
 		dolar = dolar * ((percentage / 100) + 1);
+	}
+	
+	public void addSalarioByPercentage(double percentage) {
+		salario = salario * ((percentage / 100) + 1);
 	}
 
 }
