@@ -52,9 +52,14 @@ class MapFileCSVReaderSpec extends Specification {
             Assert.assertNotNull(node)
 
             assertNode(node, nodePresenter, positionPresenter, entry.getValue())
+
+            println node.present(nodePresenter, positionPresenter)
+            node.nextNodes().forEach({ nextnode -> println "nexxt node :"+ nextnode.present(nodePresenter, positionPresenter) })
+            println("end node print")
         }
 
         Node previousToFinalNode = gameMap.getNode(previousToFinalNodePosition)
+
         Node finalNode = gameMap.getNode(finalNodePosition)
 
         Assert.assertTrue(previousToFinalNode.isThereSameReferenceNextNode(finalNode))
