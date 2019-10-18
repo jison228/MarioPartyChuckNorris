@@ -5,7 +5,9 @@ import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.player.Player;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class Game {
 	private List<Player> players;
@@ -35,6 +37,23 @@ public class Game {
 
 		return buildGameResponse(movementsLeft);
 	}
+	
+	public GameResponse playGUI(Player player) {
+		int diceResult = dice.roll();
+		
+		Queue<Node> nodePath = new LinkedList<Node>();
+		
+		int movementsLeft = gameMap.movePlayerGUI(player, diceResult, nodePath);
+		
+		applyRewardIfApplies(player, movementsLeft);
+		
+		GameResponse resultado = new GameResponse();
+		resultado.movementsLeft = movementsLeft;
+		resultado.diceResult = diceResult;
+		resultado.nodePath = nodePath;
+		
+		return resultado;
+	}
 
 	public GameResponse resolveIntersection(Player player, Node nextNode, int movementsLeft) {
 		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft);
@@ -44,6 +63,20 @@ public class Game {
 		return buildGameResponse(movementsLeft);
 	}
 
+	public GameResponse resolveIntersectionGUI(Player player, Node nextNode, int movementsLeft) {
+		Queue<Node> nodePath = new LinkedList<Node>();
+		
+		movementsLeft = gameMap.movePlayerFromIntersectionGUI(player, nextNode, movementsLeft, nodePath);
+		
+		applyRewardIfApplies(player, movementsLeft);
+		
+		GameResponse resultado = new GameResponse();
+		resultado.movementsLeft = movementsLeft;
+		resultado.nodePath = nodePath;
+		
+		return resultado;
+	}
+	
 	private GameResponse buildGameResponse(int movementsLeft) {
 		GameResponse gameResponse = new GameResponse();
 
