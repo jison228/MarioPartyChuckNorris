@@ -56,10 +56,6 @@ public class Player {
 		return this.character + " " + this.coins; // + Nodo.toString();
 	}
 
-	public String printWithPesos() {
-		return this.character + " " + this.pesos;
-	}
-
 	public void applyReward(List<Player> players, GameContext gameContext) {
 		nodeLocation.applyReward(this, players, gameContext);
 	}
@@ -97,8 +93,12 @@ public class Player {
 		return dolarToSubstract;
 	}
 
+	public String printWithPesos() {
+		return this.character + " " + (Math.round(this.pesos * 10) / 10.0);
+	}
+	
 	public String printWithDolar() {
-		return this.character + " " + this.dolar;
+		return this.character + " " + (Math.round(this.dolar * 10) / 10.0);
 	}
 
 	public void addPesosByPercentage(double percentage) {
@@ -111,6 +111,10 @@ public class Player {
 	
 	public double getDolares() {
 		return dolar;
+	}
+	
+	public void addDolaresByPercentage(double percentage) {
+		dolar = dolar * ((percentage / 100) + 1);
 	}
 
 }
