@@ -1,13 +1,13 @@
 package com.chucknorris.gamemap.nodes;
 
-import com.chucknorris.commons.Position;
+import java.util.List;
 
-import java.util.Collections;
+import com.chucknorris.commons.Position;
 
 public class EndNode extends Node {
 
-	public EndNode(Position pos) {
-		super(Collections.emptyList(), pos);
+	public EndNode(List<Node> next, Position pos) {
+		super(next, pos);
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public final class NodeFactory {
 	public Node buildNode(Position position, String type, List<Node> nextNodes) throws Exception {
 		Class nodeClass = CATALOGED_NODES.getOrDefault(type, DEFAULT_NODE_VALUE);
 
-		Constructor constructor = nodeClass.getConstructor(ensureClass(nextNodes), ensureClass(position));
+		Constructor constructor = nodeClass.getConstructor(List.class, Position.class);
 
 		return (Node) constructor.newInstance(nextNodes, position);
 	}
