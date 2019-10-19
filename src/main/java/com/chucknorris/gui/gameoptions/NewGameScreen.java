@@ -168,7 +168,7 @@ public class NewGameScreen extends JFrame {
 		pesosTF.setEditable(false);
 		dolaresTF.setText("10");
 		dolaresTF.setEditable(false);
-		precioDolarTF.setText("20");
+		precioDolarTF.setText("10");
 		precioDolarTF.setEditable(false);
 
 		// Map image

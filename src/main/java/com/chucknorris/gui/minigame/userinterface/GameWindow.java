@@ -14,7 +14,7 @@ public class GameWindow extends JFrame {
 	public GameWindow() {
 		super("Carrera de presis");
 		setSize(SCREEN_WIDTH, 800);
-		setLocation(400, 40);
+		setLocation(400, 25);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		

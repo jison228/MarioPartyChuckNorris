@@ -51,8 +51,9 @@ public class InfoPanel extends JPanel {
 		g.drawString("PrecioDolar: $" + precioDolar, 25 , 75);
 	}
 
-	public void actualizar(Player currentPlayer, int turn) {
+	public void actualizar(Player currentPlayer, int turn, Double precioDolar) {
 		this.currentPlayer = currentPlayer;
 		this.turn = turn;
+		this.precioDolar = precioDolar;
 	}
 }

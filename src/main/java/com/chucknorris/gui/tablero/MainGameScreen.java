@@ -316,10 +316,11 @@ public class MainGameScreen extends JFrame {
 		respuesta = partida.playGUI(currentPlayer);
 	}
 
-	public void endTurn() {
+	public void endTurn() {		
+		//currentPlayer.addDolar(500);
 		if (comprarDolares) {
 			currentPlayer.cobrarSalario();
-			dolaresFrame = new CompraDolaresFrame(currentPlayer, 20);
+			dolaresFrame = new CompraDolaresFrame(currentPlayer, partida.getPrecioDolar());
 			dolaresFrame.setVisible(true);
 			comprarDolares = false;
 			dolaresFrame.addWindowListener(new WindowListener() {
@@ -384,6 +385,7 @@ public class MainGameScreen extends JFrame {
 
 	public void endTurnIndeed() {
 		if (partida.getCurrentTurn() % 4 == 3) {
+			partida.aumentarPrecioDolar();
 			minijuego = new GameWindow();
 			minijuego.startGame();
 			minijuego.addWindowListener(new WindowListener() {
@@ -424,6 +426,7 @@ public class MainGameScreen extends JFrame {
 					for(Player player:partida.getPlayerList()) {
 						if(player.getCharacter().equals(ganador1)|| player.getCharacter().equals(ganador2)) {
 							player.addPesosByPercentage(50);
+							player.addDolaresByPercentage(50);
 						}
 					}
 					repaint();
@@ -446,11 +449,11 @@ public class MainGameScreen extends JFrame {
 				ganador = player;
 			}
 		}
-		if (ganador.getDolares() > 300) {
+		if (ganador.getDolares() > 150) {
 			new Endgame(ganador).setVisible(true);
 			dispose();
 		}
-		characterPanel.actualizar(partida.getPlayerList().get(partida.getCurrentTurn() % 4), partida.getCurrentTurn());
+		characterPanel.actualizar(partida.getPlayerList().get(partida.getCurrentTurn() % 4), partida.getCurrentTurn(), partida.getPrecioDolar());
 		diceImage.setVisible(false);
 		repaint();
 	}
