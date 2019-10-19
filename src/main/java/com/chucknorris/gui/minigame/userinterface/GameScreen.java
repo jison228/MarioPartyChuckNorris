@@ -76,14 +76,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private int[] tiersSpeed= new int[10];
 	private int tier;
 	
-	public Stack<String> listaGanadores;
-	private String posicion4;
-	private String posicion3;
-	private String posicion2;
-	private String posicion1;
+
 	
-	public GameScreen(Stack<String> listaGanadores) {
-		this.listaGanadores = listaGanadores;
+	public GameScreen(){
+
 		tiersScore[0]=200;
 		tier=0;
 		for(int i=1;i<10;i++) {
@@ -126,6 +122,13 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		thread = new Thread(this);
 		thread.start();
 	}
+
+	public Stack<String> listaGanadores = new Stack<String>();
+	private int posicionJugador1;
+	private int posicionJugador2;
+	private int posicionJugador3;
+	private int posicionJugador4;
+	private int posicion=4;
 	
 	public void gameUpdate() {
 		if (gameState == GAME_PLAYING_STATE) {
@@ -156,6 +159,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 				mainCharacter.playDeadSound();
 				if(murioJugador1==0) {
 					listaGanadores.push("Espert");
+					posicionJugador1=posicion;
+					posicion--;
 					murioJugador1++;
 				}
 				mainCharacter.dead(true);
@@ -165,6 +170,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 				mainCharacter2.playDeadSound();
 				if(murioJugador2==0) {
 					listaGanadores.push("Cristina");
+					posicionJugador2=posicion;
+					posicion--;
 					murioJugador2++;
 				}
 				mainCharacter2.dead(true);
@@ -174,6 +181,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 				mainCharacter3.playDeadSound();
 				if(murioJugador3==0) {
 					listaGanadores.push("Macri");
+					posicionJugador3=posicion;
+					posicion--;
 					murioJugador3++;
 				}
 				mainCharacter3.dead(true);
@@ -183,6 +192,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 				mainCharacter4.playDeadSound();
 				if(murioJugador4==0) {
 					listaGanadores.push("Del Caño");
+					posicionJugador4=posicion;
+					posicion--;
 					murioJugador4++;
 				}
 				mainCharacter4.dead(true);
@@ -245,11 +256,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 				g.drawImage(gameOverButtonImage, 200, 180, null);
 				g.setColor(Color.BLACK);
 				g.setFont(new Font("Courier New", Font.BOLD, 16));
-				g.drawString("1er puesto:" +posicion1, 100, 360);
-				g.drawString("2er puesto:" +posicion2, 100, 380);
-				g.drawString("3er puesto:" +posicion3, 500, 360);
-				g.drawString("4er puesto:" +posicion4, 500, 380);
-				
+				g.drawString("Posicion:" +posicionJugador1 , 600, 50);
+				g.drawString("Posicion:" +posicionJugador2 , 600, 250);
+				g.drawString("Posicion:" +posicionJugador3 , 600, 450);
+				g.drawString("Posicion:" +posicionJugador4 , 600, 650);
 			}
 			break;
 		}
@@ -290,10 +300,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			lastTime = System.nanoTime();
 		}
 		if (gameState==GAME_OVER_STATE) {
-			 posicion1 =listaGanadores.pop();
-			 posicion2 =listaGanadores.pop();
-			 posicion3 =listaGanadores.pop();
-			 posicion4 =listaGanadores.pop();
+			 
 		}
 	}
 

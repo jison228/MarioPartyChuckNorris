@@ -8,8 +8,12 @@ public class GameWindow extends JFrame {
 	
 	public static final int SCREEN_WIDTH = 800;
 	private GameScreen gameScreen;
+
 	public Stack<String> listaGanadores = new Stack<String>();
 	
+
+	private Stack<String> listaGanadores;
+
 	public GameWindow() {
 		super("Carrera de presis");
 		setSize(SCREEN_WIDTH, 800);
