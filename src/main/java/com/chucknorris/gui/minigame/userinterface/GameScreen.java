@@ -2,6 +2,7 @@ package com.chucknorris.gui.minigame.userinterface;
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -33,6 +34,7 @@ import com.chucknorris.gui.minigame.gameobject.MainCharacter2;
 import com.chucknorris.gui.minigame.gameobject.MainCharacter3;
 import com.chucknorris.gui.minigame.gameobject.MainCharacter4;
 import com.chucknorris.gui.minigame.util.Resource;
+import com.sun.javafx.embed.swing.Disposer;
 
 public class GameScreen extends JPanel implements Runnable, KeyListener {
 
@@ -66,7 +68,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private int gameState = START_GAME_STATE;
 	
 	private BufferedImage hardstyleImage;
-	private BufferedImage replayButtonImage;
 	private BufferedImage gameOverButtonImage;
 
 	private Graphics g;
@@ -85,7 +86,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		for(int j=1;j<10;j++) {
 			tiersSpeed[j]+=tiersSpeed[j-1]+2;
 		}
-		
 		mainCharacter = new MainCharacter();
 		mainCharacter2 = new MainCharacter2();
 		mainCharacter3 = new MainCharacter3();
@@ -99,7 +99,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		land3 = new Land3(GameWindow.SCREEN_WIDTH, mainCharacter3);
 		land4 = new Land4(GameWindow.SCREEN_WIDTH, mainCharacter4);
 		hardstyleImage = Resource.getResouceImage("data/hardstyle.png");
-		replayButtonImage = Resource.getResouceImage("data/replay_button.png");
 		gameOverButtonImage = Resource.getResouceImage("data/gameover_text.png");
 		enemiesManager = new EnemiesManager(mainCharacter);
 		enemiesManager2 = new EnemiesManager2(mainCharacter2);
@@ -121,6 +120,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		thread.start();
 	}
 	public Stack<String> listaGanadores = new Stack<String>();
+	private String posicion4;
+	private String posicion3;
+	private String posicion2;
+	private String posicion1;
 	
 	public void gameUpdate() {
 		if (gameState == GAME_PLAYING_STATE) {
@@ -194,18 +197,25 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		this.g = e;
 		g.setColor(Color.decode("#f7f7f7"));
 		g.fillRect(0, 0, getWidth(), getHeight());
-		
 		switch (gameState) {
-		case START_GAME_STATE:
+		case START_GAME_STATE:		
 			mainCharacter.draw(g);
 			mainCharacter2.draw(g);
 			mainCharacter3.draw(g);
 			mainCharacter4.draw(g);
+			g.setColor(Color.BLACK);
+			g.setFont(new Font("Courier New", Font.BOLD, 14));
+			g.drawString("Salte con 'A'", 200, 100);
+			g.drawString("Salte con 'B'", 200, 300);
+			g.drawString("Salte con 'P'", 200, 500);
+			g.drawString("Salte con '.'", 200, 700);
+		    g.setFont(new Font("Tahoma", Font.BOLD, 20));
+			g.drawString("Presionar espacio y A SALTAR", 300, 400);
 			break;
 		case GAME_PLAYING_STATE:
 			if(mainCharacter.score>1660||mainCharacter2.score>1660||mainCharacter3.score>1660||mainCharacter4.score>1660)
 			g.drawImage(hardstyleImage, 0, 0, getWidth(), getHeight(), null);
-
+		
 		case GAME_OVER_STATE:
 			clouds.draw(g);
 			clouds2.draw(g);
@@ -224,12 +234,20 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			mainCharacter3.draw(g);
 			mainCharacter4.draw(g);
 			g.setColor(Color.BLACK);
+			g.setFont(new Font("Courier New", Font.BOLD, 14));
 			g.drawString("Puntaje " + mainCharacter.score, 500, 20);
 			g.drawString("Puntaje " + mainCharacter2.score, 500, 220);
 			g.drawString("Puntaje " + mainCharacter3.score, 500, 420);
 			g.drawString("Puntaje " + mainCharacter4.score, 500, 620);
 			if (gameState == GAME_OVER_STATE) {
-				g.drawImage(gameOverButtonImage, 200, 30, null);
+				g.drawImage(gameOverButtonImage, 200, 180, null);
+				g.setColor(Color.BLACK);
+				g.setFont(new Font("Courier New", Font.BOLD, 16));
+				g.drawString("1er puesto:" +posicion1, 100, 360);
+				g.drawString("2er puesto:" +posicion2, 100, 380);
+				g.drawString("3er puesto:" +posicion3, 500, 360);
+				g.drawString("4er puesto:" +posicion4, 500, 380);
+				
 			}
 			break;
 		}
@@ -248,7 +266,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
 		long endProcessGame;
 		long lag = 0;
-
 		while (gameState==GAME_PLAYING_STATE||gameState==START_GAME_STATE) {
 			gameUpdate();
 			repaint();
@@ -271,10 +288,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			lastTime = System.nanoTime();
 		}
 		if (gameState==GAME_OVER_STATE) {
-			System.out.println(listaGanadores.pop());
-			System.out.println(listaGanadores.pop());
-			System.out.println(listaGanadores.pop());
-			System.out.println(listaGanadores.pop());
+			 posicion1 =listaGanadores.pop();
+			 posicion2 =listaGanadores.pop();
+			 posicion3 =listaGanadores.pop();
+			 posicion4 =listaGanadores.pop();
 		}
 	}
 
@@ -286,13 +303,13 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			if (character=='b') {
 				mainCharacter2.jump();
 			}
-			if (character==' ') {
+			if (character=='a') {
 				mainCharacter.jump();
 			}	
-			if (character=='c') {
+			if (character=='p') {
 				mainCharacter3.jump();
 			}	
-			if (character=='m') {
+			if (character=='.') {
 				mainCharacter4.jump();
 			}	
 		}
@@ -344,6 +361,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		enemiesManager.reset();
 		mainCharacter.dead(false);
 		mainCharacter.reset();
+		
 	}
 
 }
