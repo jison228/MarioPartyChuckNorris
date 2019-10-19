@@ -39,7 +39,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private static final int START_GAME_STATE = 0;
 	private static final int GAME_PLAYING_STATE = 1;
 	private static final int GAME_OVER_STATE = 2;
-	
 	public String test;
 	private Land land;
 	private Land2 land2;
@@ -65,7 +64,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private int murioJugador3=0;
 	private int murioJugador4=0;
 	private int gameState = START_GAME_STATE;
-
+	
+	private BufferedImage hardstyleImage;
 	private BufferedImage replayButtonImage;
 	private BufferedImage gameOverButtonImage;
 
@@ -98,6 +98,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		land2 = new Land2(GameWindow.SCREEN_WIDTH, mainCharacter2);
 		land3 = new Land3(GameWindow.SCREEN_WIDTH, mainCharacter3);
 		land4 = new Land4(GameWindow.SCREEN_WIDTH, mainCharacter4);
+		hardstyleImage = Resource.getResouceImage("data/hardstyle.png");
 		replayButtonImage = Resource.getResouceImage("data/replay_button.png");
 		gameOverButtonImage = Resource.getResouceImage("data/gameover_text.png");
 		enemiesManager = new EnemiesManager(mainCharacter);
@@ -118,7 +119,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	public void startGame() {
 		thread = new Thread(this);
 		thread.start();
-		musica1.play();
 	}
 	public Stack<String> listaGanadores = new Stack<String>();
 	
@@ -203,6 +203,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			mainCharacter4.draw(g);
 			break;
 		case GAME_PLAYING_STATE:
+			if(mainCharacter.score>1660||mainCharacter2.score>1660||mainCharacter3.score>1660||mainCharacter4.score>1660)
+			g.drawImage(hardstyleImage, 0, 0, getWidth(), getHeight(), null);
+
 		case GAME_OVER_STATE:
 			clouds.draw(g);
 			clouds2.draw(g);
@@ -227,7 +230,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			g.drawString("Puntaje " + mainCharacter4.score, 500, 620);
 			if (gameState == GAME_OVER_STATE) {
 				g.drawImage(gameOverButtonImage, 200, 30, null);
-				g.drawImage(replayButtonImage, 283, 50, null);
 			}
 			break;
 		}
@@ -306,6 +308,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			case START_GAME_STATE:
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					gameState = GAME_PLAYING_STATE;
+					musica1.play();
 				}
 				break;
 			case GAME_PLAYING_STATE:
