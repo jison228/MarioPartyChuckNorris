@@ -49,6 +49,7 @@ public class MainGameScreen extends JFrame {
 	private boolean comprarDolares;
 	private static Object lock = new Object();
 	CompraDolaresFrame dolaresFrame;
+	JPanelGame gamePanel;
 
 	/**
 	 * Launch the application.
@@ -106,7 +107,7 @@ public class MainGameScreen extends JFrame {
 		playersPanel.setBounds(1000, 0, 280, 450);
 		contentPane.add(playersPanel);
 		playersPanel.setVisible(false);
-		
+
 		// Panel para chat (no implementado)
 		JPanel chatPanel = new JPanel();
 		chatPanel.setBackground(Color.lightGray);
@@ -118,9 +119,79 @@ public class MainGameScreen extends JFrame {
 		chatLbl.setFont(new Font("Tahoma", Font.BOLD, 24));
 		chatPanel.add(chatLbl);
 
+		// BOTONES DE DECISION (experimentacion)
+		// 1
+		btnCamino1 = new DecisionButton();
+		btnCamino1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnCamino1.setVisible(false);
+				btnCamino2.setVisible(false);
+				respuesta = partida.resolveIntersectionGUI(currentPlayer,
+						currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
+				Node transitionNode;
+				int size = respuesta.nodePath.size();
+				for (int i = 0; i < size; i++) {
+					transitionNode = respuesta.nodePath.poll();
+					if (transitionNode.getType().equals("END"))
+						comprarDolares = true;
+					currentPlayer.setNodeLocation(transitionNode);
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					contentPane.paintImmediately(0, 0, 1280, 720);
+				}
+				if (respuesta.movementsLeft > 0) {
+					tomarDecision(currentPlayer);
+				} else
+					endTurn();
+				gamePanel.actualizar(partida.getCurrentTurn());
+				repaint();
+			}
+		});
+		contentPane.add(btnCamino1);
+		btnCamino1.setVisible(false);
+		btnCamino1.setFocusable(false);
+
+		// 2
+		btnCamino2 = new DecisionButton();
+		btnCamino2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnCamino1.setVisible(false);
+				btnCamino2.setVisible(false);
+				respuesta = partida.resolveIntersectionGUI(currentPlayer,
+						currentPlayer.getNodeLocation().nextNodes().get(1), respuesta.movementsLeft);
+				Node transitionNode;
+				int size = respuesta.nodePath.size();
+				for (int i = 0; i < size; i++) {
+					transitionNode = respuesta.nodePath.poll();
+					if (transitionNode.getType().equals("END"))
+						comprarDolares = true;
+					currentPlayer.setNodeLocation(transitionNode);
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					contentPane.paintImmediately(0, 0, 1280, 720);
+				}
+				if (respuesta.movementsLeft > 0) {
+					tomarDecision(currentPlayer);
+				} else
+					endTurn();
+				gamePanel.actualizar(partida.getCurrentTurn());
+				repaint();
+			}
+		});
+		contentPane.add(btnCamino2);
+		btnCamino2.setVisible(false);
+		btnCamino2.setFocusable(false);
+
 		// Panel del juego
-		JPanelGame gamePanel = new JPanelGame(partida.getGameMap().getMap(), partida.getPlayerList(),
-				partida.getCurrentTurn());
+		gamePanel = new JPanelGame(partida.getGameMap().getMap(), partida.getPlayerList(), partida.getCurrentTurn());
 		gamePanel.setBackground(SystemColor.text);
 		gamePanel.setBounds(0, 0, 1280, 600);
 		contentPane.add(gamePanel);
@@ -187,7 +258,7 @@ public class MainGameScreen extends JFrame {
 				repaint();
 			}
 		});
-		btnTirarDado.setBounds(665, 5, 150, 60);
+		btnTirarDado.setBounds(840, 5, 150, 60);
 		buttonPanel.add(btnTirarDado);
 		btnTirarDado.setFocusable(false);
 
@@ -202,79 +273,6 @@ public class MainGameScreen extends JFrame {
 		btnEndTurn.setFocusable(false);
 		btnEndTurn.setBounds(840, 5, 150, 60);
 		buttonPanel.add(btnEndTurn);
-
-//BOTONES DE DECISION (experimentacion)
-		// 1
-		btnCamino1 = new JButton("1");
-		btnCamino1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnCamino1.setVisible(false);
-				btnCamino2.setVisible(false);
-				respuesta = partida.resolveIntersectionGUI(currentPlayer,
-						currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
-				Node transitionNode;
-				int size = respuesta.nodePath.size();
-				for (int i = 0; i < size; i++) {
-					transitionNode = respuesta.nodePath.poll();
-					if (transitionNode.getType().equals("END"))
-						comprarDolares = true;
-					currentPlayer.setNodeLocation(transitionNode);
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					contentPane.paintImmediately(0, 0, 1280, 720);
-				}
-				if (respuesta.movementsLeft > 0) {
-					tomarDecision(currentPlayer);
-				} else
-					endTurn();
-				gamePanel.actualizar(partida.getCurrentTurn());
-				repaint();
-			}
-		});
-		btnCamino1.setForeground(Color.red);
-		contentPane.add(btnCamino1);
-		btnCamino1.setFocusable(false);
-		btnCamino1.setVisible(false);
-
-		// 2
-		btnCamino2 = new JButton("2");
-		btnCamino2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnCamino1.setVisible(false);
-				btnCamino2.setVisible(false);
-				respuesta = partida.resolveIntersectionGUI(currentPlayer,
-						currentPlayer.getNodeLocation().nextNodes().get(1), respuesta.movementsLeft);
-				Node transitionNode;
-				int size = respuesta.nodePath.size();
-				for (int i = 0; i < size; i++) {
-					transitionNode = respuesta.nodePath.poll();
-					if (transitionNode.getType().equals("END"))
-						comprarDolares = true;
-					currentPlayer.setNodeLocation(transitionNode);
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					contentPane.paintImmediately(0, 0, 1280, 720);
-				}
-				if (respuesta.movementsLeft > 0) {
-					tomarDecision(currentPlayer);
-				} else
-					endTurn();
-				gamePanel.actualizar(partida.getCurrentTurn());
-				repaint();
-			}
-		});
-		btnCamino2.setForeground(Color.red);
-		contentPane.add(btnCamino2);
-		btnCamino2.setFocusable(false);
-		btnCamino2.setVisible(false);
 
 	}
 
