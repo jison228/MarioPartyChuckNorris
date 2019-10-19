@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +19,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 import com.chucknorris.commons.Dice;
@@ -26,6 +28,7 @@ import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.gui.GameInformation;
+import com.chucknorris.gui.compradolares.CompraDolaresFrame;
 import com.chucknorris.player.Player;
 
 public class MainGameScreen extends JFrame {
@@ -40,8 +43,12 @@ public class MainGameScreen extends JFrame {
 	JButton btnTirarDado;
 	JButton btnCamino1;
 	JButton btnCamino2;
+	JButton btnEndTurn;
 	Player currentPlayer;
 	GameResponse respuesta;
+	private boolean comprarDolares;
+	private static Object lock = new Object();
+	CompraDolaresFrame dolaresFrame;
 
 	/**
 	 * Launch the application.
@@ -55,10 +62,10 @@ public class MainGameScreen extends JFrame {
 					GameMap mapa1;
 					MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
 					mapa1 = mapFileCSVReader.buildGameMap();
-					Player p1 = new Player("Milei", 1450, 150);
-					Player p2 = new Player("Morsa", 150, 200);
-					Player p3 = new Player("Cristina", 500, 600);
-					Player p4 = new Player("Mauricio", 150, 900);
+					Player p1 = new Player("Milei", 1450, 150, 800);
+					Player p2 = new Player("Morsa", 150, 200, 900);
+					Player p3 = new Player("Cristina", 500, 600, 800);
+					Player p4 = new Player("Mauricio", 150, 900, 800);
 					List<Player> listaP = new ArrayList<Player>();
 					listaP.add(p1);
 					listaP.add(p2);
@@ -79,6 +86,7 @@ public class MainGameScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public MainGameScreen(GameInformation info) {
+		comprarDolares = false;
 		// Iniciar partida
 		partida = new Game(info.players, info.gameMap);
 		partida.getGameMap().initializePlayers(partida.getPlayerList());
@@ -93,26 +101,12 @@ public class MainGameScreen extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		// Panel del juego
-		JPanelGame gamePanel = new JPanelGame(partida.getGameMap().getMap(), partida.getPlayerList(),
-				partida.getCurrentTurn());
-		gamePanel.setBackground(SystemColor.text);
-		gamePanel.setBounds(0, 0, 1280, 600);
-		contentPane.add(gamePanel);
-		gamePanel.setLayout(null);
-
 		// Panel para jugadores
 		JPanelPlayers playersPanel = new JPanelPlayers(info.players);
 		playersPanel.setBounds(1000, 0, 280, 450);
 		contentPane.add(playersPanel);
 		playersPanel.setVisible(false);
 		
-		//Panel para descripcion
-		JPanel description = new JPanel();
-		description.setBounds(0,0,280, 720);
-		contentPane.add(description);
-		description.setBackground(Color.lightGray);
-
 		// Panel para chat (no implementado)
 		JPanel chatPanel = new JPanel();
 		chatPanel.setBackground(Color.lightGray);
@@ -123,6 +117,20 @@ public class MainGameScreen extends JFrame {
 		JLabel chatLbl = new JLabel("CHAT");
 		chatLbl.setFont(new Font("Tahoma", Font.BOLD, 24));
 		chatPanel.add(chatLbl);
+
+		// Panel del juego
+		JPanelGame gamePanel = new JPanelGame(partida.getGameMap().getMap(), partida.getPlayerList(),
+				partida.getCurrentTurn());
+		gamePanel.setBackground(SystemColor.text);
+		gamePanel.setBounds(0, 0, 1280, 600);
+		contentPane.add(gamePanel);
+		gamePanel.setLayout(null);
+
+		// Panel para descripcion
+		JPanel description = new JPanel();
+		description.setBounds(0, 0, 280, 720);
+		contentPane.add(description);
+		description.setBackground(Color.lightGray);
 
 		// Panel para el boton
 		JPanel buttonPanel = new JPanel();
@@ -160,6 +168,8 @@ public class MainGameScreen extends JFrame {
 				int size = respuesta.nodePath.size();
 				for (int i = 0; i < size; i++) {
 					transitionNode = respuesta.nodePath.poll();
+					if (transitionNode.getType().equals("END"))
+						comprarDolares = true;
 					currentPlayer.setNodeLocation(transitionNode);
 					try {
 						Thread.sleep(100);
@@ -177,9 +187,21 @@ public class MainGameScreen extends JFrame {
 				repaint();
 			}
 		});
-		btnTirarDado.setBounds(800, 5, 150, 60);
+		btnTirarDado.setBounds(665, 5, 150, 60);
 		buttonPanel.add(btnTirarDado);
 		btnTirarDado.setFocusable(false);
+
+		btnEndTurn = new JButton("FINALIZAR TURNO");
+		btnEndTurn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				endTurnIndeed();
+			}
+		});
+		btnEndTurn.setVisible(false);
+		btnEndTurn.setForeground(Color.RED);
+		btnEndTurn.setFocusable(false);
+		btnEndTurn.setBounds(840, 5, 150, 60);
+		buttonPanel.add(btnEndTurn);
 
 //BOTONES DE DECISION (experimentacion)
 		// 1
@@ -194,9 +216,11 @@ public class MainGameScreen extends JFrame {
 				int size = respuesta.nodePath.size();
 				for (int i = 0; i < size; i++) {
 					transitionNode = respuesta.nodePath.poll();
+					if (transitionNode.getType().equals("END"))
+						comprarDolares = true;
 					currentPlayer.setNodeLocation(transitionNode);
 					try {
-						Thread.sleep(500);
+						Thread.sleep(100);
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -207,7 +231,6 @@ public class MainGameScreen extends JFrame {
 					tomarDecision(currentPlayer);
 				} else
 					endTurn();
-				btnTirarDado.setVisible(true);
 				gamePanel.actualizar(partida.getCurrentTurn());
 				repaint();
 			}
@@ -229,9 +252,11 @@ public class MainGameScreen extends JFrame {
 				int size = respuesta.nodePath.size();
 				for (int i = 0; i < size; i++) {
 					transitionNode = respuesta.nodePath.poll();
+					if (transitionNode.getType().equals("END"))
+						comprarDolares = true;
 					currentPlayer.setNodeLocation(transitionNode);
 					try {
-						Thread.sleep(500);
+						Thread.sleep(100);
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -240,9 +265,8 @@ public class MainGameScreen extends JFrame {
 				}
 				if (respuesta.movementsLeft > 0) {
 					tomarDecision(currentPlayer);
-				} else 
+				} else
 					endTurn();
-				btnTirarDado.setVisible(true);
 				gamePanel.actualizar(partida.getCurrentTurn());
 				repaint();
 			}
@@ -251,6 +275,7 @@ public class MainGameScreen extends JFrame {
 		contentPane.add(btnCamino2);
 		btnCamino2.setFocusable(false);
 		btnCamino2.setVisible(false);
+
 	}
 
 	public void playTurn() {
@@ -259,10 +284,59 @@ public class MainGameScreen extends JFrame {
 	}
 
 	public void endTurn() {
-		if (partida.getCurrentTurn() % 4 == 3) {
-			System.out.println("TODOS A JUGAR");
+		if (comprarDolares) {
+			currentPlayer.cobrarSalario();
+			dolaresFrame = new CompraDolaresFrame(currentPlayer, 20);
+			dolaresFrame.setVisible(true);
+			comprarDolares = false;
+			dolaresFrame.addWindowListener(new WindowListener() {
+
+				@Override
+				public void windowOpened(WindowEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void windowIconified(WindowEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void windowDeiconified(WindowEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void windowDeactivated(WindowEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void windowClosing(WindowEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void windowClosed(WindowEvent e) {
+					repaint();
+
+				}
+
+				@Override
+				public void windowActivated(WindowEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+			});
 		}
-		partida.endTurn();
+		btnEndTurn.setVisible(true);
+		btnTirarDado.setVisible(false);
+		repaint();
 	}
 
 	public void tomarDecision(Player currentPlayer) {
@@ -275,4 +349,12 @@ public class MainGameScreen extends JFrame {
 		btnCamino2.setVisible(true);
 	}
 
+	public void endTurnIndeed() {
+		if (partida.getCurrentTurn() % 4 == 3) {
+			System.out.println("TODOS A JUGAR");
+		}
+		partida.endTurn();
+		btnTirarDado.setVisible(true);
+		btnEndTurn.setVisible(false);
+	}
 }

@@ -55,7 +55,7 @@ public class JPanelGame extends JPanel {
 				g.setColor(Color.RED);
 			} else if (entry2.getValue().getType() == "YELLOW") {
 				g.setColor(Color.YELLOW);
-			} else if (entry2.getValue().getType() == "WHITE") {
+			} else if (entry2.getValue().getType() == "END") {
 				g.setColor(Color.BLACK);
 			} else
 				g.setColor(Color.ORANGE);

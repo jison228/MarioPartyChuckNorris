@@ -17,6 +17,7 @@ public final class NodeFactory {
 		CATALOGED_NODES.put("YELLOW", YellowNode.class);
 		CATALOGED_NODES.put("RED", RedNode.class);
 		CATALOGED_NODES.put("WHITE", WhiteNode.class);
+		CATALOGED_NODES.put("END", EndNode.class);
 
 		CATALOGED_NODES.put("IDP", InvDolaresPlusNode.class);
 		CATALOGED_NODES.put("IDM", InvDolaresMinusNode.class);
