@@ -76,10 +76,12 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private int[] tiersSpeed= new int[10];
 	private int tier;
 	
-
+	public Stack<String> listaGanadores;
 	
-	public GameScreen(){
-
+	public GameScreen(Stack<String> listaGanadores){
+		
+		this.listaGanadores = listaGanadores;
+		
 		tiersScore[0]=200;
 		tier=0;
 		for(int i=1;i<10;i++) {
@@ -123,7 +125,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		thread.start();
 	}
 
-	public Stack<String> listaGanadores = new Stack<String>();
+
 	private int posicionJugador1;
 	private int posicionJugador2;
 	private int posicionJugador3;

@@ -10,15 +10,12 @@ public class GameWindow extends JFrame {
 	private GameScreen gameScreen;
 
 	public Stack<String> listaGanadores = new Stack<String>();
-	
-
-	private Stack<String> listaGanadores;
 
 	public GameWindow() {
 		super("Carrera de presis");
 		setSize(SCREEN_WIDTH, 800);
-		setLocation(400, 150);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocation(400, 40);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		
 		gameScreen = new GameScreen(listaGanadores);
