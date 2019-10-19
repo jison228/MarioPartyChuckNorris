@@ -1,12 +1,14 @@
 package com.chucknorris.gui.minigame.userinterface;
 
+import java.util.Stack;
+
 import javax.swing.JFrame;
 
 public class GameWindow extends JFrame {
 	
 	public static final int SCREEN_WIDTH = 800;
 	private GameScreen gameScreen;
-	
+	private Stack<String> listaGanadores;
 	public GameWindow() {
 		super("Carrera de presis");
 		setSize(SCREEN_WIDTH, 800);
