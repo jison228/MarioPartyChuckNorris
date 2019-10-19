@@ -26,7 +26,7 @@ public final class NodeFactory {
 		CATALOGED_NODES.put("IPP", InvPesosPlusNode.class);
 		CATALOGED_NODES.put("IPM", InvPesosMinusNode.class);
 
-		CATALOGED_NODES.put("PARI", BoletaGasNode.class);
+		CATALOGED_NODES.put("PARI", ParitariaNode.class);
 		CATALOGED_NODES.put("BG", BoletaGasNode.class);
 		CATALOGED_NODES.put("AFIPP", AfipPesosNode.class);
 		CATALOGED_NODES.put("AFIPD", AfipDolarNode.class);

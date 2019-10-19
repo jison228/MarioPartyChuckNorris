@@ -53,7 +53,7 @@ public class MainGameScreen extends JFrame {
 				try {
 					// SOLO PARA TESTEAR
 					GameMap mapa1;
-					MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("map_1.txt");
+					MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
 					mapa1 = mapFileCSVReader.buildGameMap();
 					Player p1 = new Player("Milei", 1450, 150);
 					Player p2 = new Player("Morsa", 150, 200);
@@ -261,10 +261,10 @@ public class MainGameScreen extends JFrame {
 
 	public void tomarDecision(Player currentPlayer) {
 		btnTirarDado.setVisible(false);
-		btnCamino1.setBounds(50 + currentPlayer.getNodeLocation().nextNodes().get(0).getPositionCoords().getX() * 200,
-				50 + currentPlayer.getNodeLocation().nextNodes().get(0).getPositionCoords().getY() * 100, 50, 50);
-		btnCamino2.setBounds(50 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getX() * 200,
-				50 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getY() * 100, 50, 50);
+		btnCamino1.setBounds(50 + currentPlayer.getNodeLocation().nextNodes().get(0).getPositionCoords().getX() * 150,
+				30 + currentPlayer.getNodeLocation().nextNodes().get(0).getPositionCoords().getY() * 150, 75, 75);
+		btnCamino2.setBounds(30 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getX() * 150,
+				30 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getY() * 150, 75, 75);
 		btnCamino1.setVisible(true);
 		btnCamino2.setVisible(true);
 	}
