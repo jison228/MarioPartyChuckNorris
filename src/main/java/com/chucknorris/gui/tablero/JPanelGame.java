@@ -22,7 +22,7 @@ public class JPanelGame extends JPanel {
 	private int turn;
 	private Color[] coloresP = { Color.CYAN, Color.BLUE, Color.GREEN, Color.ORANGE };
 	private int iniX = 50;
-	private int iniY = 50;
+	private int iniY = 30;
 
 	public JPanelGame(Map mapa, List<Player> listaP, int turn) {
 		this.mapa = mapa;
@@ -30,7 +30,8 @@ public class JPanelGame extends JPanel {
 		this.turn = turn;
 	}
 
-	public void paint(Graphics g) {
+	@Override
+	public void paintComponent(Graphics g) {
 		
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("Tahoma",Font.BOLD,24));
@@ -41,10 +42,10 @@ public class JPanelGame extends JPanel {
 			while (recorrer.hasNext()) {
 				g.setColor(Color.DARK_GRAY);
 				Node node = recorrer.next();
-				g.drawLine(iniX + iniX / 2 + entry.getValue().getPositionCoords().getX() * 200,
-						iniY + iniY / 2 + entry.getValue().getPositionCoords().getY() * 100,
-						iniX + iniX / 2 + node.getPositionCoords().getX() * 200,
-						iniY + iniY / 2 + node.getPositionCoords().getY() * 100);
+				g.drawLine(iniX + iniX / 2 + entry.getValue().getPositionCoords().getX() * 150,
+						iniY + iniY / 2 + entry.getValue().getPositionCoords().getY() * 150,
+						iniX + iniX / 2 + node.getPositionCoords().getX() * 150,
+						iniY + iniY / 2 + node.getPositionCoords().getY() * 150);
 			}
 
 		}
@@ -54,18 +55,18 @@ public class JPanelGame extends JPanel {
 				g.setColor(Color.RED);
 			} else if (entry2.getValue().getType() == "YELLOW") {
 				g.setColor(Color.YELLOW);
-			} else if (entry2.getValue().getType() == "WHITE") {
+			} else if (entry2.getValue().getType() == "END") {
 				g.setColor(Color.BLACK);
 			} else
 				g.setColor(Color.ORANGE);
-			g.fillOval(iniX + entry2.getValue().getPositionCoords().getX() * 200,
-					iniY + entry2.getValue().getPositionCoords().getY() * 100, 50, 50);
+			g.fillOval(iniX + entry2.getValue().getPositionCoords().getX() * 150,
+					iniY + entry2.getValue().getPositionCoords().getY() * 150, 75, 75);
 		}
 
 		for (int i = 0; i < listaP.size(); i++) {
 			g.setColor(coloresP[i]);
-			g.fillRect(iniX + listaP.get(i).getNodeLocation().getPositionCoords().getX()*200 + i*15,
-					iniX + listaP.get(i).getNodeLocation().getPositionCoords().getY()*100 + 20, 10, 10);
+			g.fillRect(iniX + listaP.get(i).getNodeLocation().getPositionCoords().getX()*150 + i*25,
+					iniX + listaP.get(i).getNodeLocation().getPositionCoords().getY()*150 + 20, 20, 20);
 		}
 	}
 	

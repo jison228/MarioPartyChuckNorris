@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.NumberFormatter;
 
 import com.chucknorris.player.Player;
 import javax.swing.JTextField;
@@ -14,7 +15,16 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowListener;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class CompraDolaresFrame extends JFrame {
 
@@ -23,17 +33,18 @@ public class CompraDolaresFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel mainPane;
-	private JTextField pesosTF;
+	private JFormattedTextField pesosTF;
 	private JLabel pesosActualesLbl;
 	private JLabel dolaresActualeslbl;
 	double resultado;
+	private JButton btnComprar;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Player p = new Player("Cristi", 150, 100);
-					CompraDolaresFrame frame = new CompraDolaresFrame(p, 20);
+					CompraDolaresFrame frame = new CompraDolaresFrame(p, 20.0);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,7 +57,7 @@ public class CompraDolaresFrame extends JFrame {
 		// JFrameConfig
 		setAlwaysOnTop(true);
 		setTitle("Comprar Dolares");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(350, 200, 400, 250);
 		setResizable(false);
 
@@ -78,18 +89,14 @@ public class CompraDolaresFrame extends JFrame {
 		dolaresActualeslbl.setBounds(213, 176, 173, 36);
 		mainPane.add(dolaresActualeslbl);
 		
-		pesosTF = new JTextField();
-		pesosTF.addKeyListener(new KeyAdapter() {
+		pesosTF = new JFormattedTextField(new NumberFormatter(NumberFormat.getNumberInstance(Locale.UK)));
+		pesosTF.addFocusListener(new FocusAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if((e.getKeyCode()>=48 && e.getKeyCode() <= 57) || (e.getKeyCode()>= 96 && e.getKeyCode() <= 105)) {
-					if(!pesosTF.getText().isEmpty()) {
-						resultado = Double.valueOf(pesosTF.getText())/precioDolar;
-						dolaresLbl.setText(Double.toString(resultado));
-					}
-				}
+			public void focusGained(FocusEvent e) {
+				btnComprar.setVisible(false);
 			}
 		});
+		pesosTF.setValue(new Double(0));
 		pesosTF.setBackground(Color.LIGHT_GRAY);
 		pesosTF.setForeground(Color.GREEN);
 		pesosTF.setText("0");
@@ -100,11 +107,29 @@ public class CompraDolaresFrame extends JFrame {
 		pesosTF.setColumns(10);
 		
 		JButton aceptarBtn = new AceptarButton("cambiar.jpg");
+		aceptarBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(Double.valueOf(pesosTF.getValue().toString())>=player.getPesos()) {
+					pesosTF.setValue(player.getPesos());
+				}
+				dolaresLbl.setText(Double.toString((Double.valueOf(pesosTF.getValue().toString())/precioDolar)));
+				btnComprar.setVisible(true);
+			}
+		});
 		aceptarBtn.setBounds(164, 94, 70, 30);
 		mainPane.add(aceptarBtn);
-	}
-	
-	public void call() {
-		setVisible(true);
+		
+		btnComprar = new JButton("COMPRAR");
+		btnComprar.setVisible(false);
+		btnComprar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				player.buyDolares(Double.valueOf(pesosTF.getValue().toString()), Double.valueOf(dolaresLbl.getText()));
+				dispose();
+			}
+		});
+		btnComprar.setForeground(new Color(0, 255, 0));
+		btnComprar.setFont(new Font("Arial", Font.BOLD, 16));
+		btnComprar.setBounds(135, 145, 120, 25);
+		mainPane.add(btnComprar);
 	}
 }

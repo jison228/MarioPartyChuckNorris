@@ -74,33 +74,24 @@ public class MapFileCSVReader implements MapFileReadable {
 	}
 
 	private Node buildNodes() throws Exception {
+		LineDataDto firstNodeData = nodeLinesRead.get(0);
 
-		Node firstNode = null;
+		Position firstPosition = firstNodeData.position;
 
-		for (LineDataDto lineDataDto : nodeLinesRead) {
-			Position position = lineDataDto.position;
+		nodesRead.put(firstPosition, new EndNode(new ArrayList<Node>(), firstPosition));
 
-			if (nodesRead.isEmpty()) {
-				nodesRead.put(position, new EndNode(position));
-			}
+		List<Node> nextNodes = getNextNodes(firstNodeData.nextNodes);
 
-			List<Node> nextNodes = getNextNodes(lineDataDto.nextNodes);
+		Node node = nodeFactory.buildNode(firstPosition, firstNodeData.nodeType, nextNodes);
 
-			Node node = nodeFactory.buildNode(position, lineDataDto.nodeType, nextNodes);
+		nodesRead.put(firstPosition, node);
 
-			if (firstNode == null) {
-				firstNode = node;
-			}
+		fixFirstNode(node);
 
-			nodesRead.put(position, node);
-		}
-
-		fixFirstNode(nodesRead, firstNode);
-
-		return firstNode;
+		return node;
 	}
 
-	private void fixFirstNode(Map<Position, Node> nodesRead, Node firstNode) {
+	private void fixFirstNode(Node firstNode) {
 		nodesRead.values()
 				.forEach(node -> node.replaceWithThisNodeIfNextHasOneWithSamePosition(firstNode));
 	}
