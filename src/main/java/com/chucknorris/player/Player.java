@@ -117,12 +117,23 @@ public class Player {
 		pesos = pesos * ((percentage / 100) + 1);
 	}
 
+	public double getPesos() {
+		return Math.round(pesos * 10) / 10.0;
+	}
+
+	public double getDolares() {
+		return Math.round(dolar * 10) / 10.0;
+	}
+	
 	public void addDolaresByPercentage(double percentage) {
 		dolar = dolar * ((percentage / 100) + 1);
 	}
 	
+	public void applyPowerup(List<Player> players, GameContext gameContext) {
+		//DO NOTHING
+	}
+  
 	public void addSalarioByPercentage(double percentage) {
 		salario = salario * ((percentage / 100) + 1);
 	}
-
 }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class AfipDolarNode extends Node {
 
-    private static final int PERCENTAGE_TO_SUBSTRACT = 2;
+    private static final int PERCENTAGE_TO_SUBSTRACT = 5;
 
     public AfipDolarNode(ArrayList<Node> next, Position positionCoords) {
         super(next, positionCoords, new DolarPercentagePlayersSubstractor(PERCENTAGE_TO_SUBSTRACT));
