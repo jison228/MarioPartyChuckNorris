@@ -9,8 +9,8 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 import java.util.concurrent.Semaphore;
@@ -34,7 +34,7 @@ import com.chucknorris.gui.minigame.gameobject.MainCharacter2;
 import com.chucknorris.gui.minigame.gameobject.MainCharacter3;
 import com.chucknorris.gui.minigame.gameobject.MainCharacter4;
 import com.chucknorris.gui.minigame.util.Resource;
-import com.sun.javafx.embed.swing.Disposer;
+import com.chucknorris.player.Player;
 
 public class GameScreen extends JPanel implements Runnable, KeyListener {
 
@@ -76,7 +76,14 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private int[] tiersSpeed= new int[10];
 	private int tier;
 	
-	public GameScreen() {
+	public Stack<String> listaGanadores;
+	private String posicion4;
+	private String posicion3;
+	private String posicion2;
+	private String posicion1;
+	
+	public GameScreen(Stack<String> listaGanadores) {
+		this.listaGanadores = listaGanadores;
 		tiersScore[0]=200;
 		tier=0;
 		for(int i=1;i<10;i++) {
@@ -119,11 +126,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		thread = new Thread(this);
 		thread.start();
 	}
-	public Stack<String> listaGanadores = new Stack<String>();
-	private String posicion4;
-	private String posicion3;
-	private String posicion2;
-	private String posicion1;
 	
 	public void gameUpdate() {
 		if (gameState == GAME_PLAYING_STATE) {

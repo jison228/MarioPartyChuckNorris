@@ -13,6 +13,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,6 +31,7 @@ import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.gui.GameInformation;
 import com.chucknorris.gui.compradolares.CompraDolaresFrame;
 import com.chucknorris.gui.endgame.Endgame;
+import com.chucknorris.gui.minigame.userinterface.GameWindow;
 import com.chucknorris.player.Cristina;
 import com.chucknorris.player.DelCanio;
 import com.chucknorris.player.Espert;
@@ -46,19 +48,21 @@ public class MainGameScreen extends JFrame {
 	private Game partida;
 	private boolean TAB;
 	private boolean ctrl;
-	JButton btnTirarDado;
-	JButton btnCamino1;
-	JButton btnCamino2;
-	JButton btnEndTurn;
-	Player currentPlayer;
-	GameResponse respuesta;
+	private JButton btnTirarDado;
+	private JButton btnCamino1;
+	private JButton btnCamino2;
+	private JButton btnEndTurn;
+	private Player currentPlayer;
+	private GameResponse respuesta;
 	private boolean comprarDolares;
-	CompraDolaresFrame dolaresFrame;
-	JPanelGame gamePanel;
-	GameInformation info;
-	InfoPanel characterPanel;
-	JLabel diceImage;
-	DescriptionPanel panelDescrip;
+	private CompraDolaresFrame dolaresFrame;
+	private JPanelGame gamePanel;
+	private GameInformation info;
+	private InfoPanel characterPanel;
+	private JLabel diceImage;
+	private DescriptionPanel panelDescrip;
+	private GameWindow minijuego;
+	private boolean running;
 
 	/**
 	 * Launch the application.
@@ -97,6 +101,7 @@ public class MainGameScreen extends JFrame {
 	 */
 	public MainGameScreen(GameInformation info) {
 		comprarDolares = false;
+		running = false;
 		// Iniciar partida
 		partida = new Game(info);
 		partida.getGameMap().initializePlayers(partida.getPlayerList());
@@ -379,7 +384,57 @@ public class MainGameScreen extends JFrame {
 
 	public void endTurnIndeed() {
 		if (partida.getCurrentTurn() % 4 == 3) {
-			System.out.println("TODOS A JUGAR");
+			minijuego = new GameWindow();
+			minijuego.startGame();
+			minijuego.addWindowListener(new WindowListener() {
+				
+				@Override
+				public void windowOpened(WindowEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void windowIconified(WindowEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void windowDeiconified(WindowEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void windowDeactivated(WindowEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void windowClosing(WindowEvent e) {
+					// TODO Auto-generated method stub
+				}
+				
+				@Override
+				public void windowClosed(WindowEvent e) {
+					String ganador1 = minijuego.listaGanadores.pop();
+					String ganador2 = minijuego.listaGanadores.pop();
+					for(Player player:partida.getPlayerList()) {
+						if(player.getCharacter().equals(ganador1)|| player.getCharacter().equals(ganador2)) {
+							player.addPesosByPercentage(50);
+						}
+					}
+					repaint();
+				}
+				
+				@Override
+				public void windowActivated(WindowEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 			partida.aumentarPrecioDolar();
 		}
 		partida.endTurn();
