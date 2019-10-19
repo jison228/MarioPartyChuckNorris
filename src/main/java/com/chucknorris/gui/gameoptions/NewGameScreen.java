@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import com.chucknorris.commons.Dice;
@@ -19,8 +20,11 @@ import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.gui.GameInformation;
 import com.chucknorris.gui.tablero.MainGameScreen;
+import com.chucknorris.player.Cristina;
+import com.chucknorris.player.DelCanio;
+import com.chucknorris.player.Espert;
+import com.chucknorris.player.Macri;
 import com.chucknorris.player.Player;
-import javax.swing.JTextField;
 
 public class NewGameScreen extends JFrame {
 
@@ -75,6 +79,7 @@ public class NewGameScreen extends JFrame {
 		mapCombo.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		mapCombo.setBounds(70, 200, 200, 25);
 		newGamePane.add(mapCombo);
+		mapCombo.addItem("newMap1");
 		mapCombo.addItem("mapa_default");
 
 		JButton jugarBtn = new JButton("JUGAR");
@@ -168,7 +173,7 @@ public class NewGameScreen extends JFrame {
 
 		// Map image
 		MapImagePanel mapImage = new MapImagePanel(mapCombo.getSelectedItem().toString() + ".jpg");
-		mapImage.setBounds(70, getHeight() - (int) (getHeight() * 0.65), 300, 300);
+		mapImage.setBounds(10, getHeight() - (int) (getHeight() * 0.65), 400, 400);
 		newGamePane.add(mapImage);
 
 		jugarBtn.addActionListener(new ActionListener() {
@@ -184,10 +189,10 @@ public class NewGameScreen extends JFrame {
 				}
 				setVisible(false);
 
-				Player p1 = new Player("Milei", 1450, 150);
-				Player p2 = new Player("Morsa", 150, 200);
-				Player p3 = new Player("Cristina", 500, 600);
-				Player p4 = new Player("Mauricio", 150, 900);
+				Espert p1 = new Espert(Double.valueOf(pesosTF.getText()), Double.valueOf(dolaresTF.getText()), Double.valueOf(salarioTF.getText()));
+				Cristina p2 = new Cristina(Double.valueOf(pesosTF.getText()), Double.valueOf(dolaresTF.getText()), Double.valueOf(salarioTF.getText()));
+				Macri p3 = new Macri(Double.valueOf(pesosTF.getText()), Double.valueOf(dolaresTF.getText()), Double.valueOf(salarioTF.getText()));
+				DelCanio p4 = new DelCanio(Double.valueOf(pesosTF.getText()), Double.valueOf(dolaresTF.getText()), Double.valueOf(salarioTF.getText()));
 				List<Player> listaP = new ArrayList<Player>();
 				listaP.add(p1);
 				listaP.add(p2);
@@ -195,8 +200,8 @@ public class NewGameScreen extends JFrame {
 				listaP.add(p4);
 
 				new MainGameScreen(new GameInformation(listaP, mapa1,
-						new Dice(Integer.valueOf(dadoMinTF.getText()), Integer.valueOf(dadoMaxTF.getText())), Integer.valueOf(precioDolarTF.getText()),Integer.valueOf(salarioTF.getText()),Integer.valueOf(pesosTF.getText()),Integer.valueOf(dolaresTF.getText())))
-								.setVisible(true);
+						new Dice(Integer.valueOf(dadoMinTF.getText()), Integer.valueOf(dadoMaxTF.getText())),
+						Double.valueOf(precioDolarTF.getText()))).setVisible(true);
 				dispose();
 			}
 		});

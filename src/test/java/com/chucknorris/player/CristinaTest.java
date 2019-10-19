@@ -17,7 +17,7 @@ public class CristinaTest {
 
 	@Before
 	public void executedBeforeEach() {
-		cristi = new Cristina(30, 100);
+		cristi = new Cristina(30, 100, 100);
 		p1 = new Player("Dummy", 50, 100);
 		p2 = new Player("Dummy", 20, 100);
 		p3 = new Player("Dummy", 10, 100);

@@ -17,7 +17,7 @@ public class DelCanioTest {
 
 	@Before
 	public void executedBeforeEach() {
-		nico = new DelCanio(15, 100);
+		nico = new DelCanio(15, 100, 100);
 		p1 = new Player("Dummy", 40, 100);
 		p2 = new Player("Dummy", 20, 100);
 		p3 = new Player("Dummy", 25, 100);

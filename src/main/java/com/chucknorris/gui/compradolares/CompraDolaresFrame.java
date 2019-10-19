@@ -131,5 +131,12 @@ public class CompraDolaresFrame extends JFrame {
 		btnComprar.setFont(new Font("Arial", Font.BOLD, 16));
 		btnComprar.setBounds(135, 145, 120, 25);
 		mainPane.add(btnComprar);
+		
+		JLabel lblNewLabel = new JLabel("Precio Dolar: $" + precioDolar);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblNewLabel.setBounds(116, 58, 160, 26);
+		mainPane.add(lblNewLabel);
 	}
 }

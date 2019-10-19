@@ -3,6 +3,7 @@ package com.chucknorris.game;
 import com.chucknorris.commons.Dice;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.nodes.Node;
+import com.chucknorris.gui.GameInformation;
 import com.chucknorris.player.Player;
 
 import java.util.LinkedList;
@@ -14,6 +15,7 @@ public class Game {
 	private int turn;
 	private GameMap gameMap;
 	private Dice dice;
+	private double precioDolar;
 	//ArrayList de minijuegos
 
 	public Game(List<Player> players, GameMap gameMap) {
@@ -23,6 +25,13 @@ public class Game {
 		this.dice = new Dice(1, 6);
 	}
 
+	public Game(GameInformation info) {
+		this.players = info.players;
+		this.gameMap = info.gameMap;
+		this.dice = info.dice;
+		this.precioDolar = info.precioDolar;
+	}
+	
 	public Game(List<Player> players, GameMap gameMap, Dice dice) {
 		this(players, gameMap);
 		this.dice = dice;
@@ -105,5 +114,13 @@ public class Game {
 	
 	public void endTurn() {
 		turn++;
+	}
+	
+	public void aumentarPrecioDolar() {
+		precioDolar++;
+	}
+	
+	public Double getPrecioDolar() {
+		return precioDolar;
 	}
 }

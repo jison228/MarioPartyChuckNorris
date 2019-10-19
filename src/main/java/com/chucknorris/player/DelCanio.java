@@ -6,8 +6,8 @@ import com.chucknorris.rewards.GameContext;
 
 public class DelCanio extends Player {
 
-	public DelCanio(double pesos, double dolares) {
-		super("Del Caño", pesos, dolares);
+	public DelCanio(double pesos, double dolares, double salario) {
+		super("Del Caño", pesos, dolares, salario);
 	}
 	
 	@Override
@@ -24,6 +24,7 @@ public class DelCanio extends Player {
 		}
 	}
 
+	@Override
 	public String getPowerupDescription() {
 		return "Divide los pesos de todos de forma equitativa\n¡VIVA EL COMUNISMO!";
 	}

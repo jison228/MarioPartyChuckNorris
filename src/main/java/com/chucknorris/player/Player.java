@@ -125,6 +125,10 @@ public class Player {
 		return Math.round(dolar * 10) / 10.0;
 	}
 	
+	public double getSalario() {
+		return Math.round(salario * 10) / 10.0;
+	}
+	
 	public void addDolaresByPercentage(double percentage) {
 		dolar = dolar * ((percentage / 100) + 1);
 	}
@@ -144,5 +148,9 @@ public class Player {
 	
 	public void cobrarSalario() {
 		this.addPesos(salario);
+	}
+	
+	public String getPowerupDescription() {
+		return "";
 	}
 }

@@ -7,8 +7,9 @@ import com.chucknorris.rewards.substractor.dolar.DolarPercentagePlayerSubstracto
 import com.chucknorris.rewards.substractor.pesos.PesosPercentagePlayerSubstractor;
 
 public class Espert extends Player {
-	public Espert(double pesos, double dolares) {
-		super("Espert", pesos, dolares);
+	
+	public Espert(double pesos, double dolares, double salario) {
+		super("Espert", pesos, dolares, salario);
 	}
 
 	@Override
@@ -27,8 +28,9 @@ public class Espert extends Player {
 		}
 	}
 
+	@Override
 	public String getPowerupDescription() {
-		return "Resta un 50% de los pesos de todos los jugadores y los cambia con dólares\nQUIERO T*T*S";
+		return "Resta un 50% de los pesos de todos \nlos jugadores y los cambia con dólares\n\"QUIERO T*T*S\"";
 	}
 
 }

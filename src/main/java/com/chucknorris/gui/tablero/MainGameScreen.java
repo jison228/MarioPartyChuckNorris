@@ -9,12 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,6 +29,10 @@ import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.gui.GameInformation;
 import com.chucknorris.gui.compradolares.CompraDolaresFrame;
+import com.chucknorris.player.Cristina;
+import com.chucknorris.player.DelCanio;
+import com.chucknorris.player.Espert;
+import com.chucknorris.player.Macri;
 import com.chucknorris.player.Player;
 
 public class MainGameScreen extends JFrame {
@@ -40,6 +44,7 @@ public class MainGameScreen extends JFrame {
 	private JPanel contentPane;
 	private Game partida;
 	private boolean TAB;
+	private boolean ctrl;
 	JButton btnTirarDado;
 	JButton btnCamino1;
 	JButton btnCamino2;
@@ -47,10 +52,12 @@ public class MainGameScreen extends JFrame {
 	Player currentPlayer;
 	GameResponse respuesta;
 	private boolean comprarDolares;
-	private static Object lock = new Object();
 	CompraDolaresFrame dolaresFrame;
 	JPanelGame gamePanel;
 	GameInformation info;
+	InfoPanel characterPanel;
+	JLabel diceImage;
+	DescriptionPanel panelDescrip;
 
 	/**
 	 * Launch the application.
@@ -64,16 +71,16 @@ public class MainGameScreen extends JFrame {
 					GameMap mapa1;
 					MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
 					mapa1 = mapFileCSVReader.buildGameMap();
-					Player p1 = new Player("Milei", 1450, 150, 800);
-					Player p2 = new Player("Morsa", 150, 200, 900);
-					Player p3 = new Player("Cristina", 500, 600, 800);
-					Player p4 = new Player("Mauricio", 150, 900, 800);
+					Espert p1 = new Espert(1450, 150, 800);
+					Cristina p2 = new Cristina(150, 200, 900);
+					Macri p3 = new Macri(500, 600, 800);
+					DelCanio p4 = new DelCanio(150, 900, 800);
 					List<Player> listaP = new ArrayList<Player>();
 					listaP.add(p1);
 					listaP.add(p2);
 					listaP.add(p3);
 					listaP.add(p4);
-					GameInformation test = new GameInformation(listaP, mapa1, new Dice(1, 6), 20, 300, 100, 10);
+					GameInformation test = new GameInformation(listaP, mapa1, new Dice(1, 6), 20);
 
 					MainGameScreen frame = new MainGameScreen(test);
 					frame.setVisible(true);
@@ -88,13 +95,13 @@ public class MainGameScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public MainGameScreen(GameInformation info) {
-		this.info = info;
 		comprarDolares = false;
 		// Iniciar partida
-		partida = new Game(info.players, info.gameMap);
+		partida = new Game(info);
 		partida.getGameMap().initializePlayers(partida.getPlayerList());
 
 		TAB = false;
+		ctrl = false;
 		// JFrame config
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,10 +112,16 @@ public class MainGameScreen extends JFrame {
 		contentPane.setLayout(null);
 
 		// Panel para jugadores
-		JPanelPlayers playersPanel = new JPanelPlayers(info.players);
+		JPanelPlayers playersPanel = new JPanelPlayers(partida.getPlayerList());
 		playersPanel.setBounds(1000, 0, 280, 450);
 		contentPane.add(playersPanel);
 		playersPanel.setVisible(false);
+		
+		// Panel para descripcion
+		panelDescrip = new DescriptionPanel();
+		panelDescrip.setBounds(0, 0, 280, 720);
+		contentPane.add(panelDescrip);
+		panelDescrip.setVisible(false);
 
 		// Panel para chat (no implementado)
 		JPanel chatPanel = new JPanel();
@@ -149,7 +162,6 @@ public class MainGameScreen extends JFrame {
 					tomarDecision(currentPlayer);
 				} else
 					endTurn();
-				gamePanel.actualizar(partida.getCurrentTurn());
 				repaint();
 			}
 		});
@@ -184,32 +196,36 @@ public class MainGameScreen extends JFrame {
 					tomarDecision(currentPlayer);
 				} else
 					endTurn();
-				gamePanel.actualizar(partida.getCurrentTurn());
 				repaint();
 			}
 		});
 		contentPane.add(btnCamino2);
 		btnCamino2.setVisible(false);
 		btnCamino2.setFocusable(false);
-
+		
 		// Panel del juego
-		gamePanel = new JPanelGame(partida.getGameMap().getMap(), partida.getPlayerList(), partida.getCurrentTurn());
+		gamePanel = new JPanelGame(partida.getGameMap().getMap(), partida.getPlayerList());
 		gamePanel.setBackground(SystemColor.text);
 		gamePanel.setBounds(0, 0, 1280, 600);
 		contentPane.add(gamePanel);
 		gamePanel.setLayout(null);
 
-		// Panel para descripcion
-		JPanel description = new JPanel();
-		description.setBounds(0, 0, 280, 720);
-		contentPane.add(description);
-		description.setBackground(Color.lightGray);
-
 		// Panel para el boton
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBounds(0, 600, 1000, 120);
+		buttonPanel.setBounds(840, 560, 440, 160);
 		contentPane.add(buttonPanel);
 		buttonPanel.setLayout(null);
+		// Foto Dado
+		diceImage = new JLabel();
+		diceImage.setBounds(200, 0, 115, 115);
+		diceImage.setVisible(false);
+		buttonPanel.add(diceImage);
+
+		// Panel para el personaje
+		characterPanel = new InfoPanel(partida.getPlayerList().get(partida.getCurrentTurn() % 4),
+				partida.getCurrentTurn(), partida.getPrecioDolar());
+		characterPanel.setBounds(0, 560, 840, 160);
+		contentPane.add(characterPanel);
 
 		// TAB
 		addKeyListener(new KeyAdapter() {
@@ -228,6 +244,16 @@ public class MainGameScreen extends JFrame {
 						TAB = true;
 					}
 				}
+				if (key == KeyEvent.VK_CONTROL) {
+					if (ctrl) {
+						panelDescrip.setVisible(false);
+						ctrl = false;
+					} else {
+						panelDescrip.setVisible(true);
+						ctrl = true;
+					}
+				}
+				
 			}
 		});
 
@@ -237,6 +263,8 @@ public class MainGameScreen extends JFrame {
 		btnTirarDado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				playTurn();
+				diceImage.setVisible(true);
+				diceImage.setIcon(new ImageIcon("images/dice/" + respuesta.diceResult + ".png"));
 				Node transitionNode = respuesta.nodePath.poll();
 				int size = respuesta.nodePath.size();
 				for (int i = 0; i < size; i++) {
@@ -256,11 +284,10 @@ public class MainGameScreen extends JFrame {
 					tomarDecision(currentPlayer);
 				else
 					endTurn();
-				gamePanel.actualizar(partida.getCurrentTurn());
 				repaint();
 			}
 		});
-		btnTirarDado.setBounds(840, 5, 150, 60);
+		btnTirarDado.setBounds(0, 25, 150, 60);
 		buttonPanel.add(btnTirarDado);
 		btnTirarDado.setFocusable(false);
 
@@ -273,7 +300,7 @@ public class MainGameScreen extends JFrame {
 		btnEndTurn.setVisible(false);
 		btnEndTurn.setForeground(Color.RED);
 		btnEndTurn.setFocusable(false);
-		btnEndTurn.setBounds(840, 5, 150, 60);
+		btnEndTurn.setBounds(0, 25, 150, 60);
 		buttonPanel.add(btnEndTurn);
 
 	}
@@ -343,7 +370,7 @@ public class MainGameScreen extends JFrame {
 		btnTirarDado.setVisible(false);
 		btnCamino1.setBounds(50 + currentPlayer.getNodeLocation().nextNodes().get(0).getPositionCoords().getX() * 150,
 				30 + currentPlayer.getNodeLocation().nextNodes().get(0).getPositionCoords().getY() * 150, 75, 75);
-		btnCamino2.setBounds(30 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getX() * 150,
+		btnCamino2.setBounds(50 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getX() * 150,
 				30 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getY() * 150, 75, 75);
 		btnCamino1.setVisible(true);
 		btnCamino2.setVisible(true);
@@ -352,18 +379,22 @@ public class MainGameScreen extends JFrame {
 	public void endTurnIndeed() {
 		if (partida.getCurrentTurn() % 4 == 3) {
 			System.out.println("TODOS A JUGAR");
+			partida.aumentarPrecioDolar();
 		}
 		partida.endTurn();
 		btnTirarDado.setVisible(true);
 		btnEndTurn.setVisible(false);
-		Player ganador = new Player("Dummy", 0,0,0);
-		for(Player player:info.players) {
-			if(player.getDolares()>300 && player.getDolares()>=ganador.getDolares()) {
+		Player ganador = new Player("Dummy", 0, 0, 0);
+		for (Player player : partida.getPlayerList()) {
+			if (player.getDolares() > 300 && player.getDolares() >= ganador.getDolares()) {
 				ganador = player;
 			}
 		}
-		if(ganador.getDolares()>300) {
-			//Se terminó el juego
+		if (ganador.getDolares() > 300) {
+			// Se terminó el juego
 		}
+		characterPanel.actualizar(partida.getPlayerList().get(partida.getCurrentTurn() % 4), partida.getCurrentTurn());
+		diceImage.setVisible(false);
+		repaint();
 	}
 }
