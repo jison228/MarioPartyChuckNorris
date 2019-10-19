@@ -78,7 +78,7 @@ public class MapFileCSVReader implements MapFileReadable {
 
 		Position firstPosition = firstNodeData.position;
 
-		nodesRead.put(firstPosition, new EndNode(firstPosition));
+		nodesRead.put(firstPosition, new EndNode(new ArrayList<Node>(), firstPosition));
 
 		List<Node> nextNodes = getNextNodes(firstNodeData.nextNodes);
 

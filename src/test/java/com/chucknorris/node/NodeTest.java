@@ -58,7 +58,7 @@ public class NodeTest {
 
 	@Test
 	public void EndNodeARTest() {
-		Node nodeTest = new EndNode(new Position(4, 4));
+		Node nodeTest = new EndNode(null, new Position(4, 4));
 
 		nodeTest.applyReward(p, null, null);
 		assertEquals(p.getCoins(), 0);

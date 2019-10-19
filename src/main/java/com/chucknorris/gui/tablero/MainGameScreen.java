@@ -106,6 +106,12 @@ public class MainGameScreen extends JFrame {
 		playersPanel.setBounds(1000, 0, 280, 450);
 		contentPane.add(playersPanel);
 		playersPanel.setVisible(false);
+		
+		//Panel para descripcion
+		JPanel description = new JPanel();
+		description.setBounds(0,0,280, 720);
+		contentPane.add(description);
+		description.setBackground(Color.lightGray);
 
 		// Panel para chat (no implementado)
 		JPanel chatPanel = new JPanel();
@@ -156,7 +162,7 @@ public class MainGameScreen extends JFrame {
 					transitionNode = respuesta.nodePath.poll();
 					currentPlayer.setNodeLocation(transitionNode);
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(100);
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -190,7 +196,7 @@ public class MainGameScreen extends JFrame {
 					transitionNode = respuesta.nodePath.poll();
 					currentPlayer.setNodeLocation(transitionNode);
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(500);
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -225,7 +231,7 @@ public class MainGameScreen extends JFrame {
 					transitionNode = respuesta.nodePath.poll();
 					currentPlayer.setNodeLocation(transitionNode);
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(500);
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
