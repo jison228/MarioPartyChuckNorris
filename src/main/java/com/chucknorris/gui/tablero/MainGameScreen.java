@@ -29,6 +29,7 @@ import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.gui.GameInformation;
 import com.chucknorris.gui.compradolares.CompraDolaresFrame;
+import com.chucknorris.gui.endgame.Endgame;
 import com.chucknorris.player.Cristina;
 import com.chucknorris.player.DelCanio;
 import com.chucknorris.player.Espert;
@@ -71,10 +72,10 @@ public class MainGameScreen extends JFrame {
 					GameMap mapa1;
 					MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
 					mapa1 = mapFileCSVReader.buildGameMap();
-					Espert p1 = new Espert(1450, 150, 800);
-					Cristina p2 = new Cristina(150, 200, 900);
-					Macri p3 = new Macri(500, 600, 800);
-					DelCanio p4 = new DelCanio(150, 900, 800);
+					Espert p1 = new Espert(1450, 150, 100);
+					Cristina p2 = new Cristina(150, 100, 900);
+					Macri p3 = new Macri(500, 100, 100);
+					DelCanio p4 = new DelCanio(150, 100, 100);
 					List<Player> listaP = new ArrayList<Player>();
 					listaP.add(p1);
 					listaP.add(p2);
@@ -391,7 +392,8 @@ public class MainGameScreen extends JFrame {
 			}
 		}
 		if (ganador.getDolares() > 300) {
-			// Se terminó el juego
+			new Endgame(ganador).setVisible(true);
+			dispose();
 		}
 		characterPanel.actualizar(partida.getPlayerList().get(partida.getCurrentTurn() % 4), partida.getCurrentTurn());
 		diceImage.setVisible(false);

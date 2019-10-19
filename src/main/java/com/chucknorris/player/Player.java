@@ -74,7 +74,7 @@ public class Player {
 	}
 
 	public void substractPesos(double pesos) {
-		this.pesos -= pesos;
+		this.pesos = Math.max(0, this.pesos - pesos);
 	}
 
 	public void addDolar(double total) {
@@ -82,7 +82,7 @@ public class Player {
 	}
 
 	public void substractDolar(double dolar) {
-		this.dolar -= dolar;
+		this.dolar = Math.max(0, this.dolar - dolar);
 	}
 
 	public double substractCurrency(PesosSubstractor substractor) {
