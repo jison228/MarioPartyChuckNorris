@@ -2,7 +2,6 @@ package com.chucknorris.gamemap.initiallizer.file.reader
 
 import com.chucknorris.commons.Position
 import com.chucknorris.gamemap.GameMap
-import com.chucknorris.gamemap.initiallizer.file.reader.MapFileReadable
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader
 import com.chucknorris.gamemap.nodes.Node
 import com.chucknorris.gamemap.presenter.NodeCSVPresenter
