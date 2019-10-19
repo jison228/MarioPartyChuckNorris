@@ -50,6 +50,7 @@ public class MainGameScreen extends JFrame {
 	private static Object lock = new Object();
 	CompraDolaresFrame dolaresFrame;
 	JPanelGame gamePanel;
+	GameInformation info;
 
 	/**
 	 * Launch the application.
@@ -87,6 +88,7 @@ public class MainGameScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public MainGameScreen(GameInformation info) {
+		this.info = info;
 		comprarDolares = false;
 		// Iniciar partida
 		partida = new Game(info.players, info.gameMap);
@@ -354,5 +356,14 @@ public class MainGameScreen extends JFrame {
 		partida.endTurn();
 		btnTirarDado.setVisible(true);
 		btnEndTurn.setVisible(false);
+		Player ganador = new Player("Dummy", 0,0,0);
+		for(Player player:info.players) {
+			if(player.getDolares()>300 && player.getDolares()>=ganador.getDolares()) {
+				ganador = player;
+			}
+		}
+		if(ganador.getDolares()>300) {
+			//Se terminó el juego
+		}
 	}
 }
