@@ -68,9 +68,8 @@ public class Player {
 		nodeLocation.applyReward(this, players, gameContext);
 	}
 
-	public double addPesos(double pesos) {
+	public void addPesos(double pesos) {
 		this.pesos += pesos;
-		return pesos;
 	}
 
 	public void substractPesos(double pesos) {
