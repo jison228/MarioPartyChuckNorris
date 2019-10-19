@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
@@ -15,6 +17,12 @@ import java.util.Queue;
 import java.util.Stack;
 import java.util.concurrent.Semaphore;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JPanel;
 
 import com.chucknorris.gui.minigame.gameobject.Clouds;
@@ -66,7 +74,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private int murioJugador3=0;
 	private int murioJugador4=0;
 	private int gameState = START_GAME_STATE;
-	
+	private  AudioInputStream stream;
 	private BufferedImage hardstyleImage;
 	private BufferedImage gameOverButtonImage;
 
@@ -113,10 +121,22 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		clouds2 = new Clouds2(GameWindow.SCREEN_WIDTH, mainCharacter2);
 		clouds3 = new Clouds3(GameWindow.SCREEN_WIDTH, mainCharacter3);
 		clouds4 = new Clouds4(GameWindow.SCREEN_WIDTH, mainCharacter4);
+//		try {
+//			musica1 = Applet.newAudioClip(new URL("file", "", "data/musica1.wav"));
+//		} catch (MalformedURLException e) {
+//			e.printStackTrace();
+//		}
 		try {
-			musica1 = Applet.newAudioClip(new URL("file", "", "data/musica1.wav"));
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+		    File yourFile = new File("data/musica1.wav");
+		    AudioFormat format;
+		    DataLine.Info info;
+		    stream = AudioSystem.getAudioInputStream(yourFile);
+		    format = stream.getFormat();
+		    info = new DataLine.Info(Clip.class, format);
+		    clip = (Clip) AudioSystem.getLine(info);
+		}
+		catch (Exception e) {
+		    //whatevers
 		}
 	}
 
@@ -203,7 +223,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			}
 			if (mainCharacter.getState() == 3 && mainCharacter2.getState() == 3&& mainCharacter3.getState() == 3&& mainCharacter4.getState() == 3) {
 				gameState = GAME_OVER_STATE;
-				musica1.stop();
+				//musica1.stop();
+				clip.close();
 			}
 		}
 	}
@@ -308,6 +329,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
 	private Queue<Character> pressed = new LinkedList<Character>();
 	static Semaphore semaphore = new Semaphore(1);
+	private Clip clip;
 	private void analizar() {
 		while (!pressed.isEmpty()) {
 			Character character=pressed.poll();
@@ -336,7 +358,14 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			case START_GAME_STATE:
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					gameState = GAME_PLAYING_STATE;
-					musica1.play();
+					//musica1.play();
+				    try {
+						clip.open(stream);
+					} catch (LineUnavailableException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				    clip.start();
 				}
 				break;
 			case GAME_PLAYING_STATE:
