@@ -14,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 import org.junit.Test;
 
 import com.chucknorris.gui.gameoptions.NewGameScreen;
+import com.chucknorris.gui.tablero.DescriptionPanel;
 import com.chucknorris.gui.titulo.TitleImagePanel;
 import com.chucknorris.gui.titulo.TitleScreen;
 import com.chucknorris.player.Player;
@@ -23,7 +24,6 @@ import javax.swing.SwingConstants;
 
 public class Endgame extends JFrame {
 	private JPanel mainPane;
-	private JLabel txtResultados;
 	private JLabel txt1;
 	private JLabel textFieldGanador;
 	public static void main(String[] args) {
@@ -81,7 +81,8 @@ public class Endgame extends JFrame {
 		
 		WinnerImagePanel panel = new WinnerImagePanel(ganador.getCharacter());
 		panel.setBounds(477, 162, 300, 300);
-		mainPane.add(panel);
+		mainPane.add(panel);	
+		
 
 		// Acciones de los botones
 
