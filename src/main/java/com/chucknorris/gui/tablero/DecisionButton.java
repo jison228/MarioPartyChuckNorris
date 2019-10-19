@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import javax.swing.JButton;
 
-public class DecisionButton extends JButton{
+public class DecisionButton extends JButton {
 	/**
 	 * 
 	 */
@@ -14,7 +14,7 @@ public class DecisionButton extends JButton{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(Color.BLUE);
+		g.setColor(new Color(255, 0, 127));
 		g.fillOval(0, 0, 75, 75);
 	}
 }

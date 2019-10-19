@@ -1,4 +1,5 @@
 package com.chucknorris.gui.minigame.userinterface;
+
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.Color;
@@ -69,35 +70,35 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private Thread thread;
 	private AudioClip musica1;
 	private boolean isKeyPressed;
-	private int murioJugador1=0;
-	private int murioJugador2=0;
-	private int murioJugador3=0;
-	private int murioJugador4=0;
+	private int murioJugador1 = 0;
+	private int murioJugador2 = 0;
+	private int murioJugador3 = 0;
+	private int murioJugador4 = 0;
 	private int gameState = START_GAME_STATE;
-	private  AudioInputStream stream;
+	private AudioInputStream stream;
 	private BufferedImage hardstyleImage;
 	private BufferedImage gameOverButtonImage;
 
 	private Graphics g;
-	
-	private int[] tiersScore= new int[10];
-	private int[] tiersSpeed= new int[10];
+
+	private int[] tiersScore = new int[10];
+	private int[] tiersSpeed = new int[10];
 	private int tier;
-	
+
 	public Stack<String> listaGanadores;
-	
-	public GameScreen(Stack<String> listaGanadores){
-		
+
+	public GameScreen(Stack<String> listaGanadores) {
+
 		this.listaGanadores = listaGanadores;
-		
-		tiersScore[0]=200;
-		tier=0;
-		for(int i=1;i<10;i++) {
-			tiersScore[i]+=tiersScore[i-1]+200;
+
+		tiersScore[0] = 200;
+		tier = 0;
+		for (int i = 1; i < 10; i++) {
+			tiersScore[i] += tiersScore[i - 1] + 200;
 		}
-		tiersSpeed[0]=6;
-		for(int j=1;j<10;j++) {
-			tiersSpeed[j]+=tiersSpeed[j-1]+2;
+		tiersSpeed[0] = 6;
+		for (int j = 1; j < 10; j++) {
+			tiersSpeed[j] += tiersSpeed[j - 1] + 2;
 		}
 		mainCharacter = new MainCharacter();
 		mainCharacter2 = new MainCharacter2();
@@ -127,16 +128,15 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 //			e.printStackTrace();
 //		}
 		try {
-		    File yourFile = new File("data/musica1.wav");
-		    AudioFormat format;
-		    DataLine.Info info;
-		    stream = AudioSystem.getAudioInputStream(yourFile);
-		    format = stream.getFormat();
-		    info = new DataLine.Info(Clip.class, format);
-		    clip = (Clip) AudioSystem.getLine(info);
-		}
-		catch (Exception e) {
-		    //whatevers
+			File yourFile = new File("data/musica1.wav");
+			AudioFormat format;
+			DataLine.Info info;
+			stream = AudioSystem.getAudioInputStream(yourFile);
+			format = stream.getFormat();
+			info = new DataLine.Info(Clip.class, format);
+			clip = (Clip) AudioSystem.getLine(info);
+		} catch (Exception e) {
+			// whatevers
 		}
 	}
 
@@ -145,13 +145,12 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		thread.start();
 	}
 
-
 	private int posicionJugador1;
 	private int posicionJugador2;
 	private int posicionJugador3;
 	private int posicionJugador4;
-	private int posicion=4;
-	
+	private int posicion = 4;
+
 	public void gameUpdate() {
 		if (gameState == GAME_PLAYING_STATE) {
 			clouds.update();
@@ -169,19 +168,20 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			enemiesManager.update();
 			enemiesManager2.update();
 			enemiesManager3.update();
-			enemiesManager4.update();	
-			if(mainCharacter.score==tiersScore[tier]||mainCharacter2.score==tiersScore[tier]||mainCharacter3.score==tiersScore[tier]||mainCharacter4.score==tiersScore[tier]) {
+			enemiesManager4.update();
+			if (mainCharacter.score == tiersScore[tier] || mainCharacter2.score == tiersScore[tier]
+					|| mainCharacter3.score == tiersScore[tier] || mainCharacter4.score == tiersScore[tier]) {
 				mainCharacter.setSpeedX(tiersSpeed[tier]);
 				mainCharacter2.setSpeedX(tiersSpeed[tier]);
 				mainCharacter3.setSpeedX(tiersSpeed[tier]);
 				mainCharacter4.setSpeedX(tiersSpeed[tier]);
 				tier++;
-				}
+			}
 			if (enemiesManager.isCollision()) {
 				mainCharacter.playDeadSound();
-				if(murioJugador1==0) {
+				if (murioJugador1 == 0) {
 					listaGanadores.push("Espert");
-					posicionJugador1=posicion;
+					posicionJugador1 = posicion;
 					posicion--;
 					murioJugador1++;
 				}
@@ -190,9 +190,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			}
 			if (enemiesManager2.isCollision()) {
 				mainCharacter2.playDeadSound();
-				if(murioJugador2==0) {
+				if (murioJugador2 == 0) {
 					listaGanadores.push("Cristina");
-					posicionJugador2=posicion;
+					posicionJugador2 = posicion;
 					posicion--;
 					murioJugador2++;
 				}
@@ -201,29 +201,30 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			}
 			if (enemiesManager3.isCollision()) {
 				mainCharacter3.playDeadSound();
-				if(murioJugador3==0) {
+				if (murioJugador3 == 0) {
 					listaGanadores.push("Macri");
-					posicionJugador3=posicion;
+					posicionJugador3 = posicion;
 					posicion--;
 					murioJugador3++;
 				}
 				mainCharacter3.dead(true);
-				mainCharacter3.setSpeedX(0);	
+				mainCharacter3.setSpeedX(0);
 			}
 			if (enemiesManager4.isCollision()) {
 				mainCharacter4.playDeadSound();
-				if(murioJugador4==0) {
+				if (murioJugador4 == 0) {
 					listaGanadores.push("Del Caño");
-					posicionJugador4=posicion;
+					posicionJugador4 = posicion;
 					posicion--;
 					murioJugador4++;
 				}
 				mainCharacter4.dead(true);
 				mainCharacter4.setSpeedX(0);
 			}
-			if (mainCharacter.getState() == 3 && mainCharacter2.getState() == 3&& mainCharacter3.getState() == 3&& mainCharacter4.getState() == 3) {
+			if (mainCharacter.getState() == 3 && mainCharacter2.getState() == 3 && mainCharacter3.getState() == 3
+					&& mainCharacter4.getState() == 3) {
 				gameState = GAME_OVER_STATE;
-				//musica1.stop();
+				// musica1.stop();
 				clip.close();
 			}
 		}
@@ -234,7 +235,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		g.setColor(Color.decode("#f7f7f7"));
 		g.fillRect(0, 0, getWidth(), getHeight());
 		switch (gameState) {
-		case START_GAME_STATE:		
+		case START_GAME_STATE:
 			mainCharacter.draw(g);
 			mainCharacter2.draw(g);
 			mainCharacter3.draw(g);
@@ -245,13 +246,14 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			g.drawString("Salte con 'B'", 200, 300);
 			g.drawString("Salte con 'P'", 200, 500);
 			g.drawString("Salte con '.'", 200, 700);
-		    g.setFont(new Font("Tahoma", Font.BOLD, 20));
+			g.setFont(new Font("Tahoma", Font.BOLD, 20));
 			g.drawString("Presionar espacio y A SALTAR", 300, 400);
 			break;
 		case GAME_PLAYING_STATE:
-			if(mainCharacter.score>1660||mainCharacter2.score>1660||mainCharacter3.score>1660||mainCharacter4.score>1660)
-			g.drawImage(hardstyleImage, 0, 0, getWidth(), getHeight(), null);
-		
+			if (mainCharacter.score > 1660 || mainCharacter2.score > 1660 || mainCharacter3.score > 1660
+					|| mainCharacter4.score > 1660)
+				g.drawImage(hardstyleImage, 0, 0, getWidth(), getHeight(), null);
+
 		case GAME_OVER_STATE:
 			clouds.draw(g);
 			clouds2.draw(g);
@@ -279,10 +281,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 				g.drawImage(gameOverButtonImage, 200, 180, null);
 				g.setColor(Color.BLACK);
 				g.setFont(new Font("Courier New", Font.BOLD, 16));
-				g.drawString("Posicion:" +posicionJugador1 , 600, 50);
-				g.drawString("Posicion:" +posicionJugador2 , 600, 250);
-				g.drawString("Posicion:" +posicionJugador3 , 600, 450);
-				g.drawString("Posicion:" +posicionJugador4 , 600, 650);
+				g.drawString("Posicion:" + posicionJugador1, 600, 50);
+				g.drawString("Posicion:" + posicionJugador2, 600, 250);
+				g.drawString("Posicion:" + posicionJugador3, 600, 450);
+				g.drawString("Posicion:" + posicionJugador4, 600, 650);
 			}
 			break;
 		}
@@ -301,7 +303,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 
 		long endProcessGame;
 		long lag = 0;
-		while (gameState==GAME_PLAYING_STATE||gameState==START_GAME_STATE) {
+		while (gameState == GAME_PLAYING_STATE || gameState == START_GAME_STATE) {
 			gameUpdate();
 			repaint();
 			semaphore.acquireUninterruptibly();
@@ -322,29 +324,30 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			}
 			lastTime = System.nanoTime();
 		}
-		if (gameState==GAME_OVER_STATE) {
-			 
+		if (gameState == GAME_OVER_STATE) {
+
 		}
 	}
 
 	private Queue<Character> pressed = new LinkedList<Character>();
 	static Semaphore semaphore = new Semaphore(1);
 	private Clip clip;
+
 	private void analizar() {
 		while (!pressed.isEmpty()) {
-			Character character=pressed.poll();
-			if (character=='b') {
+			Character character = pressed.poll();
+			if (character == 'b') {
 				mainCharacter2.jump();
 			}
-			if (character=='a') {
+			if (character == 'a') {
 				mainCharacter.jump();
-			}	
-			if (character=='p') {
+			}
+			if (character == 'p') {
 				mainCharacter3.jump();
-			}	
-			if (character=='.') {
+			}
+			if (character == '.') {
 				mainCharacter4.jump();
-			}	
+			}
 		}
 	}
 
@@ -358,14 +361,14 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			case START_GAME_STATE:
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					gameState = GAME_PLAYING_STATE;
-					//musica1.play();
-				    try {
+					// musica1.play();
+					try {
 						clip.open(stream);
 					} catch (LineUnavailableException | IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-				    clip.start();
+					clip.start();
 				}
 				break;
 			case GAME_PLAYING_STATE:
@@ -401,7 +404,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		enemiesManager.reset();
 		mainCharacter.dead(false);
 		mainCharacter.reset();
-		
+
 	}
 
 }
