@@ -2,7 +2,6 @@ package com.chucknorris.gamemap.initiallizer.file.reader
 
 import com.chucknorris.commons.Position
 import com.chucknorris.gamemap.GameMap
-import com.chucknorris.gamemap.initiallizer.file.reader.MapFileReadable
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader
 import com.chucknorris.gamemap.nodes.Node
 import com.chucknorris.gamemap.presenter.NodeCSVPresenter
@@ -52,14 +51,9 @@ class MapFileCSVReaderSpec extends Specification {
             Assert.assertNotNull(node)
 
             assertNode(node, nodePresenter, positionPresenter, entry.getValue())
-
-            println node.present(nodePresenter, positionPresenter)
-            node.nextNodes().forEach({ nextnode -> println "nexxt node :"+ nextnode.present(nodePresenter, positionPresenter) })
-            println("end node print")
         }
 
         Node previousToFinalNode = gameMap.getNode(previousToFinalNodePosition)
-
         Node finalNode = gameMap.getNode(finalNodePosition)
 
         Assert.assertTrue(previousToFinalNode.isThereSameReferenceNextNode(finalNode))
