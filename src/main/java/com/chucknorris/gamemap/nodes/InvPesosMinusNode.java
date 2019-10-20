@@ -1,12 +1,12 @@
 package com.chucknorris.gamemap.nodes;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.chucknorris.commons.Position;
 import com.chucknorris.rewards.substractor.pesos.PesosPercentagePlayerSubstractor;
 
 public class InvPesosMinusNode extends Node {
-	public InvPesosMinusNode(ArrayList<Node> next,Position pos) {
+	public InvPesosMinusNode(List<Node> next,Position pos) {
 		super(next,pos,new PesosPercentagePlayerSubstractor(10));
 	}
 

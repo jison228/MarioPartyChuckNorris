@@ -21,7 +21,7 @@ public class PowerupNodeTest {
 
 	@Before
 	public void executedBeforeEach() {
-		p = new Espert(150, 100);
+		p = new Espert(150, 100, 150);
 		players = new ArrayList<Player>();
 		players.add(p);
 		nodeTest = new PowerupNode(null, new Position(4, 4));

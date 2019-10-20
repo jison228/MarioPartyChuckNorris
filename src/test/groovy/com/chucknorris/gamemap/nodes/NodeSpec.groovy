@@ -24,6 +24,6 @@ class NodeSpec extends Specification {
         "Red node case"    | new RedNode(null, new Position(4, 4))    || 3             || "RED"
         "Yellow node case" | new YellowNode(null, new Position(4, 4)) || 10            || "YELLOW"
         "White node case"  | new WhiteNode(null, new Position(4, 4))  || 0             || "WHITE"
-        "End node case"    | new EndNode(new Position(4, 4))          || 0             || "END"
+        "End node case"    | new EndNode(null, new Position(4, 4))    || 0             || "END"
     }
 }

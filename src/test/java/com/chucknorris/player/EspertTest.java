@@ -17,7 +17,7 @@ public class EspertTest {
 
 	@Before
 	public void executedBeforeEach() {
-		alesi = new Espert(100, 50);
+		alesi = new Espert(100, 50, 100);
 		p1 = new Player("Dummy", 200, 200);
 		p2 = new Player("Dummy", 400, 200);
 		p3 = new Player("Dummy", 50, 60);
