@@ -17,6 +17,7 @@ public final class NodeFactory {
 		CATALOGED_NODES.put("YELLOW", YellowNode.class);
 		CATALOGED_NODES.put("RED", RedNode.class);
 		CATALOGED_NODES.put("WHITE", WhiteNode.class);
+		CATALOGED_NODES.put("END", EndNode.class);
 
 		CATALOGED_NODES.put("IDP", InvDolaresPlusNode.class);
 		CATALOGED_NODES.put("IDM", InvDolaresMinusNode.class);
@@ -26,7 +27,7 @@ public final class NodeFactory {
 		CATALOGED_NODES.put("IPP", InvPesosPlusNode.class);
 		CATALOGED_NODES.put("IPM", InvPesosMinusNode.class);
 
-		CATALOGED_NODES.put("PARI", BoletaGasNode.class);
+		CATALOGED_NODES.put("PARI", ParitariaNode.class);
 		CATALOGED_NODES.put("BG", BoletaGasNode.class);
 		CATALOGED_NODES.put("AFIPP", AfipPesosNode.class);
 		CATALOGED_NODES.put("AFIPD", AfipDolarNode.class);
@@ -37,7 +38,7 @@ public final class NodeFactory {
 	public Node buildNode(Position position, String type, List<Node> nextNodes) throws Exception {
 		Class nodeClass = CATALOGED_NODES.getOrDefault(type, DEFAULT_NODE_VALUE);
 
-		Constructor constructor = nodeClass.getConstructor(ensureClass(nextNodes), ensureClass(position));
+		Constructor constructor = nodeClass.getConstructor(List.class, Position.class);
 
 		return (Node) constructor.newInstance(nextNodes, position);
 	}

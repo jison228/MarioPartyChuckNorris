@@ -6,8 +6,8 @@ import com.chucknorris.rewards.GameContext;
 
 public class Cristina extends Player{
 
-	public Cristina(double pesos, double dolar) {
-		super("Cristina", pesos, dolar);
+	public Cristina(double pesos, double dolar, double salario) {
+		super("Cristina", pesos, dolar, salario);
 	}
 	
 	@Override
@@ -26,8 +26,9 @@ public class Cristina extends Player{
 		}
 	}
 	
+	@Override
 	public String getPowerupDescription() {
-		return "Regala planes sociales a los m·s pobres\n(30% del m·s rico)\nMACRI MACHIRULO";
+		return "Regala planes sociales a los m√°s pobres\n(30% del m√°s rico)\n\"MACRI GATO\"";
 	}
 
 }

@@ -6,8 +6,8 @@ import com.chucknorris.rewards.GameContext;
 
 public class Macri extends Player {
 
-	public Macri(double pesos, double dolar) {
-		super("Macri", pesos, dolar);
+	public Macri(double pesos, double dolar, double salario) {
+		super("Macri", pesos, dolar, salario);
 	}
 	
 	@Override
@@ -27,8 +27,9 @@ public class Macri extends Player {
 			}
 		}
 	}
-
+	
+	@Override
 	public String getPowerupDescription() {
-		return "Aumenta los dÛlares de los dos jugadores m·s ricos un 20%\nMiau";
+		return "Aumenta los d√≥lares de los dos \njugadores m√°s ricos un 20%\n\"Miau\"";
 	}
 }

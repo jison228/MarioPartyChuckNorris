@@ -17,7 +17,7 @@ public class MacriTest {
 
 	@Before
 	public void executedBeforeEach() {
-		gato = new Macri(15, 100);
+		gato = new Macri(15, 100, 100);
 		p1 = new Player("Dummy", 40, 200);
 		p2 = new Player("Dummy", 20, 300);
 		p3 = new Player("Dummy", 25, 100);

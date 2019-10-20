@@ -68,13 +68,12 @@ public class Player {
 		nodeLocation.applyReward(this, players, gameContext);
 	}
 
-	public double addPesos(double pesos) {
+	public void addPesos(double pesos) {
 		this.pesos += pesos;
-		return pesos;
 	}
 
 	public void substractPesos(double pesos) {
-		this.pesos -= pesos;
+		this.pesos = Math.max(0, this.pesos - pesos);
 	}
 
 	public void addDolar(double total) {
@@ -82,7 +81,7 @@ public class Player {
 	}
 
 	public void substractDolar(double dolar) {
-		this.dolar -= dolar;
+		this.dolar = Math.max(0, this.dolar - dolar);
 	}
 
 	public double substractCurrency(PesosSubstractor substractor) {
@@ -125,6 +124,10 @@ public class Player {
 		return Math.round(dolar * 10) / 10.0;
 	}
 	
+	public double getSalario() {
+		return Math.round(salario * 10) / 10.0;
+	}
+	
 	public void addDolaresByPercentage(double percentage) {
 		dolar = dolar * ((percentage / 100) + 1);
 	}
@@ -135,5 +138,18 @@ public class Player {
   
 	public void addSalarioByPercentage(double percentage) {
 		salario = salario * ((percentage / 100) + 1);
+	}
+	
+	public void buyDolares(double pesos, double dolares) {
+		this.substractPesos(pesos);
+		this.addDolar(dolares);
+	}
+	
+	public void cobrarSalario() {
+		this.addPesos(salario);
+	}
+	
+	public String getPowerupDescription() {
+		return "";
 	}
 }
