@@ -1,5 +1,7 @@
 package com.chucknorris.game;
 
-public class GameResponse {
+import com.chucknorris.server.command.response.ServerResponse;
+
+public class GameResponse implements ServerResponse {
 	public int movementsLeft;
 }
