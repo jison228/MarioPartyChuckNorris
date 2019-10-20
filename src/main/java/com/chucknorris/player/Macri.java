@@ -30,6 +30,6 @@ public class Macri extends Player {
 	
 	@Override
 	public String getPowerupDescription() {
-		return "Aumenta los dÛlares de los dos \njugadores m·s ricos un 20%\n\"Miau\"";
+		return "Aumenta los d√≥lares de los dos \njugadores m√°s ricos un 20%\n\"Miau\"";
 	}
 }

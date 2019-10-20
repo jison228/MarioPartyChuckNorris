@@ -30,7 +30,7 @@ public class Espert extends Player {
 
 	@Override
 	public String getPowerupDescription() {
-		return "Resta un 50% de los pesos de todos \nlos jugadores y los cambia con dólares\n\"QUIERO T*T*S\"";
+		return "Resta un 50% de los pesos de todos \nlos jugadores y los cambia con dÃ³lares\n\"QUIERO T*T*S\"";
 	}
 
 }
