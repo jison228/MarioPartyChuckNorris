@@ -1,13 +1,26 @@
 package com.chucknorris.gui.endgame;
 
-import com.chucknorris.gui.titulo.TitleImagePanel;
-import com.chucknorris.player.Player;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import org.junit.Test;
+
+import com.chucknorris.gui.gameoptions.NewGameScreen;
+import com.chucknorris.gui.tablero.DescriptionPanel;
+import com.chucknorris.gui.titulo.TitleImagePanel;
+import com.chucknorris.gui.titulo.TitleScreen;
+import com.chucknorris.player.Player;
+
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class Endgame extends JFrame {
 	private JPanel mainPane;

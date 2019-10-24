@@ -213,7 +213,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			if (enemiesManager4.isCollision()) {
 				mainCharacter4.playDeadSound();
 				if (murioJugador4 == 0) {
-					listaGanadores.push("Del CaÃ±o");
+					listaGanadores.push("Del Caño");
 					posicionJugador4 = posicion;
 					posicion--;
 					murioJugador4++;

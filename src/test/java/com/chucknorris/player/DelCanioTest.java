@@ -31,7 +31,7 @@ public class DelCanioTest {
 
 	@Test
 	public void getCharacterTest() {
-		assertEquals("Del CaÃ±o", nico.getCharacter());
+		assertEquals("Del Caño", nico.getCharacter());
 	}
 
 	@Test
