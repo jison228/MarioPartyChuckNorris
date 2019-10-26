@@ -15,7 +15,11 @@ public class ChuckNorrisServer {
 		try {
 			Socket socket;
 
-			ServerSocket serverSocket = new ServerSocket(GlobalConfig.SERVER_PORT);
+			int serverPort = GlobalConfig.SERVER_PORT;
+
+			ServerSocket serverSocket = new ServerSocket(serverPort);
+
+			LOGGER.log(Level.INFO, String.format("Listening on port %s", serverPort));
 
 			while (true) {
 				socket = serverSocket.accept();
@@ -24,7 +28,7 @@ public class ChuckNorrisServer {
 			}
 
 		} catch (IOException ex) {
-			Logger.getLogger(ChuckNorrisServer.class.getName()).log(Level.SEVERE, null, ex);
+			LOGGER.log(Level.SEVERE, ex.toString(), ex);
 		}
 	}
 }

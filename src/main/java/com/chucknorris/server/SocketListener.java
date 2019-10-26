@@ -18,7 +18,8 @@ import java.util.logging.Logger;
 public class SocketListener extends Thread {
 	private static final String FINISH_COMMAND = "close";
 	private static final Command DO_NOTHING_COMMAND = new DoNothingCommand();
-	private static Map<String, Command> commandProcessorMap;
+	private static final Logger logger = Logger.getLogger(SocketListener.class.getName());
+	private static final Map<String, Command> commandProcessorMap;
 
 	static {
 		commandProcessorMap = new HashMap<>();
@@ -28,7 +29,6 @@ public class SocketListener extends Thread {
 
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
-	private Logger logger = Logger.getLogger(SocketListener.class.getName());
 
 	public SocketListener(Socket socket) throws IOException {
 		output = new ObjectOutputStream(socket.getOutputStream());

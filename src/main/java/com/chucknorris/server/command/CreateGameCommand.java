@@ -14,6 +14,7 @@ public class CreateGameCommand implements Command {
 
 	@Override
 	public ServerResponse process(Map commandDataDto) {
-		return gameService.createGame(commandDataDto);
+//		return gameService.createGame(commandDataDto);
+		return null;
 	}
 }
