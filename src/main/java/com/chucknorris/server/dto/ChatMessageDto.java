@@ -1,4 +1,4 @@
-package com.chucknorris.server.chat.dto;
+package com.chucknorris.server.dto;
 
 import java.io.Serializable;
 
