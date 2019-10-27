@@ -46,7 +46,6 @@ public class MainGameScreen extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private Game partida;
-	private boolean TAB;
 	private boolean ctrl;
 	private JButton btnTirarDado;
 	private JButton btnCamino1;
@@ -57,13 +56,10 @@ public class MainGameScreen extends JFrame {
 	private boolean comprarDolares;
 	private CompraDolaresFrame dolaresFrame;
 	private JPanelGame gamePanel;
-	private GameInformation info;
 	private InfoPanel characterPanel;
 	private JLabel diceImage;
 	private DescriptionPanel panelDescrip;
 	private GameWindow minijuego;
-	private boolean running;
-
 	/**
 	 * Launch the application.
 	 */
@@ -101,12 +97,10 @@ public class MainGameScreen extends JFrame {
 	 */
 	public MainGameScreen(GameInformation info) {
 		comprarDolares = false;
-		running = false;
 		// Iniciar partida
 		partida = new Game(info);
 		partida.getGameMap().initializePlayers(partida.getPlayerList());
 
-		TAB = false;
 		ctrl = false;
 		// JFrame config
 		setResizable(false);
@@ -119,9 +113,9 @@ public class MainGameScreen extends JFrame {
 
 		// Panel para jugadores
 		JPanelPlayers playersPanel = new JPanelPlayers(partida.getPlayerList());
-		playersPanel.setBounds(1000, 0, 280, 450);
+		playersPanel.setBounds(1000, 0, 280, 500);
 		contentPane.add(playersPanel);
-		playersPanel.setVisible(false);
+		
 		
 		// Panel para descripcion
 		panelDescrip = new DescriptionPanel();
@@ -216,25 +210,25 @@ public class MainGameScreen extends JFrame {
 		// Panel del juego
 		gamePanel = new JPanelGame(partida.getGameMap().getMap(), partida.getPlayerList());
 		gamePanel.setBackground(SystemColor.text);
-		gamePanel.setBounds(0, 0, 1280, 600);
+		gamePanel.setBounds(0, 0, 1000, 500);
 		contentPane.add(gamePanel);
 		gamePanel.setLayout(null);
 
 		// Panel para el boton
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBounds(840, 560, 440, 160);
+		buttonPanel.setBounds(720, 500, 270, 220);
 		contentPane.add(buttonPanel);
 		buttonPanel.setLayout(null);
 		// Foto Dado
 		diceImage = new JLabel();
-		diceImage.setBounds(200, 0, 115, 115);
+		diceImage.setBounds(15, 60, 115, 115);
 		diceImage.setVisible(false);
 		buttonPanel.add(diceImage);
 
 		// Panel para el personaje
 		characterPanel = new InfoPanel(partida.getPlayerList().get(partida.getCurrentTurn() % 4),
 				partida.getCurrentTurn(), partida.getPrecioDolar());
-		characterPanel.setBounds(0, 560, 840, 160);
+		characterPanel.setBounds(0, 500, 720, 220);
 		contentPane.add(characterPanel);
 
 		// TAB
@@ -243,17 +237,6 @@ public class MainGameScreen extends JFrame {
 			public void keyPressed(KeyEvent e) {
 
 				int key = e.getExtendedKeyCode();
-				if (key == KeyEvent.VK_SHIFT) {
-					if (TAB) {
-						chatPanel.setVisible(false);
-						playersPanel.setVisible(false);
-						TAB = false;
-					} else {
-						chatPanel.setVisible(true);
-						playersPanel.setVisible(true);
-						TAB = true;
-					}
-				}
 				if (key == KeyEvent.VK_CONTROL) {
 					if (ctrl) {
 						panelDescrip.setVisible(false);
@@ -299,7 +282,7 @@ public class MainGameScreen extends JFrame {
 				repaint();
 			}
 		});
-		btnTirarDado.setBounds(0, 25, 150, 60);
+		btnTirarDado.setBounds(0, 0, 150, 60);
 		buttonPanel.add(btnTirarDado);
 		btnTirarDado.setFocusable(false);
 
@@ -312,7 +295,7 @@ public class MainGameScreen extends JFrame {
 		btnEndTurn.setVisible(false);
 		btnEndTurn.setForeground(Color.RED);
 		btnEndTurn.setFocusable(false);
-		btnEndTurn.setBounds(0, 25, 150, 60);
+		btnEndTurn.setBounds(0, 0, 150, 60);
 		buttonPanel.add(btnEndTurn);
 
 	}
