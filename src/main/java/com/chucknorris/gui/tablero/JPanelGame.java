@@ -25,7 +25,7 @@ public class JPanelGame extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Map<Position, Node> mapa;
 	private List<Player> listaP;
-	private int iniX = 50;
+	private int iniX = 30;
 	private int iniY = 30;
 
 	public JPanelGame(Map<Position, Node> mapa, List<Player> listaP) {
@@ -55,8 +55,8 @@ public class JPanelGame extends JPanel {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			g.drawImage(image, iniX + entry.getValue().getPositionCoords().getX() * 150,
-					iniY + entry.getValue().getPositionCoords().getY() * 150, this);
+			g.drawImage(image, iniX + entry.getValue().getPositionCoords().getX() * 125,
+					iniY + entry.getValue().getPositionCoords().getY() * 125, this);
 		}
 
 		for (int i = 0; i < listaP.size(); i++) {
@@ -66,8 +66,8 @@ public class JPanelGame extends JPanel {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			g.drawImage(image, iniX + listaP.get(i).getNodeLocation().getPositionCoords().getX() * 150 + (i % 2) * 40,
-					iniY + listaP.get(i).getNodeLocation().getPositionCoords().getY() * 150 + (i / 2) * 40, this);
+			g.drawImage(image, iniX + listaP.get(i).getNodeLocation().getPositionCoords().getX() * 125 + (i % 2) * 40,
+					iniY + listaP.get(i).getNodeLocation().getPositionCoords().getY() * 125 + (i / 2) * 40, this);
 		}
 	}
 
