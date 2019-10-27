@@ -76,10 +76,10 @@ public class MainGameScreen extends JFrame {
 					GameMap mapa1;
 					MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
 					mapa1 = mapFileCSVReader.buildGameMap();
-					Espert p1 = new Espert(1450, 150, 100);
-					Cristina p2 = new Cristina(150, 100, 900);
-					Macri p3 = new Macri(500, 100, 100);
-					DelCanio p4 = new DelCanio(150, 100, 100);
+					Espert p1 = new Espert(100, 100, 900);
+					Cristina p2 = new Cristina(100, 100, 900);
+					Macri p3 = new Macri(100, 100, 900);
+					DelCanio p4 = new DelCanio(100, 100, 900);
 					List<Player> listaP = new ArrayList<Player>();
 					listaP.add(p1);
 					listaP.add(p2);
@@ -166,8 +166,10 @@ public class MainGameScreen extends JFrame {
 				}
 				if (respuesta.movementsLeft > 0) {
 					tomarDecision(currentPlayer);
-				} else
+				} else {
+					currentPlayer.applyReward(partida.getPlayerList(), null);
 					endTurn();
+				}
 				repaint();
 			}
 		});
@@ -200,8 +202,10 @@ public class MainGameScreen extends JFrame {
 				}
 				if (respuesta.movementsLeft > 0) {
 					tomarDecision(currentPlayer);
-				} else
+				} else {
+					currentPlayer.applyReward(partida.getPlayerList(), null);
 					endTurn();
+				}
 				repaint();
 			}
 		});
@@ -288,8 +292,10 @@ public class MainGameScreen extends JFrame {
 				}
 				if (respuesta.movementsLeft > 0)
 					tomarDecision(currentPlayer);
-				else
+				else {
+					currentPlayer.applyReward(partida.getPlayerList(), null);
 					endTurn();
+				}
 				repaint();
 			}
 		});
@@ -375,10 +381,10 @@ public class MainGameScreen extends JFrame {
 
 	public void tomarDecision(Player currentPlayer) {
 		btnTirarDado.setVisible(false);
-		btnCamino1.setBounds(50 + currentPlayer.getNodeLocation().nextNodes().get(0).getPositionCoords().getX() * 150,
-				30 + currentPlayer.getNodeLocation().nextNodes().get(0).getPositionCoords().getY() * 150, 75, 75);
-		btnCamino2.setBounds(50 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getX() * 150,
-				30 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getY() * 150, 75, 75);
+		btnCamino1.setBounds(30 + currentPlayer.getNodeLocation().nextNodes().get(0).getPositionCoords().getX() * 125,
+				30 + currentPlayer.getNodeLocation().nextNodes().get(0).getPositionCoords().getY() * 125, 75, 75);
+		btnCamino2.setBounds(30 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getX() * 125,
+				30 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getY() * 125, 75, 75);
 		btnCamino1.setVisible(true);
 		btnCamino2.setVisible(true);
 	}
@@ -438,7 +444,6 @@ public class MainGameScreen extends JFrame {
 					
 				}
 			});
-			partida.aumentarPrecioDolar();
 		}
 		partida.endTurn();
 		btnTirarDado.setVisible(true);

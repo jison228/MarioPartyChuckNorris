@@ -54,8 +54,6 @@ public class Game {
 		
 		int movementsLeft = gameMap.movePlayerGUI(player, diceResult, nodePath);
 		
-		applyRewardIfApplies(player, movementsLeft);
-		
 		GameResponse resultado = new GameResponse();
 		resultado.movementsLeft = movementsLeft;
 		resultado.diceResult = diceResult;
@@ -76,8 +74,6 @@ public class Game {
 		Queue<Node> nodePath = new LinkedList<Node>();
 		
 		movementsLeft = gameMap.movePlayerFromIntersectionGUI(player, nextNode, movementsLeft, nodePath);
-		
-		applyRewardIfApplies(player, movementsLeft);
 		
 		GameResponse resultado = new GameResponse();
 		resultado.movementsLeft = movementsLeft;
