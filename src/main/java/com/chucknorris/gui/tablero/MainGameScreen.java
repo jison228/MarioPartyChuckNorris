@@ -435,6 +435,7 @@ public class MainGameScreen extends JFrame {
 							player.addDolaresByPercentage(50);
 						}
 					}
+					checkWinner();
 					repaint();
 				}
 				
@@ -446,20 +447,24 @@ public class MainGameScreen extends JFrame {
 			});
 		}
 		partida.endTurn();
+		checkWinner();
 		btnTirarDado.setVisible(true);
 		btnEndTurn.setVisible(false);
-		Player ganador = new Player("Dummy", 0, 0, 0);
-		for (Player player : partida.getPlayerList()) {
-			if (player.getDolares() > 300 && player.getDolares() >= ganador.getDolares()) {
-				ganador = player;
-			}
-		}
-		if (ganador.getDolares() > 150) {
-			new Endgame(ganador).setVisible(true);
-			dispose();
-		}
 		characterPanel.actualizar(partida.getPlayerList().get(partida.getCurrentTurn() % 4), partida.getCurrentTurn(), partida.getPrecioDolar());
 		diceImage.setVisible(false);
 		repaint();
+	}
+	
+	private void checkWinner() {
+		Player ganador = new Player("Dummy", 0, 0, 0);
+		for (Player player : partida.getPlayerList()) {
+			if (player.getDolares() >= ganador.getDolares()) {
+				ganador = player;
+			}
+		}
+		if (ganador.getDolares() > 300) {
+			new Endgame(ganador).setVisible(true);
+			dispose();
+		}
 	}
 }
