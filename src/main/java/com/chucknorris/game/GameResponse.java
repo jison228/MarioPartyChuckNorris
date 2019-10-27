@@ -5,7 +5,7 @@ import com.chucknorris.server.command.response.ServerResponse;
 
 import java.util.Queue;
 
-public class GameResponse implements ServerResponse {
+public class GameResponse extends ServerResponse {
 	public int movementsLeft;
 	public int diceResult;
 	public Queue<Node> nodePath;

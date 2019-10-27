@@ -1,34 +1,44 @@
 package com.chucknorris.server.command;
 
+import com.chucknorris.server.command.dto.CommandData;
+import com.chucknorris.server.command.response.ChatResponse;
 import com.chucknorris.server.command.response.ServerResponse;
 
-import java.io.*;
-import java.net.Socket;
-import java.util.Map;
+import java.util.logging.Level;
 
-public class ChatMessageCommand extends Command {
+public class ChatMessageCommand extends Command<ChatResponse> {
 
 	@Override
-	public ServerResponse process(Map commandDataDto, Socket socket) {
-		try {
-			InputStream inputStream = socket.getInputStream();
-			OutputStream outputStream = socket.getOutputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+	protected ServerResponse execute(CommandData commandData) {
+		String message;
 
-			String command;
+		while ((message = readLine()) != null && !message.equals("close")) {
 
-			while ((command = reader.readLine()) != null && !command.equals("close")) {
-				String message = "you type " + command + "\n";
-				outputStream.write(message.getBytes());
-			}
+			ChatResponse response = new ChatResponse();
 
-			String message = "Finishing command chat_message";
-			outputStream.write(message.getBytes());
+			response.messageToPrint = String.format("%s - %s: %s", System.currentTimeMillis(), "Player", message);
 
-		} catch (IOException e) {
-			e.printStackTrace();
+			String serializedResponse = serialize(response);
+
+			writeThroughOutputStream(serializedResponse.getBytes());
 		}
 
-		return null;
+		logConnectionFinished();
+
+		return clientCloseConnectionChatResponse(commandData);
+	}
+
+	private void logConnectionFinished() {
+		String message = String.format("Finishing command chat_message for player %s", "Player dummy");
+
+		LOGGER.log(Level.INFO, message);
+	}
+
+	private ServerResponse clientCloseConnectionChatResponse(CommandData commandData) {
+		ChatResponse response = new ChatResponse();
+
+		response.messageToPrint = String.format("%s - Player %s has disconnected", getNow(), "PlayerDummy");
+
+		return response;
 	}
 }

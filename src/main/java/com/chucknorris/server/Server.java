@@ -5,7 +5,6 @@ import com.chucknorris.server.config.GlobalConfig;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Server {
@@ -23,14 +22,14 @@ public class Server {
 	private static void attendRequest() throws IOException {
 		ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
 
-		LOGGER.log(Level.INFO, String.format("Listening on port %s", SERVER_PORT));
+		LOGGER.info(String.format("Listening on port %s", SERVER_PORT));
 
 		while (true) {
-			LOGGER.log(Level.INFO, "Ready to receive a new client connection", SERVER_PORT);
+			LOGGER.info(String.format("Ready to receive a new client connection in port %s", SERVER_PORT));
 
 			Socket socketClient = serverSocket.accept();
 
-			System.out.println("Accepted connection from " + socketClient);
+			LOGGER.info(String.format("Accepted connection from %s in port %s", socketClient, SERVER_PORT));
 
 			ServerWorker serverWorker = new ServerWorker(socketClient);
 

@@ -6,13 +6,13 @@ public class SerializerImpl<T> implements Serializer<T> {
 	private static final Gson gson = new Gson();
 
 	@Override
-	public String serialize(T object) {
-		return gson.toJson(object);
+	public String serialize(T objectToSerialize) {
+		return gson.toJson(objectToSerialize);
 	}
 
 	@Override
-	public T serialize(String json, Class classToCast) {
-		return (T) gson.fromJson(json, classToCast);
+	public T serialize(String jsonToDeserialize, Class classToCast) {
+		return (T) gson.fromJson(jsonToDeserialize, classToCast);
 	}
 
 }

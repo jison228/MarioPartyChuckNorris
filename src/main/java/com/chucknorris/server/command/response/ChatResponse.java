@@ -1,5 +1,5 @@
 package com.chucknorris.server.command.response;
 
-public class ChatResponse implements ServerResponse {
+public class ChatResponse extends ServerResponse {
 	public String messageToPrint;
 }
