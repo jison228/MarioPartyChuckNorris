@@ -21,19 +21,17 @@ public class ServerWorker extends Thread {
 	private static final Command INVALID_COMMAND = new InvalidCommand();
 	private static final Logger LOGGER = Logger.getLogger(ServerWorker.class.getName());
 	private static final Serializer<CommandDto> serializer = new SerializerImpl<>();
-	private static final Map<String, Command> commandProcessorMap;
-
-	static {
-		commandProcessorMap = new HashMap<>();
-
-		commandProcessorMap.put("chat_message", new ChatMessageCommand());
-		commandProcessorMap.put("bad_request", new BadRequestCommand());
-	}
+	private final Map<String, Command> commandProcessorMap;
 
 	private final Socket socket;
 
 	public ServerWorker(Socket socket) {
 		this.socket = socket;
+
+		commandProcessorMap = new HashMap<>();
+
+		commandProcessorMap.put("chat_message", new ChatMessageCommand());
+		commandProcessorMap.put("bad_request", new BadRequestCommand());
 	}
 
 	@Override
@@ -59,6 +57,9 @@ public class ServerWorker extends Thread {
 			if (StringUtils.isEmpty(commandDto.command)) {
 				commandDto.command = "invalid_command";
 			}
+
+			//TODO esto no esta bueno.
+			commandDto.socket = socket;
 
 			LOGGER.info("Processing command " + commandDto.toString());
 

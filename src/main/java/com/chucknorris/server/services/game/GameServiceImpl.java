@@ -3,6 +3,7 @@ package com.chucknorris.server.services.game;
 import com.chucknorris.game.Game;
 import com.chucknorris.game.GameResponse;
 import com.chucknorris.gui.GameInformation;
+import com.chucknorris.player.Player;
 import com.chucknorris.server.command.response.ServerResponse;
 import com.chucknorris.server.repositories.game.GameRepository;
 import com.chucknorris.server.repositories.game.InMemoryGameRepository;
@@ -28,5 +29,10 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public ServerResponse movePlayer(Map data) {
 		return null;
+	}
+
+	@Override
+	public Player getPlayer(String gameId, String playerId) {
+		return new Player("Cristina", 3);
 	}
 }

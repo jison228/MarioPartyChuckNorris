@@ -1,40 +1,58 @@
 package com.chucknorris.server.command;
 
+import com.chucknorris.player.Player;
 import com.chucknorris.server.command.dto.CommandData;
 import com.chucknorris.server.command.response.ChatResponse;
 import com.chucknorris.server.command.response.ServerResponse;
-
-import java.util.logging.Level;
+import com.chucknorris.server.services.chat.ChatService;
+import com.chucknorris.server.services.chat.ChatServiceImpl;
+import com.chucknorris.server.services.game.GameService;
+import com.chucknorris.server.services.game.GameServiceImpl;
 
 public class ChatMessageCommand extends Command<ChatResponse> {
+	private ChatService service = new ChatServiceImpl();
+	private GameService gameService = new GameServiceImpl();
 
 	@Override
 	protected ServerResponse execute(CommandData commandData) {
 		String message;
 
+		notifyClientConnected(commandData);
+
 		while ((message = readLine()) != null && !message.equals("close")) {
-
-			ChatResponse response = new ChatResponse();
-
-			response.messageToPrint = String.format("%s - %s: %s", System.currentTimeMillis(), "Player", message);
-
-			String serializedResponse = serialize(response);
-
-			writeThroughOutputStream(serializedResponse.getBytes());
+			service.notifyNewMessage(message, commandData.getData());
 		}
 
-		logConnectionFinished();
+		notifyClientDisconnected(commandData);
 
-		return clientCloseConnectionChatResponse(commandData);
+		return clientCloseConnectionChatResponse();
 	}
 
-	private void logConnectionFinished() {
-		String message = String.format("Finishing command chat_message for player %s", "Player dummy");
+	private void notifyClientDisconnected(CommandData commandData) {
+		String gameId = (String) commandData.getData().get("game_id");
+		String playerId = (String) commandData.getData().get("player_id");
+		Player player = gameService.getPlayer(gameId, playerId);
 
-		LOGGER.log(Level.INFO, message);
+		String message = String.format("Player %s has disconnected from chat_message", player.printPlayerName());
+
+		LOGGER.info(message);
+
+		service.notifyClientDisconnected(commandData.getSocket(), commandData.getData());
 	}
 
-	private ServerResponse clientCloseConnectionChatResponse(CommandData commandData) {
+	private void notifyClientConnected(CommandData commandData) {
+		String gameId = (String) commandData.getData().get("game_id");
+		String playerId = (String) commandData.getData().get("player_id");
+		Player player = gameService.getPlayer(gameId, playerId);
+
+		String message = String.format("Player %s has initiallized chat_message command", player.printPlayerName());
+
+		LOGGER.info(message);
+
+		service.notifyClientConnected(commandData.getSocket(), commandData.getData());
+	}
+
+	private ServerResponse clientCloseConnectionChatResponse() {
 		ChatResponse response = new ChatResponse();
 
 		response.messageToPrint = String.format("%s - Player %s has disconnected", getNow(), "PlayerDummy");

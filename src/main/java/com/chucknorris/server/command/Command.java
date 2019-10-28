@@ -6,7 +6,10 @@ import com.chucknorris.server.command.response.ServerResponse;
 import com.chucknorris.server.command.serializer.Serializer;
 import com.chucknorris.server.command.serializer.SerializerImpl;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.logging.Logger;
@@ -18,7 +21,6 @@ public abstract class Command<T extends ServerResponse> {
 	//TODO Cuando cerramos el ¿reader?
 	private BufferedReader reader;
 	private InputStream inputStream;
-	private OutputStream outputStream;
 
 	protected abstract ServerResponse execute(CommandData commandData) throws Throwable;
 
@@ -52,24 +54,11 @@ public abstract class Command<T extends ServerResponse> {
 
 	private ServerResponse handleCommand(CommandDto commandDto, Socket socket) throws Throwable {
 		inputStream = socket.getInputStream();
-		outputStream = socket.getOutputStream();
 
 		CommandData commandData = new CommandData();
 		commandData.commandDto = commandDto;
 
 		return execute(commandData);
-	}
-
-	protected String serialize(T object) {
-		return serializer.serialize(object);
-	}
-
-	protected void writeThroughOutputStream(byte[] bytes) {
-		try {
-			outputStream.write(bytes);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	protected String getNow() {
