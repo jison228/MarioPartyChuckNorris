@@ -160,7 +160,6 @@ public class MainGameScreen extends JFrame {
 				if (respuesta.movementsLeft > 0) {
 					tomarDecision(currentPlayer);
 				} else {
-					currentPlayer.applyReward(partida.getPlayerList(), null);
 					endTurn();
 				}
 				repaint();
@@ -196,7 +195,6 @@ public class MainGameScreen extends JFrame {
 				if (respuesta.movementsLeft > 0) {
 					tomarDecision(currentPlayer);
 				} else {
-					currentPlayer.applyReward(partida.getPlayerList(), null);
 					endTurn();
 				}
 				repaint();
@@ -278,7 +276,6 @@ public class MainGameScreen extends JFrame {
 				if (respuesta.movementsLeft > 0)
 					tomarDecision(currentPlayer);
 				else {
-					currentPlayer.applyReward(partida.getPlayerList(), null);
 					endTurn();
 				}
 				repaint();

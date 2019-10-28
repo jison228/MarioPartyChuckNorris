@@ -52,6 +52,7 @@ public class GameMap {
 			leftMovements--;
 			nodePath.add(node);
 		}
+		player.setNodeLocation(node);
 
 		return leftMovements;
 	}
