@@ -126,9 +126,8 @@ public class MainGameScreen extends JFrame {
 		// Panel para chat (no implementado)
 		JPanel chatPanel = new JPanel();
 		chatPanel.setBackground(Color.lightGray);
-		chatPanel.setBounds(1000, 453, 280, 230);
+		chatPanel.setBounds(1000, 500, 280, 230);
 		contentPane.add(chatPanel);
-		chatPanel.setVisible(false);
 		chatPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		JLabel chatLbl = new JLabel("CHAT");
 		chatLbl.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -214,21 +213,24 @@ public class MainGameScreen extends JFrame {
 		contentPane.add(gamePanel);
 		gamePanel.setLayout(null);
 
+
+		
 		// Panel para el boton
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBounds(720, 500, 270, 220);
+		buttonPanel.setBounds(720, 500, 280, 220);
 		contentPane.add(buttonPanel);
 		buttonPanel.setLayout(null);
+		buttonPanel.setBackground(new Color(0,0,0,0));
 		// Foto Dado
 		diceImage = new JLabel();
-		diceImage.setBounds(15, 60, 115, 115);
+		diceImage.setBounds(150, 25, 115, 115);
 		diceImage.setVisible(false);
 		buttonPanel.add(diceImage);
 
 		// Panel para el personaje
 		characterPanel = new InfoPanel(partida.getPlayerList().get(partida.getCurrentTurn() % 4),
 				partida.getCurrentTurn(), partida.getPrecioDolar());
-		characterPanel.setBounds(0, 500, 720, 220);
+		characterPanel.setBounds(0, 500, 1000, 220);
 		contentPane.add(characterPanel);
 
 		// TAB
@@ -251,7 +253,7 @@ public class MainGameScreen extends JFrame {
 		});
 
 		// BOTON DE TIRAR DADO
-		btnTirarDado = new JButton("TIRAR DADO");
+		btnTirarDado = new DiceButton();
 		btnTirarDado.setForeground(Color.RED);
 		btnTirarDado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -282,11 +284,11 @@ public class MainGameScreen extends JFrame {
 				repaint();
 			}
 		});
-		btnTirarDado.setBounds(0, 0, 150, 60);
+		btnTirarDado.setBounds(0, 25, 120, 120);
 		buttonPanel.add(btnTirarDado);
 		btnTirarDado.setFocusable(false);
 
-		btnEndTurn = new JButton("FINALIZAR TURNO");
+		btnEndTurn = new JButton("TERMINAR");
 		btnEndTurn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				endTurnIndeed();
@@ -295,7 +297,7 @@ public class MainGameScreen extends JFrame {
 		btnEndTurn.setVisible(false);
 		btnEndTurn.setForeground(Color.RED);
 		btnEndTurn.setFocusable(false);
-		btnEndTurn.setBounds(0, 0, 150, 60);
+		btnEndTurn.setBounds(0, 25, 120, 120);
 		buttonPanel.add(btnEndTurn);
 
 	}
