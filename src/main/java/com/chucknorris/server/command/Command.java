@@ -35,7 +35,6 @@ public abstract class Command<T extends ServerResponse> {
 		}
 	}
 
-
 	protected String readLine() {
 		if (reader == null) {
 			reader = new BufferedReader(new InputStreamReader(inputStream));
