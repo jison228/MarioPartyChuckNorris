@@ -10,8 +10,19 @@ import com.chucknorris.server.services.game.GameService;
 import com.chucknorris.server.services.game.GameServiceImpl;
 
 public class ChatMessageCommand extends Command<ChatResponse> {
-	private ChatService service = new ChatServiceImpl();
-	private GameService gameService = new GameServiceImpl();
+	private static final String FINISH_CHAT = "close";
+	private final ChatService chatService;
+	private final GameService gameService;
+
+	public ChatMessageCommand() {
+		chatService = new ChatServiceImpl();
+		gameService = new GameServiceImpl();
+	}
+
+	public ChatMessageCommand(ChatService chatService, GameService gameService) {
+		this.chatService = chatService;
+		this.gameService = gameService;
+	}
 
 	@Override
 	protected ServerResponse execute(CommandData commandData) {
@@ -19,8 +30,8 @@ public class ChatMessageCommand extends Command<ChatResponse> {
 
 		notifyClientConnected(commandData);
 
-		while ((message = readLine()) != null && !message.equals("close")) {
-			service.notifyNewMessage(message, commandData.getData());
+		while ((message = readLine()) != null && !message.equals(FINISH_CHAT)) {
+			chatService.notifyNewMessage(message, commandData.getData());
 		}
 
 		notifyClientDisconnected(commandData);
@@ -37,7 +48,7 @@ public class ChatMessageCommand extends Command<ChatResponse> {
 
 		LOGGER.info(message);
 
-		service.notifyClientDisconnected(commandData.getSocket(), commandData.getData());
+		chatService.notifyClientDisconnected(commandData.getSocket(), commandData.getData());
 	}
 
 	private void notifyClientConnected(CommandData commandData) {
@@ -49,7 +60,7 @@ public class ChatMessageCommand extends Command<ChatResponse> {
 
 		LOGGER.info(message);
 
-		service.notifyClientConnected(commandData.getSocket(), commandData.getData());
+		chatService.notifyClientConnected(commandData.getSocket(), commandData.getData());
 	}
 
 	private ServerResponse clientCloseConnectionChatResponse() {
