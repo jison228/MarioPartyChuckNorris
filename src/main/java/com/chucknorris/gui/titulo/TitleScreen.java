@@ -59,7 +59,7 @@ public class TitleScreen extends JFrame {
 		int btnH = 80;
 
 		// Nueva Partida
-		JButton btnNewGame = new JButton("NUEVA PARTIDA");
+		JButton btnNewGame = new JButton("Iniciar Sesion");
 		btnNewGame.setFont(new Font("Courier", Font.BOLD, 25));
 		btnNewGame.setFocusable(false);
 		btnNewGame.setBounds((getWidth() / 2) - btnW / 2, getHeight() - (int) (getHeight() * 0.60), btnW, btnH);

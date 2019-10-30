@@ -8,14 +8,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
 import com.chucknorris.player.Player;
-import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.Color;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowListener;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -112,7 +108,7 @@ public class CompraDolaresFrame extends JFrame {
 				if(Double.valueOf(pesosTF.getValue().toString())>=player.getPesos()) {
 					pesosTF.setValue(player.getPesos());
 				}
-				dolaresLbl.setText(Double.toString((Double.valueOf(pesosTF.getValue().toString())/precioDolar)));
+				dolaresLbl.setText(Double.toString((Math.round(Double.valueOf(pesosTF.getValue().toString())/precioDolar) * 10) / 10.0));
 				btnComprar.setVisible(true);
 			}
 		});
