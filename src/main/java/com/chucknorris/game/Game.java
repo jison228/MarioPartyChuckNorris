@@ -41,9 +41,9 @@ public class Game {
 	public GameResponse play(Player player) {
 		int diceResult = dice.roll();
 
-		Queue<Node> c = new LinkedList<Node>();
+		Queue<Node> nodePath = new LinkedList<>();
 
-		int movementsLeft = gameMap.movePlayer(player, diceResult, c);
+		int movementsLeft = gameMap.movePlayer(player, diceResult, nodePath);
 
 		applyRewardIfApplies(player, movementsLeft);
 
@@ -53,7 +53,7 @@ public class Game {
 	public GameResponse playGUI(Player player) {
 		int diceResult = dice.roll();
 
-		Queue<Node> nodePath = new LinkedList<Node>();
+		Queue<Node> nodePath = new LinkedList<>();
 
 		int movementsLeft = gameMap.movePlayer(player, diceResult, nodePath);
 
