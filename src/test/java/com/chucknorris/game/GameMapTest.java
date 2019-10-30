@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -38,7 +39,7 @@ public class GameMapTest {
 	@Test
 	public void movePlayer_with_bif_test() {
 		// TIRA JUGADOR 1
-		int respuestaReal = mapa1.movePlayer(p1, 4);
+		int respuestaReal = mapa1.movePlayer(p1, 4, new LinkedList<>());
 
 		assertEquals(new Position(2, 5), p1.getNodeLocation().getPositionCoords());
 		assertEquals(0, respuestaReal);
@@ -47,13 +48,13 @@ public class GameMapTest {
 	@Test
 	public void movePlayer_without_bif_test() {
 		// TIRA JUGADOR 2
-		int respuestaReal2 = mapa1.movePlayer(p2, 8);
+		int respuestaReal2 = mapa1.movePlayer(p2, 8, new LinkedList<>());
 
 		assertEquals(new Position(3, 4), p2.getNodeLocation().getPositionCoords());
 		assertEquals(2, respuestaReal2);
 
 		// ELIGE JUGADOR 2
-		int respuestaReal3 = mapa1.movePlayerFromIntersection(p2, p2.getNodeLocation().nextNodes().get(0), 2);
+		int respuestaReal3 = mapa1.movePlayerFromIntersection(p2, p2.getNodeLocation().nextNodes().get(0), 2, new LinkedList<>());
 
 		assertEquals(new Position(2, 2), p2.getNodeLocation().getPositionCoords());
 		assertEquals(0, respuestaReal3);

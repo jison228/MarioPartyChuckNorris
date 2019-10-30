@@ -41,7 +41,9 @@ public class Game {
 	public GameResponse play(Player player) {
 		int diceResult = dice.roll();
 
-		int movementsLeft = gameMap.movePlayer(player, diceResult);
+		Queue<Node> c = new LinkedList<Node>();
+
+		int movementsLeft = gameMap.movePlayer(player, diceResult, c);
 
 		applyRewardIfApplies(player, movementsLeft);
 
@@ -53,7 +55,7 @@ public class Game {
 
 		Queue<Node> nodePath = new LinkedList<Node>();
 
-		int movementsLeft = gameMap.movePlayerGUI(player, diceResult, nodePath);
+		int movementsLeft = gameMap.movePlayer(player, diceResult, nodePath);
 
 		applyRewardIfApplies(player, movementsLeft);
 
@@ -66,7 +68,7 @@ public class Game {
 	}
 
 	public GameResponse resolveIntersection(Player player, Node nextNode, int movementsLeft) {
-		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft);
+		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft, new LinkedList<>());
 
 		applyRewardIfApplies(player, movementsLeft);
 
@@ -76,7 +78,7 @@ public class Game {
 	public GameResponse resolveIntersectionGUI(Player player, Node nextNode, int movementsLeft) {
 		Queue<Node> nodePath = new LinkedList<Node>();
 
-		movementsLeft = gameMap.movePlayerFromIntersectionGUI(player, nextNode, movementsLeft, nodePath);
+		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft, nodePath);
 
 		applyRewardIfApplies(player, movementsLeft);
 

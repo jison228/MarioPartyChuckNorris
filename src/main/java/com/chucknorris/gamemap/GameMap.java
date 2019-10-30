@@ -4,7 +4,6 @@ import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.player.Player;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -24,26 +23,7 @@ public class GameMap {
 		}
 	}
 
-	public int movePlayer(Player player, int leftMovements) {
-		Node node = nodes.get(player.getNodeLocation().getPositionCoords());
-
-		while (node.nextNodes().size() == 1 && leftMovements > 0) {
-			node = node.nextNodes().get(0);
-			leftMovements--;
-		}
-
-		player.setNodeLocation(node);
-
-		return leftMovements;
-	}
-
-	public int movePlayerFromIntersection(Player player, Node nextNode, int leftMovements) {
-		player.setNodeLocation(nextNode);
-
-		return movePlayer(player, leftMovements - 1);
-	}
-
-	public int movePlayerGUI(Player player, int leftMovements, Queue<Node> nodePath){
+	public int movePlayer(Player player, int leftMovements, Queue<Node> nodePath) {
 		Node node = nodes.get(player.getNodeLocation().getPositionCoords());
 		nodePath.add(node);
 		
@@ -53,13 +33,15 @@ public class GameMap {
 			nodePath.add(node);
 		}
 
+		player.setNodeLocation(node);
+
 		return leftMovements;
 	}
-	
-	public int movePlayerFromIntersectionGUI(Player player,Node nextNode, int leftMovements, Queue<Node> nodePath){
+
+	public int movePlayerFromIntersection(Player player, Node nextNode, int leftMovements, Queue<Node> nodePath) {
 		player.setNodeLocation(nextNode);
 
-		return movePlayerGUI(player, leftMovements - 1, nodePath);
+		return movePlayer(player, leftMovements - 1, nodePath);
 	}
 	
 	public int nodesSize() {
