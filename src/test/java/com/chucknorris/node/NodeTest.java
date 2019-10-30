@@ -3,6 +3,7 @@ package com.chucknorris.node;
 import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.nodes.*;
 import com.chucknorris.player.Player;
+import com.chucknorris.player.PlayerBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +17,9 @@ public class NodeTest {
 
 	@Before
 	public void executedBeforeEach() {
-		p = new Player("Milei", 0);
+		p = new PlayerBuilder()
+				.setCharacter("Cristi")
+				.build();
 	}
 
 	@Test

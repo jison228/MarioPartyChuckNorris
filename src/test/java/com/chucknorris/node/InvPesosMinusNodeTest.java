@@ -1,14 +1,14 @@
 package com.chucknorris.node;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.nodes.InvPesosMinusNode;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.player.Player;
+import com.chucknorris.player.PlayerBuilder;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class InvPesosMinusNodeTest {
 	Player p;
@@ -16,7 +16,12 @@ public class InvPesosMinusNodeTest {
 
 	@Before
 	public void executedBeforeEach() {
-		p = new Player("Cristi", 100, 150);
+		p = new PlayerBuilder()
+				.setCharacter("Cristi")
+				.setPesos(100)
+				.setDolar(150)
+				.build();
+
 		nodeTest = new InvPesosMinusNode(null, new Position(4, 4));
 	}
 

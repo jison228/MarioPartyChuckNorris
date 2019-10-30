@@ -1,27 +1,5 @@
 package com.chucknorris.gui.tablero;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.SystemColor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import com.chucknorris.commons.Dice;
 import com.chucknorris.game.Game;
 import com.chucknorris.game.GameResponse;
@@ -32,11 +10,14 @@ import com.chucknorris.gui.GameInformation;
 import com.chucknorris.gui.compradolares.CompraDolaresFrame;
 import com.chucknorris.gui.endgame.Endgame;
 import com.chucknorris.gui.minigame.userinterface.GameWindow;
-import com.chucknorris.player.Cristina;
-import com.chucknorris.player.DelCanio;
-import com.chucknorris.player.Espert;
-import com.chucknorris.player.Macri;
-import com.chucknorris.player.Player;
+import com.chucknorris.player.*;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainGameScreen extends JFrame {
 
@@ -443,7 +424,13 @@ public class MainGameScreen extends JFrame {
 		partida.endTurn();
 		btnTirarDado.setVisible(true);
 		btnEndTurn.setVisible(false);
-		Player ganador = new Player("Dummy", 0, 0, 0);
+		Player ganador = new PlayerBuilder()
+				.setCharacter("Dummy")
+				.setPesos(0)
+				.setDolar(0)
+				.setSalario(0)
+				.build();
+
 		for (Player player : partida.getPlayerList()) {
 			if (player.getDolares() > 300 && player.getDolares() >= ganador.getDolares()) {
 				ganador = player;
