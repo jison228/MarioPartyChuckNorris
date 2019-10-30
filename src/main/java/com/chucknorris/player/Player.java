@@ -15,18 +15,6 @@ public class Player {
 	private double dolar;
 	private double salario;
 
-	Player(String character, int coins) {
-		this.character = character;
-		this.coins = coins;
-		// despues de avanzar en el proyecto podriamos setear las
-		// monedas en el constructor a un valor fijo como 10 o 0
-	}
-
-	Player(String character, double pesos) {
-		this.character = character;
-		this.pesos = pesos;
-	}
-
 	Player(String character, double pesos, double dolar) {
 		this.character = character;
 		this.pesos = pesos;
