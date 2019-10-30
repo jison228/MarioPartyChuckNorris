@@ -19,17 +19,14 @@ public class CristinaTest {
 	public void executedBeforeEach() {
 		cristi = new Cristina(30, 100, 100);
 		p1 = new PlayerBuilder()
-				.setCharacter("Dummy")
 				.setPesos(50)
 				.setDolar(100)
 				.build();
 		p2 = new PlayerBuilder()
-				.setCharacter("Dummy")
 				.setPesos(20)
 				.setDolar(100)
 				.build();
 		p3 = new PlayerBuilder()
-				.setCharacter("Dummy")
 				.setPesos(10)
 				.setDolar(100)
 				.build();

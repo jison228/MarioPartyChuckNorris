@@ -19,17 +19,14 @@ public class DelCanioTest {
 	public void executedBeforeEach() {
 		nico = new DelCanio(15, 100, 100);
 		p1 = new PlayerBuilder()
-				.setCharacter("Dummy")
 				.setDolar(100)
 				.setPesos(40)
 				.build();
 		p2 = new PlayerBuilder()
-				.setCharacter("Dummy")
 				.setDolar(100)
 				.setPesos(20)
 				.build();
 		p3 = new PlayerBuilder()
-				.setCharacter("Dummy")
 				.setDolar(100)
 				.setPesos(25)
 				.build();

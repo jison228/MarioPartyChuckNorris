@@ -15,12 +15,6 @@ public class Player {
 	private double dolar;
 	private double salario;
 
-	Player(String character, double pesos, double dolar) {
-		this.character = character;
-		this.pesos = pesos;
-		this.dolar = dolar;
-	}
-
 	Player(String character, double pesos, double dolar, double salario) {
 		this.character = character;
 		this.pesos = pesos;
