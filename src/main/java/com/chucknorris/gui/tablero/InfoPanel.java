@@ -75,6 +75,9 @@ public class InfoPanel extends JPanel {
 		g.setColor(Color.GREEN);
 		g.drawString("PrecioDolar", 533, 122);
 		g.drawString("$" + precioDolar, 568, 155);
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("Tahoma",Font.BOLD,10));
+		g.drawString("[Ctrl]: Ver información sobre los nodos", 780, 170);
 	}
 
 	public void actualizar(Player currentPlayer, int turn, Double precioDolar) {

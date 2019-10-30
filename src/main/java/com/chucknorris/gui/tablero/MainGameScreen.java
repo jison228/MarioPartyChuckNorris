@@ -94,6 +94,7 @@ public class MainGameScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public MainGameScreen(GameInformation info) {
+		setTitle("Elecciones Presidenciales 2019");
 		comprarDolares = false;
 		// Iniciar partida
 		partida = new Game(info);
@@ -443,7 +444,7 @@ public class MainGameScreen extends JFrame {
 				ganador = player;
 			}
 		}
-		if (ganador.getDolares() > 300) {
+		if (ganador.getDolares() > 500) {
 			new Endgame(ganador).setVisible(true);
 			dispose();
 		}
