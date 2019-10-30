@@ -59,7 +59,7 @@ public class GameMap {
 	
 	public int movePlayerFromIntersectionGUI(Player player,Node nextNode, int leftMovements, Queue<Node> nodePath){
 		player.setNodeLocation(nextNode);
-
+		nodePath.add(nextNode);
 		return movePlayerGUI(player, leftMovements - 1, nodePath);
 	}
 	

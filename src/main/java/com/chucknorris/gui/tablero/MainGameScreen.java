@@ -70,10 +70,10 @@ public class MainGameScreen extends JFrame {
 					GameMap mapa1;
 					MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
 					mapa1 = mapFileCSVReader.buildGameMap();
-					Espert p1 = new Espert(100, 100, 900);
-					Cristina p2 = new Cristina(100, 100, 900);
-					Macri p3 = new Macri(100, 100, 900);
-					DelCanio p4 = new DelCanio(100, 100, 900);
+					Espert p1 = new Espert(100, 50, 300);
+					Cristina p2 = new Cristina(100, 50, 300);
+					Macri p3 = new Macri(100, 50, 300);
+					DelCanio p4 = new DelCanio(100, 50, 300);
 					List<Player> listaP = new ArrayList<Player>();
 					listaP.add(p1);
 					listaP.add(p2);
@@ -141,26 +141,7 @@ public class MainGameScreen extends JFrame {
 				btnCamino2.setVisible(false);
 				respuesta = partida.resolveIntersectionGUI(currentPlayer,
 						currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
-				Node transitionNode;
-				int size = respuesta.nodePath.size();
-				for (int i = 0; i < size; i++) {
-					transitionNode = respuesta.nodePath.poll();
-					if (transitionNode.getType().equals("END"))
-						comprarDolares = true;
-					currentPlayer.setNodeLocation(transitionNode);
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					contentPane.paintImmediately(0, 0, 1280, 720);
-				}
-				if (respuesta.movementsLeft > 0) {
-					tomarDecision(currentPlayer);
-				} else {
-					endTurn();
-				}
+				moverJugador();
 				repaint();
 			}
 		});
@@ -176,26 +157,7 @@ public class MainGameScreen extends JFrame {
 				btnCamino2.setVisible(false);
 				respuesta = partida.resolveIntersectionGUI(currentPlayer,
 						currentPlayer.getNodeLocation().nextNodes().get(1), respuesta.movementsLeft);
-				Node transitionNode;
-				int size = respuesta.nodePath.size();
-				for (int i = 0; i < size; i++) {
-					transitionNode = respuesta.nodePath.poll();
-					if (transitionNode.getType().equals("END"))
-						comprarDolares = true;
-					currentPlayer.setNodeLocation(transitionNode);
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					contentPane.paintImmediately(0, 0, 1280, 720);
-				}
-				if (respuesta.movementsLeft > 0) {
-					tomarDecision(currentPlayer);
-				} else {
-					endTurn();
-				}
+				moverJugador();
 				repaint();
 			}
 		});
@@ -255,26 +217,7 @@ public class MainGameScreen extends JFrame {
 				playTurn();
 				diceImage.setVisible(true);
 				diceImage.setIcon(new ImageIcon("images/dice/" + respuesta.diceResult + ".png"));
-				Node transitionNode = respuesta.nodePath.poll();
-				int size = respuesta.nodePath.size();
-				for (int i = 0; i < size; i++) {
-					transitionNode = respuesta.nodePath.poll();
-					if (transitionNode.getType().equals("END"))
-						comprarDolares = true;
-					currentPlayer.setNodeLocation(transitionNode);
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					contentPane.paintImmediately(0, 0, 1280, 720);
-				}
-				if (respuesta.movementsLeft > 0)
-					tomarDecision(currentPlayer);
-				else {
-					endTurn();
-				}
+				moverJugador();
 				repaint();
 			}
 		});
@@ -301,6 +244,29 @@ public class MainGameScreen extends JFrame {
 		respuesta = partida.playGUI(currentPlayer);
 	}
 
+	public void moverJugador() {
+		Node transitionNode = respuesta.nodePath.poll();
+		int size = respuesta.nodePath.size();
+		for (int i = 0; i < size; i++) {
+			transitionNode = respuesta.nodePath.poll();
+			if (transitionNode.getType().equals("END"))
+				comprarDolares = true;
+			currentPlayer.setNodeLocation(transitionNode);
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			contentPane.paintImmediately(0, 0, 1280, 720);
+		}
+		if (respuesta.movementsLeft > 0)
+			tomarDecision(currentPlayer);
+		else {
+			endTurn();
+		}
+	}
+	
 	public void endTurn() {		
 		//currentPlayer.addDolar(500);
 		if (comprarDolares) {
