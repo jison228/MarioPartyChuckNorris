@@ -31,4 +31,9 @@ public class InMemoryGameRepository implements GameRepository {
 
 		return gameId;
 	}
+
+	@Override
+	public Game getGame(String gameId) {
+		return gameDatabase.get(gameId);
+	}
 }

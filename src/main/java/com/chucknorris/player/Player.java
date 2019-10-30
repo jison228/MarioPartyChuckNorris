@@ -14,6 +14,11 @@ public class Player {
 	private double pesos;
 	private double dolar;
 	private double salario;
+	private String id;
+
+	public Player(String id) {
+		this.id = id;
+	}
 
 	public Player(String character, int coins) {
 		this.character = character;
@@ -32,7 +37,7 @@ public class Player {
 		this.pesos = pesos;
 		this.dolar = dolar;
 	}
-	
+
 	public Player(String character, double pesos, double dolar, double salario) {
 		this.character = character;
 		this.pesos = pesos;
@@ -103,15 +108,15 @@ public class Player {
 	public String printWithPesos() {
 		return this.character + " " + (Math.round(this.pesos * 10) / 10.0);
 	}
-	
+
 	public String printWithDolar() {
 		return this.character + " " + (Math.round(this.dolar * 10) / 10.0);
 	}
-	
+
 	public String printWithSalario() {
 		return this.character + " " + (Math.round(this.salario * 10) / 10.0);
 	}
-	
+
 	public void addPesosByPercentage(double percentage) {
 		pesos = pesos * ((percentage / 100) + 1);
 	}
@@ -123,37 +128,45 @@ public class Player {
 	public double getDolares() {
 		return Math.round(dolar * 10) / 10.0;
 	}
-	
+
 	public double getSalario() {
 		return Math.round(salario * 10) / 10.0;
 	}
-	
+
 	public void addDolaresByPercentage(double percentage) {
 		dolar = dolar * ((percentage / 100) + 1);
 	}
-	
+
 	public void applyPowerup(List<Player> players, GameContext gameContext) {
 		//DO NOTHING
 	}
-  
+
 	public void addSalarioByPercentage(double percentage) {
 		salario = salario * ((percentage / 100) + 1);
 	}
-	
+
 	public void buyDolares(double pesos, double dolares) {
 		this.substractPesos(pesos);
 		this.addDolar(dolares);
 	}
-	
+
 	public void cobrarSalario() {
 		this.addPesos(salario);
 	}
-	
+
 	public String getPowerupDescription() {
 		return "";
 	}
 
 	public String printPlayerName() {
 		return "Pepito";
+	}
+
+	public Player returnIfSameId(String playerId) {
+		if (id.equals(playerId)) {
+			return this;
+		}
+
+		return null;
 	}
 }

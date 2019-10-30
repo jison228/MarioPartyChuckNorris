@@ -40,9 +40,7 @@ public class ChatMessageCommand extends Command<ChatResponse> {
 	}
 
 	private void notifyClientDisconnected(CommandData commandData) {
-		String gameId = (String) commandData.getData().get("game_id");
-		String playerId = (String) commandData.getData().get("player_id");
-		Player player = gameService.getPlayer(gameId, playerId);
+		Player player = getPlayer(commandData);
 
 		String message = String.format("Player %s has disconnected from chat_message", player.printPlayerName());
 
@@ -51,10 +49,14 @@ public class ChatMessageCommand extends Command<ChatResponse> {
 		chatService.notifyClientDisconnected(commandData.getSocket(), commandData.getData());
 	}
 
-	private void notifyClientConnected(CommandData commandData) {
+	private Player getPlayer(CommandData commandData) {
 		String gameId = (String) commandData.getData().get("game_id");
 		String playerId = (String) commandData.getData().get("player_id");
-		Player player = gameService.getPlayer(gameId, playerId);
+		return gameService.getPlayer(gameId, playerId);
+	}
+
+	private void notifyClientConnected(CommandData commandData) {
+		Player player = getPlayer(commandData);
 
 		String message = String.format("Player %s has initiallized chat_message command", player.printPlayerName());
 

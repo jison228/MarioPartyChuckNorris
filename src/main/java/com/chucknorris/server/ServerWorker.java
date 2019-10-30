@@ -1,9 +1,6 @@
 package com.chucknorris.server;
 
-import com.chucknorris.server.command.BadRequestCommand;
-import com.chucknorris.server.command.ChatMessageCommand;
-import com.chucknorris.server.command.Command;
-import com.chucknorris.server.command.InvalidCommand;
+import com.chucknorris.server.command.*;
 import com.chucknorris.server.command.dto.BadRequestCommandDto;
 import com.chucknorris.server.command.dto.CommandDto;
 import com.chucknorris.server.command.serializer.Serializer;
@@ -31,6 +28,7 @@ public class ServerWorker extends Thread {
 		commandProcessorMap = new HashMap<>();
 
 		commandProcessorMap.put("chat_message", new ChatMessageCommand());
+		commandProcessorMap.put("move_player", new MovePlayerCommand());
 		commandProcessorMap.put("bad_request", new BadRequestCommand());
 	}
 

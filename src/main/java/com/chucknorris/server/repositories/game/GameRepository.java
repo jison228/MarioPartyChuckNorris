@@ -4,4 +4,6 @@ import com.chucknorris.game.Game;
 
 public interface GameRepository {
 	String createGame(Game game);
+
+	Game getGame(String gameId);
 }

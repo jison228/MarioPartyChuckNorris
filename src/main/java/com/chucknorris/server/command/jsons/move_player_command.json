@@ -1,0 +1,7 @@
+{
+  "command": "move_player",
+  "data": {
+    "player_id": "13d30dfe-6f17-4d13-8795-cd4227aca4b8",
+    "game_id": "26d797fb-6f81-48f2-90e1-4dfa7f87d024"
+  }
+}

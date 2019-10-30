@@ -1,7 +1,0 @@
-{
-  "command": "chat_message",
-  "data": {
-    "player_id": "pepito",
-    "game_id": "test_game"
-  }
-}

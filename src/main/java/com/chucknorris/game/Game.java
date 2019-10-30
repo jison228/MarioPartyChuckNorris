@@ -8,6 +8,7 @@ import com.chucknorris.player.Player;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 
 public class Game {
@@ -31,7 +32,7 @@ public class Game {
 		this.dice = info.dice;
 		this.precioDolar = info.precioDolar;
 	}
-	
+
 	public Game(List<Player> players, GameMap gameMap, Dice dice) {
 		this(players, gameMap);
 		this.dice = dice;
@@ -46,21 +47,21 @@ public class Game {
 
 		return buildGameResponse(movementsLeft);
 	}
-	
+
 	public GameResponse playGUI(Player player) {
 		int diceResult = dice.roll();
-		
+
 		Queue<Node> nodePath = new LinkedList<Node>();
-		
+
 		int movementsLeft = gameMap.movePlayerGUI(player, diceResult, nodePath);
-		
+
 		applyRewardIfApplies(player, movementsLeft);
-		
+
 		GameResponse resultado = new GameResponse();
 		resultado.movementsLeft = movementsLeft;
 		resultado.diceResult = diceResult;
 		resultado.nodePath = nodePath;
-		
+
 		return resultado;
 	}
 
@@ -74,18 +75,18 @@ public class Game {
 
 	public GameResponse resolveIntersectionGUI(Player player, Node nextNode, int movementsLeft) {
 		Queue<Node> nodePath = new LinkedList<Node>();
-		
+
 		movementsLeft = gameMap.movePlayerFromIntersectionGUI(player, nextNode, movementsLeft, nodePath);
-		
+
 		applyRewardIfApplies(player, movementsLeft);
-		
+
 		GameResponse resultado = new GameResponse();
 		resultado.movementsLeft = movementsLeft;
 		resultado.nodePath = nodePath;
-		
+
 		return resultado;
 	}
-	
+
 	private GameResponse buildGameResponse(int movementsLeft) {
 		GameResponse gameResponse = new GameResponse();
 
@@ -103,7 +104,7 @@ public class Game {
 	public int getCurrentTurn() {
 		return turn;
 	}
-	
+
 	public GameMap getGameMap() {
 		return gameMap;
 	}
@@ -111,16 +112,24 @@ public class Game {
 	public List<Player> getPlayerList(){
 		return players;
 	}
-	
+
 	public void endTurn() {
 		turn++;
 	}
-	
+
 	public void aumentarPrecioDolar() {
 		precioDolar++;
 	}
-	
+
 	public Double getPrecioDolar() {
 		return precioDolar;
+	}
+
+	public Player getPlayer(String playerId) {
+		Optional<Player> playerFound = players.stream()
+				.filter(player -> player.returnIfSameId(playerId) != null)
+				.findFirst();
+
+		return playerFound.orElse(null);
 	}
 }
