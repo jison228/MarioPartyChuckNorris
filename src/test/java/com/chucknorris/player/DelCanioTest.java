@@ -1,12 +1,12 @@
 package com.chucknorris.player;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class DelCanioTest {
 	DelCanio nico;
@@ -18,9 +18,21 @@ public class DelCanioTest {
 	@Before
 	public void executedBeforeEach() {
 		nico = new DelCanio(15, 100, 100);
-		p1 = new Player("Dummy", 40, 100);
-		p2 = new Player("Dummy", 20, 100);
-		p3 = new Player("Dummy", 25, 100);
+		p1 = new PlayerBuilder()
+				.setCharacter("Dummy")
+				.setDolar(100)
+				.setPesos(40)
+				.build();
+		p2 = new PlayerBuilder()
+				.setCharacter("Dummy")
+				.setDolar(100)
+				.setPesos(20)
+				.build();
+		p3 = new PlayerBuilder()
+				.setCharacter("Dummy")
+				.setDolar(100)
+				.setPesos(25)
+				.build();
 		players = new ArrayList<Player>();
 		players.add(nico);
 		players.add(p1);
