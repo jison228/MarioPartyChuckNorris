@@ -426,9 +426,6 @@ public class MainGameScreen extends JFrame {
 		btnEndTurn.setVisible(false);
 		Player ganador = new PlayerBuilder()
 				.setCharacter("Dummy")
-				.setPesos(0)
-				.setDolar(0)
-				.setSalario(0)
 				.build();
 
 		for (Player player : partida.getPlayerList()) {
