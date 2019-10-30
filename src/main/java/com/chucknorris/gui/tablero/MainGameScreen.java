@@ -209,8 +209,6 @@ public class MainGameScreen extends JFrame {
 		contentPane.add(gamePanel);
 		gamePanel.setLayout(null);
 
-
-		
 		// Panel para el boton
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBounds(720, 500, 280, 220);

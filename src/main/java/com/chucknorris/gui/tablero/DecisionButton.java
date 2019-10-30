@@ -15,7 +15,7 @@ public class DecisionButton extends JButton {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	BufferedImage image = null;
+	private BufferedImage image = null;
 	
 	@Override
 	protected void paintComponent(Graphics g) {

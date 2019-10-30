@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -37,15 +36,14 @@ public class JPanelGame extends JPanel {
 	public void paintComponent(Graphics g) {
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(new File("images/backgrounds/" + "juego" + ".jpg"));
+			image = ImageIO.read(new File("images/backgrounds/" + "newMap1" + ".jpg"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		g.drawImage(image, 0, 0, this);
 
-		g.setColor(Color.BLACK);
-		g.setFont(new Font("Tahoma", Font.BOLD, 24));
+		g.setColor(Color.WHITE);
 
 		for (Map.Entry<Position, Node> entry : mapa.entrySet()) {
 
@@ -55,6 +53,8 @@ public class JPanelGame extends JPanel {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			g.fillOval(iniX + entry.getValue().getPositionCoords().getX() * 125 - 5,
+					iniY + entry.getValue().getPositionCoords().getY() * 125 - 5, 85, 85);
 			g.drawImage(image, iniX + entry.getValue().getPositionCoords().getX() * 125,
 					iniY + entry.getValue().getPositionCoords().getY() * 125, this);
 		}
