@@ -13,8 +13,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -48,8 +46,8 @@ public class MainGameScreen extends JFrame {
 	private Game partida;
 	private boolean ctrl;
 	private JButton btnTirarDado;
-	private JButton btnCamino1;
-	private JButton btnCamino2;
+	private DecisionButton btnCamino1;
+	private DecisionButton btnCamino2;
 	private JButton btnEndTurn;
 	private Player currentPlayer;
 	private GameResponse respuesta;
@@ -365,8 +363,11 @@ public class MainGameScreen extends JFrame {
 		btnTirarDado.setVisible(false);
 		btnCamino1.setBounds(30 + currentPlayer.getNodeLocation().nextNodes().get(0).getPositionCoords().getX() * 125,
 				30 + currentPlayer.getNodeLocation().nextNodes().get(0).getPositionCoords().getY() * 125, 75, 75);
+		btnCamino1.actualizarImagen(currentPlayer.getNodeLocation().nextNodes().get(0).getType());
 		btnCamino2.setBounds(30 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getX() * 125,
 				30 + currentPlayer.getNodeLocation().nextNodes().get(1).getPositionCoords().getY() * 125, 75, 75);
+		btnCamino2.actualizarImagen(currentPlayer.getNodeLocation().nextNodes().get(1).getType());
+		
 		btnCamino1.setVisible(true);
 		btnCamino2.setVisible(true);
 	}
