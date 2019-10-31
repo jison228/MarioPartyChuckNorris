@@ -5,6 +5,7 @@ import com.chucknorris.game.Game
 import com.chucknorris.gamemap.GameMap
 import com.chucknorris.gui.GameInformation
 import com.chucknorris.player.Player
+import com.chucknorris.player.PlayerBuilder
 import com.chucknorris.server.repositories.game.GameRepository
 import spock.lang.Specification
 
@@ -56,8 +57,8 @@ class GameServiceImplSpec extends Specification {
         new Game(
                 new GameInformation(
                         Arrays.asList(
-                                new Player("11c1de64-6714-45cf-ba4e-9c253f7dfad1"),
-                                new Player("8ecf4947-b41b-4574-b6cb-df23aaae70b1")
+                                new PlayerBuilder().setId("11c1de64-6714-45cf-ba4e-9c253f7dfad1").build(),
+                                new PlayerBuilder().setId("8ecf4947-b41b-4574-b6cb-df23aaae70b1").build()
                         ),
                         new GameMap(null, null),
                         new Dice(1, 1),

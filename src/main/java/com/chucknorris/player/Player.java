@@ -23,13 +23,13 @@ public class Player {
 		this.salario = salario;
 	}
 
-	Player(String character, int coins, Node nodeLocation, double pesos, double dolar, double salario) {
+	Player(String character, int coins, double pesos, double dolar, double salario, String id) {
 		this.character = character;
 		this.coins = coins;
-		this.nodeLocation = nodeLocation;
 		this.pesos = pesos;
 		this.dolar = dolar;
 		this.salario = salario;
+		this.id = id;
 	}
 
 	public int getCoins() {
