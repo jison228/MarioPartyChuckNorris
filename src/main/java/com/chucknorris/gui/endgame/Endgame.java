@@ -2,6 +2,7 @@ package com.chucknorris.gui.endgame;
 
 import com.chucknorris.gui.titulo.TitleImagePanel;
 import com.chucknorris.player.Player;
+import com.chucknorris.player.PlayerBuilder;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -17,7 +18,11 @@ public class Endgame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Player test = new Player("Cristina",0);
+					Player test = new PlayerBuilder()
+							.setCharacter("Cristina")
+							.setCoins(0)
+							.build();
+
 					Endgame frame = new Endgame(test);
 					frame.setVisible(true);
 				} catch (Exception e) {

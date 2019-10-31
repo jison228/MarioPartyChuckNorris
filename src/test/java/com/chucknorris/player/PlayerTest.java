@@ -16,8 +16,18 @@ public class PlayerTest {
 
 	@Before
 	public void executedBeforeEach() {
-		playerTest = new Player("Cristi", 500);
-		playerTest2 = new Player("Mauri", 500, 500, 500);
+		playerTest = new PlayerBuilder()
+				.setCharacter("Cristi")
+				.setCoins(500)
+				.build();
+
+		playerTest2 = new PlayerBuilder()
+				.setCharacter("Mauri")
+				.setCoins(500)
+				.setPesos(500)
+				.setDolar(500)
+				.setSalario(500)
+				.build();
 	}
 
 	@Test
@@ -42,60 +52,60 @@ public class PlayerTest {
 
 		assertEquals(new Position(3, 5), playerTest.getNodeLocation().getPositionCoords());
 	}
-	
+
 	@Test
 	public void addPesosTest() {
 		playerTest2.addPesos(50);
-		assertEquals((int)550, (int)playerTest2.getPesos());
+		assertEquals(550, (int) playerTest2.getPesos());
 	}
-	
+
 	@Test
 	public void substractPesosTest() {
 		playerTest2.substractPesos(50);
-		assertEquals((int)450, (int)playerTest2.getPesos());
+		assertEquals(450, (int) playerTest2.getPesos());
 	}
-	
+
 	@Test
 	public void substractDolarTest() {
 		playerTest2.substractDolar(50);
-		assertEquals((int)450, (int)playerTest2.getDolares());
+		assertEquals(450, (int) playerTest2.getDolares());
 	}
-	
+
 	@Test
 	public void addDolarTest() {
 		playerTest2.addDolar(50);
-		assertEquals((int)550, (int)playerTest2.getDolares());
+		assertEquals(550, (int) playerTest2.getDolares());
 	}
-	
+
 	@Test
 	public void addPesosPercentageTest() {
 		playerTest2.addPesosByPercentage(10);
-		assertEquals((int)550, (int)playerTest2.getPesos());
+		assertEquals(550, (int) playerTest2.getPesos());
 	}
-	
+
 	@Test
 	public void addDolaresPercentageTest() {
 		playerTest2.addDolaresByPercentage(10);
-		assertEquals((int)550, (int)playerTest2.getDolares());
+		assertEquals(550, (int) playerTest2.getDolares());
 	}
-	
+
 	@Test
 	public void addSalarioPercentageTest() {
 		playerTest2.addSalarioByPercentage(10);
-		assertEquals((int)550, (int)playerTest2.getSalario());
+		assertEquals(550, (int) playerTest2.getSalario());
 	}
-	
+
 	@Test
 	public void cobrarSalarioTest() {
 		playerTest2.cobrarSalario();
-		assertEquals((int)1000, (int)playerTest2.getPesos());
+		assertEquals(1000, (int) playerTest2.getPesos());
 	}
-	
+
 	@Test
 	public void buyDolaresTest() {
 		playerTest2.buyDolares(50, 50);
-		assertEquals((int)450, (int)playerTest2.getPesos());
-		assertEquals((int)550, (int)playerTest2.getDolares());
+		assertEquals(450, (int) playerTest2.getPesos());
+		assertEquals(550, (int) playerTest2.getDolares());
 	}
-	
+
 }
