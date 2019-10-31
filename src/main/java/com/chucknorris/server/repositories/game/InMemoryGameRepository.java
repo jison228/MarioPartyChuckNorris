@@ -67,7 +67,7 @@ public class InMemoryGameRepository implements GameRepository {
 
 			map.initializePlayers(players);
 
-			GameInformation testGameInfo = new GameInformation(players, map, new Dice(1, 6), 10);
+			GameInformation testGameInfo = new GameInformation(players, map, new Dice(1, 6), 10, "game_test");
 
 			return new Game(testGameInfo);
 		} catch (Exception e) {

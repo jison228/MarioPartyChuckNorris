@@ -146,7 +146,7 @@ public class Player {
 	}
 
 	public String printPlayerName() {
-		return "Pepito";
+		return character;
 	}
 
 	public Player returnIfSameId(String playerId) {
