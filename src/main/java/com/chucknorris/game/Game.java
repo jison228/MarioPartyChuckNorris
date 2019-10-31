@@ -17,6 +17,7 @@ public class Game {
 	private GameMap gameMap;
 	private Dice dice;
 	private double precioDolar;
+	private String id;
 	//ArrayList de minijuegos
 
 	public Game(List<Player> players, GameMap gameMap) {
@@ -133,5 +134,9 @@ public class Game {
 				.findFirst();
 
 		return playerFound.orElse(null);
+	}
+
+	public String printId() {
+		return id;
 	}
 }

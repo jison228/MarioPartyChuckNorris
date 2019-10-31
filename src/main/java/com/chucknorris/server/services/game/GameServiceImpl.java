@@ -45,7 +45,7 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
-	public ServerResponse movePlayer(String gameId, String playerId) throws Exception {
+	public ServerResponse movePlayer(String gameId, String playerId) {
 		Game game = repository.getGame(gameId);
 
 		if (game == null) {
