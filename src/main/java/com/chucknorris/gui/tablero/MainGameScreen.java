@@ -128,7 +128,7 @@ public class MainGameScreen extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				btnCamino1.setVisible(false);
 				btnCamino2.setVisible(false);
-				respuesta = partida.resolveIntersectionGUI(currentPlayer,
+				respuesta = partida.resolveIntersection(currentPlayer,
 						currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
 				Node transitionNode;
 				int size = respuesta.nodePath.size();
@@ -162,7 +162,7 @@ public class MainGameScreen extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				btnCamino1.setVisible(false);
 				btnCamino2.setVisible(false);
-				respuesta = partida.resolveIntersectionGUI(currentPlayer,
+				respuesta = partida.resolveIntersection(currentPlayer,
 						currentPlayer.getNodeLocation().nextNodes().get(1), respuesta.movementsLeft);
 				Node transitionNode;
 				int size = respuesta.nodePath.size();
@@ -294,7 +294,7 @@ public class MainGameScreen extends JFrame {
 
 	public void playTurn() {
 		currentPlayer = partida.getPlayerList().get(partida.getCurrentTurn() % 4);
-		respuesta = partida.playGUI(currentPlayer);
+		respuesta = partida.play(currentPlayer);
 	}
 
 	public void endTurn() {		

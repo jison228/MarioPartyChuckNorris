@@ -10,6 +10,7 @@ public class GameInformation {
 	public GameMap gameMap;
 	public Dice dice;
 	public double precioDolar;
+	public String id;
 
 	public GameInformation(List<Player> players, GameMap gameMap, 
 			Dice dice, double precioDolar) {
@@ -17,6 +18,12 @@ public class GameInformation {
 		this.gameMap = gameMap;
 		this.dice = dice;
 		this.precioDolar = precioDolar;
+	}
+
+	public GameInformation(List<Player> players, GameMap gameMap,
+	                       Dice dice, double precioDolar, String id) {
+		this(players, gameMap, dice, precioDolar);
+		this.id = id;
 	}
 
 }

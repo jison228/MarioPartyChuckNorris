@@ -32,6 +32,7 @@ public class Game {
 		this.gameMap = info.gameMap;
 		this.dice = info.dice;
 		this.precioDolar = info.precioDolar;
+		this.id = info.id;
 	}
 
 	public Game(List<Player> players, GameMap gameMap, Dice dice) {
@@ -48,19 +49,7 @@ public class Game {
 
 		applyRewardIfApplies(player, movementsLeft);
 
-		return buildGameResponse(movementsLeft);
-	}
-
-	public GameResponse playGUI(Player player) {
-		int diceResult = dice.roll();
-
-		Queue<Node> nodePath = new LinkedList<>();
-
-		int movementsLeft = gameMap.movePlayer(player, diceResult, nodePath);
-
-		applyRewardIfApplies(player, movementsLeft);
-
-		GameResponse resultado = new GameResponse();
+		GameResponse resultado = buildGameResponse();
 		resultado.movementsLeft = movementsLeft;
 		resultado.diceResult = diceResult;
 		resultado.nodePath = nodePath;
@@ -69,31 +58,22 @@ public class Game {
 	}
 
 	public GameResponse resolveIntersection(Player player, Node nextNode, int movementsLeft) {
-		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft, new LinkedList<>());
-
-		applyRewardIfApplies(player, movementsLeft);
-
-		return buildGameResponse(movementsLeft);
-	}
-
-	public GameResponse resolveIntersectionGUI(Player player, Node nextNode, int movementsLeft) {
-		Queue<Node> nodePath = new LinkedList<Node>();
+		Queue<Node> nodePath = new LinkedList<>();
 
 		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft, nodePath);
 
 		applyRewardIfApplies(player, movementsLeft);
 
-		GameResponse resultado = new GameResponse();
+		GameResponse resultado = buildGameResponse();
 		resultado.movementsLeft = movementsLeft;
 		resultado.nodePath = nodePath;
 
 		return resultado;
 	}
 
-	private GameResponse buildGameResponse(int movementsLeft) {
+	private GameResponse buildGameResponse() {
 		GameResponse gameResponse = new GameResponse();
-
-		gameResponse.movementsLeft = movementsLeft;
+		gameResponse.gameId = id;
 
 		return gameResponse;
 	}

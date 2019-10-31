@@ -68,7 +68,7 @@ class GameServiceImplSpec extends Specification {
         String mileiPlayerId = "11c1de64-6714-45cf-ba4e-9c253f7dfad1"
 
         when:
-        //Movemos al player que usa a Milei
+        //Movemos al player que usa a Mauricio
         ServerResponse serverResponse = gameService.movePlayer("game1", mileiPlayerId)
 
         GameResponse gameResponse = (GameResponse) serverResponse
@@ -79,9 +79,10 @@ class GameServiceImplSpec extends Specification {
         gameResponse.gameId == "game1"
         gameResponse.diceResult == 1
         gameResponse.movementsLeft == 0
-        gameResponse.nodePath.size() == 1
-        gameResponse.nodePath.peek().getType() == "WHITE"
-        mileiPlayer.printWithPesos() == "Javier Milei - 0"
+        gameResponse.nodePath.size() == 2
+        gameResponse.nodePath.poll().getType() == "RED"
+        gameResponse.nodePath.poll().getType() == "WHITE"
+        mileiPlayer.printWithPesos() == "MauriCEOMcree 0.0"
     }
 
     private Game mockGameForMovePlayerTest() {
@@ -103,7 +104,7 @@ class GameServiceImplSpec extends Specification {
 
         spiedDice.roll() >>> [1, 3]
 
-        return new Game(new GameInformation(playerList, gameMap1, spiedDice, 3))
+        return new Game(new GameInformation(playerList, gameMap1, spiedDice, 3, "game1"))
     }
 
     private static Game mockGameForGetPlayerTest() {
