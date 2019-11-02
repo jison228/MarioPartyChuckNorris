@@ -36,6 +36,8 @@ public class ChatMessageCommand extends Command<ChatResponse> {
 
 		notifyClientDisconnected(commandData);
 
+		closeReader();
+
 		return clientCloseConnectionChatResponse();
 	}
 

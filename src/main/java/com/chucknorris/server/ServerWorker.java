@@ -50,10 +50,12 @@ public class ServerWorker extends Thread {
 
 		CommandDto commandDto;
 
+		LOGGER.info("Ready for process command from " + socket);
+
 		while ((commandDto = getCommand(reader.readLine())) != null && !FINISH_COMMAND.equals(commandDto.command)) {
 
 			if (StringUtils.isEmpty(commandDto.command)) {
-				commandDto.command = "invalid_command";
+				commandDto.command = "bad_request";
 			}
 
 			//TODO esto no esta bueno.
@@ -62,6 +64,8 @@ public class ServerWorker extends Thread {
 			LOGGER.info("Processing command " + commandDto.toString());
 
 			Command processor = commandProcessorMap.getOrDefault(commandDto.command, INVALID_COMMAND);
+
+			LOGGER.info(String.format("Command processor assigned to %s command in this socket %s ", commandDto.command, socket));
 
 			String response = processor.process(commandDto);
 

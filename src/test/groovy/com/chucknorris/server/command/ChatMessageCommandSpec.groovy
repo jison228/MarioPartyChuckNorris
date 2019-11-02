@@ -38,7 +38,10 @@ class ChatMessageCommandSpec extends Specification {
         command.execute(commandData)
 
         then:
+        1 * chatService.notifyClientConnected(_, _)
         1 * chatService.notifyNewMessage("Hola mundo", commandData.getData())
+        1 * chatService.notifyClientDisconnected(_, _)
+        1 * command.closeReader() >> null
     }
 
     void "test chat services dont called when first message is close"() {
@@ -46,6 +49,7 @@ class ChatMessageCommandSpec extends Specification {
         ChatMessageCommand command = Spy(new ChatMessageCommand(chatService, gameService))
 
         command.readLine() >> "close"
+        command.closeReader() >> void
 
         CommandData commandData = new CommandData(
                 new CommandDto(
@@ -61,7 +65,9 @@ class ChatMessageCommandSpec extends Specification {
         command.execute(commandData)
 
         then:
+        1 * chatService.notifyClientConnected(_, _)
         0 * chatService.notifyNewMessage(_, _)
+        1 * command.closeReader() >> null
     }
 
     void "test message chat service called once cause seconde message is close"() {
@@ -69,6 +75,7 @@ class ChatMessageCommandSpec extends Specification {
         ChatMessageCommand command = Spy(new ChatMessageCommand(chatService, gameService))
 
         command.readLine() >>> ["Hola mundo", "close"]
+        command.closeReader() >> void
 
         CommandData commandData = new CommandData(
                 new CommandDto(
@@ -84,6 +91,9 @@ class ChatMessageCommandSpec extends Specification {
         command.execute(commandData)
 
         then:
+        1 * chatService.notifyClientConnected(_, _)
         1 * chatService.notifyNewMessage("Hola mundo", commandData.getData())
+        1 * chatService.notifyClientDisconnected(_, _)
+        1 * command.closeReader() >> null
     }
 }

@@ -17,7 +17,6 @@ public abstract class Command<T extends ServerResponse> {
 	protected static final Logger LOGGER = Logger.getLogger(Command.class.getName());
 
 	private Serializer<T> serializer = new SerializerImpl<>();
-	//TODO Cuando cerramos el ¿reader?
 	private BufferedReader reader;
 	private InputStream inputStream;
 
@@ -49,6 +48,14 @@ public abstract class Command<T extends ServerResponse> {
 
 		//Todo return fallback string
 		return "";
+	}
+
+	protected void closeReader() {
+		try {
+			reader.close();
+		} catch (IOException e) {
+			//Nothing to do. Reader was closed already
+		}
 	}
 
 	private ServerResponse handleCommand(CommandDto commandDto) throws Throwable {

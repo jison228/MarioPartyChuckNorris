@@ -7,7 +7,15 @@ import com.chucknorris.server.services.game.GameService;
 import com.chucknorris.server.services.game.GameServiceImpl;
 
 public class MovePlayerCommand extends Command {
-	private GameService gameService = new GameServiceImpl();
+	private GameService gameService;
+
+	public MovePlayerCommand() {
+		gameService = new GameServiceImpl();
+	}
+
+	public MovePlayerCommand(GameService gameService) {
+		this.gameService = gameService;
+	}
 
 	@Override
 	protected ServerResponse execute(CommandData commandData) throws Throwable {
