@@ -1,5 +1,6 @@
-package com.chucknorris.server.command;
+package com.chucknorris.server.command.game;
 
+import com.chucknorris.server.command.Command;
 import com.chucknorris.server.command.dto.CommandData;
 import com.chucknorris.server.command.response.ServerResponse;
 import com.chucknorris.server.services.game.GameService;
@@ -13,9 +14,7 @@ public class MovePlayerCommand extends Command {
 		String gameId = commandData.getValueAsString("game_id");
 		String playerId = commandData.getValueAsString("player_id");
 
-		ServerResponse response = gameService.movePlayer(gameId, playerId);
-
-		return response;
+		return gameService.movePlayer(gameId, playerId);
 	}
 
 }

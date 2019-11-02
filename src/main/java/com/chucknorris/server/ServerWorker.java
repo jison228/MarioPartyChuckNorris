@@ -28,7 +28,7 @@ public class ServerWorker extends Thread {
 		commandProcessorMap = new HashMap<>();
 
 		commandProcessorMap.put("chat_message", new ChatMessageCommand());
-		commandProcessorMap.put("move_player", new MovePlayerCommand());
+		commandProcessorMap.put("game_command", new GameCommand());
 		commandProcessorMap.put("bad_request", new BadRequestCommand());
 	}
 
@@ -63,7 +63,7 @@ public class ServerWorker extends Thread {
 
 			Command processor = commandProcessorMap.getOrDefault(commandDto.command, INVALID_COMMAND);
 
-			String response = processor.process(commandDto, socket);
+			String response = processor.process(commandDto);
 
 			outputStream.write(response.getBytes());
 		}
