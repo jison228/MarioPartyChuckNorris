@@ -6,6 +6,10 @@ import java.util.Map;
 public class CommandData {
 	public CommandDto commandDto;
 
+	public CommandData(CommandDto commandDto) {
+		this.commandDto = commandDto;
+	}
+
 	public String getCommand() {
 		return commandDto.command;
 	}

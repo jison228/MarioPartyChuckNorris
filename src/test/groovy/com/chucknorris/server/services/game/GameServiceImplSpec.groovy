@@ -79,9 +79,9 @@ class GameServiceImplSpec extends Specification {
         gameResponse.gameId == "game1"
         gameResponse.diceResult == 1
         gameResponse.movementsLeft == 0
-        gameResponse.nodePath.size() == 2
-        gameResponse.nodePath.poll().getType() == "RED"
-        gameResponse.nodePath.poll().getType() == "WHITE"
+        gameResponse.positionPathQueue.size() == 2
+        gameResponse.positionPathQueue.poll().printPosition() == "X = 0, Y = 0"
+        gameResponse.positionPathQueue.poll().printPosition() == "X = 0, Y = 1"
         mileiPlayer.printWithPesos() == "MauriCEOMcree 0.0"
     }
 

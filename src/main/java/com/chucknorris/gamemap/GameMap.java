@@ -23,14 +23,14 @@ public class GameMap {
 		}
 	}
 
-	public int movePlayer(Player player, int leftMovements, Queue<Node> nodePath) {
+	public int movePlayer(Player player, int leftMovements, Queue<Position> positionQueue) {
 		Node node = nodes.get(player.getNodeLocation().getPositionCoords());
-		nodePath.add(node);
+		positionQueue.add(node.getPositionCoords());
 		
 		while (node.nextNodes().size() == 1 && leftMovements > 0) {
 			node = node.nextNodes().get(0);
 			leftMovements--;
-			nodePath.add(node);
+			positionQueue.add(node.getPositionCoords());
 		}
 
 		player.setNodeLocation(node);
@@ -38,10 +38,10 @@ public class GameMap {
 		return leftMovements;
 	}
 
-	public int movePlayerFromIntersection(Player player, Node nextNode, int leftMovements, Queue<Node> nodePath) {
+	public int movePlayerFromIntersection(Player player, Node nextNode, int leftMovements, Queue<Position> positionQueue) {
 		player.setNodeLocation(nextNode);
 
-		return movePlayer(player, leftMovements - 1, nodePath);
+		return movePlayer(player, leftMovements - 1, positionQueue);
 	}
 	
 	public int nodesSize() {

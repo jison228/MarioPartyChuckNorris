@@ -1,6 +1,7 @@
 package com.chucknorris.server.command;
 
 import com.chucknorris.server.command.dto.CommandData;
+import com.chucknorris.server.command.dto.CommandDto;
 import com.chucknorris.server.command.game.MovePlayerCommand;
 import com.chucknorris.server.command.response.ServerResponse;
 
@@ -19,8 +20,16 @@ public class GameCommand extends Command {
 
 	@Override
 	protected ServerResponse execute(CommandData commandData) throws Throwable {
-		Command command = commandProcessorMap.getOrDefault(commandData.getCommand(), INVALID_COMMAND);
 
-		return command.execute(commandData);
+		CommandDto commandDto = new CommandDto();
+		commandDto.socket = commandData.getSocket();
+		commandDto.command = (String) commandData.getData().get("command");
+		commandDto.data = (Map) commandData.getData().get("data");
+
+		CommandData gameCommandData = new CommandData(commandDto);
+
+		Command command = commandProcessorMap.getOrDefault(gameCommandData.getCommand(), INVALID_COMMAND);
+
+		return command.execute(gameCommandData);
 	}
 }

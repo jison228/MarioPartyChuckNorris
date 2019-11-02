@@ -54,8 +54,7 @@ public abstract class Command<T extends ServerResponse> {
 	private ServerResponse handleCommand(CommandDto commandDto) throws Throwable {
 		inputStream = commandDto.socket.getInputStream();
 
-		CommandData commandData = new CommandData();
-		commandData.commandDto = commandDto;
+		CommandData commandData = new CommandData(commandDto);
 
 		return execute(commandData);
 	}

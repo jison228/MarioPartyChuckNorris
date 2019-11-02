@@ -1,0 +1,10 @@
+{
+  "command": "game_command",
+  "data": {
+    "command": "move_player",
+    "data": {
+      "player_id": "mauricio",
+      "game_id": "game_test"
+    }
+  }
+}

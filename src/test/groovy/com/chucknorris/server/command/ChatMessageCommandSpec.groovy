@@ -25,7 +25,7 @@ class ChatMessageCommandSpec extends Specification {
         command.readLine() >>> ["Hola mundo", null]
 
         CommandData commandData = new CommandData(
-                commandDto: new CommandDto(
+                new CommandDto(
                         command: "chat_message",
                         data: [
                                 "player_id": "pepito",
@@ -48,7 +48,7 @@ class ChatMessageCommandSpec extends Specification {
         command.readLine() >> "close"
 
         CommandData commandData = new CommandData(
-                commandDto: new CommandDto(
+                new CommandDto(
                         command: "chat_message",
                         data: [
                                 "player_id": "pepito",
@@ -71,7 +71,7 @@ class ChatMessageCommandSpec extends Specification {
         command.readLine() >>> ["Hola mundo", "close"]
 
         CommandData commandData = new CommandData(
-                commandDto: new CommandDto(
+                new CommandDto(
                         command: "chat_message",
                         data: [
                                 "player_id": "pepito",

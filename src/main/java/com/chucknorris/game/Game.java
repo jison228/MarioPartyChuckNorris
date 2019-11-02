@@ -1,6 +1,7 @@
 package com.chucknorris.game;
 
 import com.chucknorris.commons.Dice;
+import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.gui.GameInformation;
@@ -44,30 +45,30 @@ public class Game {
 	public GameResponse play(Player player) {
 		int diceResult = dice.roll();
 
-		Queue<Node> nodePath = new LinkedList<>();
+		Queue<Position> positionQueue = new LinkedList<>();
 
-		int movementsLeft = gameMap.movePlayer(player, diceResult, nodePath);
+		int movementsLeft = gameMap.movePlayer(player, diceResult, positionQueue);
 
 		applyRewardIfApplies(player, movementsLeft);
 
 		GameResponse resultado = buildGameResponse();
 		resultado.movementsLeft = movementsLeft;
 		resultado.diceResult = diceResult;
-		resultado.nodePath = nodePath;
+		resultado.positionPathQueue = positionQueue;
 
 		return resultado;
 	}
 
 	public GameResponse resolveIntersection(Player player, Node nextNode, int movementsLeft) {
-		Queue<Node> nodePath = new LinkedList<>();
+		Queue<Position> positionQueue = new LinkedList<>();
 
-		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft, nodePath);
+		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft, positionQueue);
 
 		applyRewardIfApplies(player, movementsLeft);
 
 		GameResponse resultado = buildGameResponse();
 		resultado.movementsLeft = movementsLeft;
-		resultado.nodePath = nodePath;
+		resultado.positionPathQueue = positionQueue;
 
 		return resultado;
 	}
