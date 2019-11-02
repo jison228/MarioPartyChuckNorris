@@ -25,6 +25,16 @@ public class Game {
 	private TurnSelector turnSelector;
 	//ArrayList de minijuegos
 
+
+	Game(List<Player> players, GameMap gameMap, Dice dice, double precioDolar, String id, TurnSelector turnSelector) {
+		this.players = players;
+		this.gameMap = gameMap;
+		this.dice = dice;
+		this.precioDolar = precioDolar;
+		this.id = id;
+		this.turnSelector = turnSelector;
+	}
+
 	public Game(List<Player> players, GameMap gameMap) {
 		this.players = players;
 		this.turn = 0;

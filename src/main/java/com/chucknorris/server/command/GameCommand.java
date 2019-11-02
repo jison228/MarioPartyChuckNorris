@@ -16,6 +16,7 @@ public class GameCommand extends Command {
 		this.commandProcessorMap = new HashMap<>();
 
 		commandProcessorMap.put("move_player", new MovePlayerCommand());
+		commandProcessorMap.put("resolve_intersection", new MovePlayerCommand());
 	}
 
 	@Override

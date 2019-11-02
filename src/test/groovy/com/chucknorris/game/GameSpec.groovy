@@ -24,7 +24,15 @@ class GameSpec extends Specification {
 
         2 * dice.roll() >> 3 >> 4
 
-        Game game = new Game(playerList, gameMap, dice)
+        TurnSelector turnSelector = Mock(TurnSelector)
+        turnSelector.isPlayerTurn(_) >> true
+
+        Game game = new GameBuilder()
+                .setPlayers(playerList)
+                .setGameMap(gameMap)
+                .setDice(dice)
+                .setTurnSelector(turnSelector)
+                .build()
 
         when:
         game.play(macri)

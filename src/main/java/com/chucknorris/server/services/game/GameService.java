@@ -10,4 +10,6 @@ public interface GameService {
 	Player getPlayer(String gameId, String playerId);
 
 	ServerResponse movePlayer(String gameId, String playerId) throws Exception;
+
+	ServerResponse resolveIntersection(String gameId, String playerId);
 }

@@ -56,4 +56,9 @@ public class GameServiceImpl implements GameService {
 
 		return game.play(player);
 	}
+
+	@Override
+	public ServerResponse resolveIntersection(String gameId, String playerId) {
+		return null;
+	}
 }
