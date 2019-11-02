@@ -69,4 +69,8 @@ public abstract class Command<T extends ServerResponse> {
 	protected String getNow() {
 		return LocalDateTime.now().toString();
 	}
+
+	public String getProcessorName() {
+		return getClass().getSimpleName();
+	}
 }

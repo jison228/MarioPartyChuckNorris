@@ -65,7 +65,7 @@ public class ServerWorker extends Thread {
 
 			Command processor = commandProcessorMap.getOrDefault(commandDto.command, INVALID_COMMAND);
 
-			LOGGER.info(String.format("Command processor assigned to %s command in this socket %s ", commandDto.command, socket));
+			LOGGER.info(String.format("Command processor '%s' assigned to '%s' command for socket '%s'", processor.getProcessorName(), commandDto.command, socket));
 
 			String response = processor.process(commandDto);
 
