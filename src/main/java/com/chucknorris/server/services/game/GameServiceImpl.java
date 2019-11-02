@@ -1,10 +1,10 @@
 package com.chucknorris.server.services.game;
 
 import com.chucknorris.game.Game;
-import com.chucknorris.game.GameResponse;
 import com.chucknorris.gui.GameInformation;
 import com.chucknorris.player.Player;
 import com.chucknorris.server.command.response.BadRequestResponse;
+import com.chucknorris.server.command.response.GameResponse;
 import com.chucknorris.server.command.response.ServerResponse;
 import com.chucknorris.server.repositories.game.GameRepository;
 import com.chucknorris.server.repositories.game.InMemoryGameRepository;

@@ -2,7 +2,6 @@ package com.chucknorris.gui.tablero;
 
 import com.chucknorris.commons.Dice;
 import com.chucknorris.game.Game;
-import com.chucknorris.game.GameResponse;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.gamemap.nodes.Node;
@@ -11,6 +10,7 @@ import com.chucknorris.gui.compradolares.CompraDolaresFrame;
 import com.chucknorris.gui.endgame.Endgame;
 import com.chucknorris.gui.minigame.userinterface.GameWindow;
 import com.chucknorris.player.*;
+import com.chucknorris.server.command.response.GameResponse;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

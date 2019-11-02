@@ -7,6 +7,7 @@ import com.chucknorris.gamemap.MapUtils
 import com.chucknorris.gamemap.nodes.Node
 import com.chucknorris.player.Player
 import com.chucknorris.player.PlayerBuilder
+import com.chucknorris.server.command.response.GameResponse
 import spock.lang.Specification
 
 class GameSpec extends Specification {

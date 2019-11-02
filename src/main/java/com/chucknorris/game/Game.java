@@ -5,6 +5,7 @@ import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.gui.GameInformation;
 import com.chucknorris.player.Player;
+import com.chucknorris.server.command.response.GameResponse;
 
 import java.util.LinkedList;
 import java.util.List;

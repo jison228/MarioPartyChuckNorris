@@ -2,12 +2,12 @@ package com.chucknorris.server.services.game
 
 import com.chucknorris.commons.Dice
 import com.chucknorris.game.Game
-import com.chucknorris.game.GameResponse
 import com.chucknorris.gamemap.GameMap
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader
 import com.chucknorris.gui.GameInformation
 import com.chucknorris.player.Player
 import com.chucknorris.player.PlayerBuilder
+import com.chucknorris.server.command.response.GameResponse
 import com.chucknorris.server.command.response.ServerResponse
 import com.chucknorris.server.repositories.game.GameRepository
 import spock.lang.Specification

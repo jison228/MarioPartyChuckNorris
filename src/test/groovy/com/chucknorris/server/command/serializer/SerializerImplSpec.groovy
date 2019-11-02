@@ -1,8 +1,7 @@
 package com.chucknorris.server.command.serializer
 
-
-import com.chucknorris.game.GameResponse
 import com.chucknorris.server.command.response.ChatResponse
+import com.chucknorris.server.command.response.GameResponse
 import spock.lang.Specification
 import spock.lang.Unroll
 

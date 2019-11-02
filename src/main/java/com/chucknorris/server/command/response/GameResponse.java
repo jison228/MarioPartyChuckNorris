@@ -1,7 +1,6 @@
-package com.chucknorris.game;
+package com.chucknorris.server.command.response;
 
 import com.chucknorris.gamemap.nodes.Node;
-import com.chucknorris.server.command.response.ServerResponse;
 
 import java.util.Queue;
 
