@@ -10,7 +10,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
@@ -24,9 +23,9 @@ public abstract class Command<T extends ServerResponse> {
 
 	protected abstract ServerResponse execute(CommandData commandData) throws Throwable;
 
-	public final String process(CommandDto commandDto, Socket socket) {
+	public final String process(CommandDto commandDto) {
 		try {
-			ServerResponse response = handleCommand(commandDto, socket);
+			ServerResponse response = handleCommand(commandDto);
 
 			return serializer.serialize((T) response);
 		} catch (Throwable e) {
@@ -52,8 +51,8 @@ public abstract class Command<T extends ServerResponse> {
 		return "";
 	}
 
-	private ServerResponse handleCommand(CommandDto commandDto, Socket socket) throws Throwable {
-		inputStream = socket.getInputStream();
+	private ServerResponse handleCommand(CommandDto commandDto) throws Throwable {
+		inputStream = commandDto.socket.getInputStream();
 
 		CommandData commandData = new CommandData();
 		commandData.commandDto = commandDto;
