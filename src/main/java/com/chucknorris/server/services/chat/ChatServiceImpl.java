@@ -53,7 +53,7 @@ public class ChatServiceImpl implements ChatService {
 
 		Player player = gameService.getPlayer(gameId, playerId);
 
-		String messageToPrint = String.format("%s - %s: %s\n", getTime(), player.printPlayerName(), message);
+		String messageToPrint = String.format("%s - %s: %s\n\r", getTime(), player.printPlayerName(), message);
 
 		sendMessage(socket, messageToPrint);
 	}
