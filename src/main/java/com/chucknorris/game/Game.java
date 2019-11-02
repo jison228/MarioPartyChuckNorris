@@ -20,6 +20,7 @@ public class Game {
 	private Dice dice;
 	private double precioDolar;
 	private String id;
+	private TurnSelector turnSelector;
 	//ArrayList de minijuegos
 
 	public Game(List<Player> players, GameMap gameMap) {
