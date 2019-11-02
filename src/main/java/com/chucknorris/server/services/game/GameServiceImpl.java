@@ -54,8 +54,6 @@ public class GameServiceImpl implements GameService {
 
 		Player player = getPlayer(gameId, playerId);
 
-		GameResponse gameResponse = game.play(player);
-
-		return gameResponse;
+		return game.play(player);
 	}
 }

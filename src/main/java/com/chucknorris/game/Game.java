@@ -6,7 +6,9 @@ import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.gui.GameInformation;
 import com.chucknorris.player.Player;
+import com.chucknorris.server.command.response.BadRequestResponse;
 import com.chucknorris.server.command.response.GameResponse;
+import com.chucknorris.server.command.response.ServerResponse;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -43,7 +45,11 @@ public class Game {
 		this.dice = dice;
 	}
 
-	public GameResponse play(Player player) {
+	public ServerResponse play(Player player) {
+		if (!turnSelector.isPlayerTurn(player)) {
+			return new BadRequestResponse();
+		}
+
 		int diceResult = dice.roll();
 
 		Queue<Position> positionQueue = new LinkedList<>();
@@ -51,6 +57,8 @@ public class Game {
 		int movementsLeft = gameMap.movePlayer(player, diceResult, positionQueue);
 
 		applyRewardIfApplies(player, movementsLeft);
+
+		changeTurnIfApplies(movementsLeft);
 
 		GameResponse resultado = buildGameResponse();
 		resultado.movementsLeft = movementsLeft;
@@ -60,12 +68,20 @@ public class Game {
 		return resultado;
 	}
 
-	public GameResponse resolveIntersection(Player player, Node nextNode, int movementsLeft) {
+	private void changeTurnIfApplies(int movementsLeft) {
+		if (movementsLeft == 0) {
+			turnSelector.finishTurn();
+		}
+	}
+
+	public ServerResponse resolveIntersection(Player player, Node nextNode, int movementsLeft) {
 		Queue<Position> positionQueue = new LinkedList<>();
 
 		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft, positionQueue);
 
 		applyRewardIfApplies(player, movementsLeft);
+
+		changeTurnIfApplies(movementsLeft);
 
 		GameResponse resultado = buildGameResponse();
 		resultado.movementsLeft = movementsLeft;

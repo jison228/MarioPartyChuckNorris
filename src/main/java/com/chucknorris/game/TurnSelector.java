@@ -12,17 +12,39 @@ public class TurnSelector {
 		this.playerList = playerList;
 	}
 
-	public Player getTurn() {
+	Player getTurn() {
 		int playerTurn = getIndex();
 
-		return playerList.get(playerTurn);
+		Player player = playerList.get(playerTurn);
+
+		index++;
+
+		return player;
+	}
+
+	public Player getActualPlayerTurn() {
+		resolveIndex();
+
+		return playerList.get(index);
+	}
+
+	public boolean isPlayerTurn(Player player) {
+		return player == getActualPlayerTurn();
 	}
 
 	private int getIndex() {
+		resolveIndex();
+
+		return index;
+	}
+
+	private void resolveIndex() {
 		if (index >= playerList.size()) {
 			index = 0;
 		}
+	}
 
-		return index;
+	public void finishTurn() {
+		getTurn();
 	}
 }
