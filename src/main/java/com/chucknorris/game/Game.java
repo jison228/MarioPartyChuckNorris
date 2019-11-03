@@ -23,6 +23,7 @@ public class Game {
 	private double precioDolar;
 	private String id;
 	private TurnSelector turnSelector;
+	private int movementLeftFromIntersection = 0;
 	//ArrayList de minijuegos
 
 
@@ -70,12 +71,26 @@ public class Game {
 
 		changeTurnIfApplies(movementsLeft);
 
+		saveIntersectionDataIfApplies(player, movementsLeft);
+
 		GameResponse resultado = buildGameResponse();
 		resultado.movementsLeft = movementsLeft;
 		resultado.diceResult = diceResult;
 		resultado.positionPathQueue = positionQueue;
 
+		fillNextNodeIfInIntersection(resultado, player, movementsLeft);
+
 		return resultado;
+	}
+
+	private void fillNextNodeIfInIntersection(GameResponse resultado, Player player, int movementsLeft) {
+		if (movementsLeft > 0) {
+			resultado.nextNodesIntersection = player.getNodeLocation().nextPositions();
+		}
+	}
+
+	private void saveIntersectionDataIfApplies(Player player, int movementsLeft) {
+		movementLeftFromIntersection = Math.max(movementsLeft, 0);
 	}
 
 	private void changeTurnIfApplies(int movementsLeft) {
@@ -84,7 +99,15 @@ public class Game {
 		}
 	}
 
-	public ServerResponse resolveIntersection(Player player, Node nextNode, int movementsLeft) {
+	public ServerResponse resolveIntersection(Player player, Position nextPosition) {
+		Node nextNode = gameMap.getNode(nextPosition);
+
+		if (nextNode == null || !turnSelector.isPlayerTurn(player) || !isNextPositionWithinNextNodes(player, nextNode)) {
+			return new BadRequestResponse();
+		}
+
+		int movementsLeft = movementLeftFromIntersection;
+
 		Queue<Position> positionQueue = new LinkedList<>();
 
 		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft, positionQueue);
@@ -93,11 +116,17 @@ public class Game {
 
 		changeTurnIfApplies(movementsLeft);
 
+		saveIntersectionDataIfApplies(player, movementsLeft);
+
 		GameResponse resultado = buildGameResponse();
 		resultado.movementsLeft = movementsLeft;
 		resultado.positionPathQueue = positionQueue;
 
 		return resultado;
+	}
+
+	private boolean isNextPositionWithinNextNodes(Player player, Node nextNode) {
+		return player.getNodeLocation().hasThisPositionWithinNext(nextNode);
 	}
 
 	private GameResponse buildGameResponse() {
@@ -121,7 +150,7 @@ public class Game {
 		return gameMap;
 	}
 
-	public List<Player> getPlayerList(){
+	public List<Player> getPlayerList() {
 		return players;
 	}
 
