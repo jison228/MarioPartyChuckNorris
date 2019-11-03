@@ -143,4 +143,8 @@ public class Player {
 	public String getPowerupDescription() {
 		return "";
 	}
+
+	public String printPlayerName() {
+		return "Pepito";
+	}
 }
