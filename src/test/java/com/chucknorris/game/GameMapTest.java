@@ -4,6 +4,7 @@ import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.player.Player;
+import com.chucknorris.player.PlayerBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,8 +21,12 @@ public class GameMapTest {
 
 	@Before
 	public void executedBeforeEach() throws Exception {
-		p1 = new Player("Javier Milei", 0);
-		p2 = new Player("MauriCEOMcree", 0);
+		p1 = new PlayerBuilder()
+				.setCharacter("Javier Milei")
+				.build();
+		p2 = new PlayerBuilder()
+				.setCharacter("MauriCEOMcree")
+				.build();
 		List<Player> playerList = Arrays.asList(p1, p2);
 
 		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("map_1.txt");

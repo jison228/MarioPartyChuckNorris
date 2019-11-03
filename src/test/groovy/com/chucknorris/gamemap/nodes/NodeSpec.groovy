@@ -2,6 +2,7 @@ package com.chucknorris.gamemap.nodes
 
 import com.chucknorris.commons.Position
 import com.chucknorris.player.Player
+import com.chucknorris.player.PlayerBuilder
 import spock.lang.Specification
 
 import static org.junit.Assert.assertEquals
@@ -10,7 +11,7 @@ class NodeSpec extends Specification {
 
     void "test node rewards and type: #testCase"() {
         given:
-        Player player = new Player("Mauri", 0)
+        Player player = new PlayerBuilder().setCharacter("Macri").build()
 
         when:
         node.applyReward(player, null, null)

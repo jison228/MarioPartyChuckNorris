@@ -6,6 +6,7 @@ import com.chucknorris.gamemap.GameMap
 import com.chucknorris.gamemap.MapUtils
 import com.chucknorris.gamemap.nodes.Node
 import com.chucknorris.player.Player
+import com.chucknorris.player.PlayerBuilder
 import spock.lang.Specification
 
 class GameSpec extends Specification {
@@ -14,7 +15,7 @@ class GameSpec extends Specification {
         given:
         Dice dice = Spy(new Dice(1, 6))
 
-        Player macri = new Player("Macri", 0)
+        Player macri = new PlayerBuilder().setCharacter("Macri").build()
 
         List<Player> playerList = Arrays.asList(macri)
 
