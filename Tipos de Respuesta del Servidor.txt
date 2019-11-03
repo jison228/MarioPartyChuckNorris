@@ -1,0 +1,15 @@
+Respuesta 1 (Luego de apretar el boton del dado o elegir una bif):
+	Dice Result, Jugador, la cola de nodos por la que se movió, si hay bifurcacion, nodos a los que se puede mover.
+
+Respuesta 2 (Cuando el jugador Termina de moverse):
+	Estado de la partida:	- atributos de los clientPlayers
+							- si hay minijuego
+
+Respuesta 3 (Cuando el jugador presiona Terminar Turno):
+	Actualizar InfoPanel	- turno actual
+							- precioDolar
+							- jugador actual
+
+Con dudas:
+Respuesta 4 (Cuando hay que comprar dolares):
+	??
