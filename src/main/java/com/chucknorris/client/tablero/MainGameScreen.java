@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.List;
 import java.util.Queue;
 
 import javax.swing.ImageIcon;
@@ -47,6 +48,7 @@ public class MainGameScreen extends JFrame {
 	private GameInformation info;
 	private Endgame finPartida;
 	private JPanelPlayers playersPanel;
+	private List<clientPlayer> clientPlayersList;
 
 	/**
 	 * Launch the application.
@@ -72,6 +74,7 @@ public class MainGameScreen extends JFrame {
 		setTitle("Elecciones Presidenciales 2019");
 		// Iniciar partida
 		this.info = info;
+		clientPlayersList = info.getPlayers();
 
 		ctrl = false;
 		// JFrame config
@@ -84,7 +87,7 @@ public class MainGameScreen extends JFrame {
 		contentPane.setLayout(null);
 
 		// Panel para jugadores
-		playersPanel = new JPanelPlayers(this.info.getPlayers());
+		playersPanel = new JPanelPlayers(clientPlayersList);
 		playersPanel.setBounds(1000, 0, 280, 500);
 		contentPane.add(playersPanel);
 
@@ -216,7 +219,13 @@ public class MainGameScreen extends JFrame {
 	}
 
 	public void playTurn(ServerResponse1 respuesta) {
-		moverJugador(respuesta.diceResult, respuesta.currentPlayer, respuesta.nodePath);
+		clientPlayer currentClientPlayer = null;
+		for(int i=0;i<clientPlayersList.size();i++) {
+			if(respuesta.currentPlayer.getCharacter().equals(clientPlayersList.get(i).getCharacter())) {
+				currentClientPlayer = clientPlayersList.get(i);
+			}
+		}
+ 		moverJugador(respuesta.diceResult, currentClientPlayer, respuesta.nodePath);
 		if (respuesta.bif) {
 			tomarDecision(respuesta);
 		} else {
