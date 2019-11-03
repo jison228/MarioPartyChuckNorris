@@ -1,12 +1,12 @@
 package com.chucknorris.player;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class EspertTest {
 	Espert alesi;
@@ -18,9 +18,18 @@ public class EspertTest {
 	@Before
 	public void executedBeforeEach() {
 		alesi = new Espert(100, 50, 100);
-		p1 = new Player("Dummy", 200, 200);
-		p2 = new Player("Dummy", 400, 200);
-		p3 = new Player("Dummy", 50, 60);
+		p1 = new PlayerBuilder()
+				.setPesos(200)
+				.setDolar(200)
+				.build();
+		p2 = new PlayerBuilder()
+				.setPesos(400)
+				.setDolar(200)
+				.build();
+		p3 = new PlayerBuilder()
+				.setPesos(50)
+				.setDolar(60)
+				.build();
 		players = new ArrayList<Player>();
 		players.add(alesi);
 		players.add(p1);

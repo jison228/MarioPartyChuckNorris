@@ -1,14 +1,14 @@
 package com.chucknorris.node;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.nodes.BoletaGasNode;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.player.Player;
+import com.chucknorris.player.PlayerBuilder;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class BoletaGasNodeTest {
 	Player p;
@@ -16,7 +16,12 @@ public class BoletaGasNodeTest {
 
 	@Before
 	public void executedBeforeEach() {
-		p = new Player("Cristi", 150, 100);
+		p = new PlayerBuilder()
+				.setCharacter("Cristi")
+				.setPesos(150)
+				.setDolar(100)
+				.build();
+
 		nodeTest = new BoletaGasNode(null, new Position(4, 4));
 	}
 
