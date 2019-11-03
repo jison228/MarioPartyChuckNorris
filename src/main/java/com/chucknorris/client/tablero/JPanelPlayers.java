@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -18,10 +18,10 @@ public class JPanelPlayers extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Map<String, clientPlayer> clientPlayerMap;
+	private List<clientPlayer> clientPlayerList;
 
-	public JPanelPlayers(Map<String, clientPlayer> clientPlayerMap) {
-		this.clientPlayerMap = clientPlayerMap;
+	public JPanelPlayers(List<clientPlayer> clientPlayerList) {
+		this.clientPlayerList = clientPlayerList;
 	}
 
 	public void paint(Graphics g) {
@@ -38,13 +38,13 @@ public class JPanelPlayers extends JPanel {
 		g.drawString("CANDIDATOS", 45, 30);
 		g.setFont(new Font("Courier New", Font.BOLD, 10));
 		g.drawString("(Gana el que llega a 500 dolares)", 30, 40);
-		int i = 0;
-		for (Map.Entry<String, clientPlayer> entry : clientPlayerMap.entrySet()) {
+
+		for (int i =0; i<clientPlayerList.size();i++) {
 			g.setColor(Color.ORANGE);
 			g.fillRect(10, 110 * i - 5 + 90, 45, 45);
 
 			try {
-				image = ImageIO.read(new File("images/characters/" + entry.getValue().getCharacter() + "Chico.jpg"));
+				image = ImageIO.read(new File("images/characters/" + clientPlayerList.get(i).getCharacter() + "Chico.jpg"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -53,20 +53,24 @@ public class JPanelPlayers extends JPanel {
 
 			g.setColor(Color.BLACK);
 			g.setFont(new Font("Tahoma", Font.BOLD, 18));
-			g.drawString(entry.getValue().getCharacter(), 10, 80 + i * 110);
+			g.drawString(clientPlayerList.get(i).getCharacter(), 10, 80 + i * 110);
 			g.setColor(Color.lightGray);
 			g.fillRect(70, 107 + i * 110, 65, 17);
 			g.fillRect(170, 107 + i * 110, 75, 17);
 			g.fillRect(70, 87 + i * 110, 130, 15);
 			g.setColor(Color.RED);
 			g.setFont(new Font("Tahoma", Font.BOLD, 15));
-			g.drawString("Salario: $" + entry.getValue().getSalario(), 70, 100 + i * 110);
+			g.drawString("Salario: $" + clientPlayerList.get(i).getSalario(), 70, 100 + i * 110);
 			g.setColor(new Color(0, 255, 0));
 			g.setFont(new Font("Tahoma", Font.BOLD, 15));
-			g.drawString("$" + entry.getValue().getPesos(), 70, 120 + i * 110);
-			g.drawString("U$S" + entry.getValue().getDolares(), 170, 120 + i * 110);
-			i++;
+			g.drawString("$" + clientPlayerList.get(i).getPesos(), 70, 120 + i * 110);
+			g.drawString("U$S" + clientPlayerList.get(i).getDolares(), 170, 120 + i * 110);
+
 		}
 
+	}
+	
+	public void updatePanelPlayers(List<clientPlayer> clientPlayersList) {
+		this.clientPlayerList = clientPlayersList;
 	}
 }
