@@ -1,30 +1,18 @@
 package com.chucknorris.gui.compradolares;
 
-import java.awt.EventQueue;
+import com.chucknorris.player.Player;
+import com.chucknorris.player.PlayerBuilder;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
-
-import com.chucknorris.player.Player;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowListener;
-import java.text.NumberFormat;
-import java.util.Locale;
-
-import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class CompraDolaresFrame extends JFrame {
 
@@ -43,7 +31,11 @@ public class CompraDolaresFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Player p = new Player("Cristi", 150, 100);
+					Player p = new PlayerBuilder()
+							.setCharacter("Cristina")
+							.setCoins(150)
+							.setDolar(100)
+							.build();
 					CompraDolaresFrame frame = new CompraDolaresFrame(p, 20.0);
 					frame.setVisible(true);
 				} catch (Exception e) {
