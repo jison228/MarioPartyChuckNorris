@@ -8,7 +8,6 @@ import com.chucknorris.rewards.substractor.pesos.PesosSubstractor;
 import java.util.List;
 
 public class Player {
-	private String playerName;
 	private String character;
 	private int coins;
 	private Node nodeLocation;
