@@ -1,6 +1,7 @@
 package com.chucknorris.server.command
 
-import com.chucknorris.player.Player
+
+import com.chucknorris.player.PlayerBuilder
 import com.chucknorris.server.command.dto.CommandData
 import com.chucknorris.server.command.dto.CommandDto
 import com.chucknorris.server.services.chat.ChatService
@@ -14,7 +15,7 @@ class ChatMessageCommandSpec extends Specification {
     private ChatService chatService = Mock(ChatServiceImpl)
 
     void setup() {
-        gameService.getPlayer(_, _) >> new Player("Cristina", 3);
+        gameService.getPlayer(_, _) >> new PlayerBuilder().setCharacter("Christina").build()
     }
 
     void "test message chat service called once cause second message is null"() {
