@@ -10,11 +10,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import com.chucknorris.client.clientPlayer;
+import com.chucknorris.client.ClientPlayer;
 
 public class InfoPanel extends JPanel {
 
-	private clientPlayer currentPlayer;
+	private ClientPlayer currentPlayer;
 	private int turn;
 	private Double precioDolar;
 	private BufferedImage image;
@@ -24,7 +24,7 @@ public class InfoPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public InfoPanel(clientPlayer currentPlayer, int turn, Double precioDolar) {
+	public InfoPanel(ClientPlayer currentPlayer, int turn, Double precioDolar) {
 		this.currentPlayer = currentPlayer;
 		this.turn = turn;
 		this.precioDolar = precioDolar;
@@ -81,9 +81,13 @@ public class InfoPanel extends JPanel {
 		g.drawString("[Ctrl]: Ver información sobre los nodos", 780, 170);
 	}
 
-	public void actualizar(clientPlayer currentPlayer, int turn, Double precioDolar) {
+	public void actualizar(ClientPlayer currentPlayer, int turn, Double precioDolar) {
 		this.currentPlayer = currentPlayer;
 		this.turn = turn;
 		this.precioDolar = precioDolar;
+	}
+	
+	public double getPrecioDolar() {
+		return precioDolar;
 	}
 }

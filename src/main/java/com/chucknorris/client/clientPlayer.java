@@ -2,7 +2,7 @@ package com.chucknorris.client;
 
 import com.chucknorris.commons.Position;
 
-public class clientPlayer {
+public class ClientPlayer {
 	private String playerName;
 	private String character;
 	private Position position;
@@ -11,7 +11,7 @@ public class clientPlayer {
 	private double salario;
 	private String powerupDescription;
 
-	public clientPlayer(String playerName, String character, Position position, double pesos, double dolares, double salario, String powerupDescription) {
+	public ClientPlayer(String playerName, String character, Position position, double pesos, double dolares, double salario, String powerupDescription) {
 		this.playerName = playerName;
 		this.character = character;
 		this.position = position;

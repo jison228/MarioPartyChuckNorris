@@ -10,8 +10,8 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import com.chucknorris.client.clientNode;
-import com.chucknorris.client.clientPlayer;
+import com.chucknorris.client.ClientNode;
+import com.chucknorris.client.ClientPlayer;
 
 public class JPanelGame extends JPanel {
 
@@ -19,12 +19,12 @@ public class JPanelGame extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private List<clientNode> nodesList;
-	private List<clientPlayer> clientPlayerList;
+	private List<ClientNode> nodesList;
+	private List<ClientPlayer> clientPlayerList;
 	private int iniX = 50;
 	private int iniY = 30;
 
-	public JPanelGame(List<clientNode> nodesList, List<clientPlayer> clientPlayerList) {
+	public JPanelGame(List<ClientNode> nodesList, List<ClientPlayer> clientPlayerList) {
 		this.nodesList = nodesList;
 		this.clientPlayerList = clientPlayerList;
 	}

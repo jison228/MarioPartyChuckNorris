@@ -2,11 +2,11 @@ package com.chucknorris.client;
 
 import com.chucknorris.commons.Position;
 
-public class clientNode {
+public class ClientNode {
 	private String type;
 	private Position position;
 	
-	public clientNode(String type, Position position) {
+	public ClientNode(String type, Position position) {
 		this.type = type;
 		this.position = position;
 	}

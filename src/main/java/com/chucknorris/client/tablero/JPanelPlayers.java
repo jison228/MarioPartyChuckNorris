@@ -11,16 +11,16 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import com.chucknorris.client.clientPlayer;
+import com.chucknorris.client.ClientPlayer;
 
 public class JPanelPlayers extends JPanel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private List<clientPlayer> clientPlayerList;
+	private List<ClientPlayer> clientPlayerList;
 
-	public JPanelPlayers(List<clientPlayer> clientPlayerList) {
+	public JPanelPlayers(List<ClientPlayer> clientPlayerList) {
 		this.clientPlayerList = clientPlayerList;
 	}
 
@@ -70,7 +70,7 @@ public class JPanelPlayers extends JPanel {
 
 	}
 	
-	public void updatePanelPlayers(List<clientPlayer> clientPlayersList) {
+	public void updatePanelPlayers(List<ClientPlayer> clientPlayersList) {
 		this.clientPlayerList = clientPlayersList;
 	}
 }
