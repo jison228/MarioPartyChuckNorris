@@ -1,37 +1,48 @@
 package com.chucknorris.client;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import com.chucknorris.commons.Dice;
+import com.chucknorris.commons.Position;
+import com.chucknorris.gamemap.GameMap;
+import com.chucknorris.gamemap.nodes.Node;
+import com.chucknorris.player.Player;
 
 public class GameInformation {
-	private List<clientPlayer> players;
-	private List<clientNode> nodes;
+	private List<ClientPlayer> clientPlayersList;
+	private List<ClientNode> clientNodesList;
 	private double precioDolar;
-	private int turn;
 
-	public GameInformation(List<clientPlayer> players, List<clientNode> nodes, Dice dice, double precioDolar) {
-		this.players = players;
-		this.nodes = nodes;
+	public GameInformation(List<Player> playersList, GameMap mapaNodes, double precioDolar) {
+		this.clientPlayersList = new ArrayList<ClientPlayer>();
+		ClientPlayer playerToList;
+		for (int i = 0; i < playersList.size(); i++) {
+			Player leer = playersList.get(i);
+			playerToList = new ClientPlayer(leer.getCharacter(), leer.getCharacter(),
+					leer.getNodeLocation().getPositionCoords(), leer.getPesos(), leer.getDolares(), leer.getSalario(),
+					leer.getPowerupDescription());
+			this.clientPlayersList.add(playerToList);
+		}
+		this.clientNodesList = new ArrayList<ClientNode>();
+		ClientNode nodeToList;
+		for (Map.Entry<Position, Node> entry : mapaNodes.getMap().entrySet()) {
+			nodeToList = new ClientNode(entry.getValue().getType(), entry.getValue().getPositionCoords());
+			this.clientNodesList.add(nodeToList);
+		}
 		this.precioDolar = precioDolar;
-		this.turn = 0;
 	}
 
-	public List<clientPlayer> getPlayers() {
-		return players;
+	public List<ClientPlayer> getPlayers() {
+		return clientPlayersList;
 	}
 
-	public List<clientNode> getNodes() {
-		return nodes;
+	public List<ClientNode> getNodes() {
+		return clientNodesList;
 	}
-	
+
 	public double getPrecioDolar() {
 		return precioDolar;
 	}
-	
-	public int getTurn() {
-		return turn;
-	}
-	
-	
+
 }
