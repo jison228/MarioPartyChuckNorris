@@ -187,7 +187,7 @@ public class MainGameScreen extends JFrame {
 		btnTirarDado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				/** Le digo al server que el jugador tiró el dado **/
+				/** Le digo al server que el jugador tiro el dado **/
 				//El servidor tendria que armar una ServerResponse1 y llamar a playTurn
 				
 				btnTirarDado.setVisible(false);

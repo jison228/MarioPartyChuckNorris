@@ -8,6 +8,6 @@ EndTurnResponse (Cuando el jugador presiona Terminar Turno):
 
 Con dudas:
 	UpdatePlayerPanelResponse (Cuando se compra dolares):
-		- ClientPlayer que sufrió el cambio
+		- ClientPlayer que sufrio el cambio
 		O sino más facil
 		- Lista de todos los clientPlayer

@@ -118,10 +118,10 @@ public class CompraDolaresFrame extends JFrame {
 		btnComprar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				/**
-				 * Le informo al servidor la cantidad de pesos que gastó
+				 * Le informo al servidor la cantidad de pesos que gasto
 				 * (Double.valueOf(pesosTF.getValue().toString())
 				 **/
-				// El servidor debería devolver la actualizacion del estado de ese jugador
+				// El servidor deberia devolver la actualizacion del estado de ese jugador
 				dispose();
 			}
 		});
