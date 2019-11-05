@@ -20,13 +20,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.chucknorris.client.GameInformation;
-import com.chucknorris.client.ServerResponse1;
-import com.chucknorris.client.ServerResponse2;
-import com.chucknorris.client.ServerResponse3;
-import com.chucknorris.client.clientNode;
-import com.chucknorris.client.clientPlayer;
+import com.chucknorris.client.MovementResponse;
+import com.chucknorris.client.EndTurnResponse;
+import com.chucknorris.client.ClientNode;
+import com.chucknorris.client.ClientPlayer;
 import com.chucknorris.client.endgame.Endgame;
-import com.chucknorris.gui.minigame.userinterface.GameWindow;
+import com.chucknorris.client.compradolares.CompraDolaresFrame;
 
 public class MainGameScreen extends JFrame {
 
@@ -44,11 +43,10 @@ public class MainGameScreen extends JFrame {
 	private InfoPanel characterPanel;
 	private JLabel diceImage;
 	private DescriptionPanel panelDescrip;
-	private GameWindow minijuego;
-	private GameInformation info;
 	private Endgame finPartida;
 	private JPanelPlayers playersPanel;
-	private List<clientPlayer> clientPlayersList;
+	private List<ClientPlayer> clientPlayersList;
+	private CompraDolaresFrame compraDolaresFrame;
 
 	/**
 	 * Launch the application.
@@ -73,7 +71,6 @@ public class MainGameScreen extends JFrame {
 	public MainGameScreen(GameInformation info) {
 		setTitle("Elecciones Presidenciales 2019");
 		// Iniciar partida
-		this.info = info;
 		clientPlayersList = info.getPlayers();
 
 		ctrl = false;
@@ -161,7 +158,7 @@ public class MainGameScreen extends JFrame {
 		buttonPanel.add(diceImage);
 
 		// Panel para el personaje
-		characterPanel = new InfoPanel(info.getPlayers().get(0), info.getTurn(), info.getPrecioDolar());
+		characterPanel = new InfoPanel(info.getPlayers().get(0), 0, info.getPrecioDolar());
 		characterPanel.setBounds(0, 500, 1000, 220);
 		contentPane.add(characterPanel);
 
@@ -189,7 +186,7 @@ public class MainGameScreen extends JFrame {
 		btnTirarDado.setForeground(Color.RED);
 		btnTirarDado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				
 				/** Le digo al server que el jugador tiró el dado **/
 				//El servidor tendria que armar una ServerResponse1 y llamar a playTurn
 				
@@ -218,41 +215,39 @@ public class MainGameScreen extends JFrame {
 
 	}
 
-	public void playTurn(ServerResponse1 respuesta) {
-		clientPlayer currentClientPlayer = null;
+	public void playTurn(MovementResponse respuesta) {
+		ClientPlayer currentClientPlayer = null;
 		for(int i=0;i<clientPlayersList.size();i++) {
 			if(respuesta.currentPlayer.getCharacter().equals(clientPlayersList.get(i).getCharacter())) {
 				currentClientPlayer = clientPlayersList.get(i);
 			}
 		}
  		moverJugador(respuesta.diceResult, currentClientPlayer, respuesta.nodePath);
-		if (respuesta.bif) {
+		if (respuesta.options!=null) {
 			tomarDecision(respuesta);
 		} else {
-			/** Le informo al servidor que terminó de moverse**/ 
-			//El servidor tendria que armar una ServerResponse2 y llamar a endTurn
+			endTurn(respuesta);
 		}
 	}
 
-	public void endTurn(ServerResponse2 respuesta) {
-		if (respuesta.minigame) {
-			playMinigame();
+	public void endTurn(MovementResponse respuesta) {
+		if(respuesta.compra_dolares) {
+			compraDolaresFrame = new CompraDolaresFrame(respuesta.currentPlayer, characterPanel.getPrecioDolar());
 		}
-
 		playersPanel.updatePanelPlayers(respuesta.currentClientPlayerList);
 		btnEndTurn.setVisible(true); //Solo al Player que corresponda
 	}
 	
-	public void announceWinner(clientPlayer ganador) {
+	public void announceWinner(ClientPlayer ganador) {
 		finPartida = new Endgame(ganador.getCharacter());
 		finPartida.setVisible(true);
 		dispose();
 	}
 
-	private void moverJugador(int diceResult, clientPlayer currentPlayer, Queue<clientNode> nodePath) {
+	private void moverJugador(int diceResult, ClientPlayer currentPlayer, Queue<ClientNode> nodePath) {
 		diceImage.setVisible(true); //Solo al Player que corresponde
 		diceImage.setIcon(new ImageIcon("images/dice/" + diceResult + ".png"));
-		clientNode transitionNode = nodePath.poll();
+		ClientNode transitionNode = nodePath.poll();
 		int size = nodePath.size();
 		for (int i = 0; i < size; i++) {
 			transitionNode = nodePath.poll();
@@ -267,7 +262,7 @@ public class MainGameScreen extends JFrame {
 		}
 	}
 	
-	private void tomarDecision(ServerResponse1 decision) {
+	private void tomarDecision(MovementResponse decision) {
 		btnTirarDado.setVisible(false);
 		btnCamino1.setBounds(30 + decision.options.get(0).getPosition().getX() * 125,
 				30 + decision.options.get(0).getPosition().getY() * 125, 75, 75);
@@ -280,16 +275,11 @@ public class MainGameScreen extends JFrame {
 		btnCamino2.setVisible(true); //Solo al Player que corresponde
 	}
 
-	public void endTurnIndeed(ServerResponse3 respuesta) {
+	public void endTurnIndeed(EndTurnResponse respuesta) {
 
 		characterPanel.actualizar(respuesta.currentPlayer, respuesta.currentTurn, respuesta.currentPrecioDolar);
 		diceImage.setVisible(false);
 
-	}
-
-	private void playMinigame() {
-		minijuego = new GameWindow();
-		minijuego.setVisible(true);
 	}
 
 }
