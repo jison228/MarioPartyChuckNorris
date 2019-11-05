@@ -233,6 +233,7 @@ public class MainGameScreen extends JFrame {
 	public void endTurn(MovementResponse respuesta) {
 		if(respuesta.compra_dolares) {
 			compraDolaresFrame = new CompraDolaresFrame(respuesta.currentPlayer, characterPanel.getPrecioDolar());
+			compraDolaresFrame.setVisible(true);
 		}
 		playersPanel.updatePanelPlayers(respuesta.currentClientPlayerList);
 		btnEndTurn.setVisible(true); //Solo al Player que corresponda
