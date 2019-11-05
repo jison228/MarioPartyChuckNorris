@@ -1,11 +1,11 @@
 package com.chucknorris.client;
 
-public class ServerResponse3 {
+public class EndTurnResponse {
 	public int currentTurn;
 	public double currentPrecioDolar;
-	public clientPlayer currentPlayer;
+	public ClientPlayer currentPlayer;
 
-	public ServerResponse3(int currentTurn, double currentPrecioDolar, clientPlayer currentPlayer) {
+	public EndTurnResponse(int currentTurn, double currentPrecioDolar, ClientPlayer currentPlayer) {
 		this.currentTurn = currentTurn;
 		this.currentPrecioDolar = currentPrecioDolar;
 		this.currentPlayer = currentPlayer;
