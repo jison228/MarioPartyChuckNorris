@@ -1,6 +1,7 @@
 package com.chucknorris.client;
 
 import com.chucknorris.commons.Position;
+import com.chucknorris.player.Player;
 
 public class ClientPlayer {
 	private String playerName;
@@ -21,6 +22,16 @@ public class ClientPlayer {
 		this.powerupDescription = powerupDescription;
 	}
 
+	public ClientPlayer(Player player) {
+		this.playerName = player.getCharacter();
+		this.character = player.getCharacter();
+		this.position = player.getNodeLocation().getPositionCoords();
+		this.pesos = player.getPesos();
+		this.dolares = player.getDolares();
+		this.salario = player.getSalario();
+		this.powerupDescription = player.getPowerupDescription();
+	}
+	
 	public void updateInformation(Position position, double pesos, double dolares, double salario) {
 		this.position = position;
 		this.pesos = pesos;

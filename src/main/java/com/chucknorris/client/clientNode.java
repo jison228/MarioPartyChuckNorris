@@ -1,6 +1,7 @@
 package com.chucknorris.client;
 
 import com.chucknorris.commons.Position;
+import com.chucknorris.gamemap.nodes.Node;
 
 public class ClientNode {
 	private String type;
@@ -9,6 +10,11 @@ public class ClientNode {
 	public ClientNode(String type, Position position) {
 		this.type = type;
 		this.position = position;
+	}
+	
+	public ClientNode(Node node) {
+		this.type = node.getType();
+		this.position = node.getPositionCoords();
 	}
 	
 	public String getType() {
