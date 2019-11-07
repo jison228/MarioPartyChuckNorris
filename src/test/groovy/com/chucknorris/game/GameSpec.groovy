@@ -4,7 +4,6 @@ import com.chucknorris.commons.Dice
 import com.chucknorris.commons.Position
 import com.chucknorris.gamemap.GameMap
 import com.chucknorris.gamemap.MapUtils
-import com.chucknorris.gamemap.nodes.Node
 import com.chucknorris.player.Player
 import com.chucknorris.player.PlayerBuilder
 import com.chucknorris.server.command.response.GameResponse
@@ -48,9 +47,9 @@ class GameSpec extends Specification {
 
         when:
         //Elige el nodo a seguir
-        Node nextNode = gameMap.getNode(new Position(2, 3))
+        Position nextPosition = new Position(2, 3)
 
-        gameResponse = game.resolveIntersection(macri, nextNode, gameResponse.movementsLeft)
+        gameResponse = game.resolveIntersection(macri, nextPosition) as GameResponse
 
         then:
         gameResponse.movementsLeft == 0

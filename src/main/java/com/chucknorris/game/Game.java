@@ -23,6 +23,7 @@ public class Game {
 	private double precioDolar;
 	private String id;
 	private TurnSelector turnSelector;
+	private int movementLeftFromIntersection = 0;
 	//ArrayList de minijuegos
 
 
@@ -69,6 +70,8 @@ public class Game {
 		applyRewardIfApplies(player, movementsLeft);
 
 
+		saveIntersectionDataIfApplies(player, movementsLeft);
+
 		GameResponse resultado = buildGameResponse();
 		resultado.movementsLeft = movementsLeft;
 		resultado.diceResult = diceResult;
@@ -78,11 +81,23 @@ public class Game {
 
 		addLaunchMiniGameIfApplies(resultado);
 
+		fillNextNodeIfInIntersection(resultado, player, movementsLeft);
+
 		return resultado;
 	}
 
 	private void addLaunchMiniGameIfApplies(GameResponse resultado) {
 		turnSelector.addMiniGameIfApplies(resultado);
+	}
+
+	private void fillNextNodeIfInIntersection(GameResponse resultado, Player player, int movementsLeft) {
+		if (movementsLeft > 0) {
+			resultado.nextNodesIntersection = player.getNodeLocation().nextPositions();
+		}
+	}
+
+	private void saveIntersectionDataIfApplies(Player player, int movementsLeft) {
+		movementLeftFromIntersection = Math.max(movementsLeft, 0);
 	}
 
 	private void changeTurnIfApplies(int movementsLeft) {
@@ -91,13 +106,23 @@ public class Game {
 		}
 	}
 
-	public ServerResponse resolveIntersection(Player player, Node nextNode, int movementsLeft) {
+	public ServerResponse resolveIntersection(Player player, Position nextPosition) {
+		Node nextNode = gameMap.getNode(nextPosition);
+
+		if (nextNode == null || !turnSelector.isPlayerTurn(player) || !isNextPositionWithinNextNodes(player, nextNode)) {
+			return new BadRequestResponse();
+		}
+
+		int movementsLeft = movementLeftFromIntersection;
+
 		Queue<Position> positionQueue = new LinkedList<>();
 
 		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft, positionQueue);
 
 		applyRewardIfApplies(player, movementsLeft);
 
+
+		saveIntersectionDataIfApplies(player, movementsLeft);
 
 		GameResponse resultado = buildGameResponse();
 		resultado.movementsLeft = movementsLeft;
@@ -108,6 +133,10 @@ public class Game {
 		addLaunchMiniGameIfApplies(resultado);
 
 		return resultado;
+	}
+
+	private boolean isNextPositionWithinNextNodes(Player player, Node nextNode) {
+		return player.getNodeLocation().hasThisPositionWithinNext(nextNode);
 	}
 
 	private GameResponse buildGameResponse() {

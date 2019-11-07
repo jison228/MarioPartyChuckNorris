@@ -27,4 +27,16 @@ class NodeSpec extends Specification {
         "White node case"  | new WhiteNode(null, new Position(4, 4))  || 0             || "WHITE"
         "End node case"    | new EndNode(null, new Position(4, 4))    || 0             || "END"
     }
+
+    void "test nextNode within next: #testCase"() {
+        given:
+        Node redNode = new RedNode(null, new Position(1, 0))
+
+        expect:
+        node.hasThisPositionWithinNext(redNode) == expected
+        where:
+        testCase          | node                                                                     || expected
+        "Node within"     | new RedNode([new RedNode(null, new Position(1, 0))], new Position(4, 4)) || true
+        "Node not within" | new RedNode([new RedNode(null, new Position(1, 1))], new Position(4, 4)) || false
+    }
 }
