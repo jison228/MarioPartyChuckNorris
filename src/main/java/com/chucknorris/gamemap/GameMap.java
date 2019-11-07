@@ -70,7 +70,7 @@ public class GameMap {
 		return nodes.get(position);
 	}
 	
-	public Map getMap() {
+	public Map<Position, Node> getMap() {
 		return nodes;
 	}
 }

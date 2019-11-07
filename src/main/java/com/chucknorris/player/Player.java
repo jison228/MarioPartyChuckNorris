@@ -131,9 +131,9 @@ public class Player {
 		salario = salario * ((percentage / 100) + 1);
 	}
 	
-	public void buyDolares(double pesos, double dolares) {
+	public void buyDolares(double pesos, double precioDolar) {
 		this.substractPesos(pesos);
-		this.addDolar(dolares);
+		this.addDolar(pesos/precioDolar);
 	}
 	
 	public void cobrarSalario() {
