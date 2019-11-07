@@ -105,7 +105,7 @@ public class PlayerTest {
 	public void buyDolaresTest() {
 		playerTest2.buyDolares(50, 50);
 		assertEquals(450, (int) playerTest2.getPesos());
-		assertEquals(550, (int) playerTest2.getDolares());
+		assertEquals(501, (int) playerTest2.getDolares());
 	}
 
 }

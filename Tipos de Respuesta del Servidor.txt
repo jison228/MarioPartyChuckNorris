@@ -1,0 +1,13 @@
+MovementResponse (Luego de apretar el boton del dado o elegir una bif):
+	Dice Result, Jugador, la cola de nodos por la que se movió, nodos a los que se puede mover, atributos de los clientPlayers, comprar_dolares.
+
+EndTurnResponse (Cuando el jugador presiona Terminar Turno):
+	Actualizar InfoPanel	- turno actual
+							- precioDolar
+							- jugador actual
+
+Con dudas:
+	UpdatePlayerPanelResponse (Cuando se compra dolares):
+		- ClientPlayer que sufrio el cambio
+		O sino más facil
+		- Lista de todos los clientPlayer
