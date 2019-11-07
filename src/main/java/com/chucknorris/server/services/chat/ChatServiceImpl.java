@@ -1,8 +1,10 @@
 package com.chucknorris.server.services.chat;
 
 import com.chucknorris.player.Player;
+import com.chucknorris.server.command.response.ChatResponse;
 import com.chucknorris.server.services.game.GameService;
 import com.chucknorris.server.services.game.GameServiceImpl;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -60,9 +62,12 @@ public class ChatServiceImpl implements ChatService {
 
 	private void sendMessage(Socket socket, String messageToPrint) {
 		try {
+			ChatResponse chatResponse = new ChatResponse();
+			chatResponse.messageToPrint = messageToPrint;
+
 			OutputStream outputStream = socket.getOutputStream();
 
-			outputStream.write(messageToPrint.getBytes());
+			outputStream.write(new Gson().toJson(chatResponse).getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

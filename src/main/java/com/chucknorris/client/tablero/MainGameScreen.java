@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
@@ -26,6 +28,11 @@ import com.chucknorris.client.ClientNode;
 import com.chucknorris.client.ClientPlayer;
 import com.chucknorris.client.endgame.Endgame;
 import com.chucknorris.client.compradolares.CompraDolaresFrame;
+import com.chucknorris.client.server.ChatThread;
+import com.chucknorris.commons.Dice;
+import com.chucknorris.gamemap.GameMap;
+import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
+import com.chucknorris.player.*;
 
 public class MainGameScreen extends JFrame {
 
@@ -56,8 +63,28 @@ public class MainGameScreen extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainGameScreen frame = new MainGameScreen(null);
-					frame.setVisible(true);
+//					 SOLO PARA TESTEAR
+//					GameMap mapa1;
+//					MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
+//					mapa1 = mapFileCSVReader.buildGameMap();
+//					Espert p1 = new Espert(1450, 150, 100);
+//					Cristina p2 = new Cristina(150, 100, 900);
+//					Macri p3 = new Macri(500, 100, 100);
+//					DelCanio p4 = new DelCanio(150, 100, 100);
+//					List<Player> listaP = new ArrayList<Player>();
+//					listaP.add(p1);
+//					listaP.add(p2);
+//					listaP.add(p3);
+//					listaP.add(p4);
+//					com.chucknorris.gui.GameInformation test = new com.chucknorris.gui.GameInformation(listaP, mapa1, new Dice(1, 6), 20);
+//
+//					GameInformation gameInformation = new GameInformation(test.players, test.gameMap, test.precioDolar);
+//
+//					MainGameScreen frame = new MainGameScreen(gameInformation);
+//					frame.setVisible(true);
+//
+					ChatThread chatThread = new ChatThread();
+					chatThread.start();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
