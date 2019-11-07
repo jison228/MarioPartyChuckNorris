@@ -1,39 +1,54 @@
 package com.chucknorris.client.server;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.chucknorris.client.GameInformation;
+import com.chucknorris.client.tablero.MainGameScreen;
+import com.chucknorris.gamemap.GameMap;
+import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
+import com.chucknorris.player.Cristina;
+import com.chucknorris.player.DelCanio;
+import com.chucknorris.player.Espert;
+import com.chucknorris.player.Macri;
+import com.chucknorris.player.Player;
 import com.chucknorris.server.command.dto.CommandDto;
 import com.chucknorris.server.command.response.ChatResponse;
 import com.google.gson.Gson;
 
-import java.io.*;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
-
 public class ChatThread extends Thread {
 
 	private Gson gson = new Gson();
+	MainGameScreen frame;
 
 	@Override
 	public void run() {
 		try {
 			listenPortForChatMessage();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	private void listenPortForChatMessage() throws IOException {
 		System.out.println("INtentando conectarme a localhost 30000");
-		int port = 25000;
 		InetAddress address = InetAddress.getByName("localhost");
 
 		Socket chatSocket = new Socket(address, 30000);
 
 		InputStream inputStream = chatSocket.getInputStream();
-		OutputStream outputStream = chatSocket.getOutputStream();
-		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-		BufferedWriter bf = new BufferedWriter(writer);
+		//OutputStream outputStream = chatSocket.getOutputStream();
+		//OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+		//BufferedWriter bf = new BufferedWriter(writer);
 
 		CommandDto commandDto = getCommandDto();
 

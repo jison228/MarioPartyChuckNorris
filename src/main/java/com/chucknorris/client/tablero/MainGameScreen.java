@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
@@ -21,18 +20,22 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.chucknorris.client.GameInformation;
-import com.chucknorris.client.MovementResponse;
-import com.chucknorris.client.EndTurnResponse;
 import com.chucknorris.client.ClientNode;
 import com.chucknorris.client.ClientPlayer;
-import com.chucknorris.client.endgame.Endgame;
+import com.chucknorris.client.EndTurnResponse;
+import com.chucknorris.client.GameInformation;
+import com.chucknorris.client.MovementResponse;
 import com.chucknorris.client.compradolares.CompraDolaresFrame;
-import com.chucknorris.client.server.ChatThread;
-import com.chucknorris.commons.Dice;
+import com.chucknorris.client.endgame.Endgame;
+import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
-import com.chucknorris.player.*;
+import com.chucknorris.gamemap.nodes.ParitariaNode;
+import com.chucknorris.player.Cristina;
+import com.chucknorris.player.DelCanio;
+import com.chucknorris.player.Espert;
+import com.chucknorris.player.Macri;
+import com.chucknorris.player.Player;
 
 public class MainGameScreen extends JFrame {
 
@@ -64,27 +67,31 @@ public class MainGameScreen extends JFrame {
 			public void run() {
 				try {
 //					 SOLO PARA TESTEAR
-//					GameMap mapa1;
-//					MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
-//					mapa1 = mapFileCSVReader.buildGameMap();
-//					Espert p1 = new Espert(1450, 150, 100);
-//					Cristina p2 = new Cristina(150, 100, 900);
-//					Macri p3 = new Macri(500, 100, 100);
-//					DelCanio p4 = new DelCanio(150, 100, 100);
-//					List<Player> listaP = new ArrayList<Player>();
-//					listaP.add(p1);
-//					listaP.add(p2);
-//					listaP.add(p3);
-//					listaP.add(p4);
-//					com.chucknorris.gui.GameInformation test = new com.chucknorris.gui.GameInformation(listaP, mapa1, new Dice(1, 6), 20);
-//
-//					GameInformation gameInformation = new GameInformation(test.players, test.gameMap, test.precioDolar);
-//
-//					MainGameScreen frame = new MainGameScreen(gameInformation);
-//					frame.setVisible(true);
-//
-					ChatThread chatThread = new ChatThread();
-					chatThread.start();
+					GameMap mapa1;
+					MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
+					mapa1 = mapFileCSVReader.buildGameMap();
+					ParitariaNode ini = new ParitariaNode(null, new Position(0,0));
+					Espert p1 = new Espert(1450, 150, 100);
+					Cristina p2 = new Cristina(150, 100, 900);
+					Macri p3 = new Macri(500, 100, 100);
+					DelCanio p4 = new DelCanio(150, 100, 100);
+					p1.setNodeLocation(ini);
+					p2.setNodeLocation(ini);
+					p3.setNodeLocation(ini);
+					p4.setNodeLocation(ini);
+					List<Player> listaP = new ArrayList<Player>();
+					listaP.add(p1);
+					listaP.add(p2);
+					listaP.add(p3);
+					listaP.add(p4);
+
+					GameInformation gameInformation = new GameInformation(listaP,mapa1,20);
+
+					MainGameScreen frame = new MainGameScreen(gameInformation);
+					frame.setVisible(true);
+
+					//ChatThread chatThread = new ChatThread();
+					//chatThread.start();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
