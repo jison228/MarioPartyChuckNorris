@@ -53,7 +53,7 @@ public class TurnSelector {
 	}
 
 	public void addMiniGameIfApplies(GameResponse resultado) {
-		if(totalTurns % 4 == 0) {
+		if (totalTurns % playerList.size() == 0) {
 			resultado.launchMiniGame = true;
 		}
 	}
