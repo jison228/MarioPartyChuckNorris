@@ -14,7 +14,6 @@ public class InMemoryGameRepository implements GameRepository {
 		gameDatabase = new HashMap<>();
 	}
 
-
 	public static GameRepository getRepository() {
 		if (repository == null) {
 			repository = new InMemoryGameRepository();
