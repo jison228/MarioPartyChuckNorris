@@ -9,5 +9,6 @@ public class GameResponse extends ServerResponse {
 	public int diceResult;
 	public Queue<Position> positionPathQueue;
 	public String gameId;
+	public boolean launchMiniGame;
 	//public boolean salida;
 }

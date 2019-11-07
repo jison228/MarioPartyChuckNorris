@@ -124,68 +124,68 @@ public class MainGameScreen extends JFrame {
 		// BOTONES DE DECISION (experimentacion)
 		// 1
 		btnCamino1 = new DecisionButton();
-		btnCamino1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnCamino1.setVisible(false);
-				btnCamino2.setVisible(false);
-				respuesta = partida.resolveIntersection(currentPlayer,
-						currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
-				Node transitionNode;
-				int size = respuesta.nodePath.size();
-				for (int i = 0; i < size; i++) {
-					transitionNode = respuesta.nodePath.poll();
-					if (transitionNode.getType().equals("END"))
-						comprarDolares = true;
-					currentPlayer.setNodeLocation(transitionNode);
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					contentPane.paintImmediately(0, 0, 1280, 720);
-				}
-				if (respuesta.movementsLeft > 0) {
-					tomarDecision(currentPlayer);
-				} else
-					endTurn();
-				repaint();
-			}
-		});
+//		btnCamino1.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				btnCamino1.setVisible(false);
+//				btnCamino2.setVisible(false);
+//				respuesta = partida.resolveIntersection(currentPlayer,
+//						currentPlayer.getNodeLocation().nextNodes().get(0), respuesta.movementsLeft);
+//				Node transitionNode;
+//				int size = respuesta.nodePath.size();
+//				for (int i = 0; i < size; i++) {
+//					transitionNode = respuesta.nodePath.poll();
+//					if (transitionNode.getType().equals("END"))
+//						comprarDolares = true;
+//					currentPlayer.setNodeLocation(transitionNode);
+//					try {
+//						Thread.sleep(100);
+//					} catch (InterruptedException e1) {
+////						 TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+//					contentPane.paintImmediately(0, 0, 1280, 720);
+//				}
+//				if (respuesta.movementsLeft > 0) {
+//					tomarDecision(currentPlayer);
+//				} else
+//					endTurn();
+//				repaint();
+//			}
+//		});
 		contentPane.add(btnCamino1);
 		btnCamino1.setVisible(false);
 		btnCamino1.setFocusable(false);
 
 		// 2
-		btnCamino2 = new DecisionButton();
-		btnCamino2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnCamino1.setVisible(false);
-				btnCamino2.setVisible(false);
-				respuesta = partida.resolveIntersection(currentPlayer,
-						currentPlayer.getNodeLocation().nextNodes().get(1), respuesta.movementsLeft);
-				Node transitionNode;
-				int size = respuesta.nodePath.size();
-				for (int i = 0; i < size; i++) {
-					transitionNode = respuesta.nodePath.poll();
-					if (transitionNode.getType().equals("END"))
-						comprarDolares = true;
-					currentPlayer.setNodeLocation(transitionNode);
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					contentPane.paintImmediately(0, 0, 1280, 720);
-				}
-				if (respuesta.movementsLeft > 0) {
-					tomarDecision(currentPlayer);
-				} else
-					endTurn();
-				repaint();
-			}
-		});
+//		btnCamino2 = new DecisionButton();
+//		btnCamino2.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				btnCamino1.setVisible(false);
+//				btnCamino2.setVisible(false);
+//				respuesta = partida.resolveIntersection(currentPlayer,
+//						currentPlayer.getNodeLocation().nextNodes().get(1), respuesta.movementsLeft);
+//				Node transitionNode;
+//				int size = respuesta.nodePath.size();
+//				for (int i = 0; i < size; i++) {
+//					transitionNode = respuesta.nodePath.poll();
+//					if (transitionNode.getType().equals("END"))
+//						comprarDolares = true;
+//					currentPlayer.setNodeLocation(transitionNode);
+//					try {
+//						Thread.sleep(100);
+//					} catch (InterruptedException e1) {
+////						 TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+//					contentPane.paintImmediately(0, 0, 1280, 720);
+//				}
+//				if (respuesta.movementsLeft > 0) {
+//					tomarDecision(currentPlayer);
+//				} else
+//					endTurn();
+//				repaint();
+//			}
+//		});
 		contentPane.add(btnCamino2);
 		btnCamino2.setVisible(false);
 		btnCamino2.setFocusable(false);
@@ -252,26 +252,26 @@ public class MainGameScreen extends JFrame {
 				playTurn();
 				diceImage.setVisible(true);
 				diceImage.setIcon(new ImageIcon("images/dice/" + respuesta.diceResult + ".png"));
-				Node transitionNode = respuesta.nodePath.poll();
-				int size = respuesta.nodePath.size();
-				for (int i = 0; i < size; i++) {
-					transitionNode = respuesta.nodePath.poll();
-					if (transitionNode.getType().equals("END"))
-						comprarDolares = true;
-					currentPlayer.setNodeLocation(transitionNode);
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					contentPane.paintImmediately(0, 0, 1280, 720);
-				}
-				if (respuesta.movementsLeft > 0)
-					tomarDecision(currentPlayer);
-				else
-					endTurn();
-				repaint();
+//				Node transitionNode = respuesta.nodePath.poll();
+//				int size = respuesta.nodePath.size();
+//				for (int i = 0; i < size; i++) {
+//					transitionNode = respuesta.nodePath.poll();
+//					if (transitionNode.getType().equals("END"))
+//						comprarDolares = true;
+//					currentPlayer.setNodeLocation(transitionNode);
+//					try {
+//						Thread.sleep(100);
+//					} catch (InterruptedException e1) {
+//						 TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+//					contentPane.paintImmediately(0, 0, 1280, 720);
+//				}
+//				if (respuesta.movementsLeft > 0)
+//					tomarDecision(currentPlayer);
+//				else
+//					endTurn();
+//				repaint();
 			}
 		});
 		btnTirarDado.setBounds(0, 25, 150, 60);
@@ -294,7 +294,7 @@ public class MainGameScreen extends JFrame {
 
 	public void playTurn() {
 		currentPlayer = partida.getPlayerList().get(partida.getCurrentTurn() % 4);
-		respuesta = partida.play(currentPlayer);
+//		respuesta = partida.play(currentPlayer);
 	}
 
 	public void endTurn() {		

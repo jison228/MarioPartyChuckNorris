@@ -68,14 +68,21 @@ public class Game {
 
 		applyRewardIfApplies(player, movementsLeft);
 
-		changeTurnIfApplies(movementsLeft);
 
 		GameResponse resultado = buildGameResponse();
 		resultado.movementsLeft = movementsLeft;
 		resultado.diceResult = diceResult;
 		resultado.positionPathQueue = positionQueue;
 
+		changeTurnIfApplies(movementsLeft);
+
+		addLaunchMiniGameIfApplies(resultado);
+
 		return resultado;
+	}
+
+	private void addLaunchMiniGameIfApplies(GameResponse resultado) {
+		turnSelector.addMiniGameIfApplies(resultado);
 	}
 
 	private void changeTurnIfApplies(int movementsLeft) {
@@ -91,11 +98,14 @@ public class Game {
 
 		applyRewardIfApplies(player, movementsLeft);
 
-		changeTurnIfApplies(movementsLeft);
 
 		GameResponse resultado = buildGameResponse();
 		resultado.movementsLeft = movementsLeft;
 		resultado.positionPathQueue = positionQueue;
+
+		changeTurnIfApplies(movementsLeft);
+
+		addLaunchMiniGameIfApplies(resultado);
 
 		return resultado;
 	}
