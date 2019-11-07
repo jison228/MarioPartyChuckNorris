@@ -7,20 +7,10 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import com.chucknorris.client.GameInformation;
 import com.chucknorris.client.tablero.MainGameScreen;
-import com.chucknorris.gamemap.GameMap;
-import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
-import com.chucknorris.player.Cristina;
-import com.chucknorris.player.DelCanio;
-import com.chucknorris.player.Espert;
-import com.chucknorris.player.Macri;
-import com.chucknorris.player.Player;
 import com.chucknorris.server.command.dto.CommandDto;
 import com.chucknorris.server.command.response.ChatResponse;
 import com.google.gson.Gson;
@@ -29,7 +19,10 @@ public class ChatThread extends Thread {
 
 	private Gson gson = new Gson();
 	MainGameScreen frame;
-
+	
+	public ChatThread(MainGameScreen frame) {
+		this.frame = frame;
+	}
 	@Override
 	public void run() {
 		try {

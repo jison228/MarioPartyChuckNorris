@@ -1,21 +1,32 @@
 package com.chucknorris.client.titulo;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import com.chucknorris.client.GameInformation;
 import com.chucknorris.client.server.ChatThread;
-
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import com.chucknorris.client.tablero.MainGameScreen;
+import com.chucknorris.commons.Position;
+import com.chucknorris.gamemap.GameMap;
+import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
+import com.chucknorris.gamemap.nodes.ParitariaNode;
+import com.chucknorris.player.Cristina;
+import com.chucknorris.player.DelCanio;
+import com.chucknorris.player.Espert;
+import com.chucknorris.player.Macri;
+import com.chucknorris.player.Player;
 
 public class LogInScreen extends JFrame {
 
@@ -60,7 +71,35 @@ public class LogInScreen extends JFrame {
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new ChatThread().run();
+				GameMap mapa1 = null;
+				MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
+				try {
+					mapa1 = mapFileCSVReader.buildGameMap();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				ParitariaNode ini = new ParitariaNode(null, new Position(0,0));
+				Espert p1 = new Espert(1450, 150, 100);
+				Cristina p2 = new Cristina(150, 100, 900);
+				Macri p3 = new Macri(500, 100, 100);
+				DelCanio p4 = new DelCanio(150, 100, 100);
+				p1.setNodeLocation(ini);
+				p2.setNodeLocation(ini);
+				p3.setNodeLocation(ini);
+				p4.setNodeLocation(ini);
+				List<Player> listaP = new ArrayList<Player>();
+				listaP.add(p1);
+				listaP.add(p2);
+				listaP.add(p3);
+				listaP.add(p4);
+
+				GameInformation gameInformation = new GameInformation(listaP,mapa1,20);
+
+				MainGameScreen frame = new MainGameScreen(gameInformation);
+				
+				frame.setVisible(true);
+				new ChatThread(frame).run();
 			}
 		});
 		btnEntrar.setFont(new Font("Rockwell", Font.PLAIN, 20));
