@@ -4,7 +4,6 @@ import com.chucknorris.commons.Dice
 import com.chucknorris.commons.Position
 import com.chucknorris.gamemap.GameMap
 import com.chucknorris.gamemap.MapUtils
-import com.chucknorris.gamemap.nodes.Node
 import com.chucknorris.player.Player
 import com.chucknorris.player.PlayerBuilder
 import com.chucknorris.server.command.response.GameResponse
@@ -24,7 +23,15 @@ class GameSpec extends Specification {
 
         2 * dice.roll() >> 3 >> 4
 
-        Game game = new Game(playerList, gameMap, dice)
+        TurnSelector turnSelector = Mock(TurnSelector)
+        turnSelector.isPlayerTurn(_) >> true
+
+        Game game = new GameBuilder()
+                .setPlayers(playerList)
+                .setGameMap(gameMap)
+                .setDice(dice)
+                .setTurnSelector(turnSelector)
+                .build()
 
         when:
         game.play(macri)
@@ -40,9 +47,9 @@ class GameSpec extends Specification {
 
         when:
         //Elige el nodo a seguir
-        Node nextNode = gameMap.getNode(new Position(2, 3))
+        Position nextPosition = new Position(2, 3)
 
-        gameResponse = game.resolveIntersection(macri, nextNode, gameResponse.movementsLeft)
+        gameResponse = game.resolveIntersection(macri, nextPosition) as GameResponse
 
         then:
         gameResponse.movementsLeft == 0

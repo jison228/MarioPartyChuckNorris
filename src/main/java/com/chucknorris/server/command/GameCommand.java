@@ -3,6 +3,7 @@ package com.chucknorris.server.command;
 import com.chucknorris.server.command.dto.CommandData;
 import com.chucknorris.server.command.dto.CommandDto;
 import com.chucknorris.server.command.game.MovePlayerCommand;
+import com.chucknorris.server.command.game.ResolveIntersectionCommand;
 import com.chucknorris.server.command.response.ServerResponse;
 
 import java.util.HashMap;
@@ -16,20 +17,25 @@ public class GameCommand extends Command {
 		this.commandProcessorMap = new HashMap<>();
 
 		commandProcessorMap.put("move_player", new MovePlayerCommand());
+		commandProcessorMap.put("resolve_intersection", new ResolveIntersectionCommand());
 	}
 
 	@Override
 	protected ServerResponse execute(CommandData commandData) throws Throwable {
-
-		CommandDto commandDto = new CommandDto();
-		commandDto.socket = commandData.getSocket();
-		commandDto.command = (String) commandData.getData().get("command");
-		commandDto.data = (Map) commandData.getData().get("data");
+		CommandDto commandDto = buildGameCommandData(commandData);
 
 		CommandData gameCommandData = new CommandData(commandDto);
 
 		Command command = commandProcessorMap.getOrDefault(gameCommandData.getCommand(), INVALID_COMMAND);
 
 		return command.execute(gameCommandData);
+	}
+
+	private CommandDto buildGameCommandData(CommandData commandData) {
+		CommandDto commandDto = new CommandDto();
+		commandDto.socket = commandData.getSocket();
+		commandDto.command = (String) commandData.getData().get("command");
+		commandDto.data = (Map) commandData.getData().get("data");
+		return commandDto;
 	}
 }

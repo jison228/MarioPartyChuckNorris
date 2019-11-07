@@ -1,5 +1,6 @@
 package com.chucknorris.server.services.game;
 
+import com.chucknorris.commons.Position;
 import com.chucknorris.game.Game;
 import com.chucknorris.gui.GameInformation;
 import com.chucknorris.player.Player;
@@ -54,8 +55,19 @@ public class GameServiceImpl implements GameService {
 
 		Player player = getPlayer(gameId, playerId);
 
-		GameResponse gameResponse = game.play(player);
+		return game.play(player);
+	}
 
-		return gameResponse;
+	@Override
+	public ServerResponse resolveIntersection(String gameId, String playerId, Position position) {
+		Game game = repository.getGame(gameId);
+
+		if (game == null) {
+			return new BadRequestResponse();
+		}
+
+		Player player = getPlayer(gameId, playerId);
+
+		return game.resolveIntersection(player, position);
 	}
 }

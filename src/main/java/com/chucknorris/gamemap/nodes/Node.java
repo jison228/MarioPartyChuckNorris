@@ -67,4 +67,12 @@ public abstract class Node {
 	public boolean isThereSameReferenceNextNode(Node finalNode) {
 		return next.stream().anyMatch(nextNode -> nextNode == finalNode);
 	}
+
+	public boolean hasThisPositionWithinNext(Node nextNode) {
+		return next.stream().anyMatch(node -> node.positionCoords.equals(nextNode.positionCoords));
+	}
+
+	public List<Position> nextPositions() {
+		return next.stream().map(node -> node.positionCoords).collect(Collectors.toList());
+	}
 }
