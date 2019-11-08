@@ -279,14 +279,14 @@ public class MainGameScreen extends JFrame {
 		dispose();
 	}
 
-	private void moverJugador(int diceResult, ClientPlayer currentPlayer, Queue<ClientNode> nodePath) {
+	private void moverJugador(int diceResult, ClientPlayer currentPlayer, Queue<Position> nodePath) {
 		diceImage.setVisible(true); //Solo al Player que corresponde
 		diceImage.setIcon(new ImageIcon("images/dice/" + diceResult + ".png"));
-		ClientNode transitionNode = nodePath.poll();
+		Position transitionNode = nodePath.poll();
 		int size = nodePath.size();
 		for (int i = 0; i < size; i++) {
 			transitionNode = nodePath.poll();
-			currentPlayer.setPosition(transitionNode.getPosition());
+			currentPlayer.setPosition(transitionNode);
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e1) {

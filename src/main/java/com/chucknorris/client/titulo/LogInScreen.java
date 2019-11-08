@@ -15,8 +15,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import com.chucknorris.client.ClientWorker;
+import com.chucknorris.client.ClientWorker2;
 import com.chucknorris.client.GameInformation;
-import com.chucknorris.client.server.ChatThread;
 import com.chucknorris.client.tablero.MainGameScreen;
 import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.GameMap;
@@ -80,10 +81,10 @@ public class LogInScreen extends JFrame {
 					e1.printStackTrace();
 				}
 				ParitariaNode ini = new ParitariaNode(null, new Position(0,0));
-				Espert p1 = new Espert(1450, 150, 100);
-				Cristina p2 = new Cristina(150, 100, 900);
-				Macri p3 = new Macri(500, 100, 100);
-				DelCanio p4 = new DelCanio(150, 100, 100);
+				Espert p1 = new Espert(100, 100, 100);
+				Cristina p2 = new Cristina(100, 100, 900);
+				Macri p3 = new Macri(100, 100, 100);
+				DelCanio p4 = new DelCanio(100, 100, 100);
 				p1.setNodeLocation(ini);
 				p2.setNodeLocation(ini);
 				p3.setNodeLocation(ini);
@@ -98,8 +99,9 @@ public class LogInScreen extends JFrame {
 
 				MainGameScreen frame = new MainGameScreen(gameInformation);
 				
-				frame.setVisible(true);
-				new ChatThread(frame).run();
+				new ClientWorker(frame).run();
+				new ClientWorker2(frame).run();
+				//new ChatThread(frame).run();
 			}
 		});
 		btnEntrar.setFont(new Font("Rockwell", Font.PLAIN, 20));
