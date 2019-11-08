@@ -10,17 +10,17 @@ import com.chucknorris.player.Player;
 
 public class MovementResponse {
 	public int diceResult;
-	public ClientPlayer currentPlayer;
+	public String playerID;
 	public Queue<Position> nodePath;
 	public boolean bif;
 	public List<ClientNode> options;
 	public List<ClientPlayer> currentClientPlayerList;
 	public boolean compra_dolares;
 
-	public MovementResponse(int diceResult, Player currentPlayer, Queue<Position> nodePath, boolean bif,
+	public MovementResponse(int diceResult, String playerID, Queue<Position> nodePath, boolean bif,
 			List<Node> options, List<Player> currentClientPlayerList, boolean compra_dolares) {
 		this.diceResult = diceResult;
-		this.currentPlayer = new ClientPlayer(currentPlayer);
+		this.playerID = playerID;
 		this.nodePath = nodePath;
 		this.bif = bif;
 		if(options!=null) {

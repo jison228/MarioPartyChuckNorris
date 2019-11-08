@@ -31,6 +31,10 @@ import com.chucknorris.player.Player;
 
 public class LogInScreen extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField nickTF;
 	private JTextField contraTF;
@@ -101,6 +105,10 @@ public class LogInScreen extends JFrame {
 				
 				new ClientWorker(frame).run();
 				new ClientWorker2(frame).run();
+				//Thread hola = new Thread2();
+				//Thread hola1 = new Thread1();
+				//hola.run();
+				//hola1.run();
 				//new ChatThread(frame).run();
 			}
 		});

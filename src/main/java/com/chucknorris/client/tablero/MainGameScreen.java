@@ -20,7 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.chucknorris.client.ClientNode;
 import com.chucknorris.client.ClientPlayer;
 import com.chucknorris.client.EndTurnResponse;
 import com.chucknorris.client.GameInformation;
@@ -252,7 +251,7 @@ public class MainGameScreen extends JFrame {
 	public void playTurn(MovementResponse respuesta) {
 		ClientPlayer currentClientPlayer = null;
 		for(int i=0;i<clientPlayersList.size();i++) {
-			if(respuesta.currentPlayer.getCharacter().equals(clientPlayersList.get(i).getCharacter())) {
+			if(respuesta.playerID.equals(clientPlayersList.get(i).getCharacter())) {
 				currentClientPlayer = clientPlayersList.get(i);
 			}
 		}
@@ -265,8 +264,14 @@ public class MainGameScreen extends JFrame {
 	}
 
 	public void endTurn(MovementResponse respuesta) {
+		ClientPlayer currentClientPlayer = null;
+		for(int i=0;i<clientPlayersList.size();i++) {
+			if(respuesta.playerID.equals(clientPlayersList.get(i).getCharacter())) {
+				currentClientPlayer = clientPlayersList.get(i);
+			}
+		}
 		if(respuesta.compra_dolares) {
-			compraDolaresFrame = new CompraDolaresFrame(respuesta.currentPlayer, characterPanel.getPrecioDolar());
+			compraDolaresFrame = new CompraDolaresFrame(currentClientPlayer, characterPanel.getPrecioDolar());
 			compraDolaresFrame.setVisible(true);
 		}
 		playersPanel.updatePanelPlayers(respuesta.currentClientPlayerList);
@@ -316,5 +321,8 @@ public class MainGameScreen extends JFrame {
 		diceImage.setVisible(false);
 
 	}
-
+	
+	public void repaintContentPane() {
+		contentPane.paintImmediately(0, 0, 1280, 720);
+	}
 }

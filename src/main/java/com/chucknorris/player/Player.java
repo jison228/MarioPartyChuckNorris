@@ -8,6 +8,7 @@ import com.chucknorris.rewards.substractor.pesos.PesosSubstractor;
 import java.util.List;
 
 public class Player {
+	private String playerID;
 	private String character;
 	private int coins;
 	private Node nodeLocation;
@@ -16,6 +17,7 @@ public class Player {
 	private double salario;
 
 	Player(String character, double pesos, double dolar, double salario) {
+		this.playerID = character;
 		this.character = character;
 		this.pesos = pesos;
 		this.dolar = dolar;
@@ -146,5 +148,9 @@ public class Player {
 
 	public String printPlayerName() {
 		return "Pepito";
+	}
+	
+	public String getPlayerID() {
+		return playerID;
 	}
 }
