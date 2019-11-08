@@ -23,7 +23,8 @@ import javax.swing.border.EmptyBorder;
 import com.chucknorris.client.ClientPlayer;
 import com.chucknorris.client.EndTurnResponse;
 import com.chucknorris.client.GameInformation;
-import com.chucknorris.client.MovementResponse;
+import com.chucknorris.client.MovementResponsePrivate;
+import com.chucknorris.client.MovementResponsePublic;
 import com.chucknorris.client.compradolares.CompraDolaresFrame;
 import com.chucknorris.client.endgame.Endgame;
 import com.chucknorris.commons.Position;
@@ -247,8 +248,18 @@ public class MainGameScreen extends JFrame {
 		buttonPanel.add(btnEndTurn);
 
 	}
-
-	public void playTurn(MovementResponse respuesta) {
+	
+	public void playTurnPublic(MovementResponsePublic respuesta) {
+		ClientPlayer currentClientPlayer = null;
+		for(int i=0;i<clientPlayersList.size();i++) {
+			if(respuesta.playerID.equals(clientPlayersList.get(i).getCharacter())) {
+				currentClientPlayer = clientPlayersList.get(i);
+			}
+		}
+ 		moverJugador(respuesta.diceResult, currentClientPlayer, respuesta.nodePath);
+ 		playersPanel.updatePanelPlayers(respuesta.currentClientPlayerList);
+	}
+	public void playTurnPrivate(MovementResponsePrivate respuesta) {
 		ClientPlayer currentClientPlayer = null;
 		for(int i=0;i<clientPlayersList.size();i++) {
 			if(respuesta.playerID.equals(clientPlayersList.get(i).getCharacter())) {
@@ -259,14 +270,15 @@ public class MainGameScreen extends JFrame {
 		if (respuesta.options!=null) {
 			tomarDecision(respuesta);
 		} else {
+			playersPanel.updatePanelPlayers(respuesta.currentClientPlayerList);
 			endTurn(respuesta);
 		}
 	}
 
-	public void endTurn(MovementResponse respuesta) {
+	public void endTurn(MovementResponsePrivate respuesta) {
 		ClientPlayer currentClientPlayer = null;
 		for(int i=0;i<clientPlayersList.size();i++) {
-			if(respuesta.playerID.equals(clientPlayersList.get(i).getCharacter())) {
+			if(respuesta.playerID.equals(clientPlayersList.get(i).getPlayerName())) {
 				currentClientPlayer = clientPlayersList.get(i);
 			}
 		}
@@ -274,8 +286,7 @@ public class MainGameScreen extends JFrame {
 			compraDolaresFrame = new CompraDolaresFrame(currentClientPlayer, characterPanel.getPrecioDolar());
 			compraDolaresFrame.setVisible(true);
 		}
-		playersPanel.updatePanelPlayers(respuesta.currentClientPlayerList);
-		btnEndTurn.setVisible(true); //Solo al Player que corresponda
+		btnEndTurn.setVisible(true);
 	}
 	
 	public void announceWinner(ClientPlayer ganador) {
@@ -302,7 +313,7 @@ public class MainGameScreen extends JFrame {
 		}
 	}
 	
-	private void tomarDecision(MovementResponse decision) {
+	private void tomarDecision(MovementResponsePrivate decision) {
 		btnTirarDado.setVisible(false);
 		btnCamino1.setBounds(30 + decision.options.get(0).getPosition().getX() * 125,
 				30 + decision.options.get(0).getPosition().getY() * 125, 75, 75);
@@ -321,8 +332,5 @@ public class MainGameScreen extends JFrame {
 		diceImage.setVisible(false);
 
 	}
-	
-	public void repaintContentPane() {
-		contentPane.paintImmediately(0, 0, 1280, 720);
-	}
+
 }

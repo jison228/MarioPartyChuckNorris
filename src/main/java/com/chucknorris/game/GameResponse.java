@@ -1,11 +1,10 @@
 package com.chucknorris.game;
 
-import com.chucknorris.gamemap.nodes.Node;
-import com.chucknorris.server.command.response.ServerResponse;
-
 import java.util.Queue;
 
-public class GameResponse extends ServerResponse {
+import com.chucknorris.gamemap.nodes.Node;
+
+public class GameResponse {
 	public int movementsLeft;
 	public int diceResult;
 	public Queue<Node> nodePath;

@@ -46,7 +46,7 @@ public class ClientWorker2 extends Thread{
 			listaP.add(p3);
 			listaP.add(p4);
 
-			MovementResponse respuesta = new MovementResponse(4, p1.getPlayerID(), cola, false, null, listaP, false);
+			MovementResponsePrivate respuesta = new MovementResponsePrivate(4, p1.getPlayerID(), cola, listaP, null, false, false);
 			frame.playTurn(respuesta);
 
 

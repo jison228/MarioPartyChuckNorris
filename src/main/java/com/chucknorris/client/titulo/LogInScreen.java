@@ -102,7 +102,7 @@ public class LogInScreen extends JFrame {
 				GameInformation gameInformation = new GameInformation(listaP,mapa1,20);
 
 				MainGameScreen frame = new MainGameScreen(gameInformation);
-				
+
 				new ClientWorker(frame).run();
 				new ClientWorker2(frame).run();
 				//Thread hola = new Thread2();
@@ -121,7 +121,7 @@ public class LogInScreen extends JFrame {
 		lblNick.setBounds(68, 91, 108, 33);
 		contentPane.add(lblNick);
 		
-		JLabel lblContrasea = new JLabel("Contrase\u00F1a:");
+		JLabel lblContrasea = new JLabel("IP servidor:");
 		lblContrasea.setFont(new Font("Rockwell", Font.PLAIN, 18));
 		lblContrasea.setBounds(68, 153, 108, 33);
 		contentPane.add(lblContrasea);
