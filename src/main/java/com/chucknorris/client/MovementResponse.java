@@ -17,22 +17,22 @@ public class MovementResponse {
 	public List<ClientPlayer> currentClientPlayerList;
 	public boolean compra_dolares;
 
-	public MovementResponse(int diceResult, String playerID, Queue<Position> nodePath, boolean bif,
-			List<Node> options, List<Player> currentClientPlayerList, boolean compra_dolares) {
+	public MovementResponse(int diceResult, String playerID, Queue<Position> nodePath,
+			List<Player> currentClientPlayerList, List<Node> options, boolean bif, boolean compra_dolares) {
 		this.diceResult = diceResult;
 		this.playerID = playerID;
 		this.nodePath = nodePath;
 		this.bif = bif;
-		if(options!=null) {
+		if (options != null) {
 			this.options = new ArrayList<ClientNode>();
-			for(int i = 0; i < options.size(); i++) {
+			for (int i = 0; i < options.size(); i++) {
 				this.options.add(new ClientNode(options.get(i)));
 			}
 		} else {
 			this.options = null;
 		}
 		this.currentClientPlayerList = new ArrayList<ClientPlayer>();
-		for(int i = 0; i < currentClientPlayerList.size(); i++) {
+		for (int i = 0; i < currentClientPlayerList.size(); i++) {
 			this.currentClientPlayerList.add(new ClientPlayer(currentClientPlayerList.get(i)));
 		}
 		this.compra_dolares = compra_dolares;
