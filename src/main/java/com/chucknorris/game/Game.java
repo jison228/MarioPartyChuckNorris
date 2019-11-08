@@ -1,14 +1,16 @@
 package com.chucknorris.game;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 import com.chucknorris.commons.Dice;
+import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.gui.GameInformation;
 import com.chucknorris.player.Player;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
 public class Game {
 	private List<Player> players;
@@ -39,59 +41,30 @@ public class Game {
 
 	public GameResponse play(Player player) {
 		int diceResult = dice.roll();
-
-		int movementsLeft = gameMap.movePlayer(player, diceResult);
-
+		String playerID = player.getPlayerID();
+		Queue<Position> nodePath = new LinkedList<Position>();
+		List<Node> villereada = new ArrayList<Node>();
+		
+		int movementsLeft = gameMap.movePlayer(player, diceResult,nodePath,villereada);
+		
+		boolean comprarDolares = validarCompraDolares(villereada);
 		applyRewardIfApplies(player, movementsLeft);
-
-		return buildGameResponse(movementsLeft);
+		
+		
+		return new GameResponse(diceResult, nodePath, playerID, comprarDolares);
 	}
 	
-	public GameResponse playGUI(Player player) {
-		int diceResult = dice.roll();
-		
-		Queue<Node> nodePath = new LinkedList<Node>();
-		
-		int movementsLeft = gameMap.movePlayerGUI(player, diceResult, nodePath);
-		
-		applyRewardIfApplies(player, movementsLeft);
-		
-		GameResponse resultado = new GameResponse();
-		resultado.movementsLeft = movementsLeft;
-		resultado.diceResult = diceResult;
-		resultado.nodePath = nodePath;
-		
-		return resultado;
-	}
-
 	public GameResponse resolveIntersection(Player player, Node nextNode, int movementsLeft) {
-		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft);
-
+		String playerID = player.getPlayerID();
+		Queue<Position> nodePath = new LinkedList<Position>();
+		List<Node> villereada = new ArrayList<Node>();
+		
+		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft,nodePath,villereada);
+		
+		boolean comprarDolares = validarCompraDolares(villereada);
 		applyRewardIfApplies(player, movementsLeft);
 
-		return buildGameResponse(movementsLeft);
-	}
-
-	public GameResponse resolveIntersectionGUI(Player player, Node nextNode, int movementsLeft) {
-		Queue<Node> nodePath = new LinkedList<Node>();
-		
-		movementsLeft = gameMap.movePlayerFromIntersectionGUI(player, nextNode, movementsLeft, nodePath);
-		
-		applyRewardIfApplies(player, movementsLeft);
-		
-		GameResponse resultado = new GameResponse();
-		resultado.movementsLeft = movementsLeft;
-		resultado.nodePath = nodePath;
-		
-		return resultado;
-	}
-	
-	private GameResponse buildGameResponse(int movementsLeft) {
-		GameResponse gameResponse = new GameResponse();
-
-		gameResponse.movementsLeft = movementsLeft;
-
-		return gameResponse;
+		return new GameResponse(0, nodePath, playerID, comprarDolares);
 	}
 
 	private void applyRewardIfApplies(Player player, int movementsLeft) {
@@ -122,5 +95,16 @@ public class Game {
 	
 	public Double getPrecioDolar() {
 		return precioDolar;
+	}
+	
+	private boolean validarCompraDolares(List<Node> villereada) {
+		boolean dolares = false;
+		for(int i=1;i<villereada.size();i++) {
+			Node recorrer = villereada.get(i);
+			if(recorrer.getType().equals("END")) {
+				dolares = true;
+			}
+		}
+		return dolares;
 	}
 }
