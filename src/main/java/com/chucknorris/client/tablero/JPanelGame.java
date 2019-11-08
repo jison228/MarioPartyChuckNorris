@@ -21,7 +21,7 @@ public class JPanelGame extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private List<ClientNode> nodesList;
 	private List<ClientPlayer> clientPlayerList;
-	private int iniX = 50;
+	private int iniX = 30;
 	private int iniY = 30;
 
 	public JPanelGame(List<ClientNode> nodesList, List<ClientPlayer> clientPlayerList) {
