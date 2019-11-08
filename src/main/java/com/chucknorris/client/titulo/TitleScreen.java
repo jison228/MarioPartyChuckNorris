@@ -1,18 +1,14 @@
 package com.chucknorris.client.titulo;
 
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import com.chucknorris.gui.gameoptions.NewGameScreen;
-
-import java.awt.Font;
-import javax.swing.JButton;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class TitleScreen extends JFrame {
 
@@ -77,7 +73,7 @@ public class TitleScreen extends JFrame {
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					new NewGameScreen().setVisible(true);
+					//new NewGameScreen().setVisible(true);
 					dispose();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block

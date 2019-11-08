@@ -51,7 +51,7 @@ public class Game {
 		applyRewardIfApplies(player, movementsLeft);
 		
 		
-		return new GameResponse(diceResult, nodePath, playerID, comprarDolares);
+		return new GameResponse(diceResult, nodePath, playerID, comprarDolares,movementsLeft);
 	}
 	
 	public GameResponse resolveIntersection(Player player, Node nextNode, int movementsLeft) {
@@ -64,7 +64,7 @@ public class Game {
 		boolean comprarDolares = validarCompraDolares(villereada);
 		applyRewardIfApplies(player, movementsLeft);
 
-		return new GameResponse(0, nodePath, playerID, comprarDolares);
+		return new GameResponse(1, nodePath, playerID, comprarDolares,movementsLeft);
 	}
 
 	private void applyRewardIfApplies(Player player, int movementsLeft) {
