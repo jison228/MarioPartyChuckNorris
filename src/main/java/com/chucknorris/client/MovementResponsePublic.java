@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Queue;
 
 import com.chucknorris.commons.Position;
-import com.chucknorris.player.Player;
 
 public class MovementResponsePublic {
 	public int diceResult;
@@ -14,14 +13,12 @@ public class MovementResponsePublic {
 	public List<ClientPlayer> currentClientPlayerList;
 
 	public MovementResponsePublic(int diceResult, String playerID, Queue<Position> nodePath,
-			List<Player> currentClientPlayerList) {
+			List<ClientPlayer> currentClientPlayerList) {
 		this.diceResult = diceResult;
 		this.playerID = playerID;
 		this.nodePath = nodePath;
 		this.currentClientPlayerList = new ArrayList<ClientPlayer>();
-		for (int i = 0; i < currentClientPlayerList.size(); i++) {
-			this.currentClientPlayerList.add(new ClientPlayer(currentClientPlayerList.get(i)));
-		}
+		this.currentClientPlayerList = currentClientPlayerList;
 
 	}
 }

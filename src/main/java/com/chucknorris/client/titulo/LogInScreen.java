@@ -15,8 +15,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import com.chucknorris.client.ClientWorker;
-import com.chucknorris.client.ClientWorker2;
 import com.chucknorris.client.GameInformation;
 import com.chucknorris.client.tablero.MainGameScreen;
 import com.chucknorris.commons.Position;
@@ -103,13 +101,7 @@ public class LogInScreen extends JFrame {
 
 				MainGameScreen frame = new MainGameScreen(gameInformation);
 
-				new ClientWorker(frame).run();
-				new ClientWorker2(frame).run();
-				//Thread hola = new Thread2();
-				//Thread hola1 = new Thread1();
-				//hola.run();
-				//hola1.run();
-				//new ChatThread(frame).run();
+
 			}
 		});
 		btnEntrar.setFont(new Font("Rockwell", Font.PLAIN, 20));
