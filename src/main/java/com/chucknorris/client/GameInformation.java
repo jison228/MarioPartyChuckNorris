@@ -24,8 +24,7 @@ public class GameInformation {
 		}
 		this.clientNodesList = new ArrayList<ClientNode>();
 		ClientNode nodeToList;
-		Map<Position, Node> mapita = mapaNodes.getMap();
-		for (Map.Entry<Position, Node> entry : mapita.entrySet()) {
+		for (Map.Entry<Position, Node> entry : mapaNodes.getMap().entrySet()) {
 			nodeToList = new ClientNode(entry.getValue());
 			this.clientNodesList.add(nodeToList);
 		}
