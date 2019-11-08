@@ -1,15 +1,21 @@
 package com.chucknorris.server;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import com.chucknorris.Command;
+import com.chucknorris.client.ClientNode;
+import com.chucknorris.client.ClientPlayer;
+import com.chucknorris.client.MovementResponsePrivate;
 import com.chucknorris.client.MovementResponsePublic;
 import com.chucknorris.game.Game;
+import com.chucknorris.game.GameResponse;
+import com.chucknorris.player.Player;
 import com.google.gson.Gson;
 
 public class ClientThread extends Thread {
@@ -53,8 +59,30 @@ public class ClientThread extends Thread {
 					//PlayResponse play = new Gson().fromJson(brigadaA.getCommandJSON(),);
 				break;
 				case "TirarDado" :
-					juego.play(juego.getPlayerList().get(juego.getCurrentTurn()));
-				break;
+					Player currentPlayer = juego.getPlayerList().get(juego.getCurrentTurn());
+					GameResponse respuesta = juego.play(currentPlayer);
+					MovementResponsePublic respuestaPublica;
+					MovementResponsePrivate respuestaPrivada;
+					List<Player> listaPlayers = juego.getPlayerList();
+					List<ClientPlayer> listaClientPlayers = new ArrayList<ClientPlayer>();
+					for(int i = 0;i < listaPlayers.size();i++) {
+						Player playerToClient = listaPlayers.get(i);
+						ClientPlayer clientToList = new ClientPlayer(playerToClient);
+						listaClientPlayers.add(clientToList);
+					}
+					respuestaPublica = new MovementResponsePublic(respuesta.diceResult, respuesta.playerId, respuesta.nodePath, listaClientPlayers);
+					List<ClientNode> options = new ArrayList<ClientNode>();
+					if(respuesta.movementsLeft != 0) {
+						for(int i=0;i < currentPlayer.getNodeLocation().nextNodes().size();i++) {
+							options.add(new ClientNode(currentPlayer.getNodeLocation().nextNodes().get(i)));
+						}
+					} else {
+						options = null;
+					}
+					 
+					respuestaPrivada = new MovementResponsePrivate(respuesta.diceResult, respuesta.playerId, respuesta.nodePath, listaClientPlayers, options, respuesta.compraDolares);
+					//Cliente que corresponda mando una respuesta
+					break;
 				}
 			}
 			sc.close();
