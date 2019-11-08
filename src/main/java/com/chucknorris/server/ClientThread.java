@@ -46,8 +46,9 @@ public class ClientThread extends Thread {
 				String hola = String.valueOf((char)num);
 				hola = hola + sc.next();
 				Gson gson = new Gson();
-				Command brigadaA = gson.fromJson(hola,Command.class);
-				switch(brigadaA.getCommandName()) {
+				Command brigadaB = gson.fromJson(hola,Command.class);
+				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
+				switch(brigadaB.getCommandName()) {
 				case "MovementResponsePublic": 
 					//PlayResponse play = new Gson().fromJson(brigadaA.getCommandJSON(),);
 				break;
