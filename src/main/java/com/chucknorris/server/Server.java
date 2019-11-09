@@ -28,6 +28,7 @@ public class Server {
 
 	public static void main(String args[]) throws Exception {
 
+		
 		try {
 			serverSocket = new ServerSocket(portNumber);
 		} catch (IOException e) {

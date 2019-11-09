@@ -4,6 +4,10 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.chucknorris.client.GameInformation;
+import com.chucknorris.client.ServerThread;
 import com.chucknorris.client.tablero.MainGameScreen;
 import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.GameMap;
@@ -35,7 +40,8 @@ public class LogInScreen extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField nickTF;
-	private JTextField contraTF;
+	private JTextField ipTF;
+	private JTextField portTF;
 
 	/**
 	 * Launch the application.
@@ -74,34 +80,22 @@ public class LogInScreen extends JFrame {
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				GameMap mapa1 = null;
-				MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
+				InetAddress ip = null;
 				try {
-					mapa1 = mapFileCSVReader.buildGameMap();
-				} catch (Exception e1) {
+					ip = InetAddress.getByName(ipTF.getText());
+				} catch (UnknownHostException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				ParitariaNode ini = new ParitariaNode(null, new Position(0,0));
-				Espert p1 = new Espert(100, 100, 100);
-				Cristina p2 = new Cristina(100, 100, 900);
-				Macri p3 = new Macri(100, 100, 100);
-				DelCanio p4 = new DelCanio(100, 100, 100);
-				p1.setNodeLocation(ini);
-				p2.setNodeLocation(ini);
-				p3.setNodeLocation(ini);
-				p4.setNodeLocation(ini);
-				List<Player> listaP = new ArrayList<Player>();
-				listaP.add(p1);
-				listaP.add(p2);
-				listaP.add(p3);
-				listaP.add(p4);
-
-				GameInformation gameInformation = new GameInformation(listaP,mapa1,20);
-
-				MainGameScreen frame = new MainGameScreen(gameInformation,null);
-
-
+				Socket serverSocket = null;
+				try {
+					serverSocket = new Socket(ip, Integer.valueOf(portTF.getText()));
+				} catch (NumberFormatException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				ServerThread escuchador = new ServerThread(serverSocket);
+				escuchador.start();
 			}
 		});
 		btnEntrar.setFont(new Font("Rockwell", Font.PLAIN, 20));
@@ -110,29 +104,40 @@ public class LogInScreen extends JFrame {
 		
 		JLabel lblNick = new JLabel("Nick:");
 		lblNick.setFont(new Font("Rockwell", Font.PLAIN, 18));
-		lblNick.setBounds(68, 91, 108, 33);
+		lblNick.setBounds(68, 79, 108, 33);
 		contentPane.add(lblNick);
 		
 		JLabel lblContrasea = new JLabel("IP servidor:");
 		lblContrasea.setFont(new Font("Rockwell", Font.PLAIN, 18));
-		lblContrasea.setBounds(68, 153, 108, 33);
+		lblContrasea.setBounds(68, 122, 108, 33);
 		contentPane.add(lblContrasea);
 		
 		nickTF = new JTextField();
 		nickTF.setFont(new Font("Rockwell", Font.PLAIN, 18));
-		nickTF.setBounds(204, 91, 114, 28);
+		nickTF.setBounds(204, 79, 114, 28);
 		contentPane.add(nickTF);
 		nickTF.setColumns(10);
 		
-		contraTF = new JTextField();
-		contraTF.setFont(new Font("Rockwell", Font.PLAIN, 18));
-		contraTF.setColumns(10);
-		contraTF.setBounds(204, 153, 114, 28);
-		contentPane.add(contraTF);
+		ipTF = new JTextField();
+		ipTF.setFont(new Font("Rockwell", Font.PLAIN, 18));
+		ipTF.setColumns(10);
+		ipTF.setBounds(204, 122, 114, 28);
+		contentPane.add(ipTF);
 		
 		JButton btnRegistrase = new JButton("Registrar");
 		btnRegistrase.setFont(new Font("Rockwell", Font.PLAIN, 20));
 		btnRegistrase.setBounds(244, 209, 123, 33);
 		contentPane.add(btnRegistrase);
+		
+		JLabel portLbl = new JLabel("Puerto:");
+		portLbl.setFont(new Font("Rockwell", Font.PLAIN, 18));
+		portLbl.setBounds(68, 165, 108, 33);
+		contentPane.add(portLbl);
+		
+		portTF = new JTextField();
+		portTF.setFont(new Font("Rockwell", Font.PLAIN, 18));
+		portTF.setColumns(10);
+		portTF.setBounds(204, 167, 114, 28);
+		contentPane.add(portTF);
 	}
 }
