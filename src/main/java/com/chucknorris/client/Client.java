@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.beust.jcommander.converters.InetAddressConverter;
 import com.chucknorris.commons.Position;
 import com.chucknorris.game.Game;
 import com.chucknorris.gamemap.GameMap;

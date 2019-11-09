@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chucknorris.Command;
+import com.chucknorris.client.GameInformation;
 import com.chucknorris.commons.Position;
 import com.chucknorris.game.Game;
 import com.chucknorris.gamemap.GameMap;
@@ -16,6 +18,7 @@ import com.chucknorris.player.DelCanio;
 import com.chucknorris.player.Espert;
 import com.chucknorris.player.Macri;
 import com.chucknorris.player.Player;
+import com.google.gson.Gson;
 
 public class Server {
 	private static ServerSocket serverSocket = null;
@@ -60,9 +63,13 @@ public class Server {
 				System.out.println(e);
 			}
 		}
-
+		GameInformation info = new GameInformation(listaP, mapa1, juego01.getPrecioDolar());
+		Gson gson = new Gson();
+		String infoSerialized = gson.toJson(info);
+		Command startGame = new Command("StartGame", infoSerialized);
 		
 		threads[0].start();
+		threads[0].send(startGame);
 		
 		
 	}
