@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.chucknorris.gui.minigame.userinterface.ServerGameWindow;
+import com.chucknorris.gui.minigame.userinterface.GameWindow;
 import com.chucknorris.gui.minigame.util.Resource;
 
 public class Clouds3 {
@@ -56,7 +56,7 @@ public class Clouds3 {
 		}
 		if(firstElement.posX < -cloud.getWidth()) {
 			listCloud.remove(firstElement);
-			firstElement.posX = ServerGameWindow.SCREEN_WIDTH;
+			firstElement.posX = GameWindow.SCREEN_WIDTH;
 			listCloud.add(firstElement);
 		}
 	}

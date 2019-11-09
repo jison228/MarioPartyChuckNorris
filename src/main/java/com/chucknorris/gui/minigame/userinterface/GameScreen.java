@@ -45,7 +45,7 @@ import com.chucknorris.gui.minigame.gameobject.MainCharacter4;
 import com.chucknorris.gui.minigame.util.Resource;
 import com.chucknorris.player.Player;
 
-public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
+public class GameScreen extends JPanel implements Runnable, KeyListener {
 
 	private static final int START_GAME_STATE = 0;
 	private static final int GAME_PLAYING_STATE = 1;
@@ -87,7 +87,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 
 	public Stack<String> listaGanadores;
 
-	public ClientGameScreen(Stack<String> listaGanadores) {
+	public GameScreen(Stack<String> listaGanadores) {
 
 		this.listaGanadores = listaGanadores;
 
@@ -108,20 +108,20 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 		mainCharacter2.setSpeedX(4);
 		mainCharacter3.setSpeedX(4);
 		mainCharacter4.setSpeedX(4);
-		land = new Land(ServerGameWindow.SCREEN_WIDTH, mainCharacter);
-		land2 = new Land2(ServerGameWindow.SCREEN_WIDTH, mainCharacter2);
-		land3 = new Land3(ServerGameWindow.SCREEN_WIDTH, mainCharacter3);
-		land4 = new Land4(ServerGameWindow.SCREEN_WIDTH, mainCharacter4);
+		land = new Land(GameWindow.SCREEN_WIDTH, mainCharacter);
+		land2 = new Land2(GameWindow.SCREEN_WIDTH, mainCharacter2);
+		land3 = new Land3(GameWindow.SCREEN_WIDTH, mainCharacter3);
+		land4 = new Land4(GameWindow.SCREEN_WIDTH, mainCharacter4);
 		hardstyleImage = Resource.getResouceImage("data/hardstyle.png");
 		gameOverButtonImage = Resource.getResouceImage("data/gameover_text.png");
 		enemiesManager = new EnemiesManager(mainCharacter);
 		enemiesManager2 = new EnemiesManager2(mainCharacter2);
 		enemiesManager3 = new EnemiesManager3(mainCharacter3);
 		enemiesManager4 = new EnemiesManager4(mainCharacter4);
-		clouds = new Clouds(ServerGameWindow.SCREEN_WIDTH, mainCharacter);
-		clouds2 = new Clouds2(ServerGameWindow.SCREEN_WIDTH, mainCharacter2);
-		clouds3 = new Clouds3(ServerGameWindow.SCREEN_WIDTH, mainCharacter3);
-		clouds4 = new Clouds4(ServerGameWindow.SCREEN_WIDTH, mainCharacter4);
+		clouds = new Clouds(GameWindow.SCREEN_WIDTH, mainCharacter);
+		clouds2 = new Clouds2(GameWindow.SCREEN_WIDTH, mainCharacter2);
+		clouds3 = new Clouds3(GameWindow.SCREEN_WIDTH, mainCharacter3);
+		clouds4 = new Clouds4(GameWindow.SCREEN_WIDTH, mainCharacter4);
 //		try {
 //			musica1 = Applet.newAudioClip(new URL("file", "", "data/musica1.wav"));
 //		} catch (MalformedURLException e) {
@@ -304,7 +304,6 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 		long endProcessGame;
 		long lag = 0;
 		while (gameState == GAME_PLAYING_STATE || gameState == START_GAME_STATE) {
-//			gameState = GAME_PLAYING_STATE; PARA QUE FUNCIONE EN SEGUNDO PLANO
 			gameUpdate();
 			repaint();
 			semaphore.acquireUninterruptibly();

@@ -9,8 +9,6 @@ import java.util.Scanner;
 import com.chucknorris.Command;
 import com.chucknorris.client.tablero.MainGameScreen;
 import com.chucknorris.game.Game;
-import com.chucknorris.gui.minigame.userinterface.ClientGameWindow;
-import com.chucknorris.gui.minigame.userinterface.ServerGameWindow;
 import com.google.gson.Gson;
 
 public class ServerThread extends Thread {
@@ -18,7 +16,6 @@ public class ServerThread extends Thread {
 
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
-	private ClientGameWindow minijuego;
 
 	private Socket clientSocket = null;
 
@@ -56,10 +53,6 @@ public class ServerThread extends Thread {
 				case "MovementResponsePublic":
 					MovementResponsePublic respuesta = gson.fromJson(brigadaB.getCommandJSON(), MovementResponsePublic.class);
 					frame.playTurnPublic(respuesta);
-					break;
-				case "StartMinigame":
-					minijuego = new ClientGameWindow();
-					minijuego.startGame();
 					break;
 				case "MovementResponsePrivate":
 					MovementResponsePrivate respuesta1 = gson.fromJson(brigadaB.getCommandJSON(), MovementResponsePrivate.class);

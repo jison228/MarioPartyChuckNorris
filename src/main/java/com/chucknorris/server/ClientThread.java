@@ -17,14 +17,13 @@ import com.chucknorris.client.MovementResponsePrivate;
 import com.chucknorris.client.MovementResponsePublic;
 import com.chucknorris.game.Game;
 import com.chucknorris.game.GameResponse;
-import com.chucknorris.gui.minigame.userinterface.ServerGameWindow;
 import com.chucknorris.player.Player;
 import com.google.gson.Gson;
 
 public class ClientThread extends Thread {
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
-	private ServerGameWindow minijuego;
+
 	private Socket clientSocket = null;
 	private List<ClientThread> threads;
 	Game juego;
@@ -74,13 +73,6 @@ public class ClientThread extends Thread {
 					threads.get(juego.getCurrentTurn()%4).send(habilitarBoton, juego.getCurrentTurn()%4);
 					
 					break;
-				case "StartMinigame":
-					minijuego = new ServerGameWindow();
-					minijuego.startGame();
-				break;
-				case "JumpMinigame":
-					
-				break;
 				case "BifurcationResponse":
 					Player currentPlayer1 = juego.getPlayerList().get(juego.getCurrentTurn());
 					BifurcationResponse decision = gson.fromJson(brigadaB.getCommandJSON(), BifurcationResponse.class);
