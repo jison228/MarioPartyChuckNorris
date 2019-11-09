@@ -20,13 +20,8 @@ public class ServerThread extends Thread {
 
 	private Socket clientSocket = null;
 
-	Game juego;
-
-	public ServerThread(Socket serverSocket, Game juego) {
+	public ServerThread(Socket serverSocket) {
 		this.clientSocket = serverSocket;
-
-		this.juego = juego;
-
 
 		try {
 			this.inputStream = this.clientSocket.getInputStream();
@@ -56,21 +51,24 @@ public class ServerThread extends Thread {
 					frame.dispose();
 					break;
 				case "Compra":
-					ActualizarCompraResponse respuesta3 = gson.fromJson(brigadaB.getCommandJSON(), ActualizarCompraResponse.class);
+					ActualizarCompraResponse respuesta3 = gson.fromJson(brigadaB.getCommandJSON(),
+							ActualizarCompraResponse.class);
 					frame.updateAfterCompra(respuesta3.lista);
 					break;
 				case "MovementResponsePublic":
-					MovementResponsePublic respuesta = gson.fromJson(brigadaB.getCommandJSON(), MovementResponsePublic.class);
+					MovementResponsePublic respuesta = gson.fromJson(brigadaB.getCommandJSON(),
+							MovementResponsePublic.class);
 					frame.playTurnPublic(respuesta);
 					break;
 				case "MovementResponsePrivate":
-					MovementResponsePrivate respuesta1 = gson.fromJson(brigadaB.getCommandJSON(), MovementResponsePrivate.class);
+					MovementResponsePrivate respuesta1 = gson.fromJson(brigadaB.getCommandJSON(),
+							MovementResponsePrivate.class);
 					frame.playTurnPrivate(respuesta1);
 					break;
 				case "StartGame":
 					GameInformation gameInfo = gson.fromJson(brigadaB.getCommandJSON(), GameInformation.class);
-					//frame y pasarle el gameinformation
-					frame = new MainGameScreen(gameInfo,clientSocket);
+					// frame y pasarle el gameinformation
+					frame = new MainGameScreen(gameInfo, clientSocket);
 					frame.setVisible(true);
 					break;
 				case "TirarDado":
