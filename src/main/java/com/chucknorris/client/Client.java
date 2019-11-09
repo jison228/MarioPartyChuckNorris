@@ -55,9 +55,10 @@ public class Client {
 		Game juego01 = new Game(listaP,mapa1);
 		//me conecto al server
 			try {
-			InetAddress ip = InetAddress.getByName("localhost");
+			InetAddress ip = InetAddress.getByName("192.168.43.224");
 			Socket serverSocket = new Socket(ip,portNumber);
 			ServerThread escuchador = new ServerThread(serverSocket, juego01);
+			escuchador.start();
 			} catch (IOException e) {
 				System.out.println(e);
 			}
