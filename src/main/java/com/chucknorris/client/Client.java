@@ -36,7 +36,7 @@ public class Client {
 		}
 
 		try {
-			InetAddress ip = InetAddress.getByName("localhost");
+			InetAddress ip = InetAddress.getByName("192.168.43.102");
 			Socket serverSocket = new Socket(ip,portNumber);
 			Socket serverSocketMinigame = new Socket(ip,22223);
 			ServerThread escuchador = new ServerThread(serverSocket,serverSocketMinigame);

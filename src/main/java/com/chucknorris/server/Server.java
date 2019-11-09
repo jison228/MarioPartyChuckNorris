@@ -30,7 +30,6 @@ public class Server {
 	private static final int portNumberMinigame = 22223;
 	private static ServerSocket serverSocketMinigame=null;
 	static Semaphore semaphore2 = new Semaphore(4);
-
 	public static void main(String args[]) throws Exception {
 
 		

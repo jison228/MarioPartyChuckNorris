@@ -88,7 +88,7 @@ public class ClientThread extends Thread {
 							ganador = player;
 						}
 					}
-					if (ganador.getDolares() > 150) {
+					if (ganador.getDolares() > 200) {
 						for (int i = 0; i < threads.size(); i++) {
 							this.send(new Command("EndGame", ganador.getCharacter()), i);
 							cfinish = true;
@@ -215,7 +215,7 @@ public class ClientThread extends Thread {
 
 		if (this.threads.get(socket) != null) {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

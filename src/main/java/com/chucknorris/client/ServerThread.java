@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import com.chucknorris.Command;
 import com.chucknorris.client.endgame.Endgame;
+import com.chucknorris.client.lobby.Lobby;
 import com.chucknorris.client.tablero.MainGameScreen;
 import com.chucknorris.gui.minigame.userinterface.ClientGameWindow;
+import com.chucknorris.server.ClientThread;
 import com.google.gson.Gson;
 
 public class ServerThread extends Thread {
@@ -17,12 +21,14 @@ public class ServerThread extends Thread {
 
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
+    List<ClientThread> threads = new ArrayList<ClientThread>();
 
 	private InputStream inputStreamMG = null;
 	private ClientGameWindow minijuego;
 
 	private Socket clientSocket = null;
 	private Socket clientSocketMinigame = null;
+    private Lobby framelobby = null;
 	
 	public ServerThread(Socket serverSocket,Socket serverSocketMinigame) {
 		this.clientSocket = serverSocket;
@@ -49,6 +55,14 @@ public class ServerThread extends Thread {
 				Command brigadaB = gson.fromJson(hola, Command.class);
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
+				case "LanzarLobby":
+                    threads = gson.fromJson(brigadaB.getCommandJSON(),List.class);
+                    if(framelobby==null) {
+                    	this.framelobby = new Lobby(threads);
+                    } else {
+                    	framelobby.updateListClientes(threads);
+                    }
+                    break;
 				case "StartMinigame":
 					minijuego = new ClientGameWindow(clientSocketMinigame,inputStreamMG);
 					minijuego.startGame();
