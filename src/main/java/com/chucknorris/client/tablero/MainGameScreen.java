@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -20,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.chucknorris.Command;
 import com.chucknorris.client.ClientPlayer;
 import com.chucknorris.client.EndTurnResponse;
 import com.chucknorris.client.GameInformation;
@@ -36,6 +40,7 @@ import com.chucknorris.player.DelCanio;
 import com.chucknorris.player.Espert;
 import com.chucknorris.player.Macri;
 import com.chucknorris.player.Player;
+import com.google.gson.Gson;
 
 public class MainGameScreen extends JFrame {
 
@@ -57,7 +62,7 @@ public class MainGameScreen extends JFrame {
 	private JPanelPlayers playersPanel;
 	private List<ClientPlayer> clientPlayersList;
 	private CompraDolaresFrame compraDolaresFrame;
-
+	private Socket servidor;
 	/**
 	 * Launch the application.
 	 */
@@ -87,7 +92,7 @@ public class MainGameScreen extends JFrame {
 
 					GameInformation gameInformation = new GameInformation(listaP,mapa1,20);
 
-					MainGameScreen frame = new MainGameScreen(gameInformation);
+					MainGameScreen frame = new MainGameScreen(gameInformation,null);
 					frame.setVisible(true);
 
 					//ChatThread chatThread = new ChatThread();
@@ -102,7 +107,8 @@ public class MainGameScreen extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MainGameScreen(GameInformation info) {
+	public MainGameScreen(GameInformation info, Socket servidor) {
+		this.servidor = servidor;
 		setTitle("Elecciones Presidenciales 2019");
 		// Iniciar partida
 		clientPlayersList = info.getPlayers();
@@ -220,6 +226,16 @@ public class MainGameScreen extends JFrame {
 		btnTirarDado.setForeground(Color.RED);
 		btnTirarDado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					PrintStream ps = new PrintStream(servidor.getOutputStream(), true);
+					Command tirarDado = new Command("TirarDado", "");
+					String send = new Gson().toJson(tirarDado);
+					ps.println(send);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 				/** Le digo al server que el jugador tiro el dado **/
 				//El servidor tendria que armar una ServerResponse1 y llamar a playTurn

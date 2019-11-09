@@ -99,7 +99,7 @@ public class LogInScreen extends JFrame {
 
 				GameInformation gameInformation = new GameInformation(listaP,mapa1,20);
 
-				MainGameScreen frame = new MainGameScreen(gameInformation);
+				MainGameScreen frame = new MainGameScreen(gameInformation,null);
 
 
 			}

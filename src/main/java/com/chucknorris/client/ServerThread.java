@@ -62,7 +62,7 @@ public class ServerThread extends Thread {
 				case "StartGame":
 					GameInformation gameInfo = gson.fromJson(brigadaB.getCommandJSON(), GameInformation.class);
 					//frame y pasarle el gameinformation
-					frame = new MainGameScreen(gameInfo);
+					frame = new MainGameScreen(gameInfo,clientSocket);
 					frame.setVisible(true);
 					break;
 				case "TirarDado":
