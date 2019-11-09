@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.chucknorris.Command;
 import com.chucknorris.client.GameInformation;
+import com.chucknorris.commons.Dice;
 import com.chucknorris.commons.Position;
 import com.chucknorris.game.Game;
 import com.chucknorris.gamemap.GameMap;
@@ -40,10 +41,10 @@ public class Server {
 		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
 		mapa1 = mapFileCSVReader.buildGameMap();
 		Node ini = mapa1.getMap().get(new Position(0,0));
-		Espert p1 = new Espert(1450, 150, 100);
-		Cristina p2 = new Cristina(150, 100, 900);
-		Macri p3 = new Macri(500, 100, 100);
-		DelCanio p4 = new DelCanio(150, 100, 100);
+		Espert p1 = new Espert(100, 50, 300);
+		Cristina p2 = new Cristina(100, 50, 300);
+		Macri p3 = new Macri(100, 50, 300);
+		DelCanio p4 = new DelCanio(100, 50, 300);
 		p1.setNodeLocation(ini);
 		p2.setNodeLocation(ini);
 		p3.setNodeLocation(ini);
@@ -53,8 +54,8 @@ public class Server {
 		listaP.add(p2);
 		listaP.add(p3);
 		listaP.add(p4);
-		Game juego01 = new Game(listaP,mapa1);
-		for(int i=0;i<2;i++) {
+		Game juego01 = new Game(new com.chucknorris.gui.GameInformation(listaP, mapa1, new Dice(0, 6), 20));
+		for(int i=0;i<4;i++) {
 			try {
 				clientSocket = serverSocket.accept();
 				System.out.println("Se conecto alguien");
@@ -69,12 +70,11 @@ public class Server {
 		Command startMinigame = new Command("StartMinigame", infoSerialized);
 		
 		
-		threads.get(0).start();
-		threads.get(1).start();
-		threads.get(1).send(startMinigame,0);
-		threads.get(1).send(startMinigame,1);
-		minijuego = new ServerGameWindow();
-		minijuego.startGame();
-		
+		for(int i=0 ; i < threads.size();i++) {
+			threads.get(i).start();
+			threads.get(i).send(startGame, i);
+		}
+		threads.get(0).send(habilitarBoton,0);
+
 	}
 }
