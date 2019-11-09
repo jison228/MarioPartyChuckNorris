@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.chucknorris.Command;
+import com.chucknorris.client.ActualizarCompraResponse;
 import com.chucknorris.client.ClientNode;
 import com.chucknorris.client.ClientPlayer;
 import com.chucknorris.client.EndTurnResponse;
@@ -56,6 +57,20 @@ public class ClientThread extends Thread {
 				Command brigadaB = gson.fromJson(hola, Command.class);
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
+				case "Compra":
+					Player currentPlayer3 = juego.getPlayerList().get(juego.getCurrentTurn()%4);
+					double pesos = Double.valueOf(brigadaB.getCommandJSON());
+					currentPlayer3.buyDolares(pesos, juego.getPrecioDolar());
+					List<ClientPlayer> listaClientPlayers4 = new ArrayList<ClientPlayer>();
+					for (int i = 0; i < juego.getPlayerList().size(); i++) {
+						Player playerToClient = juego.getPlayerList().get(i);
+						ClientPlayer clientToList = new ClientPlayer(playerToClient);
+						listaClientPlayers4.add(clientToList);
+					}
+					
+					String mandar = gson.toJson(new ActualizarCompraResponse(listaClientPlayers4));
+					
+				break;
 				case "EndTurn":
 					juego.endTurn();
 					if(juego.getCurrentTurn()%4==0) {
@@ -74,7 +89,7 @@ public class ClientThread extends Thread {
 					
 					break;
 				case "BifurcationResponse":
-					Player currentPlayer1 = juego.getPlayerList().get(juego.getCurrentTurn());
+					Player currentPlayer1 = juego.getPlayerList().get(juego.getCurrentTurn()%4);
 					BifurcationResponse decision = gson.fromJson(brigadaB.getCommandJSON(), BifurcationResponse.class);
 					GameResponse respuesta1 = juego.resolveIntersection(currentPlayer1, currentPlayer1.getNodeLocation().nextNodes().get(decision.decision), decision.movementsLeft);
 					List<Player> listaPlayers = juego.getPlayerList();

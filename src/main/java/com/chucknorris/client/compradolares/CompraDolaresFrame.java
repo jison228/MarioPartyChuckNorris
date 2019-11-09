@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -19,7 +22,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.NumberFormatter;
 
+import com.chucknorris.Command;
 import com.chucknorris.client.ClientPlayer;
+import com.google.gson.Gson;
 
 public class CompraDolaresFrame extends JFrame {
 
@@ -39,7 +44,7 @@ public class CompraDolaresFrame extends JFrame {
 			public void run() {
 				try {
 					ClientPlayer p = new ClientPlayer("Nombre", "Espert", null, 50, 50, 100, null);
-					CompraDolaresFrame frame = new CompraDolaresFrame(p, 20.0);
+					CompraDolaresFrame frame = new CompraDolaresFrame(p, 20.0,null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,7 +53,7 @@ public class CompraDolaresFrame extends JFrame {
 		});
 	}
 
-	public CompraDolaresFrame(ClientPlayer player, double precioDolar) {
+	public CompraDolaresFrame(ClientPlayer player, double precioDolar,Socket socket) {
 		// JFrameConfig
 		setAlwaysOnTop(true);
 		setTitle("Comprar Dolares");
@@ -122,6 +127,15 @@ public class CompraDolaresFrame extends JFrame {
 				 * (Double.valueOf(pesosTF.getValue().toString())
 				 **/
 				// El servidor deberia devolver la actualizacion del estado de ese jugador
+				try {
+					PrintStream ps = new PrintStream(socket.getOutputStream(), true);
+					Command tirarDado = new Command("Compra", "pesosTF.getValue().toString()");
+					String send = new Gson().toJson(tirarDado);
+					ps.println(send);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				dispose();
 			}
 		});

@@ -52,7 +52,7 @@ public class Server {
 		listaP.add(p2);
 		listaP.add(p3);
 		listaP.add(p4);
-		Game juego01 = new Game(new com.chucknorris.gui.GameInformation(listaP, mapa1, new Dice(0, 6), 20));
+		Game juego01 = new Game(new com.chucknorris.gui.GameInformation(listaP, mapa1, new Dice(1, 6), 20));
 		for (int i = 0; i < 4; i++) {
 			try {
 				clientSocket = serverSocket.accept();

@@ -328,7 +328,7 @@ public class MainGameScreen extends JFrame {
 			}
 		}
 		if(respuesta.compra_dolares) {
-			compraDolaresFrame = new CompraDolaresFrame(currentClientPlayer, characterPanel.getPrecioDolar());
+			compraDolaresFrame = new CompraDolaresFrame(currentClientPlayer, characterPanel.getPrecioDolar(),servidor);
 			compraDolaresFrame.setVisible(true);
 		}
 		btnEndTurn.setVisible(true);
