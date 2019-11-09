@@ -111,6 +111,7 @@ public class ClientThread extends Thread {
 						if(!cfinish) {
 							Command enviar2 = new Command("StartMinigame", "");
 							for (int i = 0; i < threads.size(); i++) {
+								Thread.sleep(1000);
 								this.send(enviar2, i);
 							}
 						}
