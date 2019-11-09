@@ -40,6 +40,7 @@ import com.chucknorris.player.DelCanio;
 import com.chucknorris.player.Espert;
 import com.chucknorris.player.Macri;
 import com.chucknorris.player.Player;
+import com.chucknorris.server.BifurcationResponse;
 import com.google.gson.Gson;
 
 public class MainGameScreen extends JFrame {
@@ -63,6 +64,8 @@ public class MainGameScreen extends JFrame {
 	private List<ClientPlayer> clientPlayersList;
 	private CompraDolaresFrame compraDolaresFrame;
 	private Socket servidor;
+	int movementsLeft;
+	Gson gson = new Gson();
 	/**
 	 * Launch the application.
 	 */
@@ -152,9 +155,19 @@ public class MainGameScreen extends JFrame {
 				btnCamino1.setVisible(false);
 				btnCamino2.setVisible(false);
 
-				/** Mando al server que el jugador decidio el camino 1 **/
-				//El servidor tendria que armar una ServerResponse1 y llamar a playTurn
+				PrintStream ps = null;
+				try {
+					ps = new PrintStream(servidor.getOutputStream(), true);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				BifurcationResponse res1 = new BifurcationResponse(0, movementsLeft);
+				String sres1 = gson.toJson(res1);
 				
+				Command bif = new Command("BifurcationResponse", sres1);
+				String send = new Gson().toJson(bif);
+				ps.println(send);
 			}
 		});
 		contentPane.add(btnCamino1);
@@ -236,10 +249,7 @@ public class MainGameScreen extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				/** Le digo al server que el jugador tiro el dado **/
-				//El servidor tendria que armar una ServerResponse1 y llamar a playTurn
-				
+
 				btnTirarDado.setVisible(false);
 			}
 		});
@@ -277,6 +287,7 @@ public class MainGameScreen extends JFrame {
 	}
 	public void playTurnPrivate(MovementResponsePrivate respuesta) {
 		ClientPlayer currentClientPlayer = null;
+		movementsLeft = respuesta.movementsLeft;
 		for(int i=0;i<clientPlayersList.size();i++) {
 			if(respuesta.playerID.equals(clientPlayersList.get(i).getCharacter())) {
 				currentClientPlayer = clientPlayersList.get(i);
