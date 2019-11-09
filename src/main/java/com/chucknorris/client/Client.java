@@ -38,7 +38,7 @@ public class Client {
 		GameMap mapa1;
 		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
 		mapa1 = mapFileCSVReader.buildGameMap();
-		Node ini = mapa1.getMap().get(new Position(0,0));
+		Node ini = mapa1.getMap().get(new Position(0, 0));
 		Espert p1 = new Espert(1450, 150, 100);
 		Cristina p2 = new Cristina(150, 100, 900);
 		Macri p3 = new Macri(500, 100, 100);
@@ -52,16 +52,16 @@ public class Client {
 		listaP.add(p2);
 		listaP.add(p3);
 		listaP.add(p4);
-		Game juego01 = new Game(listaP,mapa1);
-		//me conecto al server
-			try {
+		Game juego01 = new Game(listaP, mapa1);
+		// me conecto al server
+		try {
 			InetAddress ip = InetAddress.getByName("localhost");
-			Socket serverSocket = new Socket(ip,portNumber);
+			Socket serverSocket = new Socket(ip, portNumber);
 			ServerThread escuchador = new ServerThread(serverSocket, juego01);
 			escuchador.start();
-			} catch (IOException e) {
-				System.out.println(e);
-			}
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 	}
 
 }

@@ -162,14 +162,12 @@ public class ClientThread extends Thread {
 		String mensaje = new Gson().toJson(send);
 		PrintStream ps;
 
-		synchronized (this) {
 
 			if (this.threads.get(socket) != null) {
 				ps = new PrintStream(this.threads.get(socket).outputStream, true);
 				ps.println(mensaje);
 			}
 
-		}
 	}
 
 }
