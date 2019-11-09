@@ -38,8 +38,9 @@ public class Client {
 		// me conecto al server
 		try {
 			InetAddress ip = InetAddress.getByName("localhost");
-			Socket serverSocket = new Socket(ip, portNumber);
-			ServerThread escuchador = new ServerThread(serverSocket);
+			Socket serverSocket = new Socket(ip,portNumber);
+			Socket serverSocketMinigame = new Socket(ip,22223);
+			ServerThread escuchador = new ServerThread(serverSocket,serverSocketMinigame);
 			escuchador.start();
 		} catch (IOException e) {
 			System.out.println(e);

@@ -80,6 +80,10 @@ public class ClientThread extends Thread {
 					juego.endTurn();
 					if (juego.getCurrentTurn() % 4 == 0) {
 						juego.aumentarPrecioDolar();
+						Command enviar2 = new Command("StartMinigame", "");
+						for (int i = 0; i < threads.size(); i++) {
+							this.send(enviar2, i);
+						}
 					}
 
 					Player ganador = new Espert(0, 0, 0);

@@ -7,9 +7,9 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import com.chucknorris.Command;
-import com.chucknorris.client.tablero.MainGameScreen;
-import com.chucknorris.game.Game;
 import com.chucknorris.client.endgame.Endgame;
+import com.chucknorris.client.tablero.MainGameScreen;
+import com.chucknorris.gui.minigame.userinterface.ClientGameWindow;
 import com.google.gson.Gson;
 
 public class ServerThread extends Thread {
@@ -18,14 +18,19 @@ public class ServerThread extends Thread {
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
 
+	private InputStream inputStreamMG = null;
+	private ClientGameWindow minijuego;
+
 	private Socket clientSocket = null;
-
-	public ServerThread(Socket serverSocket) {
+	private Socket clientSocketMinigame = null;
+	
+	public ServerThread(Socket serverSocket,Socket serverSocketMinigame) {
 		this.clientSocket = serverSocket;
-
+		this.clientSocketMinigame=serverSocketMinigame;
 		try {
 			this.inputStream = this.clientSocket.getInputStream();
 			this.outputStream = this.clientSocket.getOutputStream();
+			this.inputStreamMG = this.clientSocketMinigame.getInputStream();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -34,9 +39,7 @@ public class ServerThread extends Thread {
 	public void run() {
 		try {
 			Gson gson = new Gson();
-
-//			Command brigadaA = new Command("TirarDado", "");
-//			String send = gson.toJson(brigadaA);
+			
 			MainGameScreen frame = null;
 			Scanner sc = new Scanner(inputStream);
 			int num;
@@ -46,6 +49,10 @@ public class ServerThread extends Thread {
 				Command brigadaB = gson.fromJson(hola, Command.class);
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
+				case "StartMinigame":
+					minijuego = new ClientGameWindow(clientSocketMinigame,inputStreamMG);
+					minijuego.startGame();
+					break;
 				case "EndGame":
 					new Endgame(brigadaB.getCommandJSON()).setVisible(true);
 					frame.dispose();

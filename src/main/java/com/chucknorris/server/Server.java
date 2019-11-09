@@ -25,17 +25,22 @@ public class Server {
 	private static ServerSocket serverSocket = null;
 	private static Socket clientSocket = null;
 	private static final int portNumber = 22222;
-
+	private static Socket clientMinigameSocket;
+	private static final int portNumberMinigame = 22223;
+	private static ServerSocket serverSocketMinigame=null;
+	
 	public static void main(String args[]) throws Exception {
 
 		
 		try {
 			serverSocket = new ServerSocket(portNumber);
+			serverSocketMinigame = new ServerSocket(portNumberMinigame);
 		} catch (IOException e) {
 			System.out.println(e);
 		}
 		List<ClientThread> threads = new ArrayList<ClientThread>();
-
+		List<ClientMinigameThread> threadsMinigame = new ArrayList<ClientMinigameThread>();
+		
 		GameMap mapa1;
 		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
 		mapa1 = mapFileCSVReader.buildGameMap();
@@ -63,14 +68,17 @@ public class Server {
 			try {
 				System.out.println("Esperando nueva conexion");
 				clientSocket = serverSocket.accept();
+				clientMinigameSocket = serverSocketMinigame.accept();
 				System.out.println("Se conecto alguien");
 				threads.add(new ClientThread(clientSocket, threads, juego01));
+				threadsMinigame.add(new ClientMinigameThread(clientMinigameSocket, threadsMinigame));
 			} catch (IOException e) {
 				System.out.println(e);
 			}
 		}
 		for (int i = 0; i < threads.size(); i++) {
 			threads.get(i).start();
+			threadsMinigame.get(i).start();
 			threads.get(i).send(startGame, i);
 		}
 		threads.get(0).send(habilitarBoton, 0);

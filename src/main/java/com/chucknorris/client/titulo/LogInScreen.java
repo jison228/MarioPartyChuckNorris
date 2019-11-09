@@ -88,13 +88,16 @@ public class LogInScreen extends JFrame {
 					e1.printStackTrace();
 				}
 				Socket serverSocket = null;
+				Socket serverSocketMinigame = null;
 				try {
 					serverSocket = new Socket(ip, Integer.valueOf(portTF.getText()));
+					serverSocketMinigame = new Socket(ip,22223);
 				} catch (NumberFormatException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				ServerThread escuchador = new ServerThread(serverSocket);
+				
+				ServerThread escuchador = new ServerThread(serverSocket,serverSocketMinigame);
 				escuchador.start();
 			}
 		});
