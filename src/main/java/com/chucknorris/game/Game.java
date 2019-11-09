@@ -20,11 +20,12 @@ public class Game {
 	private double precioDolar;
 	//ArrayList de minijuegos
 
-	public Game(List<Player> players, GameMap gameMap) {
+	public Game(List<Player> players, GameMap gameMap, double precioDolar) {
 		this.players = players;
 		this.turn = 0;
 		this.gameMap = gameMap;
 		this.dice = new Dice(1, 6);
+		this.precioDolar = precioDolar;
 	}
 
 	public Game(GameInformation info) {
@@ -35,7 +36,7 @@ public class Game {
 	}
 	
 	public Game(List<Player> players, GameMap gameMap, Dice dice) {
-		this(players, gameMap);
+		this(players, gameMap,20);
 		this.dice = dice;
 	}
 

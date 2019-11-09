@@ -50,12 +50,12 @@ public class ClientThread extends Thread {
 		try {
 			Scanner sc = new Scanner(inputStream);
 			int num;
+			Gson gson = new Gson();
 			MovementResponsePublic respuestaPublica;
 			MovementResponsePrivate respuestaPrivada;
 			while ((num = inputStream.read()) > 0) {
 				String hola = String.valueOf((char) num);
 				hola = hola + sc.next();
-				Gson gson = new Gson();
 				Command brigadaB = gson.fromJson(hola, Command.class);
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {

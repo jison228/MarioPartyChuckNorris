@@ -52,7 +52,7 @@ public class Client {
 		listaP.add(p2);
 		listaP.add(p3);
 		listaP.add(p4);
-		Game juego01 = new Game(listaP, mapa1);
+		Game juego01 = new Game(listaP, mapa1,20);
 		// me conecto al server
 		try {
 			InetAddress ip = InetAddress.getByName("localhost");

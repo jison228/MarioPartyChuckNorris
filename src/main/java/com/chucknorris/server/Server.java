@@ -52,7 +52,12 @@ public class Server {
 		listaP.add(p2);
 		listaP.add(p3);
 		listaP.add(p4);
-		Game juego01 = new Game(new com.chucknorris.gui.GameInformation(listaP, mapa1, new Dice(1, 6), 20));
+		Game juego01 = new Game(listaP, mapa1, 20);
+		GameInformation info = new GameInformation(listaP, mapa1, juego01.getPrecioDolar());
+		Gson gson = new Gson();
+		String infoSerialized = gson.toJson(info);
+		Command startGame = new Command("StartGame", infoSerialized);
+		Command habilitarBoton = new Command("TirarDado", "");
 		for (int i = 0; i < 4; i++) {
 			try {
 				clientSocket = serverSocket.accept();
@@ -62,12 +67,6 @@ public class Server {
 				System.out.println(e);
 			}
 		}
-		GameInformation info = new GameInformation(listaP, mapa1, juego01.getPrecioDolar());
-		Gson gson = new Gson();
-		String infoSerialized = gson.toJson(info);
-		Command startGame = new Command("StartGame", infoSerialized);
-		Command habilitarBoton = new Command("TirarDado", "");
-
 		for (int i = 0; i < threads.size(); i++) {
 			threads.get(i).start();
 			threads.get(i).send(startGame, i);
