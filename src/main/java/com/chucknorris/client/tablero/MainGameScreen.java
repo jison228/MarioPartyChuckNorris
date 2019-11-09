@@ -181,9 +181,19 @@ public class MainGameScreen extends JFrame {
 				btnCamino1.setVisible(false);
 				btnCamino2.setVisible(false);
 
-				/** Mando al server que el jugador decidio el camino 2 **/
-				//El servidor tendria que armar una ServerResponse1 y llamar a playTurn
-
+				PrintStream ps = null;
+				try {
+					ps = new PrintStream(servidor.getOutputStream(), true);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				BifurcationResponse res1 = new BifurcationResponse(1, movementsLeft);
+				String sres1 = gson.toJson(res1);
+				
+				Command bif = new Command("BifurcationResponse", sres1);
+				String send = new Gson().toJson(bif);
+				ps.println(send);
 			}
 		});
 		contentPane.add(btnCamino2);
@@ -260,11 +270,17 @@ public class MainGameScreen extends JFrame {
 		btnEndTurn = new JButton("TERMINAR");
 		btnEndTurn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				/** Le digo al server que termino el turno **/
-				//El servidor tendria que armar una ServerResponse3 y llamar a EndTurnIndeed
-				//El servidor tendria que cambiar de Player y habilitarle el boton de TirarDado
-			
+				try {
+					PrintStream ps = new PrintStream(servidor.getOutputStream(), true);
+					Command tirarDado = new Command("EndTurn", "");
+					String send = new Gson().toJson(tirarDado);
+					ps.println(send);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				btnEndTurn.setVisible(false);
+				repaint();
 			}
 		});
 		btnEndTurn.setVisible(false);
@@ -284,6 +300,7 @@ public class MainGameScreen extends JFrame {
 		}
  		moverJugador(respuesta.diceResult, currentClientPlayer, respuesta.nodePath);
  		playersPanel.updatePanelPlayers(respuesta.currentClientPlayerList);
+ 		repaint();
 	}
 	public void playTurnPrivate(MovementResponsePrivate respuesta) {
 		ClientPlayer currentClientPlayer = null;
@@ -294,10 +311,11 @@ public class MainGameScreen extends JFrame {
 			}
 		}
  		moverJugador(respuesta.diceResult, currentClientPlayer, respuesta.nodePath);
-		if (respuesta.options!=null) {
+ 		if (movementsLeft != 0) {
 			tomarDecision(respuesta);
 		} else {
 			playersPanel.updatePanelPlayers(respuesta.currentClientPlayerList);
+			repaint();
 			endTurn(respuesta);
 		}
 	}
@@ -314,6 +332,7 @@ public class MainGameScreen extends JFrame {
 			compraDolaresFrame.setVisible(true);
 		}
 		btnEndTurn.setVisible(true);
+		repaint();
 	}
 	
 	public void announceWinner(ClientPlayer ganador) {
@@ -351,17 +370,19 @@ public class MainGameScreen extends JFrame {
 
 		btnCamino1.setVisible(true); //Solo al Player que corresponde
 		btnCamino2.setVisible(true); //Solo al Player que corresponde
+		repaint();
 	}
 
 	public void endTurnIndeed(EndTurnResponse respuesta) {
 
 		characterPanel.actualizar(respuesta.currentPlayer, respuesta.currentTurn, respuesta.currentPrecioDolar);
 		diceImage.setVisible(false);
-
+		repaint();
 	}
 
 	public void habilitarDado() {
 		btnTirarDado.setVisible(true);
+		repaint();
 	}
 	
 }

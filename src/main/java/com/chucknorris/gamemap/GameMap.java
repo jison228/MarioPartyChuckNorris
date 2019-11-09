@@ -42,7 +42,8 @@ public class GameMap {
 
 	public int movePlayerFromIntersection(Player player, Node nextNode, int leftMovements,Queue<Position> nodePath, List<Node> villereada) {
 		player.setNodeLocation(nextNode);
-
+		nodePath.add(nextNode.getPositionCoords());
+		villereada.add(nextNode);
 		return movePlayer(player, leftMovements - 1,nodePath,villereada);
 	}
 

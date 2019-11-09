@@ -12,6 +12,7 @@ import java.util.Scanner;
 import com.chucknorris.Command;
 import com.chucknorris.client.ClientNode;
 import com.chucknorris.client.ClientPlayer;
+import com.chucknorris.client.EndTurnResponse;
 import com.chucknorris.client.MovementResponsePrivate;
 import com.chucknorris.client.MovementResponsePublic;
 import com.chucknorris.game.Game;
@@ -55,8 +56,22 @@ public class ClientThread extends Thread {
 				Command brigadaB = gson.fromJson(hola, Command.class);
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
-				case "MovementResponsePublic":
-					// PlayResponse play = new Gson().fromJson(brigadaA.getCommandJSON(),);
+				case "EndTurn":
+					juego.endTurn();
+					if(juego.getCurrentTurn()%4==0) {
+						juego.aumentarPrecioDolar();
+					}
+					Player currentPlayer2 = juego.getPlayerList().get(juego.getCurrentTurn());
+					
+					EndTurnResponse finalizar = new EndTurnResponse(juego.getCurrentTurn(), juego.getPrecioDolar(), currentPlayer2);
+					String fin = gson.toJson(finalizar);
+					Command enviar = new Command("EndTurn", fin);
+					for(int i =0;i < threads.size();i++) {
+						threads.get(i).send(enviar, i);
+					}
+					Command habilitarBoton = new Command("TirarDado", "");
+					threads.get(juego.getCurrentTurn()%4).send(habilitarBoton, juego.getCurrentTurn()%4);
+					
 					break;
 				case "BifurcationResponse":
 					Player currentPlayer1 = juego.getPlayerList().get(juego.getCurrentTurn());
@@ -88,7 +103,7 @@ public class ClientThread extends Thread {
 					String paTodos = gson.toJson(respuestaPublica);
 					Command dibujePubli = new Command("MovementResponsePublic",paTodos);
 					
-					int socketToSend = juego.getCurrentTurn()%4;
+					int socketToSend = juego.getCurrentTurn()%threads.size();
 					send(dibujePriv,socketToSend);
 					for(int i=0;i<threads.size();i++) {
 						if(i!=socketToSend) {

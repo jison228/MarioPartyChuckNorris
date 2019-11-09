@@ -67,6 +67,10 @@ public class ServerThread extends Thread {
 				case "TirarDado":
 					frame.habilitarDado();
 					break;
+				case "EndTurn":
+					EndTurnResponse finalizar = gson.fromJson(brigadaB.getCommandJSON(), EndTurnResponse.class);
+					frame.endTurnIndeed(finalizar);
+					break;
 				}
 			}
 			sc.close();

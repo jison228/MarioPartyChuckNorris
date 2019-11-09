@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.chucknorris.Command;
 import com.chucknorris.client.GameInformation;
+import com.chucknorris.commons.Dice;
 import com.chucknorris.commons.Position;
 import com.chucknorris.game.Game;
 import com.chucknorris.gamemap.GameMap;
@@ -51,8 +52,8 @@ public class Server {
 		listaP.add(p2);
 		listaP.add(p3);
 		listaP.add(p4);
-		Game juego01 = new Game(listaP,mapa1);
-		for(int i=0;i<2;i++) {
+		Game juego01 = new Game(new com.chucknorris.gui.GameInformation(listaP, mapa1, new Dice(0, 6), 20));
+		for(int i=0;i<4;i++) {
 			try {
 				clientSocket = serverSocket.accept();
 				System.out.println("Se conecto alguien");
@@ -67,10 +68,10 @@ public class Server {
 		Command startGame = new Command("StartGame", infoSerialized);
 		Command habilitarBoton = new Command("TirarDado", "");
 		
-		threads.get(0).start();
-		threads.get(0).send(startGame,0);
-		threads.get(1).start();
-		threads.get(1).send(startGame,1);
+		for(int i=0 ; i < threads.size();i++) {
+			threads.get(i).start();
+			threads.get(i).send(startGame, i);
+		}
 		threads.get(0).send(habilitarBoton,0);
 	}
 }
