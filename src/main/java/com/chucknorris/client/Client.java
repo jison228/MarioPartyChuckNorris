@@ -26,6 +26,7 @@ public class Client {
 	private static final ClientThread[] threads = new ClientThread[maxClientsCount];
 
 	private static final int portNumber = 22222;
+	private static final int portNumberMinigame = 22223;
 
 	public static void main(String args[]) throws Exception {
 
@@ -57,7 +58,8 @@ public class Client {
 			try {
 			InetAddress ip = InetAddress.getByName("localhost");
 			Socket serverSocket = new Socket(ip,portNumber);
-			ServerThread escuchador = new ServerThread(serverSocket, juego01);
+			Socket serverSocketMinigame = new Socket(ip,portNumberMinigame);
+			ServerThread escuchador = new ServerThread(serverSocket,serverSocketMinigame, juego01);
 			escuchador.start();
 			} catch (IOException e) {
 				System.out.println(e);

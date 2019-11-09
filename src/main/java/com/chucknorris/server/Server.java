@@ -14,7 +14,6 @@ import com.chucknorris.game.Game;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.gamemap.nodes.Node;
-import com.chucknorris.gui.minigame.userinterface.ServerGameWindow;
 import com.chucknorris.player.Cristina;
 import com.chucknorris.player.DelCanio;
 import com.chucknorris.player.Espert;
@@ -25,13 +24,16 @@ import com.google.gson.Gson;
 public class Server {
 	private static ServerSocket serverSocket = null;
 	private static Socket clientSocket = null;
-	private static ServerGameWindow minijuego;
+	private static Socket clientMinigameSocket;
+	private static ServerSocket serverSocketMinigame=null;
 	private static final int portNumber = 22222;
+	private static final int portNumberMinigame = 22223;
 
 	public static void main(String args[]) throws Exception {
 
 		try {
 			serverSocket = new ServerSocket(portNumber);
+			serverSocketMinigame = new ServerSocket(portNumberMinigame);
 		} catch (IOException e) {
 			System.out.println(e);
 		}
@@ -55,26 +57,27 @@ public class Server {
 		listaP.add(p3);
 		listaP.add(p4);
 		Game juego01 = new Game(new com.chucknorris.gui.GameInformation(listaP, mapa1, new Dice(0, 6), 20));
-		for(int i=0;i<4;i++) {
+		for(int i=0;i<2;i++) {
 			try {
 				clientSocket = serverSocket.accept();
+				clientMinigameSocket = serverSocketMinigame.accept();
 				System.out.println("Se conecto alguien");
 				threads.add(new ClientThread(clientSocket, threads, juego01));
 			} catch (IOException e) {
 				System.out.println(e);
 			}
 		}
+		ClientMinigameThread manejadorMinigame =new ClientMinigameThread(clientMinigameSocket,threads);
 		GameInformation info = new GameInformation(listaP, mapa1, juego01.getPrecioDolar());
 		Gson gson = new Gson();
 		String infoSerialized = gson.toJson(info);
 		Command startMinigame = new Command("StartMinigame", infoSerialized);
 		
+		manejadorMinigame.start();
+		threads.get(0).start();
+		threads.get(1).start();
+		threads.get(0).send(startMinigame,0);
+		threads.get(1).send(startMinigame,1);
 		
-		for(int i=0 ; i < threads.size();i++) {
-			threads.get(i).start();
-			threads.get(i).send(startGame, i);
-		}
-		threads.get(0).send(habilitarBoton,0);
-
 	}
 }

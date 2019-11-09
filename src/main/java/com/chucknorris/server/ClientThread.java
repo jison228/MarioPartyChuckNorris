@@ -17,14 +17,12 @@ import com.chucknorris.client.MovementResponsePrivate;
 import com.chucknorris.client.MovementResponsePublic;
 import com.chucknorris.game.Game;
 import com.chucknorris.game.GameResponse;
-import com.chucknorris.gui.minigame.userinterface.ServerGameWindow;
 import com.chucknorris.player.Player;
 import com.google.gson.Gson;
 
 public class ClientThread extends Thread {
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
-	private ServerGameWindow minijuego;
 	private Socket clientSocket = null;
 	private List<ClientThread> threads;
 	Game juego;
@@ -42,6 +40,8 @@ public class ClientThread extends Thread {
 			e.printStackTrace();
 		}
 	}
+
+
 
 	public void run() {
 
@@ -75,11 +75,35 @@ public class ClientThread extends Thread {
 					
 					break;
 				case "StartMinigame":
-					minijuego = new ServerGameWindow();
-					minijuego.startGame();
+			
 				break;
 				case "JumpMinigame":
-					
+					switch( brigadaB.getCommandJSON()) {
+					case "a":
+						for(int i=0;i<threads.size();i++) {
+							Command aSaltar = new Command("MinigameJumpA", "a");
+								threads.get(i).send(aSaltar, i);
+							}
+						break;
+					case "b":
+						for(int i=0;i<threads.size();i++) {
+							Command aSaltar = new Command("MinigameJumpB", "b");
+								threads.get(i).send(aSaltar, i);
+							}
+						break;
+					case "p":
+						for(int i=0;i<threads.size();i++) {
+							Command aSaltar = new Command("MinigameJumpP", "p");
+								threads.get(i).send(aSaltar, i);
+							}
+						break;
+					case ".":
+						for(int i=0;i<threads.size();i++) {
+							Command aSaltar = new Command("MinigameJump.", ".");
+								threads.get(i).send(aSaltar, i);
+							}
+						break;
+					}
 				break;
 				case "BifurcationResponse":
 					Player currentPlayer1 = juego.getPlayerList().get(juego.getCurrentTurn());

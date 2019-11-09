@@ -10,7 +10,6 @@ import com.chucknorris.Command;
 import com.chucknorris.client.tablero.MainGameScreen;
 import com.chucknorris.game.Game;
 import com.chucknorris.gui.minigame.userinterface.ClientGameWindow;
-import com.chucknorris.gui.minigame.userinterface.ServerGameWindow;
 import com.google.gson.Gson;
 
 public class ServerThread extends Thread {
@@ -21,12 +20,13 @@ public class ServerThread extends Thread {
 	private ClientGameWindow minijuego;
 
 	private Socket clientSocket = null;
+	private Socket clientSocketMinigame = null;
 
 	Game juego;
 
-	public ServerThread(Socket serverSocket, Game juego) {
+	public ServerThread(Socket serverSocket,Socket serverSocketMinigame, Game juego) {
 		this.clientSocket = serverSocket;
-
+		this.clientSocketMinigame=serverSocketMinigame;
 		this.juego = juego;
 
 
@@ -58,9 +58,10 @@ public class ServerThread extends Thread {
 					frame.playTurnPublic(respuesta);
 					break;
 				case "StartMinigame":
-					minijuego = new ClientGameWindow();
+					minijuego = new ClientGameWindow(clientSocketMinigame,inputStream);
 					minijuego.startGame();
 					break;
+				
 				case "MovementResponsePrivate":
 					MovementResponsePrivate respuesta1 = gson.fromJson(brigadaB.getCommandJSON(), MovementResponsePrivate.class);
 					frame.playTurnPrivate(respuesta1);
@@ -78,6 +79,10 @@ public class ServerThread extends Thread {
 					EndTurnResponse finalizar = gson.fromJson(brigadaB.getCommandJSON(), EndTurnResponse.class);
 					frame.endTurnIndeed(finalizar);
 					break;
+					
+				}
+				while(true) {
+					
 				}
 			}
 			sc.close();

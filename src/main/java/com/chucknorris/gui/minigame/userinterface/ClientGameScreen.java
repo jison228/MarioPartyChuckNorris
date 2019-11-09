@@ -10,11 +10,16 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.MalformedURLException;
+import java.net.Socket;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Scanner;
 import java.util.Stack;
 import java.util.concurrent.Semaphore;
 
@@ -26,6 +31,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JPanel;
 
+import com.chucknorris.Command;
 import com.chucknorris.gui.minigame.gameobject.Clouds;
 import com.chucknorris.gui.minigame.gameobject.Clouds2;
 import com.chucknorris.gui.minigame.gameobject.Clouds3;
@@ -44,6 +50,9 @@ import com.chucknorris.gui.minigame.gameobject.MainCharacter3;
 import com.chucknorris.gui.minigame.gameobject.MainCharacter4;
 import com.chucknorris.gui.minigame.util.Resource;
 import com.chucknorris.player.Player;
+import com.chucknorris.server.BifurcationResponse;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 
@@ -78,20 +87,27 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 	private AudioInputStream stream;
 	private BufferedImage hardstyleImage;
 	private BufferedImage gameOverButtonImage;
-
+	private InputStream inputStream = null;
+	private OutputStream outputStream = null;
 	private Graphics g;
 
 	private int[] tiersScore = new int[10];
 	private int[] tiersSpeed = new int[10];
 	private int tier;
-
+	private Socket serverSocket;
 	public Stack<String> listaGanadores;
 
-	public ClientGameScreen(Stack<String> listaGanadores) {
-
+	public ClientGameScreen(Stack<String> listaGanadores,Socket serverSocket,InputStream inputStream) {
+		this.inputStream=inputStream;
+		this.serverSocket = serverSocket;
 		this.listaGanadores = listaGanadores;
-
 		tiersScore[0] = 200;
+		try {
+			checkSocket();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		tier = 0;
 		for (int i = 1; i < 10; i++) {
 			tiersScore[i] += tiersScore[i - 1] + 200;
@@ -108,20 +124,20 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 		mainCharacter2.setSpeedX(4);
 		mainCharacter3.setSpeedX(4);
 		mainCharacter4.setSpeedX(4);
-		land = new Land(ServerGameWindow.SCREEN_WIDTH, mainCharacter);
-		land2 = new Land2(ServerGameWindow.SCREEN_WIDTH, mainCharacter2);
-		land3 = new Land3(ServerGameWindow.SCREEN_WIDTH, mainCharacter3);
-		land4 = new Land4(ServerGameWindow.SCREEN_WIDTH, mainCharacter4);
+		land = new Land(ClientGameWindow.SCREEN_WIDTH, mainCharacter);
+		land2 = new Land2(ClientGameWindow.SCREEN_WIDTH, mainCharacter2);
+		land3 = new Land3(ClientGameWindow.SCREEN_WIDTH, mainCharacter3);
+		land4 = new Land4(ClientGameWindow.SCREEN_WIDTH, mainCharacter4);
 		hardstyleImage = Resource.getResouceImage("data/hardstyle.png");
 		gameOverButtonImage = Resource.getResouceImage("data/gameover_text.png");
 		enemiesManager = new EnemiesManager(mainCharacter);
 		enemiesManager2 = new EnemiesManager2(mainCharacter2);
 		enemiesManager3 = new EnemiesManager3(mainCharacter3);
 		enemiesManager4 = new EnemiesManager4(mainCharacter4);
-		clouds = new Clouds(ServerGameWindow.SCREEN_WIDTH, mainCharacter);
-		clouds2 = new Clouds2(ServerGameWindow.SCREEN_WIDTH, mainCharacter2);
-		clouds3 = new Clouds3(ServerGameWindow.SCREEN_WIDTH, mainCharacter3);
-		clouds4 = new Clouds4(ServerGameWindow.SCREEN_WIDTH, mainCharacter4);
+		clouds = new Clouds(ClientGameWindow.SCREEN_WIDTH, mainCharacter);
+		clouds2 = new Clouds2(ClientGameWindow.SCREEN_WIDTH, mainCharacter2);
+		clouds3 = new Clouds3(ClientGameWindow.SCREEN_WIDTH, mainCharacter3);
+		clouds4 = new Clouds4(ClientGameWindow.SCREEN_WIDTH, mainCharacter4);
 //		try {
 //			musica1 = Applet.newAudioClip(new URL("file", "", "data/musica1.wav"));
 //		} catch (MalformedURLException e) {
@@ -229,7 +245,40 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 			}
 		}
 	}
-
+	
+	public void checkSocket() throws IOException {
+		new Thread(() -> {
+			int num;
+			Scanner sc = new Scanner(inputStream);
+			try {
+				while ((num = inputStream.read()) > 0) {
+					String hola = String.valueOf((char) num);
+					hola = hola + sc.next();
+					Gson gson = new Gson();
+					Command brigadaB = gson.fromJson(hola, Command.class);
+					// MARIO SANTOS, LOGISTICA Y PLANIFICACION
+					switch (brigadaB.getCommandName()) {
+					case "MinigameJumpA":
+						mainCharacter.jump();
+						break;
+					case "MinigameJumpB":
+						mainCharacter2.jump();
+						break;
+					case "MinigameJumpP":
+						mainCharacter3.jump();
+						break;
+					case "MinigameJump.":
+						mainCharacter4.jump();
+						break;
+					}
+				}
+			} catch (JsonSyntaxException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+  }).start();
+		
+	}
 	public void paint(Graphics e) {
 		this.g = e;
 		g.setColor(Color.decode("#f7f7f7"));
@@ -338,16 +387,52 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 		while (!pressed.isEmpty()) {
 			Character character = pressed.poll();
 			if (character == 'b') {
-				mainCharacter2.jump();
+				PrintStream ps = null;
+				try {
+					ps = new PrintStream(serverSocket.getOutputStream(), true);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Command bif = new Command("JumpMinigame", "b");
+				String send = new Gson().toJson(bif);
+				ps.println(send);
 			}
 			if (character == 'a') {
-				mainCharacter.jump();
+				PrintStream ps = null;
+				try {
+					ps = new PrintStream(serverSocket.getOutputStream(), true);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Command bif = new Command("JumpMinigame", "a");
+				String send = new Gson().toJson(bif);
+				ps.println(send);
 			}
 			if (character == 'p') {
-				mainCharacter3.jump();
+				PrintStream ps = null;
+				try {
+					ps = new PrintStream(serverSocket.getOutputStream(), true);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Command bif = new Command("JumpMinigame", "p");
+				String send = new Gson().toJson(bif);
+				ps.println(send);
 			}
 			if (character == '.') {
-				mainCharacter4.jump();
+				PrintStream ps = null;
+				try {
+					ps = new PrintStream(serverSocket.getOutputStream(), true);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Command bif = new Command("JumpMinigame", ".");
+				String send = new Gson().toJson(bif);
+				ps.println(send);
 			}
 		}
 	}
