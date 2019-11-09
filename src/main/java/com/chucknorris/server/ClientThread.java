@@ -69,7 +69,10 @@ public class ClientThread extends Thread {
 					}
 					
 					String mandar = gson.toJson(new ActualizarCompraResponse(listaClientPlayers4));
-					
+					Command compraDolares = new Command("Compra", mandar);
+					for(int i = 0; i < threads.size(); i++) {
+						this.send(compraDolares, i);
+					}
 				break;
 				case "EndTurn":
 					juego.endTurn();
@@ -82,10 +85,10 @@ public class ClientThread extends Thread {
 					String fin = gson.toJson(finalizar);
 					Command enviar = new Command("EndTurn", fin);
 					for(int i =0;i < threads.size();i++) {
-						threads.get(i).send(enviar, i);
+						this.send(enviar, i);
 					}
 					Command habilitarBoton = new Command("TirarDado", "");
-					threads.get(juego.getCurrentTurn()%4).send(habilitarBoton, juego.getCurrentTurn()%4);
+					this.send(habilitarBoton, juego.getCurrentTurn()%4);
 					
 					break;
 				case "BifurcationResponse":
@@ -119,10 +122,10 @@ public class ClientThread extends Thread {
 					Command dibujePubli = new Command("MovementResponsePublic",paTodos);
 					
 					int socketToSend = juego.getCurrentTurn()%threads.size();
-					send(dibujePriv,socketToSend);
+					this.send(dibujePriv,socketToSend);
 					for(int i=0;i<threads.size();i++) {
 						if(i!=socketToSend) {
-							threads.get(i).send(dibujePubli, i);
+							this.send(dibujePubli, i);
 						}
 					}
 					break;
@@ -157,10 +160,10 @@ public class ClientThread extends Thread {
 					Command dibujePubli1 = new Command("MovementResponsePublic",paTodos1);
 					
 					int socketToSend1 = juego.getCurrentTurn()%4;
-					send(dibujePriv1,socketToSend1);
+					this.send(dibujePriv1,socketToSend1);
 					for(int i=0;i<threads.size();i++) {
 						if(i!=socketToSend1) {
-							threads.get(i).send(dibujePubli1, i);
+							this.send(dibujePubli1, i);
 						}
 					}
 					break;

@@ -129,7 +129,7 @@ public class CompraDolaresFrame extends JFrame {
 				// El servidor deberia devolver la actualizacion del estado de ese jugador
 				try {
 					PrintStream ps = new PrintStream(socket.getOutputStream(), true);
-					Command tirarDado = new Command("Compra", "pesosTF.getValue().toString()");
+					Command tirarDado = new Command("Compra", pesosTF.getValue().toString());
 					String send = new Gson().toJson(tirarDado);
 					ps.println(send);
 				} catch (IOException e1) {

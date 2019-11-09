@@ -50,6 +50,10 @@ public class ServerThread extends Thread {
 				Command brigadaB = gson.fromJson(hola, Command.class);
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
+				case "Compra":
+					ActualizarCompraResponse respuesta3 = gson.fromJson(brigadaB.getCommandJSON(), ActualizarCompraResponse.class);
+					frame.updateAfterCompra(respuesta3.lista);
+					break;
 				case "MovementResponsePublic":
 					MovementResponsePublic respuesta = gson.fromJson(brigadaB.getCommandJSON(), MovementResponsePublic.class);
 					frame.playTurnPublic(respuesta);
