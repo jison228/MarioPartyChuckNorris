@@ -4,32 +4,32 @@ import java.util.Stack;
 
 import javax.swing.JFrame;
 
-public class GameWindow extends JFrame {
+public class ServerGameWindow extends JFrame {
 	
 	public static final int SCREEN_WIDTH = 800;
-	private GameScreen gameScreen;
+	private ServerGameScreen gameScreen;
 
 	public Stack<String> listaGanadores = new Stack<String>();
 
-	public GameWindow() {
+	public ServerGameWindow() {
 		super("Carrera de presis");
 		setSize(SCREEN_WIDTH, 800);
 		setLocation(400, 25);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		
-		gameScreen = new GameScreen(listaGanadores);
+		gameScreen = new ServerGameScreen(listaGanadores);
 		addKeyListener(gameScreen);
 		add(gameScreen);
 	}
 	
 	public void startGame() {
-		setVisible(true);
+		setVisible(true); //FALSE PARA QUE SE EJECUTE EN SEGUNDO PLANO (SOLO SERVER)
 		gameScreen.startGame();
 	}
 	
 	
 	public static void main(String args[]) {
-		(new GameWindow()).startGame();
+		(new ServerGameWindow()).startGame();
 	}
 }

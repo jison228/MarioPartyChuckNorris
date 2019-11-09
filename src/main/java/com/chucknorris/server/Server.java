@@ -13,6 +13,7 @@ import com.chucknorris.game.Game;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.gamemap.nodes.Node;
+import com.chucknorris.gui.minigame.userinterface.ServerGameWindow;
 import com.chucknorris.player.Cristina;
 import com.chucknorris.player.DelCanio;
 import com.chucknorris.player.Espert;
@@ -23,6 +24,7 @@ import com.google.gson.Gson;
 public class Server {
 	private static ServerSocket serverSocket = null;
 	private static Socket clientSocket = null;
+	private static ServerGameWindow minijuego;
 	private static final int portNumber = 22222;
 
 	public static void main(String args[]) throws Exception {
@@ -64,13 +66,15 @@ public class Server {
 		GameInformation info = new GameInformation(listaP, mapa1, juego01.getPrecioDolar());
 		Gson gson = new Gson();
 		String infoSerialized = gson.toJson(info);
-		Command startGame = new Command("StartGame", infoSerialized);
-		Command habilitarBoton = new Command("TirarDado", "");
+		Command startMinigame = new Command("StartMinigame", infoSerialized);
+		
 		
 		threads.get(0).start();
-		threads.get(0).send(startGame,0);
 		threads.get(1).start();
-		threads.get(1).send(startGame,1);
-		threads.get(0).send(habilitarBoton,0);
+		threads.get(1).send(startMinigame,0);
+		threads.get(1).send(startMinigame,1);
+		minijuego = new ServerGameWindow();
+		minijuego.startGame();
+		
 	}
 }
