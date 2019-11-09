@@ -78,13 +78,7 @@ public class ClientThread extends Thread {
 					break;
 				case "EndTurn":
 					juego.endTurn();
-					if (juego.getCurrentTurn() % 4 == 0) {
-						juego.aumentarPrecioDolar();
-						Command enviar2 = new Command("StartMinigame", "");
-						for (int i = 0; i < threads.size(); i++) {
-							this.send(enviar2, i);
-						}
-					}
+					boolean cfinish = false;
 
 					Player ganador = new Espert(0, 0, 0);
 					for (Player player : juego.getPlayerList()) {
@@ -93,12 +87,13 @@ public class ClientThread extends Thread {
 						}
 					}
 					if (ganador.getDolares() > 150) {
-						for (int i = 0; i < threads.size(); i++)
+						for (int i = 0; i < threads.size(); i++) {
 							this.send(new Command("EndGame", ganador.getCharacter()), i);
-					}
-
+							cfinish = true;
+						}
+					}	
+					
 					Player currentPlayer2 = juego.getPlayerList().get(juego.getCurrentTurn() % 4);
-
 					EndTurnResponse finalizar = new EndTurnResponse(juego.getCurrentTurn(), juego.getPrecioDolar(),
 							currentPlayer2);
 					String fin = gson.toJson(finalizar);
@@ -106,8 +101,20 @@ public class ClientThread extends Thread {
 					for (int i = 0; i < threads.size(); i++) {
 						this.send(enviar, i);
 					}
+					
+					
 					Command habilitarBoton = new Command("TirarDado", "");
 					this.send(habilitarBoton, juego.getCurrentTurn() % 4);
+					
+					if (juego.getCurrentTurn() % 4 == 0) {
+						juego.aumentarPrecioDolar();
+						if(!cfinish) {
+							Command enviar2 = new Command("StartMinigame", "");
+							for (int i = 0; i < threads.size(); i++) {
+								this.send(enviar2, i);
+							}
+						}
+					}
 
 					break;
 				case "BifurcationResponse":

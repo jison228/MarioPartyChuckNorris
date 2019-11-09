@@ -81,6 +81,7 @@ public class Server {
 			threadsMinigame.get(i).start();
 			threads.get(i).send(startGame, i);
 		}
+		Thread.sleep(3000);
 		threads.get(0).send(habilitarBoton, 0);
 
 	}
