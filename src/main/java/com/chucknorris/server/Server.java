@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.chucknorris.Command;
 import com.chucknorris.client.GameInformation;
+import com.chucknorris.commons.Dice;
 import com.chucknorris.commons.Position;
 import com.chucknorris.game.Game;
 import com.chucknorris.gamemap.GameMap;
@@ -51,7 +52,7 @@ public class Server {
 		listaP.add(p2);
 		listaP.add(p3);
 		listaP.add(p4);
-		Game juego01 = new Game(listaP,mapa1);
+		Game juego01 = new Game(new com.chucknorris.gui.GameInformation(listaP, mapa1, new Dice(0, 6),20));
 		for(int i=0;i<4;i++) {
 			try {
 				clientSocket = serverSocket.accept();

@@ -61,7 +61,7 @@ public class ClientThread extends Thread {
 					if(juego.getCurrentTurn()%4==0) {
 						juego.aumentarPrecioDolar();
 					}
-					Player currentPlayer2 = juego.getPlayerList().get(juego.getCurrentTurn());
+					Player currentPlayer2 = juego.getPlayerList().get(juego.getCurrentTurn()%4);
 					
 					EndTurnResponse finalizar = new EndTurnResponse(juego.getCurrentTurn(), juego.getPrecioDolar(), currentPlayer2);
 					String fin = gson.toJson(finalizar);
