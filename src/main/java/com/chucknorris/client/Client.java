@@ -35,7 +35,6 @@ public class Client {
 			System.out.println(e);
 		}
 
-		// me conecto al server
 		try {
 			InetAddress ip = InetAddress.getByName("localhost");
 			Socket serverSocket = new Socket(ip,portNumber);

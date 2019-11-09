@@ -110,6 +110,18 @@ public class ClientThread extends Thread {
 					Command habilitarBoton = new Command("TirarDado", "");
 					this.send(habilitarBoton, juego.getCurrentTurn() % 4);
 
+					
+					if (juego.getCurrentTurn() % 4 == 0) {
+						juego.aumentarPrecioDolar();
+						if(!cfinish) {
+							Command enviar2 = new Command("StartMinigame", "");
+							for (int i = 0; i < threads.size(); i++) {
+								Thread.sleep(1000);
+								this.send(enviar2, i);
+							}
+						}
+					}
+
 					break;
 				case "BifurcationResponse":
 					Player currentPlayer1 = juego.getPlayerList().get(juego.getCurrentTurn() % 4);
