@@ -349,4 +349,8 @@ public class MainGameScreen extends JFrame {
 
 	}
 
+	public void habilitarDado() {
+		btnTirarDado.setVisible(true);
+	}
+	
 }
