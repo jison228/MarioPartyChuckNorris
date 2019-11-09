@@ -130,7 +130,7 @@ public class ClientThread extends Thread {
 					}
 					break;
 				case "TirarDado":
-					Player currentPlayer = juego.getPlayerList().get(juego.getCurrentTurn());
+					Player currentPlayer = juego.getPlayerList().get(juego.getCurrentTurn()%4);
 					GameResponse respuesta = juego.play(currentPlayer);
 					diceResult = respuesta.diceResult;
 					List<Player> listaPlayers1 = juego.getPlayerList();
