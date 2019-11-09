@@ -3,15 +3,12 @@ package com.chucknorris.client;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintStream;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
 import com.chucknorris.Command;
 import com.chucknorris.client.tablero.MainGameScreen;
 import com.chucknorris.game.Game;
-import com.chucknorris.server.ClientThread;
 import com.google.gson.Gson;
 
 public class ServerThread extends Thread {
@@ -44,7 +41,7 @@ public class ServerThread extends Thread {
 
 //			Command brigadaA = new Command("TirarDado", "");
 //			String send = gson.toJson(brigadaA);
-			MainGameScreen frame;
+			MainGameScreen frame = null;
 			Scanner sc = new Scanner(inputStream);
 			int num;
 			while ((num = inputStream.read()) > 0) {
@@ -54,7 +51,8 @@ public class ServerThread extends Thread {
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
 				case "MovementResponsePublic":
-
+					MovementResponsePublic respuesta = gson.fromJson(brigadaB.getCommandJSON(), MovementResponsePublic.class);
+					frame.playTurnPublic(respuesta);
 					break;
 				case "MovementResponsePrivate":
 					// PlayResponse play = new Gson().fromJson(brigadaA.getCommandJSON(),);

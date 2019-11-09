@@ -82,7 +82,9 @@ public class ClientThread extends Thread {
 					}
 					 
 					respuestaPrivada = new MovementResponsePrivate(respuesta.diceResult, respuesta.playerId, respuesta.nodePath, listaClientPlayers, options, respuesta.compraDolares);
-					//Cliente que corresponda mando una respuesta
+					String patodos = gson.toJson(respuestaPublica);
+					Command dibuje = new Command("MovementResponsePublic", patodos);
+					send(dibuje);
 					break;
 				}
 			}
