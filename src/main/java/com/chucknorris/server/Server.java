@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 import com.chucknorris.Command;
 import com.chucknorris.client.GameInformation;
@@ -28,7 +29,8 @@ public class Server {
 	private static Socket clientMinigameSocket;
 	private static final int portNumberMinigame = 22223;
 	private static ServerSocket serverSocketMinigame=null;
-	
+	static Semaphore semaphore2 = new Semaphore(4);
+
 	public static void main(String args[]) throws Exception {
 
 		
@@ -77,11 +79,11 @@ public class Server {
 			}
 		}
 		for (int i = 0; i < threads.size(); i++) {
+			
 			threads.get(i).start();
 			threadsMinigame.get(i).start();
 			threads.get(i).send(startGame, i);
 		}
-		Thread.sleep(3000);
 		threads.get(0).send(habilitarBoton, 0);
 
 	}

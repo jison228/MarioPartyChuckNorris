@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
 
 import com.chucknorris.Command;
 import com.chucknorris.client.ActualizarCompraResponse;
@@ -78,7 +79,13 @@ public class ClientThread extends Thread {
 					break;
 				case "EndTurn":
 					juego.endTurn();
-					boolean cfinish = false;
+					if (juego.getCurrentTurn() % 4 == 0) {
+						juego.aumentarPrecioDolar();
+						Command enviar2 = new Command("StartMinigame", "");
+						for (int i = 0; i < threads.size(); i++) {
+							this.send(enviar2, i);
+						}
+					}
 
 					Player ganador = new Espert(0, 0, 0);
 					for (Player player : juego.getPlayerList()) {
@@ -87,13 +94,12 @@ public class ClientThread extends Thread {
 						}
 					}
 					if (ganador.getDolares() > 150) {
-						for (int i = 0; i < threads.size(); i++) {
+						for (int i = 0; i < threads.size(); i++)
 							this.send(new Command("EndGame", ganador.getCharacter()), i);
-							cfinish = true;
-						}
-					}	
-					
+					}
+
 					Player currentPlayer2 = juego.getPlayerList().get(juego.getCurrentTurn() % 4);
+
 					EndTurnResponse finalizar = new EndTurnResponse(juego.getCurrentTurn(), juego.getPrecioDolar(),
 							currentPlayer2);
 					String fin = gson.toJson(finalizar);
@@ -101,20 +107,8 @@ public class ClientThread extends Thread {
 					for (int i = 0; i < threads.size(); i++) {
 						this.send(enviar, i);
 					}
-					
-					
 					Command habilitarBoton = new Command("TirarDado", "");
 					this.send(habilitarBoton, juego.getCurrentTurn() % 4);
-					
-					if (juego.getCurrentTurn() % 4 == 0) {
-						juego.aumentarPrecioDolar();
-						if(!cfinish) {
-							Command enviar2 = new Command("StartMinigame", "");
-							for (int i = 0; i < threads.size(); i++) {
-								this.send(enviar2, i);
-							}
-						}
-					}
 
 					break;
 				case "BifurcationResponse":
@@ -212,6 +206,7 @@ public class ClientThread extends Thread {
 		if (this.threads.get(socket) != null) {
 			ps = new PrintStream(this.threads.get(socket).outputStream, true);
 			ps.println(mensaje);
+			
 		}
 
 	}

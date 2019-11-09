@@ -46,7 +46,8 @@ public class EnemiesManager2 {
 	
 	private Enemy createEnemy() {
 		// if (enemyType = getRandom)
-		int type = rand.nextInt(2);
+		//int type = rand.nextInt(2);
+				int type=0;
 		if(type == 0) {
 			return new Cactus2(mainCharacter, 800, cactus1.getWidth() - 10, cactus1.getHeight() - 10, cactus1);
 		} else {
