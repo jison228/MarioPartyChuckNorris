@@ -386,7 +386,7 @@ public class MainGameScreen extends JFrame {
 	}
 	
 	public void updateAfterCompra(List<ClientPlayer> clientPlayers) {
-		this.clientPlayersList = clientPlayers;
+		playersPanel.updatePanelPlayers(clientPlayers);
 		repaint();
 	}
 	
