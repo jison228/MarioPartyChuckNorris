@@ -9,6 +9,7 @@ import java.util.Scanner;
 import com.chucknorris.Command;
 import com.chucknorris.client.tablero.MainGameScreen;
 import com.chucknorris.game.Game;
+import com.chucknorris.client.endgame.Endgame;
 import com.google.gson.Gson;
 
 public class ServerThread extends Thread {
@@ -50,6 +51,10 @@ public class ServerThread extends Thread {
 				Command brigadaB = gson.fromJson(hola, Command.class);
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
+				case "EndGame":
+					new Endgame(brigadaB.getCommandJSON()).setVisible(true);
+					frame.dispose();
+					break;
 				case "Compra":
 					ActualizarCompraResponse respuesta3 = gson.fromJson(brigadaB.getCommandJSON(), ActualizarCompraResponse.class);
 					frame.updateAfterCompra(respuesta3.lista);

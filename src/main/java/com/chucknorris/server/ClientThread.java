@@ -16,8 +16,10 @@ import com.chucknorris.client.ClientPlayer;
 import com.chucknorris.client.EndTurnResponse;
 import com.chucknorris.client.MovementResponsePrivate;
 import com.chucknorris.client.MovementResponsePublic;
+import com.chucknorris.client.endgame.Endgame;
 import com.chucknorris.game.Game;
 import com.chucknorris.game.GameResponse;
+import com.chucknorris.player.Espert;
 import com.chucknorris.player.Player;
 import com.google.gson.Gson;
 
@@ -79,6 +81,7 @@ public class ClientThread extends Thread {
 					if(juego.getCurrentTurn()%4==0) {
 						juego.aumentarPrecioDolar();
 					}
+
 					Player currentPlayer2 = juego.getPlayerList().get(juego.getCurrentTurn()%4);
 					
 					EndTurnResponse finalizar = new EndTurnResponse(juego.getCurrentTurn(), juego.getPrecioDolar(), currentPlayer2);
@@ -89,6 +92,18 @@ public class ClientThread extends Thread {
 					}
 					Command habilitarBoton = new Command("TirarDado", "");
 					this.send(habilitarBoton, juego.getCurrentTurn()%4);
+					
+					Player ganador = new Espert(0, 0, 0);
+					for (Player player : juego.getPlayerList()) {
+						if (player.getDolares() >= ganador.getDolares()) {
+							ganador = player;
+						}
+					}
+					if (ganador.getDolares() > 500) {
+						for(int i =0;i < threads.size();i++)
+							this.send(new Command("EndGame", ganador.getCharacter()),i);
+					}
+					
 					
 					break;
 				case "BifurcationResponse":
