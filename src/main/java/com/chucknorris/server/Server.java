@@ -60,7 +60,10 @@ public class Server {
 				System.out.println(e);
 			}
 		}
+
+		
 		threads[0].start();
+		
 		
 	}
 }

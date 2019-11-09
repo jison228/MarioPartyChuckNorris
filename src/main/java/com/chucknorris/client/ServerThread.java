@@ -21,11 +21,18 @@ public class ServerThread extends Thread {
 	private OutputStream outputStream = null;
 
 	private Socket clientSocket = null;
+	private byte[] bytesName;
+	private final ClientThread[] threads;
+	private int maxClientsCount;
 	Game juego;
 
 	public ServerThread(Socket serverSocket, Game juego) {
 		this.clientSocket = serverSocket;
+		this.threads = threads;
+		this.bytesName = bytesName;
 		this.juego = juego;
+		maxClientsCount = threads.length;
+
 		try {
 			this.inputStream = this.clientSocket.getInputStream();
 			this.outputStream = this.clientSocket.getOutputStream();
