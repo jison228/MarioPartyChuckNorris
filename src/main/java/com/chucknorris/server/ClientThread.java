@@ -78,14 +78,9 @@ public class ClientThread extends Thread {
 					}
 					break;
 				case "EndTurn":
+					boolean cfinish = false;
 					juego.endTurn();
-					if (juego.getCurrentTurn() % 4 == 0) {
-						juego.aumentarPrecioDolar();
-						Command enviar2 = new Command("StartMinigame", "");
-						for (int i = 0; i < threads.size(); i++) {
-							this.send(enviar2, i);
-						}
-					}
+
 
 					Player ganador = new Espert(0, 0, 0);
 					for (Player player : juego.getPlayerList()) {
@@ -94,8 +89,10 @@ public class ClientThread extends Thread {
 						}
 					}
 					if (ganador.getDolares() > 150) {
-						for (int i = 0; i < threads.size(); i++)
+						for (int i = 0; i < threads.size(); i++) {
 							this.send(new Command("EndGame", ganador.getCharacter()), i);
+							cfinish = true;
+						}
 					}
 
 					Player currentPlayer2 = juego.getPlayerList().get(juego.getCurrentTurn() % 4);
@@ -107,6 +104,7 @@ public class ClientThread extends Thread {
 					for (int i = 0; i < threads.size(); i++) {
 						this.send(enviar, i);
 					}
+					
 					Command habilitarBoton = new Command("TirarDado", "");
 					this.send(habilitarBoton, juego.getCurrentTurn() % 4);
 
@@ -216,6 +214,12 @@ public class ClientThread extends Thread {
 		PrintStream ps;
 
 		if (this.threads.get(socket) != null) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			ps = new PrintStream(this.threads.get(socket).outputStream, true);
 			ps.println(mensaje);
 			
