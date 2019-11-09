@@ -39,10 +39,10 @@ public class Server {
 		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
 		mapa1 = mapFileCSVReader.buildGameMap();
 		Node ini = mapa1.getMap().get(new Position(0, 0));
-		Espert p1 = new Espert(1450, 150, 100);
-		Cristina p2 = new Cristina(150, 100, 900);
-		Macri p3 = new Macri(500, 100, 100);
-		DelCanio p4 = new DelCanio(150, 100, 100);
+		Espert p1 = new Espert(150, 100, 300);
+		Cristina p2 = new Cristina(150, 100, 300);
+		Macri p3 = new Macri(150, 100, 300);
+		DelCanio p4 = new DelCanio(150, 100, 300);
 		p1.setNodeLocation(ini);
 		p2.setNodeLocation(ini);
 		p3.setNodeLocation(ini);
@@ -60,6 +60,7 @@ public class Server {
 		Command habilitarBoton = new Command("TirarDado", "");
 		for (int i = 0; i < 4; i++) {
 			try {
+				System.out.println("Esperando nueva conexion");
 				clientSocket = serverSocket.accept();
 				System.out.println("Se conecto alguien");
 				threads.add(new ClientThread(clientSocket, threads, juego01));
