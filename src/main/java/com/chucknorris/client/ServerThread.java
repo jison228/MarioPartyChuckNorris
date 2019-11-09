@@ -17,6 +17,8 @@ public class ServerThread extends Thread {
 
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
+
+	private InputStream inputStreamMG = null;
 	private ClientGameWindow minijuego;
 
 	private Socket clientSocket = null;
@@ -33,6 +35,7 @@ public class ServerThread extends Thread {
 		try {
 			this.inputStream = this.clientSocket.getInputStream();
 			this.outputStream = this.clientSocket.getOutputStream();
+			this.inputStreamMG = this.clientSocketMinigame.getInputStream();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -58,7 +61,7 @@ public class ServerThread extends Thread {
 					frame.playTurnPublic(respuesta);
 					break;
 				case "StartMinigame":
-					minijuego = new ClientGameWindow(clientSocketMinigame,inputStream);
+					minijuego = new ClientGameWindow(clientSocketMinigame,inputStreamMG);
 					minijuego.startGame();
 					break;
 				
@@ -81,9 +84,7 @@ public class ServerThread extends Thread {
 					break;
 					
 				}
-				while(true) {
-					
-				}
+	
 			}
 			sc.close();
 

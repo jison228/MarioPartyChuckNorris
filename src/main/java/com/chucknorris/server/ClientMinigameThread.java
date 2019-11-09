@@ -18,11 +18,11 @@ public class ClientMinigameThread extends Thread {
 	private InputStream inputStream = null;
 	private OutputStream outputStreamMinigame = null;
 	private Socket clientSocket = null;
-	private List<ClientThread> threads;
+	private List<ClientMinigameThread> threads;
 	Game juego;
 	int diceResult = 0;
 	
-	public ClientMinigameThread(Socket clientSocket, List<ClientThread> threads2) {
+	public ClientMinigameThread(Socket clientSocket, List<ClientMinigameThread> threads2) {
 		this.clientSocket = clientSocket;
 		this.threads=threads2;
 		try {
@@ -53,27 +53,30 @@ public class ClientMinigameThread extends Thread {
 				case "JumpMinigame":
 					switch( brigadaB.getCommandJSON()) {
 					case "a":
+						System.out.println("a");
 						for(int i=0;i<threads.size();i++) {
 							Command aSaltar = new Command("MinigameJumpA", "a");
-								threads.get(i).send(aSaltar, i);
+								this.send(aSaltar, i);
 							}
 						break;
 					case "b":
+						System.out.println("b");
+
 						for(int i=0;i<threads.size();i++) {
 							Command aSaltar = new Command("MinigameJumpB", "b");
-								threads.get(i).send(aSaltar, i);
+							this.send(aSaltar, i);
 							}
 						break;
 					case "p":
 						for(int i=0;i<threads.size();i++) {
 							Command aSaltar = new Command("MinigameJumpP", "p");
-								threads.get(i).send(aSaltar, i);
+							this.send(aSaltar, i);
 							}
 						break;
 					case ".":
 						for(int i=0;i<threads.size();i++) {
 							Command aSaltar = new Command("MinigameJump.", ".");
-								threads.get(i).send(aSaltar, i);
+							this.send(aSaltar, i);
 							}
 						break;
 					}
@@ -94,7 +97,7 @@ public class ClientMinigameThread extends Thread {
 		synchronized (this) {
 
 			if (this.threads.get(socket) != null) {
-				ps = new PrintStream(clientSocket.getOutputStream(), true);
+				ps = new PrintStream(this.threads.get(socket).outputStreamMinigame, true);
 				ps.println(mensaje);
 			}
 

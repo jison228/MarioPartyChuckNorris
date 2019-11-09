@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 public class ClientThread extends Thread {
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
+
 	private Socket clientSocket = null;
 	private List<ClientThread> threads;
 	Game juego;
@@ -41,8 +42,6 @@ public class ClientThread extends Thread {
 		}
 	}
 
-
-
 	public void run() {
 
 		try {
@@ -57,56 +56,42 @@ public class ClientThread extends Thread {
 				Command brigadaB = gson.fromJson(hola, Command.class);
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
+				case "Compra":
+					Player currentPlayer3 = juego.getPlayerList().get(juego.getCurrentTurn()%4);
+					double pesos = Double.valueOf(brigadaB.getCommandJSON());
+					currentPlayer3.buyDolares(pesos, juego.getPrecioDolar());
+					List<ClientPlayer> listaClientPlayers4 = new ArrayList<ClientPlayer>();
+					for (int i = 0; i < juego.getPlayerList().size(); i++) {
+						Player playerToClient = juego.getPlayerList().get(i);
+						ClientPlayer clientToList = new ClientPlayer(playerToClient);
+						listaClientPlayers4.add(clientToList);
+					}
+					
+//					String mandar = gson.toJson(new ActualizarCompraResponse(listaClientPlayers4));
+//					Command compraDolares = new Command("Compra", mandar);
+					for(int i = 0; i < threads.size(); i++) {
+//						this.send(compraDolares, i);
+					}
+				break;
 				case "EndTurn":
 					juego.endTurn();
 					if(juego.getCurrentTurn()%4==0) {
 						juego.aumentarPrecioDolar();
 					}
-					Player currentPlayer2 = juego.getPlayerList().get(juego.getCurrentTurn());
+					Player currentPlayer2 = juego.getPlayerList().get(juego.getCurrentTurn()%4);
 					
 					EndTurnResponse finalizar = new EndTurnResponse(juego.getCurrentTurn(), juego.getPrecioDolar(), currentPlayer2);
 					String fin = gson.toJson(finalizar);
 					Command enviar = new Command("EndTurn", fin);
 					for(int i =0;i < threads.size();i++) {
-						threads.get(i).send(enviar, i);
+						this.send(enviar, i);
 					}
 					Command habilitarBoton = new Command("TirarDado", "");
-					threads.get(juego.getCurrentTurn()%4).send(habilitarBoton, juego.getCurrentTurn()%4);
+					this.send(habilitarBoton, juego.getCurrentTurn()%4);
 					
 					break;
-				case "StartMinigame":
-			
-				break;
-				case "JumpMinigame":
-					switch( brigadaB.getCommandJSON()) {
-					case "a":
-						for(int i=0;i<threads.size();i++) {
-							Command aSaltar = new Command("MinigameJumpA", "a");
-								threads.get(i).send(aSaltar, i);
-							}
-						break;
-					case "b":
-						for(int i=0;i<threads.size();i++) {
-							Command aSaltar = new Command("MinigameJumpB", "b");
-								threads.get(i).send(aSaltar, i);
-							}
-						break;
-					case "p":
-						for(int i=0;i<threads.size();i++) {
-							Command aSaltar = new Command("MinigameJumpP", "p");
-								threads.get(i).send(aSaltar, i);
-							}
-						break;
-					case ".":
-						for(int i=0;i<threads.size();i++) {
-							Command aSaltar = new Command("MinigameJump.", ".");
-								threads.get(i).send(aSaltar, i);
-							}
-						break;
-					}
-				break;
 				case "BifurcationResponse":
-					Player currentPlayer1 = juego.getPlayerList().get(juego.getCurrentTurn());
+					Player currentPlayer1 = juego.getPlayerList().get(juego.getCurrentTurn()%4);
 					BifurcationResponse decision = gson.fromJson(brigadaB.getCommandJSON(), BifurcationResponse.class);
 					GameResponse respuesta1 = juego.resolveIntersection(currentPlayer1, currentPlayer1.getNodeLocation().nextNodes().get(decision.decision), decision.movementsLeft);
 					List<Player> listaPlayers = juego.getPlayerList();
@@ -136,15 +121,15 @@ public class ClientThread extends Thread {
 					Command dibujePubli = new Command("MovementResponsePublic",paTodos);
 					
 					int socketToSend = juego.getCurrentTurn()%threads.size();
-					send(dibujePriv,socketToSend);
+					this.send(dibujePriv,socketToSend);
 					for(int i=0;i<threads.size();i++) {
 						if(i!=socketToSend) {
-							threads.get(i).send(dibujePubli, i);
+							this.send(dibujePubli, i);
 						}
 					}
 					break;
 				case "TirarDado":
-					Player currentPlayer = juego.getPlayerList().get(juego.getCurrentTurn());
+					Player currentPlayer = juego.getPlayerList().get(juego.getCurrentTurn()%4);
 					GameResponse respuesta = juego.play(currentPlayer);
 					diceResult = respuesta.diceResult;
 					List<Player> listaPlayers1 = juego.getPlayerList();
@@ -174,10 +159,10 @@ public class ClientThread extends Thread {
 					Command dibujePubli1 = new Command("MovementResponsePublic",paTodos1);
 					
 					int socketToSend1 = juego.getCurrentTurn()%4;
-					send(dibujePriv1,socketToSend1);
+					this.send(dibujePriv1,socketToSend1);
 					for(int i=0;i<threads.size();i++) {
 						if(i!=socketToSend1) {
-							threads.get(i).send(dibujePubli1, i);
+							this.send(dibujePubli1, i);
 						}
 					}
 					break;
@@ -194,14 +179,12 @@ public class ClientThread extends Thread {
 		String mensaje = new Gson().toJson(send);
 		PrintStream ps;
 
-		synchronized (this) {
 
 			if (this.threads.get(socket) != null) {
 				ps = new PrintStream(this.threads.get(socket).outputStream, true);
 				ps.println(mensaje);
 			}
 
-		}
 	}
 
 }

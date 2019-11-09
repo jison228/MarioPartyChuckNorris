@@ -38,6 +38,7 @@ public class Server {
 			System.out.println(e);
 		}
 		List<ClientThread> threads = new ArrayList<ClientThread>();
+		List<ClientMinigameThread> threadsMinigame = new ArrayList<ClientMinigameThread>();
 		
 		GameMap mapa1;
 		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
@@ -63,21 +64,22 @@ public class Server {
 				clientMinigameSocket = serverSocketMinigame.accept();
 				System.out.println("Se conecto alguien");
 				threads.add(new ClientThread(clientSocket, threads, juego01));
+				threadsMinigame.add(new ClientMinigameThread(clientMinigameSocket, threadsMinigame));
 			} catch (IOException e) {
 				System.out.println(e);
 			}
 		}
-		ClientMinigameThread manejadorMinigame =new ClientMinigameThread(clientMinigameSocket,threads);
 		GameInformation info = new GameInformation(listaP, mapa1, juego01.getPrecioDolar());
 		Gson gson = new Gson();
 		String infoSerialized = gson.toJson(info);
 		Command startMinigame = new Command("StartMinigame", infoSerialized);
 		
-		manejadorMinigame.start();
+	
 		threads.get(0).start();
 		threads.get(1).start();
 		threads.get(0).send(startMinigame,0);
 		threads.get(1).send(startMinigame,1);
-		
+		threadsMinigame.get(0).start();
+		threadsMinigame.get(1).start();
 	}
 }
