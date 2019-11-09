@@ -262,7 +262,7 @@ public class MainGameScreen extends JFrame {
 		btnEndTurn.setFocusable(false);
 		btnEndTurn.setBounds(0, 25, 120, 120);
 		buttonPanel.add(btnEndTurn);
-
+		btnTirarDado.setVisible(false);
 	}
 	
 	public void playTurnPublic(MovementResponsePublic respuesta) {

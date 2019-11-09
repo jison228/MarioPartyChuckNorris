@@ -23,9 +23,6 @@ import com.google.gson.Gson;
 public class Server {
 	private static ServerSocket serverSocket = null;
 	private static Socket clientSocket = null;
-	private static final int maxClientsCount = 10;
-	private static final ClientThread[] threads = new ClientThread[maxClientsCount];
-
 	private static final int portNumber = 22222;
 
 	public static void main(String args[]) throws Exception {
@@ -35,7 +32,8 @@ public class Server {
 		} catch (IOException e) {
 			System.out.println(e);
 		}
-
+		List<ClientThread> threads = new ArrayList<ClientThread>();
+		
 		GameMap mapa1;
 		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
 		mapa1 = mapFileCSVReader.buildGameMap();
@@ -54,11 +52,11 @@ public class Server {
 		listaP.add(p3);
 		listaP.add(p4);
 		Game juego01 = new Game(listaP,mapa1);
-		for(int i=0;i<1;i++) {
+		for(int i=0;i<2;i++) {
 			try {
 				clientSocket = serverSocket.accept();
 				System.out.println("Se conecto alguien");
-				threads[i] = new ClientThread(clientSocket, threads, juego01);
+				threads.add(new ClientThread(clientSocket, threads, juego01));
 			} catch (IOException e) {
 				System.out.println(e);
 			}
@@ -67,9 +65,12 @@ public class Server {
 		Gson gson = new Gson();
 		String infoSerialized = gson.toJson(info);
 		Command startGame = new Command("StartGame", infoSerialized);
+		Command habilitarBoton = new Command("TirarDado", "");
 		
-		threads[0].start();
-		threads[0].send(startGame);
-		
+		threads.get(0).start();
+		threads.get(0).send(startGame,0);
+		threads.get(1).start();
+		threads.get(1).send(startGame,1);
+		threads.get(0).send(habilitarBoton,0);
 	}
 }

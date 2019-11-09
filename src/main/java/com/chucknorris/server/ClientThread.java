@@ -24,17 +24,13 @@ public class ClientThread extends Thread {
 	private OutputStream outputStream = null;
 
 	private Socket clientSocket = null;
-	private byte[] bytesName;
-	private final ClientThread[] threads;
-	private int maxClientsCount;
+	private List<ClientThread> threads;
 	Game juego;
 
-	public ClientThread(Socket clientSocket, ClientThread[] threads, Game juego) {
+	public ClientThread(Socket clientSocket, List<ClientThread> threads, Game juego) {
 		this.clientSocket = clientSocket;
 		this.threads = threads;
-		this.bytesName = bytesName;
 		this.juego = juego;
-		maxClientsCount = threads.length;
 
 		try {
 			inputStream = this.clientSocket.getInputStream();
@@ -45,46 +41,58 @@ public class ClientThread extends Thread {
 	}
 
 	public void run() {
-		
+
 		try {
 			Scanner sc = new Scanner(inputStream);
 			int num;
-			while ((num = inputStream.read())>0) {
-				String hola = String.valueOf((char)num);
+			while ((num = inputStream.read()) > 0) {
+				String hola = String.valueOf((char) num);
 				hola = hola + sc.next();
 				Gson gson = new Gson();
-				Command brigadaB = gson.fromJson(hola,Command.class);
+				Command brigadaB = gson.fromJson(hola, Command.class);
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
-				switch(brigadaB.getCommandName()) {
-				case "MovementResponsePublic": 
-					//PlayResponse play = new Gson().fromJson(brigadaA.getCommandJSON(),);
-				break;
-				case "TirarDado" :
+				switch (brigadaB.getCommandName()) {
+				case "MovementResponsePublic":
+					// PlayResponse play = new Gson().fromJson(brigadaA.getCommandJSON(),);
+					break;
+				case "TirarDado":
 					Player currentPlayer = juego.getPlayerList().get(juego.getCurrentTurn());
 					GameResponse respuesta = juego.play(currentPlayer);
 					MovementResponsePublic respuestaPublica;
 					MovementResponsePrivate respuestaPrivada;
 					List<Player> listaPlayers = juego.getPlayerList();
 					List<ClientPlayer> listaClientPlayers = new ArrayList<ClientPlayer>();
-					for(int i = 0;i < listaPlayers.size();i++) {
+					for (int i = 0; i < listaPlayers.size(); i++) {
 						Player playerToClient = listaPlayers.get(i);
 						ClientPlayer clientToList = new ClientPlayer(playerToClient);
 						listaClientPlayers.add(clientToList);
 					}
-					respuestaPublica = new MovementResponsePublic(respuesta.diceResult, respuesta.playerId, respuesta.nodePath, listaClientPlayers);
+					respuestaPublica = new MovementResponsePublic(respuesta.diceResult, respuesta.playerId,
+							respuesta.nodePath, listaClientPlayers);
 					List<ClientNode> options = new ArrayList<ClientNode>();
-					if(respuesta.movementsLeft != 0) {
-						for(int i=0;i < currentPlayer.getNodeLocation().nextNodes().size();i++) {
+					if (respuesta.movementsLeft != 0) {
+						for (int i = 0; i < currentPlayer.getNodeLocation().nextNodes().size(); i++) {
 							options.add(new ClientNode(currentPlayer.getNodeLocation().nextNodes().get(i)));
 						}
 					} else {
 						options = null;
 					}
-					 
-					respuestaPrivada = new MovementResponsePrivate(respuesta.diceResult, respuesta.playerId, respuesta.nodePath, listaClientPlayers, options, respuesta.compraDolares);
-					String patodos = gson.toJson(respuestaPrivada);
-					Command dibuje = new Command("MovementResponsePrivate", patodos);
-					send(dibuje);
+
+					respuestaPrivada = new MovementResponsePrivate(respuesta.diceResult, respuesta.playerId,
+							respuesta.nodePath, listaClientPlayers, options, respuesta.compraDolares);
+					String paUno = gson.toJson(respuestaPrivada);
+					Command dibujePriv = new Command("MovementResponsePrivate", paUno);
+					
+					String paTodos = gson.toJson(respuestaPublica);
+					Command dibujePubli = new Command("MovementResponsePublic",paTodos);
+					
+					int socketToSend = juego.getCurrentTurn()%4;
+					send(dibujePriv,socketToSend);
+					for(int i=0;i<threads.size();i++) {
+						if(i!=socketToSend) {
+							threads.get(i).send(dibujePubli, i);
+						}
+					}
 					break;
 				}
 			}
@@ -95,17 +103,17 @@ public class ClientThread extends Thread {
 
 	}
 
-	public void send(Command send) throws IOException {
+	public void send(Command send, int socket) throws IOException {
 		String mensaje = new Gson().toJson(send);
 		PrintStream ps;
 
 		synchronized (this) {
-			for (int i = 0; i < 1; i++) {
-				if (this.threads[i] != null) {
-					ps = new PrintStream(this.threads[i].outputStream, true); 
-					ps.println(mensaje);
-				}
+
+			if (this.threads.get(socket) != null) {
+				ps = new PrintStream(this.threads.get(socket).outputStream, true);
+				ps.println(mensaje);
 			}
+
 		}
 	}
 

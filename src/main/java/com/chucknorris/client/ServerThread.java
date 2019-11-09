@@ -65,7 +65,7 @@ public class ServerThread extends Thread {
 					frame.setVisible(true);
 					break;
 				case "TirarDado":
-					juego.play(juego.getPlayerList().get(juego.getCurrentTurn()));
+					frame.habilitarDado();
 					break;
 				}
 			}
