@@ -99,7 +99,7 @@ public class ClientThread extends Thread {
 							ganador = player;
 						}
 					}
-					if (ganador.getDolares() > 500) {
+					if (ganador.getDolares() > 150) {
 						for(int i =0;i < threads.size();i++)
 							this.send(new Command("EndGame", ganador.getCharacter()),i);
 					}
