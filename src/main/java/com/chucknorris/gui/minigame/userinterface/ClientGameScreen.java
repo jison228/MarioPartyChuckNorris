@@ -270,6 +270,10 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 					case "MinigameJump.":
 						mainCharacter4.jump();
 						break;
+					case "MandaleMecha":
+						gameState= GAME_PLAYING_STATE;
+						isKeyPressed =true;
+						break;
 					}
 				}
 			} catch (JsonSyntaxException | IOException e) {
@@ -446,7 +450,17 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 			switch (gameState) {
 			case START_GAME_STATE:
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					gameState = GAME_PLAYING_STATE;
+//					gameState = GAME_PLAYING_STATE;
+					PrintStream ps = null;
+					try {
+						ps = new PrintStream(serverSocket.getOutputStream(), true);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					Command bif = new Command("MandaleMecha", "Amiguerou");
+					String send = new Gson().toJson(bif);
+					ps.println(send);
 					// musica1.play();
 					try {
 						clip.open(stream);

@@ -47,21 +47,22 @@ public class ClientMinigameThread extends Thread {
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
 				
-				case "StartMinigame":
+				case "MandaleMecha":
+					for(int i=0;i<threads.size();i++) {
+						Command aSaltar = new Command("MandaleMecha", "a");
+							this.send(aSaltar, i);
+						}
 			
 				break;
 				case "JumpMinigame":
 					switch( brigadaB.getCommandJSON()) {
 					case "a":
-						System.out.println("a");
 						for(int i=0;i<threads.size();i++) {
 							Command aSaltar = new Command("MinigameJumpA", "a");
 								this.send(aSaltar, i);
 							}
 						break;
 					case "b":
-						System.out.println("b");
-
 						for(int i=0;i<threads.size();i++) {
 							Command aSaltar = new Command("MinigameJumpB", "b");
 							this.send(aSaltar, i);
