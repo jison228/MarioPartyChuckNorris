@@ -3,7 +3,6 @@ package com.chucknorris.server;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,15 +92,11 @@ public class ClientThread extends Thread {
 
 	}
 
-	public void send(Command send) throws IOException {
-		String mensaje = new Gson().toJson(send);
-		PrintStream ps;
-
+	public void send(byte[] b) throws IOException {
 		synchronized (this) {
 			for (int i = 0; i < this.maxClientsCount; i++) {
 				if (this.threads[i] != null) {
-					ps = new PrintStream(this.threads[i].outputStream, true); 
-					ps.println(mensaje);
+					this.threads[i].outputStream.write(b);
 					this.threads[i].outputStream.flush();
 				}
 			}

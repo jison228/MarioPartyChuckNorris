@@ -43,7 +43,7 @@ public class GameMapTest {
 	@Test
 	public void movePlayer_with_bif_test() {
 		// TIRA JUGADOR 1
-		int respuestaReal = mapa1.movePlayer(p1, 4,null,null);
+		int respuestaReal = mapa1.movePlayer(p1, 4);
 
 		assertEquals(new Position(2, 5), p1.getNodeLocation().getPositionCoords());
 		assertEquals(0, respuestaReal);
@@ -52,13 +52,13 @@ public class GameMapTest {
 	@Test
 	public void movePlayer_without_bif_test() {
 		// TIRA JUGADOR 2
-		int respuestaReal2 = mapa1.movePlayer(p2, 8,null,null);
+		int respuestaReal2 = mapa1.movePlayer(p2, 8);
 
 		assertEquals(new Position(3, 4), p2.getNodeLocation().getPositionCoords());
 		assertEquals(2, respuestaReal2);
 
 		// ELIGE JUGADOR 2
-		int respuestaReal3 = mapa1.movePlayerFromIntersection(p2, p2.getNodeLocation().nextNodes().get(0), 2,null,null);
+		int respuestaReal3 = mapa1.movePlayerFromIntersection(p2, p2.getNodeLocation().nextNodes().get(0), 2);
 
 		assertEquals(new Position(2, 2), p2.getNodeLocation().getPositionCoords());
 		assertEquals(0, respuestaReal3);
