@@ -52,7 +52,7 @@ public class Server {
 		listaP.add(p3);
 		listaP.add(p4);
 		Game juego01 = new Game(listaP,mapa1);
-		for(int i=0;i<2;i++) {
+		for(int i=0;i<4;i++) {
 			try {
 				clientSocket = serverSocket.accept();
 				System.out.println("Se conecto alguien");
@@ -67,7 +67,7 @@ public class Server {
 		Command startGame = new Command("StartGame", infoSerialized);
 		Command habilitarBoton = new Command("TirarDado", "");
 		
-
+		
 
 		for(int i=0 ; i < threads.size();i++) {
 			threads.get(i).start();
