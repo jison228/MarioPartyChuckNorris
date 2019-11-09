@@ -82,8 +82,8 @@ public class ClientThread extends Thread {
 					}
 					 
 					respuestaPrivada = new MovementResponsePrivate(respuesta.diceResult, respuesta.playerId, respuesta.nodePath, listaClientPlayers, options, respuesta.compraDolares);
-					String patodos = gson.toJson(respuestaPublica);
-					Command dibuje = new Command("MovementResponsePublic", patodos);
+					String patodos = gson.toJson(respuestaPrivada);
+					Command dibuje = new Command("MovementResponsePrivate", patodos);
 					send(dibuje);
 					break;
 				}

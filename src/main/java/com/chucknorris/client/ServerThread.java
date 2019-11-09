@@ -55,7 +55,8 @@ public class ServerThread extends Thread {
 					frame.playTurnPublic(respuesta);
 					break;
 				case "MovementResponsePrivate":
-					// PlayResponse play = new Gson().fromJson(brigadaA.getCommandJSON(),);
+					MovementResponsePrivate respuesta1 = gson.fromJson(brigadaB.getCommandJSON(), MovementResponsePrivate.class);
+					frame.playTurnPrivate(respuesta1);
 					break;
 				case "StartGame":
 					GameInformation gameInfo = gson.fromJson(brigadaB.getCommandJSON(), GameInformation.class);
