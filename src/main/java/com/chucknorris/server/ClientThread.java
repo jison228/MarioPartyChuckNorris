@@ -98,11 +98,10 @@ public class ClientThread extends Thread {
 		PrintStream ps;
 
 		synchronized (this) {
-			for (int i = 0; i < this.maxClientsCount; i++) {
+			for (int i = 0; i < 1; i++) {
 				if (this.threads[i] != null) {
 					ps = new PrintStream(this.threads[i].outputStream, true); 
 					ps.println(mensaje);
-					this.threads[i].outputStream.flush();
 				}
 			}
 		}
