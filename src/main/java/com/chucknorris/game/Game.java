@@ -60,12 +60,12 @@ public class Game {
 		Queue<Position> nodePath = new LinkedList<Position>();
 		List<Node> villereada = new ArrayList<Node>();
 		
-		int movimientos = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft,nodePath,villereada);
+		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft,nodePath,villereada);
 		
 		boolean comprarDolares = validarCompraDolares(villereada);
 		applyRewardIfApplies(player, movementsLeft);
 
-		return new GameResponse(1, nodePath, playerID, comprarDolares,movimientos);
+		return new GameResponse(1, nodePath, playerID, comprarDolares,movementsLeft);
 	}
 
 	private void applyRewardIfApplies(Player player, int movementsLeft) {
