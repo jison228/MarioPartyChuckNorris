@@ -10,29 +10,26 @@ import java.util.Scanner;
 
 import com.chucknorris.Command;
 import com.chucknorris.client.endgame.Endgame;
-import com.chucknorris.client.lobby.Lobby;
 import com.chucknorris.client.tablero.MainGameScreen;
 import com.chucknorris.gui.minigame.userinterface.ClientGameWindow;
 import com.chucknorris.server.ClientThread;
 import com.google.gson.Gson;
 
 public class ServerThread extends Thread {
-	// private String ip;
 
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
-    List<ClientThread> threads = new ArrayList<ClientThread>();
+	List<ClientThread> threads = new ArrayList<ClientThread>();
 
 	private InputStream inputStreamMG = null;
 	private ClientGameWindow minijuego;
 
 	private Socket clientSocket = null;
 	private Socket clientSocketMinigame = null;
-    private Lobby framelobby = null;
-	
-	public ServerThread(Socket serverSocket,Socket serverSocketMinigame) {
+
+	public ServerThread(Socket serverSocket, Socket serverSocketMinigame) {
 		this.clientSocket = serverSocket;
-		this.clientSocketMinigame=serverSocketMinigame;
+		this.clientSocketMinigame = serverSocketMinigame;
 		try {
 			this.inputStream = this.clientSocket.getInputStream();
 			this.outputStream = this.clientSocket.getOutputStream();
@@ -45,7 +42,7 @@ public class ServerThread extends Thread {
 	public void run() {
 		try {
 			Gson gson = new Gson();
-			
+
 			MainGameScreen frame = null;
 			Scanner sc = new Scanner(inputStream);
 			int num;
@@ -55,16 +52,9 @@ public class ServerThread extends Thread {
 				Command brigadaB = gson.fromJson(hola, Command.class);
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
-				case "LanzarLobby":
-                    threads = gson.fromJson(brigadaB.getCommandJSON(),List.class);
-                    if(framelobby==null) {
-                    	this.framelobby = new Lobby(threads);
-                    } else {
-                    	framelobby.updateListClientes(threads);
-                    }
-                    break;
+
 				case "StartMinigame":
-					minijuego = new ClientGameWindow(clientSocketMinigame,inputStreamMG);
+					minijuego = new ClientGameWindow(clientSocketMinigame, inputStreamMG);
 					minijuego.startGame();
 					break;
 				case "EndGame":
