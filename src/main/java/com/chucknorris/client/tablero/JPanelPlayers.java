@@ -27,7 +27,7 @@ public class JPanelPlayers extends JPanel {
 	public void paint(Graphics g) {
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(new File("images/backgrounds/" + "panelPlayers" + ".jpg"));
+			image = ImageIO.read(new File("images/backgrounds/" + "panelPlayers2" + ".jpg"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
