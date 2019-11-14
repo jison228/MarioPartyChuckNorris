@@ -2,17 +2,20 @@ package com.chucknorris.client.tablero;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Queue;
 
@@ -21,9 +24,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.chucknorris.Command;
+import com.chucknorris.client.ChatResponse;
 import com.chucknorris.client.ClientPlayer;
 import com.chucknorris.client.EndTurnResponse;
 import com.chucknorris.client.GameInformation;
@@ -65,7 +71,11 @@ public class MainGameScreen extends JFrame {
 	private CompraDolaresFrame compraDolaresFrame;
 	private Socket servidor;
 	int movementsLeft;
-	Gson gson = new Gson();
+	private Gson gson = new Gson();
+	private TextArea chatTA;
+	private JTextField chatTF;
+	private JButton chatBtn;
+
 	/**
 	 * Launch the application.
 	 */
@@ -78,7 +88,7 @@ public class MainGameScreen extends JFrame {
 					GameMap mapa1;
 					MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
 					mapa1 = mapFileCSVReader.buildGameMap();
-					ParitariaNode ini = new ParitariaNode(null, new Position(0,0));
+					ParitariaNode ini = new ParitariaNode(null, new Position(0, 0));
 					Espert p1 = new Espert(1450, 150, 100);
 					Cristina p2 = new Cristina(150, 100, 900);
 					Macri p3 = new Macri(500, 100, 100);
@@ -93,13 +103,13 @@ public class MainGameScreen extends JFrame {
 					listaP.add(p3);
 					listaP.add(p4);
 
-					GameInformation gameInformation = new GameInformation(listaP,mapa1,20);
+					GameInformation gameInformation = new GameInformation(listaP, mapa1, 20);
 
-					MainGameScreen frame = new MainGameScreen(gameInformation,null);
+					MainGameScreen frame = new MainGameScreen(gameInformation, null);
 					frame.setVisible(true);
 
-					//ChatThread chatThread = new ChatThread();
-					//chatThread.start();
+					// ChatThread chatThread = new ChatThread();
+					// chatThread.start();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -137,15 +147,68 @@ public class MainGameScreen extends JFrame {
 		contentPane.add(panelDescrip);
 		panelDescrip.setVisible(false);
 
-		// Panel para chat (no implementado)
-		JPanel chatPanel = new JPanel();
-		chatPanel.setBackground(Color.lightGray);
-		chatPanel.setBounds(1000, 500, 280, 230);
-		contentPane.add(chatPanel);
-		chatPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		JLabel chatLbl = new JLabel("CHAT");
-		chatLbl.setFont(new Font("Tahoma", Font.BOLD, 24));
-		chatPanel.add(chatLbl);
+		// CHAT
+		// TextArea
+		chatTA = new TextArea();
+		chatTA.setBounds(1010, 510, 260, 130);
+		contentPane.add(chatTA);
+		// TextField
+		chatTF = new JTextField();
+		chatTF.setBounds(1010, 650, 180, 25);
+		chatTF.setHorizontalAlignment(SwingConstants.RIGHT);
+		chatTF.setText("Escriba aqui su mensaje");
+		chatTF.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (chatTF.getText().equals("Escriba aqui su mensaje")) {
+					chatTF.setText("");
+				}
+			}
+		});
+		chatTF.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+				int key = e.getExtendedKeyCode();
+				if (key == KeyEvent.VK_ENTER) {
+					PrintStream ps = null;
+					try {
+						ps = new PrintStream(servidor.getOutputStream(), true);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					Command commandChat = new Command("Chat", chatTF.getText());
+					String gsonCommand = gson.toJson(commandChat);
+					ps.println(gsonCommand);
+					chatTF.setText("");
+				}
+
+			}
+		});
+		contentPane.add(chatTF);
+		// Jbutton
+		chatBtn = new JButton();
+		chatBtn.setText("Enviar");
+		chatBtn.setBounds(1200, 650, 70, 25);
+		chatBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PrintStream ps = null;
+				try {
+					ps = new PrintStream(servidor.getOutputStream(), true);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				ChatResponse respuestaChat = new ChatResponse("Pepe", chatTF.getText());
+				String chat = gson.toJson(respuestaChat);
+				Command commandChat = new Command("Chat", chat);
+				String gsonCommand = gson.toJson(commandChat);
+				ps.println(gsonCommand);
+				chatTF.setText("");
+			}
+		});
+		contentPane.add(chatBtn);
 
 		// BOTONES DE DECISION (experimentacion)
 		// 1
@@ -164,7 +227,7 @@ public class MainGameScreen extends JFrame {
 				}
 				BifurcationResponse res1 = new BifurcationResponse(0, movementsLeft);
 				String sres1 = gson.toJson(res1);
-				
+
 				Command bif = new Command("BifurcationResponse", sres1);
 				String send = new Gson().toJson(bif);
 				ps.println(send);
@@ -190,7 +253,7 @@ public class MainGameScreen extends JFrame {
 				}
 				BifurcationResponse res1 = new BifurcationResponse(1, movementsLeft);
 				String sres1 = gson.toJson(res1);
-				
+
 				Command bif = new Command("BifurcationResponse", sres1);
 				String send = new Gson().toJson(bif);
 				ps.println(send);
@@ -249,7 +312,7 @@ public class MainGameScreen extends JFrame {
 		btnTirarDado.setForeground(Color.RED);
 		btnTirarDado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				try {
 					PrintStream ps = new PrintStream(servidor.getOutputStream(), true);
 					Command tirarDado = new Command("TirarDado", "");
@@ -290,28 +353,29 @@ public class MainGameScreen extends JFrame {
 		buttonPanel.add(btnEndTurn);
 		btnTirarDado.setVisible(false);
 	}
-	
+
 	public void playTurnPublic(MovementResponsePublic respuesta) {
 		ClientPlayer currentClientPlayer = null;
-		for(int i=0;i<clientPlayersList.size();i++) {
-			if(respuesta.playerID.equals(clientPlayersList.get(i).getCharacter())) {
+		for (int i = 0; i < clientPlayersList.size(); i++) {
+			if (respuesta.playerID.equals(clientPlayersList.get(i).getCharacter())) {
 				currentClientPlayer = clientPlayersList.get(i);
 			}
 		}
- 		moverJugador(respuesta.diceResult, currentClientPlayer, respuesta.nodePath);
- 		playersPanel.updatePanelPlayers(respuesta.currentClientPlayerList);
- 		repaint();
+		moverJugador(respuesta.diceResult, currentClientPlayer, respuesta.nodePath);
+		playersPanel.updatePanelPlayers(respuesta.currentClientPlayerList);
+		repaint();
 	}
+
 	public void playTurnPrivate(MovementResponsePrivate respuesta) {
 		ClientPlayer currentClientPlayer = null;
 		movementsLeft = respuesta.movementsLeft;
-		for(int i=0;i<clientPlayersList.size();i++) {
-			if(respuesta.playerID.equals(clientPlayersList.get(i).getCharacter())) {
+		for (int i = 0; i < clientPlayersList.size(); i++) {
+			if (respuesta.playerID.equals(clientPlayersList.get(i).getCharacter())) {
 				currentClientPlayer = clientPlayersList.get(i);
 			}
 		}
- 		moverJugador(respuesta.diceResult, currentClientPlayer, respuesta.nodePath);
- 		if (movementsLeft != 0) {
+		moverJugador(respuesta.diceResult, currentClientPlayer, respuesta.nodePath);
+		if (movementsLeft != 0) {
 			tomarDecision(respuesta);
 		} else {
 			playersPanel.updatePanelPlayers(respuesta.currentClientPlayerList);
@@ -322,19 +386,19 @@ public class MainGameScreen extends JFrame {
 
 	public void endTurn(MovementResponsePrivate respuesta) {
 		ClientPlayer currentClientPlayer = null;
-		for(int i=0;i<clientPlayersList.size();i++) {
-			if(respuesta.playerID.equals(clientPlayersList.get(i).getPlayerName())) {
+		for (int i = 0; i < clientPlayersList.size(); i++) {
+			if (respuesta.playerID.equals(clientPlayersList.get(i).getPlayerName())) {
 				currentClientPlayer = clientPlayersList.get(i);
 			}
 		}
-		if(respuesta.compra_dolares) {
-			compraDolaresFrame = new CompraDolaresFrame(currentClientPlayer, characterPanel.getPrecioDolar(),servidor);
+		if (respuesta.compra_dolares) {
+			compraDolaresFrame = new CompraDolaresFrame(currentClientPlayer, characterPanel.getPrecioDolar(), servidor);
 			compraDolaresFrame.setVisible(true);
 		}
 		btnEndTurn.setVisible(true);
 		repaint();
 	}
-	
+
 	public void announceWinner(ClientPlayer ganador) {
 		finPartida = new Endgame(ganador.getCharacter());
 		finPartida.setVisible(true);
@@ -342,7 +406,7 @@ public class MainGameScreen extends JFrame {
 	}
 
 	private void moverJugador(int diceResult, ClientPlayer currentPlayer, Queue<Position> nodePath) {
-		diceImage.setVisible(true); //Solo al Player que corresponde
+		diceImage.setVisible(true); // Solo al Player que corresponde
 		diceImage.setIcon(new ImageIcon("images/dice/" + diceResult + ".png"));
 		Position transitionNode = nodePath.poll();
 		int size = nodePath.size();
@@ -358,7 +422,7 @@ public class MainGameScreen extends JFrame {
 			contentPane.paintImmediately(0, 0, 1280, 720);
 		}
 	}
-	
+
 	private void tomarDecision(MovementResponsePrivate decision) {
 		btnTirarDado.setVisible(false);
 		btnCamino1.setBounds(30 + decision.options.get(0).getPosition().getX() * 125,
@@ -368,8 +432,8 @@ public class MainGameScreen extends JFrame {
 				30 + decision.options.get(1).getPosition().getY() * 125, 75, 75);
 		btnCamino2.actualizarImagen(decision.options.get(1).getType());
 
-		btnCamino1.setVisible(true); //Solo al Player que corresponde
-		btnCamino2.setVisible(true); //Solo al Player que corresponde
+		btnCamino1.setVisible(true); // Solo al Player que corresponde
+		btnCamino2.setVisible(true); // Solo al Player que corresponde
 		repaint();
 	}
 
@@ -384,10 +448,13 @@ public class MainGameScreen extends JFrame {
 		btnTirarDado.setVisible(true);
 		repaint();
 	}
-	
+
 	public void updateAfterCompra(List<ClientPlayer> clientPlayers) {
 		playersPanel.updatePanelPlayers(clientPlayers);
 		repaint();
 	}
-	
+
+	public void addChatText(String mensaje) {
+		chatTA.append(new SimpleDateFormat("HH:mm:ss").format(new Date(System.currentTimeMillis())) + " " + mensaje + "\n");
+	}
 }

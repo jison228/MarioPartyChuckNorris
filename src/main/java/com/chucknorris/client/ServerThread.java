@@ -2,7 +2,7 @@ package com.chucknorris.client;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+//import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 public class ServerThread extends Thread {
 
 	private InputStream inputStream = null;
-	private OutputStream outputStream = null;
+	//private OutputStream outputStream = null;
 	List<ClientThread> threads = new ArrayList<ClientThread>();
 
 	private InputStream inputStreamMG = null;
@@ -32,7 +32,7 @@ public class ServerThread extends Thread {
 		this.clientSocketMinigame = serverSocketMinigame;
 		try {
 			this.inputStream = this.clientSocket.getInputStream();
-			this.outputStream = this.clientSocket.getOutputStream();
+			//this.outputStream = this.clientSocket.getOutputStream();
 			this.inputStreamMG = this.clientSocketMinigame.getInputStream();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -52,7 +52,10 @@ public class ServerThread extends Thread {
 				Command brigadaB = gson.fromJson(hola, Command.class);
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
-
+				case "Chat":
+					ChatResponse respuestaChat = gson.fromJson(brigadaB.getCommandJSON(),ChatResponse.class);
+					frame.addChatText("\"" + respuestaChat.playerID + "\" : " + respuestaChat.mensaje);
+					break;
 				case "StartMinigame":
 					minijuego = new ClientGameWindow(clientSocketMinigame, inputStreamMG);
 					minijuego.startGame();

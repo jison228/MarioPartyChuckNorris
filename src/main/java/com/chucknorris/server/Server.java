@@ -9,7 +9,6 @@ import java.util.concurrent.Semaphore;
 
 import com.chucknorris.Command;
 import com.chucknorris.client.GameInformation;
-import com.chucknorris.commons.Dice;
 import com.chucknorris.commons.Position;
 import com.chucknorris.game.Game;
 import com.chucknorris.gamemap.GameMap;

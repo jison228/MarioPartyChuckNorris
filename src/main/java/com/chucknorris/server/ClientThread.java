@@ -5,12 +5,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 import com.chucknorris.Command;
 import com.chucknorris.client.ActualizarCompraResponse;
+import com.chucknorris.client.ChatResponse;
 import com.chucknorris.client.ClientNode;
 import com.chucknorris.client.ClientPlayer;
 import com.chucknorris.client.EndTurnResponse;
@@ -54,10 +57,18 @@ public class ClientThread extends Thread {
 			MovementResponsePrivate respuestaPrivada;
 			while ((num = inputStream.read()) > 0) {
 				String hola = String.valueOf((char) num);
-				hola = hola + sc.next();
+				hola = hola + sc.nextLine();
 				Command brigadaB = gson.fromJson(hola, Command.class);
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
+				case "Chat":
+					ChatResponse respuestaChat = new ChatResponse("pepe", brigadaB.getCommandJSON());
+					String chatGson = gson.toJson(respuestaChat);
+					Command commandChat = new Command("Chat", chatGson);
+					for (int i = 0; i < threads.size(); i++) {
+						this.send(commandChat, i);
+					}
+					break;
 				case "Compra":
 					Player currentPlayer3 = juego.getPlayerList().get(juego.getCurrentTurn() % 4);
 					double pesos = Double.valueOf(brigadaB.getCommandJSON());
