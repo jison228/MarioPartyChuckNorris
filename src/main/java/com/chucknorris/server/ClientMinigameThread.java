@@ -21,10 +21,13 @@ public class ClientMinigameThread extends Thread {
 	private List<ClientMinigameThread> threads;
 	Game juego;
 	int diceResult = 0;
-	
+	Gson gson;
+	PrintStream ps;
+
 	public ClientMinigameThread(Socket clientSocket, List<ClientMinigameThread> threads2) {
+		gson = new Gson();
 		this.clientSocket = clientSocket;
-		this.threads=threads2;
+		this.threads = threads2;
 		try {
 			inputStream = this.clientSocket.getInputStream();
 			outputStreamMinigame = this.clientSocket.getOutputStream();
@@ -33,8 +36,6 @@ public class ClientMinigameThread extends Thread {
 		}
 	}
 
-
-
 	public void run() {
 		try {
 			Scanner sc = new Scanner(inputStream);
@@ -42,46 +43,46 @@ public class ClientMinigameThread extends Thread {
 			while ((num = inputStream.read()) > 0) {
 				String hola = String.valueOf((char) num);
 				hola = hola + sc.next();
-				Gson gson = new Gson();
+
 				Command brigadaB = gson.fromJson(hola, Command.class);
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
-				
+
 				case "MandaleMecha":
-					for(int i=0;i<threads.size();i++) {
+					for (int i = 0; i < threads.size(); i++) {
 						Command aSaltar = new Command("MandaleMecha", "a");
+						this.send(aSaltar, i);
+					}
+
+					break;
+				case "JumpMinigame":
+					switch (brigadaB.getCommandJSON()) {
+					case "a":
+						for (int i = 0; i < threads.size(); i++) {
+							Command aSaltar = new Command("MinigameJumpA", "a");
 							this.send(aSaltar, i);
 						}
-			
-				break;
-				case "JumpMinigame":
-					switch( brigadaB.getCommandJSON()) {
-					case "a":
-						for(int i=0;i<threads.size();i++) {
-							Command aSaltar = new Command("MinigameJumpA", "a");
-								this.send(aSaltar, i);
-							}
 						break;
 					case "b":
-						for(int i=0;i<threads.size();i++) {
+						for (int i = 0; i < threads.size(); i++) {
 							Command aSaltar = new Command("MinigameJumpB", "b");
 							this.send(aSaltar, i);
-							}
+						}
 						break;
 					case "p":
-						for(int i=0;i<threads.size();i++) {
+						for (int i = 0; i < threads.size(); i++) {
 							Command aSaltar = new Command("MinigameJumpP", "p");
 							this.send(aSaltar, i);
-							}
+						}
 						break;
 					case ".":
-						for(int i=0;i<threads.size();i++) {
+						for (int i = 0; i < threads.size(); i++) {
 							Command aSaltar = new Command("MinigameJump.", ".");
 							this.send(aSaltar, i);
-							}
+						}
 						break;
 					}
-				break;
+					break;
 				}
 			}
 			sc.close();
@@ -92,8 +93,7 @@ public class ClientMinigameThread extends Thread {
 	}
 
 	public void send(Command send, int socket) throws IOException {
-		String mensaje = new Gson().toJson(send);
-		PrintStream ps;
+		String mensaje = gson.toJson(send);
 
 		synchronized (this) {
 

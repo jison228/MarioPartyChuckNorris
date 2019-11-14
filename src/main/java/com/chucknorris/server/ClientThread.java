@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.Semaphore;
 
 import com.chucknorris.Command;
 import com.chucknorris.client.ActualizarCompraResponse;
@@ -17,7 +16,6 @@ import com.chucknorris.client.ClientPlayer;
 import com.chucknorris.client.EndTurnResponse;
 import com.chucknorris.client.MovementResponsePrivate;
 import com.chucknorris.client.MovementResponsePublic;
-import com.chucknorris.client.endgame.Endgame;
 import com.chucknorris.game.Game;
 import com.chucknorris.game.GameResponse;
 import com.chucknorris.player.Espert;
@@ -106,15 +104,15 @@ public class ClientThread extends Thread {
 					}
 					
 					Command habilitarBoton = new Command("TirarDado", "");
+					Thread.sleep(1000);
 					this.send(habilitarBoton, juego.getCurrentTurn() % 4);
 
-					
+					Thread.sleep(1000);
 					if (juego.getCurrentTurn() % 4 == 0) {
 						juego.aumentarPrecioDolar();
 						if(!cfinish) {
 							Command enviar2 = new Command("StartMinigame", "");
 							for (int i = 0; i < threads.size(); i++) {
-								Thread.sleep(1000);
 								this.send(enviar2, i);
 							}
 						}
@@ -214,12 +212,6 @@ public class ClientThread extends Thread {
 		PrintStream ps;
 
 		if (this.threads.get(socket) != null) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			ps = new PrintStream(this.threads.get(socket).outputStream, true);
 			ps.println(mensaje);
 			

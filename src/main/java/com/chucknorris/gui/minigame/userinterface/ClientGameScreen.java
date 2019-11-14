@@ -96,6 +96,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 	private int tier;
 	private Socket serverSocket;
 	public Stack<String> listaGanadores;
+	private Gson gson = new Gson();
 
 	public ClientGameScreen(Stack<String> listaGanadores,Socket serverSocket,InputStream inputStream) {
 		this.inputStream=inputStream;
@@ -254,7 +255,6 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 				while ((num = inputStream.read()) > 0) {
 					String hola = String.valueOf((char) num);
 					hola = hola + sc.next();
-					Gson gson = new Gson();
 					Command brigadaB = gson.fromJson(hola, Command.class);
 					// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 					switch (brigadaB.getCommandName()) {
@@ -399,7 +399,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 					e1.printStackTrace();
 				}
 				Command bif = new Command("JumpMinigame", "b");
-				String send = new Gson().toJson(bif);
+				String send = gson.toJson(bif);
 				ps.println(send);
 			}
 			if (character == 'a') {
@@ -411,7 +411,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 					e1.printStackTrace();
 				}
 				Command bif = new Command("JumpMinigame", "a");
-				String send = new Gson().toJson(bif);
+				String send = gson.toJson(bif);
 				ps.println(send);
 			}
 			if (character == 'p') {
@@ -423,7 +423,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 					e1.printStackTrace();
 				}
 				Command bif = new Command("JumpMinigame", "p");
-				String send = new Gson().toJson(bif);
+				String send = gson.toJson(bif);
 				ps.println(send);
 			}
 			if (character == '.') {
@@ -435,7 +435,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 					e1.printStackTrace();
 				}
 				Command bif = new Command("JumpMinigame", ".");
-				String send = new Gson().toJson(bif);
+				String send = gson.toJson(bif);
 				ps.println(send);
 			}
 		}
@@ -459,7 +459,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 						e1.printStackTrace();
 					}
 					Command bif = new Command("MandaleMecha", "Amiguerou");
-					String send = new Gson().toJson(bif);
+					String send = gson.toJson(bif);
 					ps.println(send);
 					// musica1.play();
 					try {
@@ -499,12 +499,12 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 		// TODO Auto-generated method stub
 
 	}
-
+	/*
 	private void resetGame() {
 		enemiesManager.reset();
 		mainCharacter.dead(false);
 		mainCharacter.reset();
 
 	}
-
+	*/
 }
