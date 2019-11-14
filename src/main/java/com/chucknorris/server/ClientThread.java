@@ -5,9 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -62,34 +60,33 @@ public class ClientThread extends Thread {
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
 				case "Chat":
-					ChatResponse respuestaChat = new ChatResponse("pepe", brigadaB.getCommandJSON());
-					String chatGson = gson.toJson(respuestaChat);
-					Command commandChat = new Command("Chat", chatGson);
+					ChatResponse chatResponse = new ChatResponse("pepe", brigadaB.getCommandJSON());
+					String chatGson = gson.toJson(chatResponse);
+					Command chatCommand = new Command("Chat", chatGson);
 					for (int i = 0; i < threads.size(); i++) {
-						this.send(commandChat, i);
+						this.send(chatCommand, i);
 					}
 					break;
 				case "Compra":
-					Player currentPlayer3 = juego.getPlayerList().get(juego.getCurrentTurn() % 4);
+					Player compraCurrentPlayer = juego.getPlayerList().get(juego.getCurrentTurn() % 4);
 					double pesos = Double.valueOf(brigadaB.getCommandJSON());
-					currentPlayer3.buyDolares(pesos, juego.getPrecioDolar());
-					List<ClientPlayer> listaClientPlayers4 = new ArrayList<ClientPlayer>();
+					compraCurrentPlayer.buyDolares(pesos, juego.getPrecioDolar());
+					List<ClientPlayer> compraClientPlayers = new ArrayList<ClientPlayer>();
 					for (int i = 0; i < juego.getPlayerList().size(); i++) {
 						Player playerToClient = juego.getPlayerList().get(i);
 						ClientPlayer clientToList = new ClientPlayer(playerToClient);
-						listaClientPlayers4.add(clientToList);
+						compraClientPlayers.add(clientToList);
 					}
 
-					String mandar = gson.toJson(new ActualizarCompraResponse(listaClientPlayers4));
-					Command compraDolares = new Command("Compra", mandar);
+					String compraGson = gson.toJson(new ActualizarCompraResponse(compraClientPlayers));
+					Command compraCommand = new Command("Compra", compraGson);
 					for (int i = 0; i < threads.size(); i++) {
-						this.send(compraDolares, i);
+						this.send(compraCommand, i);
 					}
 					break;
 				case "EndTurn":
 					boolean cfinish = false;
 					juego.endTurn();
-
 
 					Player ganador = new Espert(0, 0, 0);
 					for (Player player : juego.getPlayerList()) {
@@ -104,16 +101,16 @@ public class ClientThread extends Thread {
 						}
 					}
 
-					Player currentPlayer2 = juego.getPlayerList().get(juego.getCurrentTurn() % 4);
+					Player endCurrentPlayer = juego.getPlayerList().get(juego.getCurrentTurn() % 4);
 
-					EndTurnResponse finalizar = new EndTurnResponse(juego.getCurrentTurn(), juego.getPrecioDolar(),
-							currentPlayer2);
-					String fin = gson.toJson(finalizar);
+					EndTurnResponse endTurnResponse = new EndTurnResponse(juego.getCurrentTurn(),
+							juego.getPrecioDolar(), endCurrentPlayer);
+					String fin = gson.toJson(endTurnResponse);
 					Command enviar = new Command("EndTurn", fin);
 					for (int i = 0; i < threads.size(); i++) {
 						this.send(enviar, i);
 					}
-					
+
 					Command habilitarBoton = new Command("TirarDado", "");
 					Thread.sleep(1000);
 					this.send(habilitarBoton, juego.getCurrentTurn() % 4);
@@ -121,91 +118,92 @@ public class ClientThread extends Thread {
 					Thread.sleep(1000);
 					if (juego.getCurrentTurn() % 4 == 0) {
 						juego.aumentarPrecioDolar();
-						if(!cfinish) {
-							Command enviar2 = new Command("StartMinigame", "");
+						if (!cfinish) {
+							Command minigameCommand = new Command("StartMinigame", "");
 							for (int i = 0; i < threads.size(); i++) {
-								this.send(enviar2, i);
+								this.send(minigameCommand, i);
 							}
 						}
 					}
 
 					break;
 				case "BifurcationResponse":
-					Player currentPlayer1 = juego.getPlayerList().get(juego.getCurrentTurn() % 4);
-					BifurcationResponse decision = gson.fromJson(brigadaB.getCommandJSON(), BifurcationResponse.class);
-					GameResponse respuesta1 = juego.resolveIntersection(currentPlayer1,
-							currentPlayer1.getNodeLocation().nextNodes().get(decision.decision),
-							decision.movementsLeft);
-					List<Player> listaPlayers = juego.getPlayerList();
-					List<ClientPlayer> listaClientPlayers = new ArrayList<ClientPlayer>();
-					for (int i = 0; i < listaPlayers.size(); i++) {
-						Player playerToClient = listaPlayers.get(i);
+					Player bifCurrentPlayer = juego.getPlayerList().get(juego.getCurrentTurn() % 4);
+					BifurcationResponse bifResponse = gson.fromJson(brigadaB.getCommandJSON(),
+							BifurcationResponse.class);
+					GameResponse respuesta1 = juego.resolveIntersection(bifCurrentPlayer,
+							bifCurrentPlayer.getNodeLocation().nextNodes().get(bifResponse.decision),
+							bifResponse.movementsLeft);
+					List<Player> bifListaPlayers = juego.getPlayerList();
+					List<ClientPlayer> bifClientPlayers = new ArrayList<ClientPlayer>();
+					for (int i = 0; i < bifListaPlayers.size(); i++) {
+						Player playerToClient = bifListaPlayers.get(i);
 						ClientPlayer clientToList = new ClientPlayer(playerToClient);
-						listaClientPlayers.add(clientToList);
+						bifClientPlayers.add(clientToList);
 					}
 					respuestaPublica = new MovementResponsePublic(diceResult, respuesta1.playerId, respuesta1.nodePath,
-							listaClientPlayers);
-					List<ClientNode> options = new ArrayList<ClientNode>();
+							bifClientPlayers);
+					List<ClientNode> bifOptions = new ArrayList<ClientNode>();
 					if (respuesta1.movementsLeft != 0) {
-						for (int i = 0; i < currentPlayer1.getNodeLocation().nextNodes().size(); i++) {
-							options.add(new ClientNode(currentPlayer1.getNodeLocation().nextNodes().get(i)));
+						for (int i = 0; i < bifCurrentPlayer.getNodeLocation().nextNodes().size(); i++) {
+							bifOptions.add(new ClientNode(bifCurrentPlayer.getNodeLocation().nextNodes().get(i)));
 						}
 					} else {
-						options = null;
+						bifOptions = null;
 					}
 
 					respuestaPrivada = new MovementResponsePrivate(diceResult, respuesta1.playerId, respuesta1.nodePath,
-							listaClientPlayers, options, respuesta1.compraDolares, respuesta1.movementsLeft);
-					String paUno = gson.toJson(respuestaPrivada);
-					Command dibujePriv = new Command("MovementResponsePrivate", paUno);
+							bifClientPlayers, bifOptions, respuesta1.compraDolares, respuesta1.movementsLeft);
+					String privGson = gson.toJson(respuestaPrivada);
+					Command privCommand = new Command("MovementResponsePrivate", privGson);
 
-					String paTodos = gson.toJson(respuestaPublica);
-					Command dibujePubli = new Command("MovementResponsePublic", paTodos);
+					String publicGson = gson.toJson(respuestaPublica);
+					Command publicCommand = new Command("MovementResponsePublic", publicGson);
 
 					int socketToSend = juego.getCurrentTurn() % threads.size();
-					this.send(dibujePriv, socketToSend);
+					this.send(privCommand, socketToSend);
 					for (int i = 0; i < threads.size(); i++) {
 						if (i != socketToSend) {
-							this.send(dibujePubli, i);
+							this.send(publicCommand, i);
 						}
 					}
 					break;
 				case "TirarDado":
-					Player currentPlayer = juego.getPlayerList().get(juego.getCurrentTurn() % 4);
-					GameResponse respuesta = juego.play(currentPlayer);
-					diceResult = respuesta.diceResult;
-					List<Player> listaPlayers1 = juego.getPlayerList();
-					List<ClientPlayer> listaClientPlayers1 = new ArrayList<ClientPlayer>();
-					for (int i = 0; i < listaPlayers1.size(); i++) {
-						Player playerToClient = listaPlayers1.get(i);
+					Player diceCurrentPlayer = juego.getPlayerList().get(juego.getCurrentTurn() % 4);
+					GameResponse gameResponse = juego.play(diceCurrentPlayer);
+					diceResult = gameResponse.diceResult;
+					List<Player> dicePlayers = juego.getPlayerList();
+					List<ClientPlayer> diceClientPlayers = new ArrayList<ClientPlayer>();
+					for (int i = 0; i < dicePlayers.size(); i++) {
+						Player playerToClient = dicePlayers.get(i);
 						ClientPlayer clientToList = new ClientPlayer(playerToClient);
-						listaClientPlayers1.add(clientToList);
+						diceClientPlayers.add(clientToList);
 					}
-					respuestaPublica = new MovementResponsePublic(respuesta.diceResult, respuesta.playerId,
-							respuesta.nodePath, listaClientPlayers1);
-					List<ClientNode> options1 = new ArrayList<ClientNode>();
-					if (respuesta.movementsLeft != 0) {
-						for (int i = 0; i < currentPlayer.getNodeLocation().nextNodes().size(); i++) {
-							options1.add(new ClientNode(currentPlayer.getNodeLocation().nextNodes().get(i)));
+					respuestaPublica = new MovementResponsePublic(gameResponse.diceResult, gameResponse.playerId,
+							gameResponse.nodePath, diceClientPlayers);
+					List<ClientNode> diceOptions = new ArrayList<ClientNode>();
+					if (gameResponse.movementsLeft != 0) {
+						for (int i = 0; i < diceCurrentPlayer.getNodeLocation().nextNodes().size(); i++) {
+							diceOptions.add(new ClientNode(diceCurrentPlayer.getNodeLocation().nextNodes().get(i)));
 						}
 					} else {
-						options = null;
+						bifOptions = null;
 					}
 
-					respuestaPrivada = new MovementResponsePrivate(respuesta.diceResult, respuesta.playerId,
-							respuesta.nodePath, listaClientPlayers1, options1, respuesta.compraDolares,
-							respuesta.movementsLeft);
-					String paUno1 = gson.toJson(respuestaPrivada);
-					Command dibujePriv1 = new Command("MovementResponsePrivate", paUno1);
+					respuestaPrivada = new MovementResponsePrivate(gameResponse.diceResult, gameResponse.playerId,
+							gameResponse.nodePath, diceClientPlayers, diceOptions, gameResponse.compraDolares,
+							gameResponse.movementsLeft);
+					String privGson2 = gson.toJson(respuestaPrivada);
+					Command privCommand2 = new Command("MovementResponsePrivate", privGson2);
 
-					String paTodos1 = gson.toJson(respuestaPublica);
-					Command dibujePubli1 = new Command("MovementResponsePublic", paTodos1);
+					String publicGson2 = gson.toJson(respuestaPublica);
+					Command publicCommand2 = new Command("MovementResponsePublic", publicGson2);
 
-					int socketToSend1 = juego.getCurrentTurn() % 4;
-					this.send(dibujePriv1, socketToSend1);
+					int socketToSend2 = juego.getCurrentTurn() % 4;
+					this.send(privCommand2, socketToSend2);
 					for (int i = 0; i < threads.size(); i++) {
-						if (i != socketToSend1) {
-							this.send(dibujePubli1, i);
+						if (i != socketToSend2) {
+							this.send(publicCommand2, i);
 						}
 					}
 					break;
@@ -225,7 +223,7 @@ public class ClientThread extends Thread {
 		if (this.threads.get(socket) != null) {
 			ps = new PrintStream(this.threads.get(socket).outputStream, true);
 			ps.println(mensaje);
-			
+
 		}
 
 	}

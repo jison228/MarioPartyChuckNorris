@@ -65,19 +65,19 @@ public class ServerThread extends Thread {
 					frame.dispose();
 					break;
 				case "Compra":
-					ActualizarCompraResponse respuesta3 = gson.fromJson(brigadaB.getCommandJSON(),
+					ActualizarCompraResponse respuestaCompra = gson.fromJson(brigadaB.getCommandJSON(),
 							ActualizarCompraResponse.class);
-					frame.updateAfterCompra(respuesta3.lista);
+					frame.updateAfterCompra(respuestaCompra.lista);
 					break;
 				case "MovementResponsePublic":
-					MovementResponsePublic respuesta = gson.fromJson(brigadaB.getCommandJSON(),
+					MovementResponsePublic respuestaMovPub = gson.fromJson(brigadaB.getCommandJSON(),
 							MovementResponsePublic.class);
-					frame.playTurnPublic(respuesta);
+					frame.playTurnPublic(respuestaMovPub);
 					break;
 				case "MovementResponsePrivate":
-					MovementResponsePrivate respuesta1 = gson.fromJson(brigadaB.getCommandJSON(),
+					MovementResponsePrivate respuestaMovPriv = gson.fromJson(brigadaB.getCommandJSON(),
 							MovementResponsePrivate.class);
-					frame.playTurnPrivate(respuesta1);
+					frame.playTurnPrivate(respuestaMovPriv);
 					break;
 				case "StartGame":
 					GameInformation gameInfo = gson.fromJson(brigadaB.getCommandJSON(), GameInformation.class);
@@ -89,8 +89,8 @@ public class ServerThread extends Thread {
 					frame.habilitarDado();
 					break;
 				case "EndTurn":
-					EndTurnResponse finalizar = gson.fromJson(brigadaB.getCommandJSON(), EndTurnResponse.class);
-					frame.endTurnIndeed(finalizar);
+					EndTurnResponse respuestaEndTurn = gson.fromJson(brigadaB.getCommandJSON(), EndTurnResponse.class);
+					frame.endTurnIndeed(respuestaEndTurn);
 					break;
 				}
 			}
