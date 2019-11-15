@@ -388,7 +388,7 @@ public class MainGameScreen extends JFrame {
 		ClientPlayer currentClientPlayer = null;
 		for (int i = 0; i < clientPlayersList.size(); i++) {
 			if (respuesta.playerID.equals(clientPlayersList.get(i).getPlayerName())) {
-				currentClientPlayer = clientPlayersList.get(i);
+				currentClientPlayer = respuesta.currentClientPlayerList.get(i);
 			}
 		}
 		if (respuesta.compra_dolares) {

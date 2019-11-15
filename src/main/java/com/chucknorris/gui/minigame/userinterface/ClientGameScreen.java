@@ -255,6 +255,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 				while ((num = inputStream.read()) > 0) {
 					String hola = String.valueOf((char) num);
 					hola = hola + sc.next();
+					
 					Command brigadaB = gson.fromJson(hola, Command.class);
 					// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 					switch (brigadaB.getCommandName()) {

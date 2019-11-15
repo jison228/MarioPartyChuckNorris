@@ -18,7 +18,7 @@ public class Game {
 	private GameMap gameMap;
 	private Dice dice;
 	private double precioDolar;
-	//ArrayList de minijuegos
+	// ArrayList de minijuegos
 
 	public Game(List<Player> players, GameMap gameMap, double precioDolar) {
 		this.players = players;
@@ -34,9 +34,9 @@ public class Game {
 		this.dice = info.dice;
 		this.precioDolar = info.precioDolar;
 	}
-	
+
 	public Game(List<Player> players, GameMap gameMap, Dice dice) {
-		this(players, gameMap,20);
+		this(players, gameMap, 20);
 		this.dice = dice;
 	}
 
@@ -45,27 +45,32 @@ public class Game {
 		String playerID = player.getPlayerID();
 		Queue<Position> nodePath = new LinkedList<Position>();
 		List<Node> villereada = new ArrayList<Node>();
-		
-		int movementsLeft = gameMap.movePlayer(player, diceResult,nodePath,villereada);
-		
+
+		int movementsLeft = gameMap.movePlayer(player, diceResult, nodePath, villereada);
+
 		boolean comprarDolares = validarCompraDolares(villereada);
+		if (comprarDolares) {
+			player.cobrarSalario();
+		}
 		applyRewardIfApplies(player, movementsLeft);
-		
-		
-		return new GameResponse(diceResult, nodePath, playerID, comprarDolares,movementsLeft);
+
+		return new GameResponse(diceResult, nodePath, playerID, comprarDolares, movementsLeft);
 	}
-	
+
 	public GameResponse resolveIntersection(Player player, Node nextNode, int movementsLeft) {
 		String playerID = player.getPlayerID();
 		Queue<Position> nodePath = new LinkedList<Position>();
 		List<Node> villereada = new ArrayList<Node>();
-		
-		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft,nodePath,villereada);
-		
+
+		movementsLeft = gameMap.movePlayerFromIntersection(player, nextNode, movementsLeft, nodePath, villereada);
+
 		boolean comprarDolares = validarCompraDolares(villereada);
+		if (comprarDolares) {
+			player.cobrarSalario();
+		}
 		applyRewardIfApplies(player, movementsLeft);
 
-		return new GameResponse(1, nodePath, playerID, comprarDolares,movementsLeft);
+		return new GameResponse(1, nodePath, playerID, comprarDolares, movementsLeft);
 	}
 
 	private void applyRewardIfApplies(Player player, int movementsLeft) {
@@ -77,32 +82,32 @@ public class Game {
 	public int getCurrentTurn() {
 		return turn;
 	}
-	
+
 	public GameMap getGameMap() {
 		return gameMap;
 	}
 
-	public List<Player> getPlayerList(){
+	public List<Player> getPlayerList() {
 		return players;
 	}
-	
+
 	public void endTurn() {
 		turn++;
 	}
-	
+
 	public void aumentarPrecioDolar() {
 		precioDolar++;
 	}
-	
+
 	public Double getPrecioDolar() {
 		return precioDolar;
 	}
-	
+
 	private boolean validarCompraDolares(List<Node> villereada) {
 		boolean dolares = false;
-		for(int i=1;i<villereada.size();i++) {
+		for (int i = 1; i < villereada.size(); i++) {
 			Node recorrer = villereada.get(i);
-			if(recorrer.getType().equals("END")) {
+			if (recorrer.getType().equals("END")) {
 				dolares = true;
 			}
 		}

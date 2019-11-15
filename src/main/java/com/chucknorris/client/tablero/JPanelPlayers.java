@@ -54,16 +54,16 @@ public class JPanelPlayers extends JPanel {
 			g.setColor(Color.BLACK);
 			g.setFont(new Font("Tahoma", Font.BOLD, 18));
 			g.drawString(clientPlayerList.get(i).getCharacter(), 10, 80 + i * 110);
-			g.setColor(Color.lightGray);
+			g.setColor(Color.darkGray);
 			g.fillRect(70, 107 + i * 110, 65, 17);
 			g.fillRect(170, 107 + i * 110, 75, 17);
 			g.fillRect(70, 87 + i * 110, 130, 15);
 			g.setColor(Color.RED);
 			g.setFont(new Font("Tahoma", Font.BOLD, 15));
 			g.drawString("Salario: $" + clientPlayerList.get(i).getSalario(), 70, 100 + i * 110);
-			g.setColor(new Color(0, 255, 0));
-			g.setFont(new Font("Tahoma", Font.BOLD, 15));
+			g.setColor(new Color(255, 255, 0));
 			g.drawString("$" + clientPlayerList.get(i).getPesos(), 70, 120 + i * 110);
+			g.setColor(new Color(0, 255, 0));
 			g.drawString("U$S" + clientPlayerList.get(i).getDolares(), 170, 120 + i * 110);
 
 		}
