@@ -13,8 +13,7 @@ public class Client {
 		try {
 			InetAddress ip = InetAddress.getByName("localhost");
 			Socket serverSocket = new Socket(ip,portNumber);
-			Socket serverSocketMinigame = new Socket(ip,22223);
-			ServerThread escuchador = new ServerThread(serverSocket,serverSocketMinigame);
+			ServerLobbyThread escuchador = new ServerLobbyThread(serverSocket);
 			escuchador.start();
 		} catch (IOException e) {
 			System.out.println(e);

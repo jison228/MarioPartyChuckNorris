@@ -31,12 +31,13 @@ public class ClientThread extends Thread {
 	private List<ClientThread> threads;
 	Game juego;
 	int diceResult = 0;
+	private Gson gson;
 
 	public ClientThread(Socket clientSocket, List<ClientThread> threads, Game juego) {
 		this.clientSocket = clientSocket;
 		this.threads = threads;
 		this.juego = juego;
-
+		gson = new Gson();
 		try {
 			inputStream = this.clientSocket.getInputStream();
 			outputStream = this.clientSocket.getOutputStream();
@@ -50,7 +51,7 @@ public class ClientThread extends Thread {
 		try {
 			Scanner sc = new Scanner(inputStream);
 			int num;
-			Gson gson = new Gson();
+
 			MovementResponsePublic respuestaPublica;
 			MovementResponsePrivate respuestaPrivada;
 			while ((num = inputStream.read()) > 0) {
@@ -217,7 +218,7 @@ public class ClientThread extends Thread {
 	}
 
 	public void send(Command send, int socket) throws IOException {
-		String mensaje = new Gson().toJson(send);
+		String mensaje = gson.toJson(send);
 		PrintStream ps;
 
 		if (this.threads.get(socket) != null) {
