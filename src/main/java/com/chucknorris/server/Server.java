@@ -1,10 +1,14 @@
 package com.chucknorris.server;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 
 import com.chucknorris.Command;
@@ -38,8 +42,8 @@ public class Server {
 		} catch (IOException e) {
 			System.out.println(e);
 		}
-		List<ClientThread> threads = new ArrayList<ClientThread>();
-		List<ClientMinigameThread> threadsMinigame = new ArrayList<ClientMinigameThread>();
+		Map<String,ClientLobbyThread> threadsMap = new HashMap<String, ClientLobbyThread>();
+		Map<String,ClientMinigameThread> threadsMinigameMap = new HashMap<String, ClientMinigameThread>();
 		
 		GameMap mapa1;
 		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
@@ -64,18 +68,27 @@ public class Server {
 		String infoSerialized = gson.toJson(info);
 		Command startGame = new Command("StartGame", infoSerialized);
 		Command habilitarBoton = new Command("TirarDado", "");
-		for (int i = 0; i < 4; i++) {
+		InputStream inputStream;
+		int num;
+		while(true) {
 			try {
 				System.out.println("Esperando nueva conexion");
 				clientSocket = serverSocket.accept();
 				clientMinigameSocket = serverSocketMinigame.accept();
 				System.out.println("Se conecto alguien");
-				threads.add(new ClientThread(clientSocket, threads, juego01));
-				threadsMinigame.add(new ClientMinigameThread(clientMinigameSocket, threadsMinigame));
+				//Validacion de personaje
+				inputStream = clientSocket.getInputStream();
+				Scanner sc = new Scanner(inputStream);
+				while ((num = inputStream.read()) > 0) {
+					String hola = String.valueOf((char) num);
+					hola = hola + sc.nextLine();
+					threadsMap.put(hola, new ClientLobbyThread(hola,clientSocket, threadsMap));
+				}
 			} catch (IOException e) {
 				System.out.println(e);
 			}
 		}
+		/*
 		for (int i = 0; i < threads.size(); i++) {
 			
 			threads.get(i).start();
@@ -84,6 +97,6 @@ public class Server {
 		}
 		Thread.sleep(2000);
 		threads.get(0).send(habilitarBoton, 0);
-
+		*/
 	}
 }
