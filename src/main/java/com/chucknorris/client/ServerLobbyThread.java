@@ -6,13 +6,15 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import com.chucknorris.Command;
+import com.chucknorris.client.lobby.Lobby;
 import com.google.gson.Gson;
 
 public class ServerLobbyThread extends Thread {
 	private InputStream inputStream = null;
 	private Socket serverSocket = null;
 	private Gson gson;
-
+	private Lobby frame;
+	private UpdateOrCreateResponse respuesta;
 	public ServerLobbyThread(Socket serverSocket) {
 		this.serverSocket = serverSocket;
 		gson = new Gson();
@@ -37,13 +39,14 @@ public class ServerLobbyThread extends Thread {
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
 					case "OpenLobby" :
-						//AbrirLobby
-						//ListaClientes
-						//ListaSalas
+						System.out.println("SEEEE");
+						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateResponse.class);
+						frame = new Lobby(respuesta.usuarios, respuesta.salas);
+						frame.setVisible(true);
 						break;
 					case "UpdateLobby":
-						//Actualizar Info Frame
-						
+						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateResponse.class);
+						frame.updateLobby(respuesta.usuarios, respuesta.salas);
 						break;
 					case "StartGame":
 						//Recibo dos puertos
@@ -68,6 +71,7 @@ public class ServerLobbyThread extends Thread {
 						break;
 				}
 			}
+			sc.close();
 		}  catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

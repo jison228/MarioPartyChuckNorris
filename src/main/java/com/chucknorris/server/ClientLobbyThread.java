@@ -100,6 +100,7 @@ public class ClientLobbyThread extends Thread {
 			}
 			sc.close();
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(threadsMap.remove(playerID)==null) {
 				for(int i = 0; i < salas.size();i++) {
 					if(salas.get(i).players.remove(playerID)) {

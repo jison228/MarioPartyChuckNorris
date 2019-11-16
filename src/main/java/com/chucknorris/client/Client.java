@@ -1,6 +1,7 @@
 package com.chucknorris.client;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -15,6 +16,8 @@ public class Client {
 			Socket serverSocket = new Socket(ip,portNumber);
 			ServerLobbyThread escuchador = new ServerLobbyThread(serverSocket);
 			escuchador.start();
+			PrintStream ps = new PrintStream(serverSocket.getOutputStream(), true);
+			ps.println("Wormac");
 		} catch (IOException e) {
 			System.out.println(e);
 		}
