@@ -69,7 +69,7 @@ public class Server {
 	public static UpdateOrCreateResponse createLobbyResponse(Map<String, ClientLobbyThread> usuarios, List<Sala> salas) {
 		List<User> listaUser = new ArrayList<User>();
 		for(Map.Entry<String,ClientLobbyThread> entry : usuarios.entrySet()) {
-			listaUser.add(new User(entry.getKey()));//Tendria que consultar en la base de datos sus caracteristicas
+			listaUser.add(new User(entry.getKey(),0,0));//Tendria que consultar en la base de datos sus caracteristicas
 		}
 		return new UpdateOrCreateResponse(listaUser, salas);
 	}

@@ -26,8 +26,8 @@ public class Lobby extends JFrame {
 			public void run() {
 				try {
 					List<User> chabones = new ArrayList<User>();
-					chabones.add(new User("Primer Man"));
-					chabones.add(new User("Peronista"));
+					chabones.add(new User("Primer Man", 5, 600));
+					chabones.add(new User("Peronista", 9, 1200));
 					Lobby frame = new Lobby(chabones, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -48,10 +48,10 @@ public class Lobby extends JFrame {
 		lobbyPane.setLayout(null);
 		setContentPane(lobbyPane);
 		panelUsuarios = new UserPanel(usuarios);
-		panelUsuarios.setBounds(0,0,700,720);
+		panelUsuarios.setBounds(0, 0, 700, 720);
 		lobbyPane.add(panelUsuarios);
 	}
-	
+
 	public void updateLobby(List<User> usuarios, List<ClientInfoSalas> salas) {
 		panelUsuarios.updatePanel(usuarios);
 		lobbyPane.repaint();
