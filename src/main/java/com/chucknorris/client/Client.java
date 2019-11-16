@@ -17,7 +17,7 @@ public class Client {
 			ServerLobbyThread escuchador = new ServerLobbyThread(serverSocket);
 			escuchador.start();
 			PrintStream ps = new PrintStream(serverSocket.getOutputStream(), true);
-			ps.println("Wormac");
+			ps.println("Nutty");
 		} catch (IOException e) {
 			System.out.println(e);
 		}

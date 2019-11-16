@@ -21,56 +21,65 @@ public class Server {
 	private static Socket clientSocketLobby = null;
 	private static final int portLobbyNumber = 22222;
 	private static Gson gson;
-	
+
 	public static void main(String args[]) throws Exception {
-		List<Sala> salas = new ArrayList<Sala>();
+		Map<String, Sala> salas = new HashMap<String, Sala>();
 		gson = new Gson();
 		try {
 			serverSocketLobby = new ServerSocket(portLobbyNumber);
 		} catch (IOException e) {
 			System.out.println(e);
 		}
-		Map<String,ClientLobbyThread> threadsMap = new HashMap<String, ClientLobbyThread>();
+		Map<String, ClientLobbyThread> threadsMap = new HashMap<String, ClientLobbyThread>();
 
 		InputStream inputStream;
 		int num;
-		while(true) {
+		while (true) {
 			try {
 				System.out.println("Esperando nueva conexion");
 				clientSocketLobby = serverSocketLobby.accept();
 				System.out.println("Alguien intenta conectarse");
 				inputStream = clientSocketLobby.getInputStream();
 				Scanner sc = new Scanner(inputStream);
-				num = inputStream.read(); //Hacer un case dependiendo si es iniciar sesion o registrar
-					String hola = String.valueOf((char) num);
-					hola = hola + sc.nextLine();
-					//Validacion de personaje
-					ClientLobbyThread newClient = new ClientLobbyThread(hola,clientSocketLobby, threadsMap, salas);
-					//ClientLobbyThread tendria que consultar los datos de sus playerId para mandarlo a los frames
-					System.out.println("Ese alguien era: " + hola);
-					threadsMap.put(hola, newClient);
-					newClient.start();
-					
-					String usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
-					newClient.send(new Command("OpenLobby", usersMessage), hola);
-					for(Map.Entry<String,ClientLobbyThread> entry : threadsMap.entrySet()) {
-						if(!entry.getKey().equals(hola)) {
-							newClient.send(new Command("UpdateLobby", usersMessage), entry.getKey());
-						}
-					
+				num = inputStream.read(); // Hacer un case dependiendo si es iniciar sesion o registrar
+				String hola = String.valueOf((char) num);
+				hola = hola + sc.nextLine();
+				// Validacion de personaje
+				ClientLobbyThread newClient = new ClientLobbyThread(hola, clientSocketLobby, threadsMap, salas);
+				// ClientLobbyThread tendria que consultar los datos de sus playerId para
+				// mandarlo a los frames
+				System.out.println("Ese alguien era: " + hola);
+				threadsMap.put(hola, newClient);
+				newClient.start();
+
+				String usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
+				newClient.send(new Command("OpenLobby", usersMessage), hola);
+				for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
+					if (!entry.getKey().equals(hola)) {
+						newClient.send(new Command("UpdateLobby", usersMessage), entry.getKey());
+					}
+
 				}
 			} catch (IOException e) {
 				System.out.println(e);
 			}
 		}
-		
+
 	}
-	
-	public static UpdateOrCreateResponse createLobbyResponse(Map<String, ClientLobbyThread> usuarios, List<Sala> salas) {
+
+	public static UpdateOrCreateResponse createLobbyResponse(Map<String, ClientLobbyThread> usuarios,
+			Map<String, Sala> salas) {
 		List<User> listaUser = new ArrayList<User>();
-		for(Map.Entry<String,ClientLobbyThread> entry : usuarios.entrySet()) {
-			listaUser.add(new User(entry.getKey(),0,0));//Tendria que consultar en la base de datos sus caracteristicas
+		for (Map.Entry<String, ClientLobbyThread> entry : usuarios.entrySet()) {
+			listaUser.add(new User(entry.getKey(), 0, 0));// Tendria que consultar en la base de datos sus
+															// caracteristicas
 		}
-		return new UpdateOrCreateResponse(listaUser, salas);
+		List<ClientInfoSalas> listaClientSalas = new ArrayList<ClientInfoSalas>();
+		for (Map.Entry<String, Sala> entry : salas.entrySet()) {
+			listaClientSalas.add(new ClientInfoSalas(entry.getValue().players.size(),
+					entry.getValue().threadsMap.size(), entry.getValue().playing));// Tendria que consultar en la base
+																					// de datos sus caracteristicas
+		}
+		return new UpdateOrCreateResponse(listaUser, listaClientSalas);
 	}
 }

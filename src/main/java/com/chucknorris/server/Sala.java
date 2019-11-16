@@ -9,10 +9,12 @@ public class Sala {
 	public List<String> players;
 	public Map<String,ClientLobbyThread> threadsMap;
 	public boolean playing;
+	public String name;
 	
-	public Sala() {
+	public Sala(String name) {
 		this.players = new ArrayList<String>();
 		this.threadsMap = new HashMap<String, ClientLobbyThread>();
 		this.playing = false;
+		this.name = name;
 	}
 }
