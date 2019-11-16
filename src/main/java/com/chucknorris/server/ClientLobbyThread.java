@@ -48,14 +48,31 @@ public class ClientLobbyThread extends Thread {
 				hola = hola + sc.nextLine();
 				Command brigadaB = gson.fromJson(hola, Command.class);
 				switch (brigadaB.getCommandName()) {
-				case "JoinSala": //Añadir GSON
-					int unirse = Integer.valueOf(brigadaB.getCommandJSON());
-					this.salas.get(unirse).threadsMap.put(playerID, this);//sala recibida por commando
-					if(this.salas.get(unirse).players.size()<4) {
-						this.salas.get(unirse).players.add(playerID);
+				case "SwitchFromPlayerToSpectator":
+					int switchPS = Integer.valueOf(brigadaB.getCommandJSON());
+					this.salas.get(switchPS).players.remove(playerID);
+					//Avisarle a los demas que actualicen la sala
+				case "SwitchFromSpectatorToPlayer":
+					int switchSP = Integer.valueOf(brigadaB.getCommandJSON());
+					this.salas.get(switchSP).players.add(playerID);
+					//Avisarle a los demas que actualicen la sala
+				case "JoinSalaAsPlayer": //Añadir GSON
+					int unirseP = Integer.valueOf(brigadaB.getCommandJSON());
+					this.salas.get(unirseP).threadsMap.put(playerID, this);//sala recibida por commando
+					if(this.salas.get(unirseP).players.size()<4) {
+						this.salas.get(unirseP).players.add(playerID);
 					}
 					threadsMap.remove(playerID);
 					//Avisarle a los demas que actualicen el lobby
+					//Mandarle al jugador la info sobre la sala
+					//Avisarle a los de la sala que actualicen
+					break;
+				case "JoinSalaAsSpectator":
+					int unirseS = Integer.valueOf(brigadaB.getCommandJSON());
+					this.salas.get(unirseS).threadsMap.put(playerID, this);//sala recibida por commando
+					//Avisarle a los demas que actualicen el lobby
+					//Mandarle al jugador la info sobre la sala
+					//Avisarle a los de la sala que actualicen
 					break;
 				case "CreateSala":
 					if(salas.size()<4) {
@@ -64,17 +81,32 @@ public class ClientLobbyThread extends Thread {
 						nuevaSala.threadsMap.put(playerID, this);
 						this.salas.add(nuevaSala);
 						threadsMap.remove(playerID);
-						//Avisarle a los demas que actualicen el lobby
-						//if(salas.size())
+						//Avisarle a los del lobby que actualicen
+						//Enviarle al player la info de la sala
 					} else {
 						//Avisarle que es un pelotudo
 					}
 					break;
+				case "LeaveSala":
+					threadsMap.put(playerID,this);
+					int salir = Integer.valueOf(brigadaB.getCommandJSON());
+					salas.get(salir).threadsMap.remove(playerID);
+					salas.get(salir).players.remove(playerID);
+					//Avisarle a los de la sala que actualicen
+					//Avisarles a los del lobby que actualicen
+					break;
+				//Pensar caso de exit Lobby
 				}
 			}
 			sc.close();
 		} catch (Exception e) {
-			threadsMap.remove(playerID, this);
+			if(threadsMap.remove(playerID)==null) {
+				for(int i = 0; i < salas.size();i++) {
+					if(salas.get(i).players.remove(playerID)) {
+						//Avisar a los de la sala que actualicen
+					}
+				}
+			}
 		}
 
 	}
