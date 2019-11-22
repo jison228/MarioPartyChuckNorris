@@ -18,6 +18,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.Stack;
@@ -79,10 +80,6 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 	private Thread thread;
 	private AudioClip musica1;
 	private boolean isKeyPressed;
-	private int murioJugador1 = 0;
-	private int murioJugador2 = 0;
-	private int murioJugador3 = 0;
-	private int murioJugador4 = 0;
 	private int gameState = START_GAME_STATE;
 	private AudioInputStream stream;
 	private BufferedImage hardstyleImage;
@@ -90,16 +87,18 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
 	private Graphics g;
-
+	private String miIdentidad;
 	private int[] tiersScore = new int[10];
 	private int[] tiersSpeed = new int[10];
 	private int tier;
 	private Socket serverSocket;
 	public Stack<String> listaGanadores;
 	private Gson gson = new Gson();
+	private ClientGameWindow frame;
 
-	public ClientGameScreen(Stack<String> listaGanadores,Socket serverSocket,InputStream inputStream) {
-		this.inputStream=inputStream;
+	public ClientGameScreen(Stack<String> listaGanadores, Socket serverSocket, InputStream inputStream,ClientGameWindow frame) {
+		this.frame = frame;
+		this.inputStream = inputStream;
 		this.serverSocket = serverSocket;
 		this.listaGanadores = listaGanadores;
 		tiersScore[0] = 200;
@@ -166,7 +165,6 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 	private int posicionJugador2;
 	private int posicionJugador3;
 	private int posicionJugador4;
-	private int posicion = 4;
 
 	public void gameUpdate() {
 		if (gameState == GAME_PLAYING_STATE) {
@@ -194,59 +192,86 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 				mainCharacter4.setSpeedX(tiersSpeed[tier]);
 				tier++;
 			}
-			if (enemiesManager.isCollision()) {
-				mainCharacter.playDeadSound();
-				if (murioJugador1 == 0) {
-					listaGanadores.push("Espert");
-					posicionJugador1 = posicion;
-					posicion--;
-					murioJugador1++;
+			switch (miIdentidad) {
+			case "Espert":
+				// AVISARLE AL SERVER QUE MORI
+				if (enemiesManager.isCollision()) {
+					PrintStream ps = null;
+					try {
+						ps = new PrintStream(serverSocket.getOutputStream(), true);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					ps.print("NoFueGolpeDeEstado");
+					// FIN DE AVISADA DE ME MORI
 				}
-				mainCharacter.dead(true);
-				mainCharacter.setSpeedX(0);
-			}
-			if (enemiesManager2.isCollision()) {
-				mainCharacter2.playDeadSound();
-				if (murioJugador2 == 0) {
-					listaGanadores.push("Cristina");
-					posicionJugador2 = posicion;
-					posicion--;
-					murioJugador2++;
+				break;
+			case "Macri":
+				if (enemiesManager3.isCollision()) {
+					// AVISARLE AL SERVER QUE MORI
+					if (enemiesManager.isCollision()) {
+						PrintStream ps = null;
+						try {
+							ps = new PrintStream(serverSocket.getOutputStream(), true);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						ps.print("ElFMIFueLaMejorOpcion");
+						// FIN DE AVISADA DE ME MORI
+					}
 				}
-				mainCharacter2.dead(true);
-				mainCharacter2.setSpeedX(0);
-			}
-			if (enemiesManager3.isCollision()) {
-				mainCharacter3.playDeadSound();
-				if (murioJugador3 == 0) {
-					listaGanadores.push("Macri");
-					posicionJugador3 = posicion;
-					posicion--;
-					murioJugador3++;
+				break;
+			case "Cristina":
+				if (enemiesManager2.isCollision()) {
+					// AVISARLE AL SERVER QUE MORI
+					if (enemiesManager.isCollision()) {
+						PrintStream ps = null;
+						try {
+							ps = new PrintStream(serverSocket.getOutputStream(), true);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						ps.print("ANismanLoMataron");
+						// FIN DE AVISADA DE ME MORI
+					}
 				}
-				mainCharacter3.dead(true);
-				mainCharacter3.setSpeedX(0);
-			}
-			if (enemiesManager4.isCollision()) {
-				mainCharacter4.playDeadSound();
-				if (murioJugador4 == 0) {
-					listaGanadores.push("Del Caño");
-					posicionJugador4 = posicion;
-					posicion--;
-					murioJugador4++;
+				break;
+			case "Del Caño":
+				if (enemiesManager4.isCollision()) {
+					// AVISARLE AL SERVER QUE MORI
+					if (enemiesManager.isCollision()) {
+						PrintStream ps = null;
+						try {
+							ps = new PrintStream(serverSocket.getOutputStream(), true);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						ps.print("DelCañoComePibas");
+						// FIN DE AVISADA DE ME MORI
+					}
 				}
-				mainCharacter4.dead(true);
-				mainCharacter4.setSpeedX(0);
+				break;
 			}
 			if (mainCharacter.getState() == 3 && mainCharacter2.getState() == 3 && mainCharacter3.getState() == 3
 					&& mainCharacter4.getState() == 3) {
 				gameState = GAME_OVER_STATE;
 				// musica1.stop();
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				frame.dispose();
 				clip.close();
 			}
 		}
 	}
-	
+
 	public void checkSocket() throws IOException {
 		new Thread(() -> {
 			int num;
@@ -255,7 +280,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 				while ((num = inputStream.read()) > 0) {
 					String hola = String.valueOf((char) num);
 					hola = hola + sc.next();
-					
+
 					Command brigadaB = gson.fromJson(hola, Command.class);
 					// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 					switch (brigadaB.getCommandName()) {
@@ -271,9 +296,35 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 					case "MinigameJump.":
 						mainCharacter4.jump();
 						break;
+					case "MinigameMurioEspert":
+						mainCharacter.playDeadSound();
+						posicionJugador1=Integer.parseInt(brigadaB.getCommandJSON());
+						mainCharacter.dead(true);
+						mainCharacter.setSpeedX(0);
+						break;
+					case "MinigameMurioCristina":
+						mainCharacter3.playDeadSound();
+						posicionJugador3=Integer.parseInt(brigadaB.getCommandJSON());
+						mainCharacter3.dead(true);
+						mainCharacter3.setSpeedX(0);
+						break;
+					case "MinigameJumpMurioMacri":
+						mainCharacter2.playDeadSound();
+						posicionJugador2=Integer.parseInt(brigadaB.getCommandJSON());
+						mainCharacter2.dead(true);
+						mainCharacter2.setSpeedX(0);
+						break;
+					case "MinigameJumpMurioDelCaño":
+						mainCharacter4.playDeadSound();
+						posicionJugador4=Integer.parseInt(brigadaB.getCommandJSON());
+						mainCharacter4.dead(true);
+						mainCharacter4.setSpeedX(0);
+						break;
 					case "MandaleMecha":
-						gameState= GAME_PLAYING_STATE;
-						isKeyPressed =true;
+						// RECIBO MI NOMBRE DEL SERVER ACA
+						this.miIdentidad = brigadaB.getCommandJSON();
+						gameState = GAME_PLAYING_STATE;
+						isKeyPressed = true;
 						break;
 					}
 				}
@@ -281,9 +332,10 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-  }).start();
-		
+		}).start();
+
 	}
+
 	public void paint(Graphics e) {
 		this.g = e;
 		g.setColor(Color.decode("#f7f7f7"));
@@ -391,7 +443,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 	private void analizar() {
 		while (!pressed.isEmpty()) {
 			Character character = pressed.poll();
-			if (character == 'b') {
+			if (character == ' ') {
 				PrintStream ps = null;
 				try {
 					ps = new PrintStream(serverSocket.getOutputStream(), true);
@@ -399,45 +451,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				Command bif = new Command("JumpMinigame", "b");
-				String send = gson.toJson(bif);
-				ps.println(send);
-			}
-			if (character == 'a') {
-				PrintStream ps = null;
-				try {
-					ps = new PrintStream(serverSocket.getOutputStream(), true);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				Command bif = new Command("JumpMinigame", "a");
-				String send = gson.toJson(bif);
-				ps.println(send);
-			}
-			if (character == 'p') {
-				PrintStream ps = null;
-				try {
-					ps = new PrintStream(serverSocket.getOutputStream(), true);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				Command bif = new Command("JumpMinigame", "p");
-				String send = gson.toJson(bif);
-				ps.println(send);
-			}
-			if (character == '.') {
-				PrintStream ps = null;
-				try {
-					ps = new PrintStream(serverSocket.getOutputStream(), true);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				Command bif = new Command("JumpMinigame", ".");
-				String send = gson.toJson(bif);
-				ps.println(send);
+				ps.println("ANISMANLOMATARON");
 			}
 		}
 	}
@@ -445,6 +459,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		semaphore.acquireUninterruptibly();
+		// A NISMAN LO MATARON
 		pressed.add(e.getKeyChar());
 		if (!isKeyPressed) {
 			isKeyPressed = true;
@@ -501,11 +516,9 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 
 	}
 	/*
-	private void resetGame() {
-		enemiesManager.reset();
-		mainCharacter.dead(false);
-		mainCharacter.reset();
-
-	}
-	*/
+	 * private void resetGame() { enemiesManager.reset(); mainCharacter.dead(false);
+	 * mainCharacter.reset();
+	 * 
+	 * }
+	 */
 }

@@ -21,7 +21,7 @@ public class ClientGameWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		
-		gameScreen = new ClientGameScreen(listaGanadores,serverSocket,inputStream);
+		gameScreen = new ClientGameScreen(listaGanadores,serverSocket,inputStream,this);
 		addKeyListener(gameScreen);
 		add(gameScreen);
 	}
@@ -33,6 +33,6 @@ public class ClientGameWindow extends JFrame {
 	
 	
 	public static void main(String args[]) {
-//		(new ClientGameWindow()).startGame();
+		(new ClientGameWindow(null,null)).startGame();
 	}
 }
