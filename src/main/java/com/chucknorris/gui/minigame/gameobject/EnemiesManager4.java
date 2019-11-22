@@ -13,7 +13,7 @@ public class EnemiesManager4 {
 	private BufferedImage cactus1;
 	private BufferedImage cactus2;
 	private Random rand;
-	
+	private int type=0;
 	private List<Enemy> enemies;
 	private MainCharacter4 mainCharacter;
 	
@@ -23,7 +23,7 @@ public class EnemiesManager4 {
 		cactus2 = Resource.getResouceImage("data/jugador4/cactus2.png");
 		enemies = new ArrayList<Enemy>();
 		this.mainCharacter = mainCharacter;
-		enemies.add(createEnemy());
+		enemies.add(createEnemy(0));
 	}
 	
 	public void update() {
@@ -32,9 +32,10 @@ public class EnemiesManager4 {
 		}
 		Enemy enemy = enemies.get(0);
 		if(enemy.isOutOfScreen()) {
+			type++;
 			mainCharacter.upScore();
 			enemies.clear();
-			enemies.add(createEnemy());
+			enemies.add(createEnemy(type));
 		}
 	}
 	
@@ -44,17 +45,17 @@ public class EnemiesManager4 {
 		}
 	}
 	
-	private Enemy createEnemy() {
+	private Enemy createEnemy(int type) {
 		// if (enemyType = getRandom)
 		//int type = rand.nextInt(2);
-				int type=0;
-		if(type == 0) {
+				//int type=0;
+		if(type %2== 0) {
 			return new Cactus4(mainCharacter, 800, cactus1.getWidth() - 10, cactus1.getHeight() - 10, cactus1);
 		} else {
 			return new Cactus4(mainCharacter, 800, cactus2.getWidth() - 10, cactus2.getHeight() - 10, cactus2);
 		}
 	}
-	
+
 	public boolean isCollision() {
 		for(Enemy e : enemies) {
 			if (mainCharacter.getBound().intersects(e.getBound())) {
@@ -66,7 +67,7 @@ public class EnemiesManager4 {
 	
 	public void reset() {
 		enemies.clear();
-		enemies.add(createEnemy());
+		enemies.add(createEnemy(0));
 	}
 	
 }
