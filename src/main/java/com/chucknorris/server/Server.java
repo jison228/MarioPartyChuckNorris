@@ -76,7 +76,7 @@ public class Server {
 		}
 		List<ClientInfoSalas> listaClientSalas = new ArrayList<ClientInfoSalas>();
 		for (Map.Entry<String, Sala> entry : salas.entrySet()) {
-			listaClientSalas.add(new ClientInfoSalas(entry.getValue().players.size(),
+			listaClientSalas.add(new ClientInfoSalas(entry.getKey(),entry.getValue().players.size(),
 					entry.getValue().threadsMap.size(), entry.getValue().playing));// Tendria que consultar en la base
 																					// de datos sus caracteristicas
 		}

@@ -81,8 +81,8 @@ public class RoomPanel extends JPanel {
 			state.setHorizontalAlignment(SwingConstants.LEFT);
 			subPanelBottom.add(state);
 			
-			
-			JButton enter = new JButton("play");
+			String specOrPlay = salas.get(i).cantPlayers == 4? "spec" : "play";
+			JButton enter = new JButton(specOrPlay);
 			enter.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -92,6 +92,9 @@ public class RoomPanel extends JPanel {
                 }
             });
 			panel.add(enter,BorderLayout.EAST);
+			if(salas.get(i).playing) {
+				enter.setEnabled(false);
+			}
 			
 			
 			panel.setBorder(new MatteBorder(0, 0, 1, 0, Color.GRAY));

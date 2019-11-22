@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 import com.chucknorris.Command;
 import com.chucknorris.User;
+import com.chucknorris.client.ChatResponse;
 import com.chucknorris.client.ClientInfoSalas;
 import com.chucknorris.client.UpdateOrCreateResponse;
 import com.google.gson.Gson;
@@ -59,24 +60,14 @@ public class ClientLobbyThread extends Thread {
 				case "SwitchFromSpectatorToPlayer":
 					this.salas.get(brigadaB.getCommandJSON()).players.add(playerID);
 					// Avisarle a los demas que actualicen la sala
-				case "JoinSalaAsPlayer": // Añadir GSON
-					this.salas.get(brigadaB.getCommandJSON()).threadsMap.put(playerID, this);// sala recibida por
-																								// commando
-					if (this.salas.get(brigadaB.getCommandJSON()).players.size() < 4) {
+				case "JoinSala": // Añadir GSON // commando
+					if (this.salas.get(brigadaB.getCommandJSON()).players.size() < 4)
 						this.salas.get(brigadaB.getCommandJSON()).players.add(playerID);
-					}
+					this.salas.get(brigadaB.getCommandJSON()).threadsMap.put(playerID, this);// sala recibida por//
+																								// commando
 					threadsMap.remove(playerID);
 					usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
-					for(Map.Entry<String,ClientLobbyThread> entry : threadsMap.entrySet()) {
-						this.send(new Command("UpdateLobby", usersMessage), entry.getKey());
-					}
-					// Mandarle al jugador la info sobre la sala
-					// Avisarle a los de la sala que actualicen
-					break;
-				case "JoinSalaAsSpectator":
-					this.salas.get(brigadaB.getCommandJSON()).threadsMap.put(playerID, this);// sala recibida por// commando
-					usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
-					for(Map.Entry<String,ClientLobbyThread> entry : threadsMap.entrySet()) {
+					for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
 						this.send(new Command("UpdateLobby", usersMessage), entry.getKey());
 					}
 					// Mandarle al jugador la info sobre la sala
@@ -90,7 +81,7 @@ public class ClientLobbyThread extends Thread {
 						this.salas.put(brigadaB.getCommandJSON(), nuevaSala);
 						threadsMap.remove(playerID);
 						usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
-						for(Map.Entry<String,ClientLobbyThread> entry : threadsMap.entrySet()) {
+						for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
 							this.send(new Command("UpdateLobby", usersMessage), entry.getKey());
 						}
 						// Enviarle al player la info de la sala
@@ -104,6 +95,12 @@ public class ClientLobbyThread extends Thread {
 					this.salas.get(brigadaB.getCommandJSON()).players.remove(playerID);
 					// Avisarle a los de la sala que actualicen
 					// Avisarles a los del lobby que actualicen
+					break;
+				case "Chat":
+					ChatResponse respuesta = new ChatResponse(playerID, brigadaB.getCommandJSON());
+					for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
+						this.send(new Command("Chat", gson.toJson(respuesta)), entry.getKey());
+					}
 					break;
 				// Pensar caso de exit Lobby
 				}
@@ -133,15 +130,19 @@ public class ClientLobbyThread extends Thread {
 		}
 
 	}
-	
-	public static UpdateOrCreateResponse createLobbyResponse(Map<String, ClientLobbyThread> usuarios, Map<String,Sala> salas) {
+
+	public static UpdateOrCreateResponse createLobbyResponse(Map<String, ClientLobbyThread> usuarios,
+			Map<String, Sala> salas) {
 		List<User> listaUser = new ArrayList<User>();
-		for(Map.Entry<String,ClientLobbyThread> entry : usuarios.entrySet()) {
-			listaUser.add(new User(entry.getKey(),0,0));//Tendria que consultar en la base de datos sus caracteristicas
+		for (Map.Entry<String, ClientLobbyThread> entry : usuarios.entrySet()) {
+			listaUser.add(new User(entry.getKey(), 0, 0));// Tendria que consultar en la base de datos sus
+															// caracteristicas
 		}
 		List<ClientInfoSalas> listaClientSalas = new ArrayList<ClientInfoSalas>();
-		for(Map.Entry<String,Sala> entry : salas.entrySet()) {
-			listaClientSalas.add(new ClientInfoSalas(entry.getValue().players.size(), entry.getValue().threadsMap.size(), entry.getValue().playing));//Tendria que consultar en la base de datos sus caracteristicas
+		for (Map.Entry<String, Sala> entry : salas.entrySet()) {
+			listaClientSalas.add(new ClientInfoSalas(entry.getKey(), entry.getValue().players.size(),
+					entry.getValue().threadsMap.size(), entry.getValue().playing));// Tendria que consultar en la base
+																					// de datos sus caracteristicas
 		}
 		return new UpdateOrCreateResponse(listaUser, listaClientSalas);
 	}

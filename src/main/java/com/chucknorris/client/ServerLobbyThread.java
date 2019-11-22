@@ -15,8 +15,11 @@ public class ServerLobbyThread extends Thread {
 	private Gson gson;
 	private Lobby lobbyFrame;
 	private UpdateOrCreateResponse respuesta;
-	public ServerLobbyThread(Socket serverSocket) {
+	private String playerID;
+	
+	public ServerLobbyThread(Socket serverSocket, String playerID) {
 		this.serverSocket = serverSocket;
+		this.playerID = playerID;
 		gson = new Gson();
 		try {
 			this.inputStream = this.serverSocket.getInputStream();
@@ -42,8 +45,12 @@ public class ServerLobbyThread extends Thread {
 					case "OpenLobby" :
 						System.out.println("SEEEE");
 						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateResponse.class);
-						lobbyFrame = new Lobby(respuesta.usuarios, respuesta.salas);
+						lobbyFrame = new Lobby(playerID,respuesta.usuarios, respuesta.salas, serverSocket);
 						lobbyFrame.setVisible(true);
+						break;
+					case "Chat":
+						ChatResponse respuestaChat1 = gson.fromJson(brigadaB.getCommandJSON(),ChatResponse.class);
+						lobbyFrame.addChatText("\"" + respuestaChat1.playerID + "\" : " + respuestaChat1.mensaje);
 						break;
 					case "UpdateLobby":
 						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateResponse.class);
@@ -66,7 +73,7 @@ public class ServerLobbyThread extends Thread {
 					case "LeaveSala":
 						//cerrar frame de Sala
 						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateResponse.class);
-						lobbyFrame = new Lobby(respuesta.usuarios, respuesta.salas);
+						lobbyFrame = new Lobby(playerID, respuesta.usuarios, respuesta.salas, serverSocket);
 						lobbyFrame.setVisible(true);
 						break;
 					case "LobbyChat":

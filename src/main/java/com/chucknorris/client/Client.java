@@ -14,10 +14,11 @@ public class Client {
 		try {
 			InetAddress ip = InetAddress.getByName("localhost");
 			Socket serverSocket = new Socket(ip,portNumber);
-			ServerLobbyThread escuchador = new ServerLobbyThread(serverSocket);
+			String nombre = "Hola";
+			ServerLobbyThread escuchador = new ServerLobbyThread(serverSocket, nombre);
 			escuchador.start();
 			PrintStream ps = new PrintStream(serverSocket.getOutputStream(), true);
-			ps.println("Nutty");
+			ps.println(nombre);
 		} catch (IOException e) {
 			System.out.println(e);
 		}
