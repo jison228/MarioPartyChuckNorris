@@ -1,4 +1,4 @@
-package com.chucknorris.client.compradolares;
+	package com.chucknorris.client.compradolares;
 
 import java.awt.Color;
 import java.awt.Font;

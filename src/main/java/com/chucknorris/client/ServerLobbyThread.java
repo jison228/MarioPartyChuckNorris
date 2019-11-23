@@ -7,6 +7,10 @@ import java.util.Scanner;
 
 import com.chucknorris.Command;
 import com.chucknorris.client.lobby.Lobby;
+import com.chucknorris.client.lobby.UpdateOrCreateLobbyResponse;
+import com.chucknorris.client.sala.ClientRealSala;
+import com.chucknorris.client.sala.SalaFrame;
+import com.chucknorris.client.sala.UpdateOrCreateSalaResponse;
 import com.google.gson.Gson;
 
 public class ServerLobbyThread extends Thread {
@@ -14,8 +18,10 @@ public class ServerLobbyThread extends Thread {
 	private Socket serverSocket = null;
 	private Gson gson;
 	private Lobby lobbyFrame;
-	private UpdateOrCreateResponse respuesta;
+	private SalaFrame salaFrame;
+	private UpdateOrCreateLobbyResponse respuesta;
 	private String playerID;
+	private ClientRealSala salaReal;
 	
 	public ServerLobbyThread(Socket serverSocket, String playerID) {
 		this.serverSocket = serverSocket;
@@ -44,16 +50,12 @@ public class ServerLobbyThread extends Thread {
 				switch (brigadaB.getCommandName()) {
 					case "OpenLobby" :
 						System.out.println("SEEEE");
-						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateResponse.class);
+						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateLobbyResponse.class);
 						lobbyFrame = new Lobby(playerID,respuesta.usuarios, respuesta.salas, serverSocket);
 						lobbyFrame.setVisible(true);
 						break;
-					case "Chat":
-						ChatResponse respuestaChat1 = gson.fromJson(brigadaB.getCommandJSON(),ChatResponse.class);
-						lobbyFrame.addChatText("\"" + respuestaChat1.playerID + "\" : " + respuestaChat1.mensaje);
-						break;
 					case "UpdateLobby":
-						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateResponse.class);
+						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateLobbyResponse.class);
 						lobbyFrame.updateLobby(respuesta.usuarios, respuesta.salas);
 						break;
 					case "StartGame":
@@ -68,22 +70,30 @@ public class ServerLobbyThread extends Thread {
 						//Mostrar Sala correspondiente
 						break;
 					case "UpdateSala":
-						//Actualizar Info Sala
+						salaReal = gson.fromJson(brigadaB.getCommandJSON(), ClientRealSala.class);
+						salaFrame.updateSalaFrame(salaReal);
 						break;
 					case "LeaveSala":
 						//cerrar frame de Sala
-						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateResponse.class);
+						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateLobbyResponse.class);
 						lobbyFrame = new Lobby(playerID, respuesta.usuarios, respuesta.salas, serverSocket);
 						lobbyFrame.setVisible(true);
 						break;
 					case "LobbyChat":
 						respuestaChat = gson.fromJson(brigadaB.getCommandJSON(),ChatResponse.class);
-						//lobbyFrame.addChatText("\"" + respuestaChat.playerID + "\" : " + respuestaChat.mensaje);
+						lobbyFrame.addChatText("\"" + respuestaChat.playerID + "\" : " + respuestaChat.mensaje);
 						break;
 					case "SalaChat":
 						respuestaChat = gson.fromJson(brigadaB.getCommandJSON(),ChatResponse.class);
 						//salaFrame.addChatText("\"" + respuestaChat.playerID + "\" : " + respuestaChat.mensaje);
 						break;
+					case "OpenSala":
+						salaReal = gson.fromJson(brigadaB.getCommandJSON(), ClientRealSala.class);
+						salaFrame = new SalaFrame(playerID, salaReal, serverSocket);
+						salaFrame.setVisible(true);
+						lobbyFrame.dispose();
+						break;
+					
 				}
 			}
 			sc.close();

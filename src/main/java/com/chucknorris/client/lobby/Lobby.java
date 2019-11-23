@@ -177,7 +177,7 @@ public class Lobby extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					Command commandChat = new Command("Chat", chatTF.getText());
+					Command commandChat = new Command("ChatLobby", chatTF.getText());
 					String gsonCommand = gson.toJson(commandChat);
 					ps.println(gsonCommand);
 					chatTF.setText("");

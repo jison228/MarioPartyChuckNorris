@@ -1,6 +1,7 @@
 package com.chucknorris.client.sala;
 
 import java.awt.EventQueue;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class SalaFrame extends JFrame {
 	private String playerID;
 	private ClientRealSala sala;
 	private SalaPlayersPanel salaPlayersPanel;
+	private Socket servidor;
 	/**
 	 * Launch the application.
 	 */
@@ -32,7 +34,7 @@ public class SalaFrame extends JFrame {
 					spectators.add(new User("Robert", 5, 10));
 					spectators.add(new User("Marti", 6, 50));
 					spectators.add(new User("Maurici", 0, 0));
-					SalaFrame frame = new SalaFrame("Roberto", new ClientRealSala("Nombre", players, spectators));
+					SalaFrame frame = new SalaFrame("Roberto", new ClientRealSala("Nombre", players, spectators),null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,8 +46,8 @@ public class SalaFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SalaFrame(String playerID, ClientRealSala sala) {
-
+	public SalaFrame(String playerID, ClientRealSala sala, Socket servidor) {
+		this.servidor = servidor;
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(350, 200, 1000, 720);
@@ -56,8 +58,12 @@ public class SalaFrame extends JFrame {
 		setContentPane(contentPane);
 		
 		salaPlayersPanel = new SalaPlayersPanel(sala.players);
-		salaPlayersPanel.setBounds(500,0,500,550);
+		salaPlayersPanel.setBounds(550,0,450,510);
 		contentPane.add(salaPlayersPanel);
+	}
+	
+	public void updateSalaFrame(ClientRealSala sala) {
+		salaPlayersPanel.updatePanel(sala.players);
 	}
 
 }

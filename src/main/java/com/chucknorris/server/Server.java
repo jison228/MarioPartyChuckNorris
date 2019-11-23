@@ -13,7 +13,7 @@ import java.util.Scanner;
 import com.chucknorris.Command;
 import com.chucknorris.User;
 import com.chucknorris.client.ClientLobbySala;
-import com.chucknorris.client.UpdateOrCreateResponse;
+import com.chucknorris.client.lobby.UpdateOrCreateLobbyResponse;
 import com.google.gson.Gson;
 
 public class Server {
@@ -67,7 +67,7 @@ public class Server {
 
 	}
 
-	public static UpdateOrCreateResponse createLobbyResponse(Map<String, ClientLobbyThread> usuarios,
+	public static UpdateOrCreateLobbyResponse createLobbyResponse(Map<String, ClientLobbyThread> usuarios,
 			Map<String, Sala> salas) {
 		List<User> listaUser = new ArrayList<User>();
 		for (Map.Entry<String, ClientLobbyThread> entry : usuarios.entrySet()) {
@@ -80,6 +80,6 @@ public class Server {
 					entry.getValue().threadsMap.size(), entry.getValue().playing));// Tendria que consultar en la base
 																					// de datos sus caracteristicas
 		}
-		return new UpdateOrCreateResponse(listaUser, listaClientSalas);
+		return new UpdateOrCreateLobbyResponse(listaUser, listaClientSalas);
 	}
 }
