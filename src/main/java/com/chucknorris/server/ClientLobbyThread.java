@@ -103,10 +103,10 @@ public class ClientLobbyThread extends Thread {
 					// Avisarle a los de la sala que actualicen
 					// Avisarles a los del lobby que actualicen
 					break;
-				case "Chat":
+				case "ChatLobby":
 					ChatResponse respuesta = new ChatResponse(playerID, brigadaB.getCommandJSON());
 					for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
-						this.send(new Command("Chat", gson.toJson(respuesta)), entry.getKey());
+						this.send(new Command("ChatLobby", gson.toJson(respuesta)), entry.getKey());
 					}
 					break;
 				// Pensar caso de exit Lobby
@@ -172,7 +172,13 @@ public class ClientLobbyThread extends Thread {
 		}
 		List<User> listaSpecs = new ArrayList<User>();
 		for (Map.Entry<String, ClientLobbyThread> entry : salita.threadsMap.entrySet()) {
-			if(!listaPlayers.contains(new User(entry.getKey(),0,0))) {
+			boolean isPlayer = false;
+			for(int i = 0; i < listaPlayers.size(); i++) {
+				if(listaPlayers.get(i).getPlayerID().equals(entry.getKey())) {
+					isPlayer = true;
+				}
+			}
+			if(!isPlayer) {
 				listaSpecs.add(new User(entry.getKey(),0,0));
 			}												
 		}

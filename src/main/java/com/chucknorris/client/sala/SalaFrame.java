@@ -17,6 +17,7 @@ public class SalaFrame extends JFrame {
 	private String playerID;
 	private ClientRealSala sala;
 	private SalaPlayersPanel salaPlayersPanel;
+	private SalaSpectatorsPanel salaSpectatorsPanel;
 	private Socket servidor;
 	/**
 	 * Launch the application.
@@ -34,6 +35,10 @@ public class SalaFrame extends JFrame {
 					spectators.add(new User("Robert", 5, 10));
 					spectators.add(new User("Marti", 6, 50));
 					spectators.add(new User("Maurici", 0, 0));
+					spectators.add(new User("Robert", 5, 10));
+					spectators.add(new User("Marti", 6, 50));
+					spectators.add(new User("Maurici", 0, 0));
+					
 					SalaFrame frame = new SalaFrame("Roberto", new ClientRealSala("Nombre", players, spectators),null);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -60,10 +65,15 @@ public class SalaFrame extends JFrame {
 		salaPlayersPanel = new SalaPlayersPanel(sala.players);
 		salaPlayersPanel.setBounds(550,0,450,510);
 		contentPane.add(salaPlayersPanel);
+		
+		salaSpectatorsPanel = new SalaSpectatorsPanel(sala.spectators);
+		salaSpectatorsPanel.setBounds(0, 510, 500, 490);
+		contentPane.add(salaSpectatorsPanel);
 	}
 	
 	public void updateSalaFrame(ClientRealSala sala) {
 		salaPlayersPanel.updatePanel(sala.players);
+		salaSpectatorsPanel.updatePanel(sala.spectators);
 	}
 
 }

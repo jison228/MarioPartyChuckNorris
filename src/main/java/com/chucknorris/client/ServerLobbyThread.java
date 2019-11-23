@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import com.chucknorris.Command;
-import com.chucknorris.client.lobby.Lobby;
+import com.chucknorris.client.lobby.LobbyFrame;
 import com.chucknorris.client.lobby.UpdateOrCreateLobbyResponse;
 import com.chucknorris.client.sala.ClientRealSala;
 import com.chucknorris.client.sala.SalaFrame;
@@ -17,7 +17,7 @@ public class ServerLobbyThread extends Thread {
 	private InputStream inputStream = null;
 	private Socket serverSocket = null;
 	private Gson gson;
-	private Lobby lobbyFrame;
+	private LobbyFrame lobbyFrame;
 	private SalaFrame salaFrame;
 	private UpdateOrCreateLobbyResponse respuesta;
 	private String playerID;
@@ -51,7 +51,7 @@ public class ServerLobbyThread extends Thread {
 					case "OpenLobby" :
 						System.out.println("SEEEE");
 						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateLobbyResponse.class);
-						lobbyFrame = new Lobby(playerID,respuesta.usuarios, respuesta.salas, serverSocket);
+						lobbyFrame = new LobbyFrame(playerID,respuesta.usuarios, respuesta.salas, serverSocket);
 						lobbyFrame.setVisible(true);
 						break;
 					case "UpdateLobby":
@@ -76,10 +76,10 @@ public class ServerLobbyThread extends Thread {
 					case "LeaveSala":
 						//cerrar frame de Sala
 						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateLobbyResponse.class);
-						lobbyFrame = new Lobby(playerID, respuesta.usuarios, respuesta.salas, serverSocket);
+						lobbyFrame = new LobbyFrame(playerID, respuesta.usuarios, respuesta.salas, serverSocket);
 						lobbyFrame.setVisible(true);
 						break;
-					case "LobbyChat":
+					case "ChatLobby":
 						respuestaChat = gson.fromJson(brigadaB.getCommandJSON(),ChatResponse.class);
 						lobbyFrame.addChatText("\"" + respuestaChat.playerID + "\" : " + respuestaChat.mensaje);
 						break;

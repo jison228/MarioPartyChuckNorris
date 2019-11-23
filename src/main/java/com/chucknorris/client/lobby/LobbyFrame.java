@@ -30,7 +30,7 @@ import com.chucknorris.User;
 import com.chucknorris.client.ClientLobbySala;
 import com.google.gson.Gson;
 
-public class Lobby extends JFrame {
+public class LobbyFrame extends JFrame {
 
 	/**
 	 * 
@@ -80,7 +80,7 @@ public class Lobby extends JFrame {
 					salas.add(new ClientLobbySala("Tercer Sala", 1, 3, false));
 					salas.add(new ClientLobbySala("Primer Sala", 3, 4, false));
 
-					Lobby frame = new Lobby("Roberto", chabones, salas, null);
+					LobbyFrame frame = new LobbyFrame("Roberto", chabones, salas, null);
 
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -93,7 +93,7 @@ public class Lobby extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Lobby(String playerID, List<User> usuarios, List<ClientLobbySala> salas, Socket servidor) {
+	public LobbyFrame(String playerID, List<User> usuarios, List<ClientLobbySala> salas, Socket servidor) {
 		if (servidor != null) {
 			try {
 				ps = new PrintStream(servidor.getOutputStream(), true);
@@ -199,7 +199,7 @@ public class Lobby extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				Command commandChat = new Command("Chat", chatTF.getText());
+				Command commandChat = new Command("ChatLobby", chatTF.getText());
 				String gsonCommand = gson.toJson(commandChat);
 				ps.println(gsonCommand);
 				chatTF.setText("");
