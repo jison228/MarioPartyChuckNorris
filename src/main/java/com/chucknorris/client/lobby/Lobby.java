@@ -47,6 +47,7 @@ public class Lobby extends JFrame {
 	private JPanel panelDeBotones;
 	private PrintStream ps;
 	private Gson gson;
+
 	/**
 	 * Launch the application.
 	 */
@@ -76,7 +77,7 @@ public class Lobby extends JFrame {
 					salas.add(new ClientInfoSalas("Segunda Sala", 4, 4, true));
 					salas.add(new ClientInfoSalas("Tercer Sala", 1, 3, false));
 					salas.add(new ClientInfoSalas("Primer Sala", 3, 4, false));
-					
+
 					Lobby frame = new Lobby("Roberto", chabones, salas, null);
 
 					frame.setVisible(true);
@@ -91,19 +92,21 @@ public class Lobby extends JFrame {
 	 * Create the frame.
 	 */
 	public Lobby(String playerID, List<User> usuarios, List<ClientInfoSalas> salas, Socket servidor) {
-		try {
-			ps = new PrintStream(servidor.getOutputStream(),true);
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+		if (servidor != null) {
+			try {
+				ps = new PrintStream(servidor.getOutputStream(), true);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
 		}
 		gson = new Gson();
 		this.playerID = playerID;
 		this.servidor = servidor;
-		setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(350, 200, 1000, 720);
+		setLocationRelativeTo(null);
 		this.lobbyPane = new JPanel(null);
 		this.lobbyPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setContentPane(lobbyPane);
@@ -111,26 +114,26 @@ public class Lobby extends JFrame {
 		panelDeBotones = new JPanel();
 		panelDeBotones.setLayout(null);
 		panelDeBotones.setBounds(900, 0, 100, 380);
-		for(int i = 0; i < salas.size(); i++) {
-			String specOrPlay = salas.get(i).cantPlayers == 4? "Spec" : "Play";
+		for (int i = 0; i < salas.size(); i++) {
+			String specOrPlay = salas.get(i).cantPlayers == 4 ? "Spec" : "Play";
 			JButton enter = new JButton(specOrPlay);
 			enter.setBounds(0, 10 + i * 70, 90, 68);
 			enter.setFocusable(true);
 			enter.transferFocus();
-			if(salas.get(i).playing) {
+			if (salas.get(i).playing) {
 				enter.setEnabled(false);
 			}
 			String nombreSala = salas.get(i).name;
 			enter.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ps.println(gson.toJson(new Command("JoinSala", nombreSala)));
-                }
-            });
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ps.println(gson.toJson(new Command("JoinSala", nombreSala)));
+				}
+			});
 			panelDeBotones.add(enter);
 		}
 		lobbyPane.add(panelDeBotones);
-		
+
 		this.panelUsuarios = new UserPanel(usuarios);
 		panelUsuarios.setBounds(0, 0, 500, 720);
 		lobbyPane.add(panelUsuarios);
@@ -213,7 +216,7 @@ public class Lobby extends JFrame {
 			}
 		});
 		lobbyPane.add(crearSalaBtn);
-		
+
 		// Salir Sala
 		salirJuego = new JButton("Salir Juego");
 		salirJuego.setBounds(880, 390, 100, 50);
@@ -223,30 +226,29 @@ public class Lobby extends JFrame {
 			}
 		});
 		lobbyPane.add(salirJuego);
-		
-		
+
 	}
 
 	public void updateLobby(List<User> usuarios, List<ClientInfoSalas> salas) {
 		panelDeBotones = new JPanel();
 		panelDeBotones.setLayout(null);
 		panelDeBotones.setBounds(900, 0, 100, 380);
-		for(int i = 0; i < salas.size(); i++) {
-			String specOrPlay = salas.get(i).cantPlayers == 4? "Spec" : "Play";
+		for (int i = 0; i < salas.size(); i++) {
+			String specOrPlay = salas.get(i).cantPlayers == 4 ? "Spec" : "Play";
 			JButton enter = new JButton(specOrPlay);
 			enter.setBounds(0, 10 + i * 70, 90, 68);
 			enter.setFocusable(true);
 			enter.transferFocus();
-			if(salas.get(i).playing) {
+			if (salas.get(i).playing) {
 				enter.setEnabled(false);
 			}
 			String nombreSala = salas.get(i).name;
 			enter.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ps.println(gson.toJson(new Command("JoinSala", nombreSala)));
-                }
-            });
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ps.println(gson.toJson(new Command("JoinSala", nombreSala)));
+				}
+			});
 			panelDeBotones.add(enter);
 		}
 		lobbyPane.add(panelDeBotones);
