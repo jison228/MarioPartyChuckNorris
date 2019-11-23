@@ -7,13 +7,13 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import com.chucknorris.client.ClientInfoSalas;
+import com.chucknorris.client.ClientLobbySala;
 
 public class SalasPanel extends JPanel{
 	
-	List<ClientInfoSalas> salas;
+	List<ClientLobbySala> salas;
 	
-	public SalasPanel(List<ClientInfoSalas> salas) {
+	public SalasPanel(List<ClientLobbySala> salas) {
 		this.salas = salas;
 	}
 	
@@ -36,7 +36,7 @@ public class SalasPanel extends JPanel{
 		}
 	}
 	
-	public final void updatePanel(List<ClientInfoSalas> salas) {
+	public final void updatePanel(List<ClientLobbySala> salas) {
 		this.salas = salas;
 	}
 }

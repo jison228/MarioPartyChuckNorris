@@ -19,8 +19,12 @@ import javax.swing.border.EmptyBorder;
 import com.chucknorris.Command;
 import com.google.gson.Gson;
 
-public class NewSala extends JFrame {
+public class NewSalaFrame extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textField;
 	private Gson gson;
@@ -32,7 +36,7 @@ public class NewSala extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					NewSala frame = new NewSala(null);
+					NewSalaFrame frame = new NewSalaFrame(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,7 +48,7 @@ public class NewSala extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public NewSala(Socket servidor) {
+	public NewSalaFrame(Socket servidor) {
 		gson = new Gson();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 391, 158);

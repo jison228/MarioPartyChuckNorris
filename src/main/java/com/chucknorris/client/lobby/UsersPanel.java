@@ -9,10 +9,14 @@ import javax.swing.JPanel;
 
 import com.chucknorris.User;
 
-public class UserPanel extends JPanel {
+public class UsersPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<User> usuarios;
 
-	public UserPanel(List<User> usuarios) {
+	public UsersPanel(List<User> usuarios) {
 		this.usuarios = usuarios;
 	}
 

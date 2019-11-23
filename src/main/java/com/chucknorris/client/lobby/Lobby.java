@@ -27,15 +27,17 @@ import javax.swing.border.EmptyBorder;
 
 import com.chucknorris.Command;
 import com.chucknorris.User;
-import com.chucknorris.client.ClientInfoSalas;
+import com.chucknorris.client.ClientLobbySala;
 import com.google.gson.Gson;
 
 public class Lobby extends JFrame {
 
-	private Socket servidor;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel lobbyPane;
-	private JPanel salaPane;
-	private UserPanel panelUsuarios;
+	private UsersPanel panelUsuarios;
 	private SalasPanel panelSalas;
 	private TextArea chatTA;
 	private JTextField chatTF;
@@ -43,7 +45,7 @@ public class Lobby extends JFrame {
 	private JButton crearSalaBtn;
 	private String playerID;
 	private JButton salirJuego;
-	private NewSala nuevasala;
+	private NewSalaFrame nuevasala;
 	private JPanel panelDeBotones;
 	private PrintStream ps;
 	private Gson gson;
@@ -72,11 +74,11 @@ public class Lobby extends JFrame {
 					chabones.add(new User("Primer Man", 5, 600));
 					chabones.add(new User("Peronista", 9, 1200));
 
-					List<ClientInfoSalas> salas = new ArrayList<ClientInfoSalas>();
-					salas.add(new ClientInfoSalas("Primer Sala", 4, 4, false));
-					salas.add(new ClientInfoSalas("Segunda Sala", 4, 4, true));
-					salas.add(new ClientInfoSalas("Tercer Sala", 1, 3, false));
-					salas.add(new ClientInfoSalas("Primer Sala", 3, 4, false));
+					List<ClientLobbySala> salas = new ArrayList<ClientLobbySala>();
+					salas.add(new ClientLobbySala("Primer Sala", 4, 4, false));
+					salas.add(new ClientLobbySala("Segunda Sala", 4, 4, true));
+					salas.add(new ClientLobbySala("Tercer Sala", 1, 3, false));
+					salas.add(new ClientLobbySala("Primer Sala", 3, 4, false));
 
 					Lobby frame = new Lobby("Roberto", chabones, salas, null);
 
@@ -91,7 +93,7 @@ public class Lobby extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Lobby(String playerID, List<User> usuarios, List<ClientInfoSalas> salas, Socket servidor) {
+	public Lobby(String playerID, List<User> usuarios, List<ClientLobbySala> salas, Socket servidor) {
 		if (servidor != null) {
 			try {
 				ps = new PrintStream(servidor.getOutputStream(), true);
@@ -102,7 +104,6 @@ public class Lobby extends JFrame {
 		}
 		gson = new Gson();
 		this.playerID = playerID;
-		this.servidor = servidor;
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(350, 200, 1000, 720);
@@ -134,7 +135,7 @@ public class Lobby extends JFrame {
 		}
 		lobbyPane.add(panelDeBotones);
 
-		this.panelUsuarios = new UserPanel(usuarios);
+		this.panelUsuarios = new UsersPanel(usuarios);
 		panelUsuarios.setBounds(0, 0, 500, 720);
 		lobbyPane.add(panelUsuarios);
 		panelUsuarios.setLayout(null);
@@ -211,7 +212,7 @@ public class Lobby extends JFrame {
 		crearSalaBtn.setBounds(500, 390, 100, 50);
 		crearSalaBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				nuevasala = new NewSala(servidor);
+				nuevasala = new NewSalaFrame(servidor);
 				nuevasala.setVisible(true);
 			}
 		});
@@ -229,7 +230,7 @@ public class Lobby extends JFrame {
 
 	}
 
-	public void updateLobby(List<User> usuarios, List<ClientInfoSalas> salas) {
+	public void updateLobby(List<User> usuarios, List<ClientLobbySala> salas) {
 		panelDeBotones = new JPanel();
 		panelDeBotones.setLayout(null);
 		panelDeBotones.setBounds(900, 0, 100, 380);
@@ -252,10 +253,12 @@ public class Lobby extends JFrame {
 			panelDeBotones.add(enter);
 		}
 		lobbyPane.add(panelDeBotones);
+		
 		panelUsuarios.updatePanel(usuarios);
 		panelSalas.updatePanel(salas);
-		lobbyPane.repaint();
-	}
+		lobbyPane.paintImmediately(lobbyPane.getBounds());
+		panelDeBotones.repaint();
+		}
 
 	public void addChatText(String mensaje) {
 		chatTA.append(

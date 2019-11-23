@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 import com.chucknorris.Command;
 import com.chucknorris.User;
-import com.chucknorris.client.ClientInfoSalas;
+import com.chucknorris.client.ClientLobbySala;
 import com.chucknorris.client.UpdateOrCreateResponse;
 import com.google.gson.Gson;
 
@@ -74,9 +74,9 @@ public class Server {
 			listaUser.add(new User(entry.getKey(), 0, 0));// Tendria que consultar en la base de datos sus
 															// caracteristicas
 		}
-		List<ClientInfoSalas> listaClientSalas = new ArrayList<ClientInfoSalas>();
+		List<ClientLobbySala> listaClientSalas = new ArrayList<ClientLobbySala>();
 		for (Map.Entry<String, Sala> entry : salas.entrySet()) {
-			listaClientSalas.add(new ClientInfoSalas(entry.getKey(),entry.getValue().players.size(),
+			listaClientSalas.add(new ClientLobbySala(entry.getKey(),entry.getValue().players.size(),
 					entry.getValue().threadsMap.size(), entry.getValue().playing));// Tendria que consultar en la base
 																					// de datos sus caracteristicas
 		}
