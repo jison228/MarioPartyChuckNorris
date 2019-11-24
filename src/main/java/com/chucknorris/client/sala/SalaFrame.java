@@ -359,17 +359,7 @@ public class SalaFrame extends JFrame {
 	}
 
 	private void updateBotones(ClientRealSala sala) {
-		boolean spec = false;
-		for (int i = 0; i < sala.spectators.size(); i++) {
-			if (sala.spectators.get(i).getPlayerID().equals(this.playerID)) {
-				spec = true;
-			}
-		}
-		if (spec) {
-			btnCambiar.setText("Cambiar a Jugador");
-		} else {
-			btnCambiar.setText("Cambiar a Espectador");
-		}
+		
 		btnJugar.setEnabled(false);
 		if (sala.players.size() == 4) {
 			btnJugar.setEnabled(true);
@@ -392,6 +382,24 @@ public class SalaFrame extends JFrame {
 			comboBoxPesos.setEnabled(true);
 			comboBoxPrecioDolar.setEnabled(true);
 			comboBoxSalario.setEnabled(true);
+		}
+		
+		boolean spec = false;
+		for (int i = 0; i < sala.spectators.size(); i++) {
+			if (sala.spectators.get(i).getPlayerID().equals(this.playerID)) {
+				spec = true;
+			}
+		}
+		if (spec) {
+			btnCambiar.setText("Cambiar a Jugador");
+			if(sala.players.size() == 4) {
+				btnCambiar.setEnabled(false);
+			} else {
+				btnCambiar.setEnabled(true);
+			}
+		} else {
+			btnCambiar.setEnabled(true);
+			btnCambiar.setText("Cambiar a Espectador");
 		}
 	}
 	
