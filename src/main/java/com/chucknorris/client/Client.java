@@ -14,7 +14,7 @@ public class Client {
 		try {
 			InetAddress ip = InetAddress.getByName("localhost");
 			Socket serverSocket = new Socket(ip,portNumber);
-			String nombre = "VVVV";
+			String nombre = "AAA";
 			ServerLobbyThread escuchador = new ServerLobbyThread(serverSocket, nombre);
 			escuchador.start();
 			PrintStream ps = new PrintStream(serverSocket.getOutputStream(), true);

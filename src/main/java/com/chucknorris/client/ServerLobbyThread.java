@@ -77,7 +77,7 @@ public class ServerLobbyThread extends Thread {
 						break;
 					case "SalaChat":
 						respuestaChat = gson.fromJson(brigadaB.getCommandJSON(),ChatResponse.class);
-						//salaFrame.addChatText("\"" + respuestaChat.playerID + "\" : " + respuestaChat.mensaje);
+						salaFrame.addChatText("\"" + respuestaChat.playerID + "\" : " + respuestaChat.mensaje);
 						break;
 					case "OpenSala":
 						salaReal = gson.fromJson(brigadaB.getCommandJSON(), ClientRealSala.class);
