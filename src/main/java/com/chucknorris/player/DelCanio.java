@@ -10,6 +10,10 @@ public class DelCanio extends Player {
 		super("Del Caño", pesos, dolares, salario);
 	}
 	
+	public DelCanio(String playerID, double pesos, double dolares, double salario) {
+		super("Del Caño", playerID, pesos, dolares, salario);
+	}
+	
 	@Override
 	public void applyPowerup(List<Player> players, GameContext gameContext) {
 		double montoTotal = 0;

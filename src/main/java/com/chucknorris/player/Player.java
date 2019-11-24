@@ -23,6 +23,14 @@ public class Player {
 		this.dolar = dolar;
 		this.salario = salario;
 	}
+	
+	Player(String character, String playerID, double pesos, double dolar, double salario) {
+		this.playerID = playerID;
+		this.character = character;
+		this.pesos = pesos;
+		this.dolar = dolar;
+		this.salario = salario;
+	}
 
 	Player(String character, int coins, Node nodeLocation, double pesos, double dolar, double salario) {
 		this.character = character;

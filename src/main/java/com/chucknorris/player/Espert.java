@@ -11,6 +11,10 @@ public class Espert extends Player {
 	public Espert(double pesos, double dolares, double salario) {
 		super("Espert", pesos, dolares, salario);
 	}
+	
+	public Espert(String playerID, double pesos, double dolares, double salario) {
+		super("Espert", playerID, pesos, dolares, salario);
+	}
 
 	@Override
 	public void applyPowerup(List<Player> players, GameContext gameContext) {

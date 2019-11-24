@@ -14,9 +14,16 @@ import com.chucknorris.Command;
 import com.chucknorris.User;
 import com.chucknorris.client.ChatResponse;
 import com.chucknorris.client.ClientLobbySala;
+import com.chucknorris.client.GameInformation;
+import com.chucknorris.client.GameParametersResponse;
 import com.chucknorris.client.lobby.UpdateOrCreateLobbyResponse;
 import com.chucknorris.client.sala.ClientRealSala;
-import com.chucknorris.client.sala.UpdateOrCreateSalaResponse;
+import com.chucknorris.game.Game;
+import com.chucknorris.player.Cristina;
+import com.chucknorris.player.DelCanio;
+import com.chucknorris.player.Espert;
+import com.chucknorris.player.Macri;
+import com.chucknorris.player.Player;
 import com.google.gson.Gson;
 
 public class ClientLobbyThread extends Thread {
@@ -115,21 +122,21 @@ public class ClientLobbyThread extends Thread {
 					threadsMap.put(playerID, this);
 					this.salas.get(this.salaActual).threadsMap.remove(playerID);
 					this.salas.get(this.salaActual).players.remove(playerID);
-					if(this.salas.get(this.salaActual).threadsMap.isEmpty()) {
+					if (this.salas.get(this.salaActual).threadsMap.isEmpty()) {
 						this.salas.remove(this.salaActual);
 					} else {
-					usersMessage = gson.toJson(createSalaResponse(this.salas.get(this.salaActual)));
-					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
-							.entrySet()) {
-						this.sendSala(new Command("UpdateSala", usersMessage), this.salaActual, entry.getKey());
-					}
+						usersMessage = gson.toJson(createSalaResponse(this.salas.get(this.salaActual)));
+						for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+								.entrySet()) {
+							this.sendSala(new Command("UpdateSala", usersMessage), this.salaActual, entry.getKey());
+						}
 					}
 					this.threadsMap.put(this.playerID, this);
 					usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
-					this.send(new Command("LeaveSala",usersMessage), this.playerID);
+					this.send(new Command("LeaveSala", usersMessage), this.playerID);
 					for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
 						if (!entry.getKey().equals(this.playerID)) {
-						this.send(new Command("UpdateLobby", usersMessage), entry.getKey());
+							this.send(new Command("UpdateLobby", usersMessage), entry.getKey());
 						}
 					}
 					break;
@@ -143,8 +150,38 @@ public class ClientLobbyThread extends Thread {
 					ChatResponse respuesta1 = new ChatResponse(playerID, brigadaB.getCommandJSON());
 					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 							.entrySet()) {
-						this.sendSala(new Command("SalaChat", gson.toJson(respuesta1)), this.salaActual, entry.getKey());
+						this.sendSala(new Command("SalaChat", gson.toJson(respuesta1)), this.salaActual,
+								entry.getKey());
 					}
+					break;
+				case "StartGame":
+					GameParametersResponse parametros = gson.fromJson(brigadaB.getCommandJSON(),
+							GameParametersResponse.class);
+					List<Player> jugadores = new ArrayList<Player>();
+					jugadores.add(new Espert(this.salas.get(this.salaActual).players.get(0), parametros.pesosIniciales,
+							parametros.dolaresIniciales, parametros.salarioInicial));
+					jugadores.add(new Cristina(this.salas.get(this.salaActual).players.get(1),
+							parametros.pesosIniciales, parametros.dolaresIniciales, parametros.salarioInicial));
+					jugadores.add(new Macri(this.salas.get(this.salaActual).players.get(2), parametros.pesosIniciales,
+							parametros.dolaresIniciales, parametros.salarioInicial));
+					jugadores.add(new DelCanio(this.salas.get(this.salaActual).players.get(3),
+							parametros.pesosIniciales, parametros.dolaresIniciales, parametros.salarioInicial));
+					this.salas.get(this.salaActual).juego = new Game(jugadores, parametros.mapName, parametros.diceMin,
+							parametros.diceMax, parametros.precioDolar);
+
+					GameInformation infoJuego = new GameInformation(parametros.mapName, jugadores,
+							this.salas.get(this.salaActual).juego.getGameMap(), parametros.precioDolar);
+
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+							.entrySet()) {
+						this.sendSala(new Command("StartGame", gson.toJson(infoJuego)), this.salaActual,
+								entry.getKey());
+					}
+					Thread.sleep(2000);
+					this.sendSala(new Command("TirarDado", ""), this.salaActual,
+							this.salas.get(this.salaActual).players
+									.get(this.salas.get(this.salaActual).juego.getCurrentTurn()
+											% this.salas.get(this.salaActual).players.size()));
 					break;
 				// Pensar caso de exit Lobby
 				}

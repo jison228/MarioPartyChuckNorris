@@ -8,6 +8,7 @@ import java.util.Queue;
 import com.chucknorris.commons.Dice;
 import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.GameMap;
+import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.gui.GameInformation;
 import com.chucknorris.player.Player;
@@ -28,6 +29,16 @@ public class Game {
 		this.precioDolar = precioDolar;
 	}
 
+	public Game(List<Player> players, String nombreMapa, int diceMin, int diceMax, double precioDolar) throws Exception {
+		this.players = players;
+		this.turn = 0;
+		MapFileCSVReader mapFileCSVReader = new MapFileCSVReader( nombreMapa + ".txt");
+		this.gameMap = mapFileCSVReader.buildGameMap();
+		this.gameMap.initializePlayers(this.players);
+		this.dice = new Dice(diceMin, diceMax);
+		this.precioDolar = precioDolar;
+	}
+	
 	public Game(GameInformation info) {
 		this.players = info.players;
 		this.gameMap = info.gameMap;

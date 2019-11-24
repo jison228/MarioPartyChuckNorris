@@ -10,6 +10,10 @@ public class Macri extends Player {
 		super("Macri", pesos, dolar, salario);
 	}
 	
+	public Macri(String playerID, double pesos, double dolar, double salario) {
+		super("Macri", playerID, pesos, dolar, salario);
+	}
+	
 	@Override
 	public void applyPowerup(List<Player> players, GameContext gameContext) {
 		double dolaresMax = 0;

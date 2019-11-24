@@ -15,11 +15,14 @@ import javax.swing.border.EmptyBorder;
 import com.chucknorris.Command;
 import com.chucknorris.User;
 import com.chucknorris.client.ChatResponse;
+import com.chucknorris.client.GameParametersResponse;
 import com.google.gson.Gson;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+
+import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -43,15 +46,15 @@ public class SalaFrame extends JFrame {
 	private Socket servidor;
 	private Gson gson;
 	private PrintStream ps;
-	private JComboBox<Integer> comboBoxPrecioDolar;
-	private JComboBox<Integer> comboBoxDolares;
+	private JComboBox<Double> comboBoxPrecioDolar;
+	private JComboBox<Double> comboBoxDolares;
 	private JComboBox<String> comboBoxMap;
 	private JButton btnCambiar;
 	private JButton btnJugar;
 	private JComboBox<Integer> comboBoxMin;
 	private JComboBox<Integer> comboBoxMax;
-	private JComboBox<Integer> comboBoxSalario;
-	private JComboBox<Integer> comboBoxPesos;
+	private JComboBox<Double> comboBoxSalario;
+	private JComboBox<Double> comboBoxPesos;
 	private TextArea chatTA;
 	private JTextField chatTF;
 	private JButton chatBtn;
@@ -139,6 +142,15 @@ public class SalaFrame extends JFrame {
 		optionsPanel.add(btnExitSala);
 
 		btnJugar = new JButton("JUGAR");
+		btnJugar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GameParametersResponse parametros = new GameParametersResponse((String) comboBoxMap.getSelectedItem(),
+						(Double)comboBoxPrecioDolar.getSelectedItem(), (Double)comboBoxPesos.getSelectedItem(),
+						(Double)comboBoxDolares.getSelectedItem(), (Double)comboBoxSalario.getSelectedItem(),
+						(Integer)comboBoxMin.getSelectedItem(), (Integer)comboBoxMax.getSelectedItem());
+				ps.println(gson.toJson(new Command("StartGame", gson.toJson(parametros))));
+			}
+		});
 		btnJugar.setFont(new Font("Tahoma", Font.BOLD, 18));
 		btnJugar.setBounds(425, 461, 115, 39);
 		optionsPanel.add(btnJugar);
@@ -227,15 +239,15 @@ public class SalaFrame extends JFrame {
 		lblSalarioInicial.setBounds(10, 351, 146, 25);
 		optionsPanel.add(lblSalarioInicial);
 
-		comboBoxSalario = new JComboBox<Integer>();
+		comboBoxSalario = new JComboBox<Double>();
 		comboBoxSalario.setBackground(new Color(255, 250, 205));
 		comboBoxSalario.setBounds(10, 387, 146, 21);
 		optionsPanel.add(comboBoxSalario);
-		comboBoxSalario.addItem(300);
-		comboBoxSalario.addItem(200);
-		comboBoxSalario.addItem(150);
-		comboBoxSalario.addItem(100);
-		comboBoxSalario.addItem(50);
+		comboBoxSalario.addItem(300.0);
+		comboBoxSalario.addItem(200.0);
+		comboBoxSalario.addItem(150.0);
+		comboBoxSalario.addItem(100.0);
+		comboBoxSalario.addItem(50.0);
 
 		JLabel lblPesosIniciales = new JLabel("Pesos Iniciales\r\n");
 		lblPesosIniciales.setForeground(Color.GREEN);
@@ -244,14 +256,14 @@ public class SalaFrame extends JFrame {
 		lblPesosIniciales.setBounds(10, 92, 146, 25);
 		optionsPanel.add(lblPesosIniciales);
 
-		comboBoxPesos = new JComboBox<Integer>();
+		comboBoxPesos = new JComboBox<Double>();
 		comboBoxPesos.setBackground(new Color(255, 250, 205));
 		comboBoxPesos.setBounds(10, 128, 146, 21);
 		optionsPanel.add(comboBoxPesos);
-		comboBoxPesos.addItem(150);
-		comboBoxPesos.addItem(200);
-		comboBoxPesos.addItem(250);
-		comboBoxPesos.addItem(300);
+		comboBoxPesos.addItem(150.0);
+		comboBoxPesos.addItem(200.0);
+		comboBoxPesos.addItem(250.0);
+		comboBoxPesos.addItem(300.0);
 
 		JLabel lblDolaresIniciales = new JLabel("Dolares Iniciales\r\n");
 		lblDolaresIniciales.setForeground(Color.GREEN);
@@ -260,13 +272,13 @@ public class SalaFrame extends JFrame {
 		lblDolaresIniciales.setBounds(10, 223, 155, 25);
 		optionsPanel.add(lblDolaresIniciales);
 
-		comboBoxDolares = new JComboBox<Integer>();
+		comboBoxDolares = new JComboBox<Double>();
 		comboBoxDolares.setBackground(new Color(255, 250, 205));
 		comboBoxDolares.setBounds(10, 259, 146, 21);
 		optionsPanel.add(comboBoxDolares);
-		comboBoxDolares.addItem(100);
-		comboBoxDolares.addItem(50);
-		comboBoxDolares.addItem(0);
+		comboBoxDolares.addItem(100.0);
+		comboBoxDolares.addItem(50.0);
+		comboBoxDolares.addItem(0.0);
 
 		JLabel lblPrecioDolar = new JLabel("Precio Dolar");
 		lblPrecioDolar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -275,14 +287,14 @@ public class SalaFrame extends JFrame {
 		lblPrecioDolar.setBounds(177, 349, 146, 25);
 		optionsPanel.add(lblPrecioDolar);
 
-		comboBoxPrecioDolar = new JComboBox<Integer>();
+		comboBoxPrecioDolar = new JComboBox<Double>();
 		comboBoxPrecioDolar.setFont(new Font("Tahoma", Font.BOLD, 18));
 		comboBoxPrecioDolar.setBackground(new Color(255, 250, 205));
 		comboBoxPrecioDolar.setBounds(210, 387, 75, 21);
 		optionsPanel.add(comboBoxPrecioDolar);
-		comboBoxPrecioDolar.addItem(20);
-		comboBoxPrecioDolar.addItem(30);
-		comboBoxPrecioDolar.addItem(40);
+		comboBoxPrecioDolar.addItem(20.0);
+		comboBoxPrecioDolar.addItem(30.0);
+		comboBoxPrecioDolar.addItem(40.0);
 
 		// CHAT
 		// TextArea
@@ -359,10 +371,12 @@ public class SalaFrame extends JFrame {
 	}
 
 	private void updateBotones(ClientRealSala sala) {
-		
+
 		btnJugar.setEnabled(false);
 		if (sala.players.size() == 4) {
 			btnJugar.setEnabled(true);
+		} else {
+			btnJugar.setEnabled(false);
 		}
 
 		if (sala.players.size() == 0 || !sala.players.get(0).getPlayerID().equals(this.playerID)) {
@@ -383,7 +397,7 @@ public class SalaFrame extends JFrame {
 			comboBoxPrecioDolar.setEnabled(true);
 			comboBoxSalario.setEnabled(true);
 		}
-		
+
 		boolean spec = false;
 		for (int i = 0; i < sala.spectators.size(); i++) {
 			if (sala.spectators.get(i).getPlayerID().equals(this.playerID)) {
@@ -392,7 +406,7 @@ public class SalaFrame extends JFrame {
 		}
 		if (spec) {
 			btnCambiar.setText("Cambiar a Jugador");
-			if(sala.players.size() == 4) {
+			if (sala.players.size() == 4) {
 				btnCambiar.setEnabled(false);
 			} else {
 				btnCambiar.setEnabled(true);
@@ -402,7 +416,7 @@ public class SalaFrame extends JFrame {
 			btnCambiar.setText("Cambiar a Espectador");
 		}
 	}
-	
+
 	public void addChatText(String mensaje) {
 		chatTA.append(
 				new SimpleDateFormat("HH:mm:ss").format(new Date(System.currentTimeMillis())) + " " + mensaje + "\n");
