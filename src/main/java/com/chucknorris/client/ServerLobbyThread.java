@@ -11,6 +11,7 @@ import com.chucknorris.client.lobby.UpdateOrCreateLobbyResponse;
 import com.chucknorris.client.sala.ClientRealSala;
 import com.chucknorris.client.sala.SalaFrame;
 import com.chucknorris.client.sala.UpdateOrCreateSalaResponse;
+import com.chucknorris.client.tablero.MainGameScreen;
 import com.google.gson.Gson;
 
 public class ServerLobbyThread extends Thread {
@@ -22,6 +23,7 @@ public class ServerLobbyThread extends Thread {
 	private UpdateOrCreateLobbyResponse respuesta;
 	private String playerID;
 	private ClientRealSala salaReal;
+	private MainGameScreen gameFrame;
 	
 	public ServerLobbyThread(Socket serverSocket, String playerID) {
 		this.serverSocket = serverSocket;
@@ -58,9 +60,6 @@ public class ServerLobbyThread extends Thread {
 						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateLobbyResponse.class);
 						lobbyFrame.updateLobby(respuesta.usuarios, respuesta.salas);
 						break;
-					case "StartGame":
-						//salaFrame.dispose();
-						break;
 					case "UpdateSala":
 						salaReal = gson.fromJson(brigadaB.getCommandJSON(), ClientRealSala.class);
 						salaFrame.updateSalaFrame(salaReal);
@@ -84,6 +83,16 @@ public class ServerLobbyThread extends Thread {
 						salaFrame = new SalaFrame(playerID, salaReal, serverSocket);
 						salaFrame.setVisible(true);
 						lobbyFrame.dispose();
+						break;
+					case "StartGame":
+						GameInformation gameInfo = gson.fromJson(brigadaB.getCommandJSON(), GameInformation.class);
+						// frame y pasarle el gameinformation
+						gameFrame = new MainGameScreen(gameInfo, serverSocket);
+						gameFrame.setVisible(true);
+						salaFrame.dispose();
+						break;
+					case "TirarDado":
+						gameFrame.habilitarDado();
 						break;
 				}
 			}

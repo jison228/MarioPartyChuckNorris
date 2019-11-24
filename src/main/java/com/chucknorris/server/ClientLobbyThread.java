@@ -172,6 +172,15 @@ public class ClientLobbyThread extends Thread {
 					GameInformation infoJuego = new GameInformation(parametros.mapName, jugadores,
 							this.salas.get(this.salaActual).juego.getGameMap(), parametros.precioDolar);
 
+					this.salas.get(this.salaActual).playing = true;
+					usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
+					this.send(new Command("LeaveSala", usersMessage), this.playerID);
+					for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
+						if (!entry.getKey().equals(this.playerID)) {
+							this.send(new Command("UpdateLobby", usersMessage), entry.getKey());
+						}
+					}
+					
 					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 							.entrySet()) {
 						this.sendSala(new Command("StartGame", gson.toJson(infoJuego)), this.salaActual,

@@ -264,7 +264,7 @@ public class MainGameScreen extends JFrame {
 		btnCamino2.setFocusable(false);
 
 		// Panel del juego
-		gamePanel = new JPanelGame(info.getNodes(), info.getPlayers());
+		gamePanel = new JPanelGame(info.getMapName(), info.getNodes(), info.getPlayers());
 		gamePanel.setBackground(SystemColor.text);
 		gamePanel.setBounds(0, 0, 1000, 500);
 		contentPane.add(gamePanel);

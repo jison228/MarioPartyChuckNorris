@@ -21,19 +21,21 @@ public class JPanelGame extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private List<ClientNode> nodesList;
 	private List<ClientPlayer> clientPlayerList;
+	private String mapName;
 	private int iniX = 30;
 	private int iniY = 30;
 
-	public JPanelGame(List<ClientNode> nodesList, List<ClientPlayer> clientPlayerList) {
+	public JPanelGame(String mapName, List<ClientNode> nodesList, List<ClientPlayer> clientPlayerList) {
 		this.nodesList = nodesList;
 		this.clientPlayerList = clientPlayerList;
+		this.mapName = mapName;
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(new File("images/backgrounds/" + "newMap2" + ".jpg"));
+			image = ImageIO.read(new File("images/backgrounds/" + mapName + ".jpg"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
