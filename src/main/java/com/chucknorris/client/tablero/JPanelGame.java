@@ -33,7 +33,7 @@ public class JPanelGame extends JPanel {
 	public void paintComponent(Graphics g) {
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(new File("images/backgrounds/" + "newMap1" + ".jpg"));
+			image = ImageIO.read(new File("images/backgrounds/" + "newMap2" + ".jpg"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

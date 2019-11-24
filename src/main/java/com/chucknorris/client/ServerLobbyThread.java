@@ -59,25 +59,17 @@ public class ServerLobbyThread extends Thread {
 						lobbyFrame.updateLobby(respuesta.usuarios, respuesta.salas);
 						break;
 					case "StartGame":
-						//Recibo dos puertos
-						Socket serverGameSocket = new Socket(serverSocket.getInetAddress(),0);
-						Socket serverMinigameSocket = new Socket(serverSocket.getInetAddress(),1);
-						ServerThread listener = new ServerThread(serverGameSocket, serverMinigameSocket);
-						listener.start();
 						//salaFrame.dispose();
-						break;
-					case "JoinSala":
-						//Mostrar Sala correspondiente
 						break;
 					case "UpdateSala":
 						salaReal = gson.fromJson(brigadaB.getCommandJSON(), ClientRealSala.class);
 						salaFrame.updateSalaFrame(salaReal);
 						break;
 					case "LeaveSala":
-						//cerrar frame de Sala
 						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateLobbyResponse.class);
 						lobbyFrame = new LobbyFrame(playerID, respuesta.usuarios, respuesta.salas, serverSocket);
 						lobbyFrame.setVisible(true);
+						salaFrame.dispose();
 						break;
 					case "ChatLobby":
 						respuestaChat = gson.fromJson(brigadaB.getCommandJSON(),ChatResponse.class);
@@ -93,7 +85,6 @@ public class ServerLobbyThread extends Thread {
 						salaFrame.setVisible(true);
 						lobbyFrame.dispose();
 						break;
-					
 				}
 			}
 			sc.close();

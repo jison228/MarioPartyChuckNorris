@@ -26,6 +26,7 @@ public class ClientLobbyThread extends Thread {
 
 	private Socket clientSocket = null;
 	private String playerID;
+	private String salaActual;
 	private Map<String, ClientLobbyThread> threadsMap;
 	private Map<String, Sala> salas;
 
@@ -34,6 +35,7 @@ public class ClientLobbyThread extends Thread {
 		this.clientSocket = clientSocket;
 		this.threadsMap = threadsMap;
 		this.playerID = playerID;
+		salaActual = null;
 		this.salas = salas;
 		gson = new Gson();
 		try {
@@ -65,7 +67,7 @@ public class ClientLobbyThread extends Thread {
 					if (this.salas.get(brigadaB.getCommandJSON()).players.size() < 4)
 						this.salas.get(brigadaB.getCommandJSON()).players.add(playerID);
 					this.salas.get(brigadaB.getCommandJSON()).threadsMap.put(playerID, this);// sala recibida por//
-																								// commando
+					this.salaActual = brigadaB.getCommandJSON(); // commando
 					threadsMap.remove(playerID);
 					usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
 					for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
@@ -73,9 +75,11 @@ public class ClientLobbyThread extends Thread {
 					}
 					usersMessage = gson.toJson(createSalaResponse(this.salas.get(brigadaB.getCommandJSON())));
 					this.sendSala(new Command("OpenSala", usersMessage), brigadaB.getCommandJSON(), playerID);
-					for(Map.Entry<String,ClientLobbyThread> entry : this.salas.get(brigadaB.getCommandJSON()).threadsMap.entrySet()) {
-						if(entry.getKey()!=playerID) {
-							this.sendSala(new Command("UpdateSala", usersMessage),brigadaB.getCommandJSON(), entry.getKey());
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas
+							.get(brigadaB.getCommandJSON()).threadsMap.entrySet()) {
+						if (entry.getKey() != playerID) {
+							this.sendSala(new Command("UpdateSala", usersMessage), brigadaB.getCommandJSON(),
+									entry.getKey());
 						}
 					}
 					break;
@@ -87,21 +91,37 @@ public class ClientLobbyThread extends Thread {
 						this.salas.put(brigadaB.getCommandJSON(), nuevaSala);
 						threadsMap.remove(playerID);
 						usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
+						this.salaActual = brigadaB.getCommandJSON();
 						for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
 							this.send(new Command("UpdateLobby", usersMessage), entry.getKey());
 						}
 						usersMessage = gson.toJson(createSalaResponse(nuevaSala));
-						this.sendSala(new Command("OpenSala", usersMessage),brigadaB.getCommandJSON(),playerID);
+						this.sendSala(new Command("OpenSala", usersMessage), brigadaB.getCommandJSON(), playerID);
 					} else {
 						// Avisarle que es un pelotudo
 					}
 					break;
 				case "LeaveSala":
 					threadsMap.put(playerID, this);
-					this.salas.get(brigadaB.getCommandJSON()).threadsMap.remove(playerID);
-					this.salas.get(brigadaB.getCommandJSON()).players.remove(playerID);
-					// Avisarle a los de la sala que actualicen
-					// Avisarles a los del lobby que actualicen
+					this.salas.get(this.salaActual).threadsMap.remove(playerID);
+					this.salas.get(this.salaActual).players.remove(playerID);
+					if(this.salas.get(this.salaActual).threadsMap.isEmpty()) {
+						this.salas.remove(this.salaActual);
+					} else {
+					usersMessage = gson.toJson(createSalaResponse(this.salas.get(this.salaActual)));
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+							.entrySet()) {
+						this.sendSala(new Command("UpdateSala", usersMessage), this.salaActual, entry.getKey());
+					}
+					}
+					this.threadsMap.put(this.playerID, this);
+					usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
+					this.send(new Command("LeaveSala",usersMessage), this.playerID);
+					for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
+						if (!entry.getKey().equals(this.playerID)) {
+						this.send(new Command("UpdateLobby", usersMessage), entry.getKey());
+						}
+					}
 					break;
 				case "ChatLobby":
 					ChatResponse respuesta = new ChatResponse(playerID, brigadaB.getCommandJSON());
@@ -137,7 +157,7 @@ public class ClientLobbyThread extends Thread {
 		}
 
 	}
-	
+
 	private void sendSala(Command send, String nameSala, String playerID) {
 		String mensaje = gson.toJson(send);
 		PrintStream ps;
@@ -164,28 +184,28 @@ public class ClientLobbyThread extends Thread {
 		}
 		return new UpdateOrCreateLobbyResponse(listaUser, listaClientSalas);
 	}
-	
+
 	public static ClientRealSala createSalaResponse(Sala salita) {
 		List<User> listaPlayers = new ArrayList<User>();
-		for(int i = 0; i < salita.players.size(); i++) {
-			listaPlayers.add(new User(salita.players.get(i),0,0));
+		for (int i = 0; i < salita.players.size(); i++) {
+			listaPlayers.add(new User(salita.players.get(i), 0, 0));
 		}
 		List<User> listaSpecs = new ArrayList<User>();
 		for (Map.Entry<String, ClientLobbyThread> entry : salita.threadsMap.entrySet()) {
 			boolean isPlayer = false;
-			for(int i = 0; i < listaPlayers.size(); i++) {
-				if(listaPlayers.get(i).getPlayerID().equals(entry.getKey())) {
+			for (int i = 0; i < listaPlayers.size(); i++) {
+				if (listaPlayers.get(i).getPlayerID().equals(entry.getKey())) {
 					isPlayer = true;
 				}
 			}
-			if(!isPlayer) {
-				listaSpecs.add(new User(entry.getKey(),0,0));
-			}												
+			if (!isPlayer) {
+				listaSpecs.add(new User(entry.getKey(), 0, 0));
+			}
 		}
-		
+
 		return new ClientRealSala(salita.name, listaPlayers, listaSpecs);
 	}
-	
+
 	public String getPlayerID() {
 		return this.playerID;
 	}

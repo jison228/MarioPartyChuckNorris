@@ -86,7 +86,7 @@ public class MainGameScreen extends JFrame {
 				try {
 //					 SOLO PARA TESTEAR
 					GameMap mapa1;
-					MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap1.txt");
+					MapFileCSVReader mapFileCSVReader = new MapFileCSVReader("newMap2.txt");
 					mapa1 = mapFileCSVReader.buildGameMap();
 					ParitariaNode ini = new ParitariaNode(null, new Position(0, 0));
 					Espert p1 = new Espert(1450, 150, 100);
