@@ -96,7 +96,8 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 	private Gson gson = new Gson();
 	private ClientGameWindow frame;
 
-	public ClientGameScreen(Stack<String> listaGanadores, Socket serverSocket, InputStream inputStream,ClientGameWindow frame) {
+	public ClientGameScreen(Stack<String> listaGanadores, Socket serverSocket, InputStream inputStream,
+			ClientGameWindow frame) {
 		this.frame = frame;
 		this.inputStream = inputStream;
 		this.serverSocket = serverSocket;
@@ -203,7 +204,9 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					ps.print("NoFueGolpeDeEstado");
+					Command bif = new Command("MeMoriSoyEspert", String.valueOf(mainCharacter.score));
+					String send = gson.toJson(bif);
+					ps.println(send);
 					// FIN DE AVISADA DE ME MORI
 				}
 				break;
@@ -218,7 +221,9 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						ps.print("ElFMIFueLaMejorOpcion");
+						Command bif = new Command("MeMoriSoyMacri", String.valueOf(mainCharacter3.score));
+						String send = gson.toJson(bif);
+						ps.println(send);
 						// FIN DE AVISADA DE ME MORI
 					}
 				}
@@ -234,7 +239,9 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						ps.print("ANismanLoMataron");
+						Command bif = new Command("MeMoriSoyCristina", String.valueOf(mainCharacter2.score));
+						String send = gson.toJson(bif);
+						ps.println(send);
 						// FIN DE AVISADA DE ME MORI
 					}
 				}
@@ -250,7 +257,9 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						ps.print("DelCañoComePibas");
+						Command bif = new Command("MeMoriSoyDelCaño", String.valueOf(mainCharacter4.score));
+						String send = gson.toJson(bif);
+						ps.println(send);
 						// FIN DE AVISADA DE ME MORI
 					}
 				}
@@ -284,45 +293,53 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 					Command brigadaB = gson.fromJson(hola, Command.class);
 					// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 					switch (brigadaB.getCommandName()) {
-					case "MinigameJumpA":
+					case "MinigameJumpEspert":
 						mainCharacter.jump();
 						break;
-					case "MinigameJumpB":
+					case "MinigameJumpCristina":
 						mainCharacter2.jump();
 						break;
-					case "MinigameJumpP":
+					case "MinigameJumpMacri":
 						mainCharacter3.jump();
 						break;
-					case "MinigameJump.":
+					case "MinigameJumpDelCaño":
 						mainCharacter4.jump();
 						break;
 					case "MinigameMurioEspert":
 						mainCharacter.playDeadSound();
-						posicionJugador1=Integer.parseInt(brigadaB.getCommandJSON());
+						posicionJugador1 = Integer.parseInt(brigadaB.getCommandJSON());
 						mainCharacter.dead(true);
 						mainCharacter.setSpeedX(0);
 						break;
 					case "MinigameMurioCristina":
 						mainCharacter3.playDeadSound();
-						posicionJugador3=Integer.parseInt(brigadaB.getCommandJSON());
+						posicionJugador3 = Integer.parseInt(brigadaB.getCommandJSON());
 						mainCharacter3.dead(true);
 						mainCharacter3.setSpeedX(0);
 						break;
-					case "MinigameJumpMurioMacri":
+					case "MinigameMurioMacri":
 						mainCharacter2.playDeadSound();
-						posicionJugador2=Integer.parseInt(brigadaB.getCommandJSON());
+						posicionJugador2 = Integer.parseInt(brigadaB.getCommandJSON());
 						mainCharacter2.dead(true);
 						mainCharacter2.setSpeedX(0);
 						break;
-					case "MinigameJumpMurioDelCaño":
+					case "MinigameMurioDelCaño":
 						mainCharacter4.playDeadSound();
-						posicionJugador4=Integer.parseInt(brigadaB.getCommandJSON());
+						posicionJugador4 = Integer.parseInt(brigadaB.getCommandJSON());
 						mainCharacter4.dead(true);
 						mainCharacter4.setSpeedX(0);
 						break;
 					case "MandaleMecha":
 						// RECIBO MI NOMBRE DEL SERVER ACA
 						this.miIdentidad = brigadaB.getCommandJSON();
+						// musica1.play();
+						try {
+							clip.open(stream);
+						} catch (LineUnavailableException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						clip.start();
 						gameState = GAME_PLAYING_STATE;
 						isKeyPressed = true;
 						break;
@@ -451,7 +468,9 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				ps.println("ANISMANLOMATARON");
+				Command bif = new Command("JumpMinigame", this.miIdentidad);
+				String send = gson.toJson(bif);
+				ps.println(send);
 			}
 		}
 	}
@@ -477,14 +496,6 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 					Command bif = new Command("MandaleMecha", "Amiguerou");
 					String send = gson.toJson(bif);
 					ps.println(send);
-					// musica1.play();
-					try {
-						clip.open(stream);
-					} catch (LineUnavailableException | IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					clip.start();
 				}
 				break;
 			case GAME_PLAYING_STATE:

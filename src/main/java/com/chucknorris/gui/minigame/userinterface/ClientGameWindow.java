@@ -33,6 +33,6 @@ public class ClientGameWindow extends JFrame {
 	
 	
 	public static void main(String args[]) {
-		(new ClientGameWindow(null,null)).startGame();
+//		(new ClientGameWindow()).startGame();
 	}
 }
