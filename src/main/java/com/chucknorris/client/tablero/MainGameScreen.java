@@ -152,6 +152,8 @@ public class MainGameScreen extends JFrame {
 		chatTA = new TextArea();
 		chatTA.setBounds(1010, 510, 260, 130);
 		contentPane.add(chatTA);
+		chatTA.setFocusable(false);
+		chatTA.setEditable(false);
 		// TextField
 		chatTF = new JTextField();
 		chatTF.setBounds(1010, 650, 180, 25);
@@ -178,7 +180,7 @@ public class MainGameScreen extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					Command commandChat = new Command("Chat", chatTF.getText());
+					Command commandChat = new Command("GameChat", chatTF.getText());
 					String gsonCommand = gson.toJson(commandChat);
 					ps.println(gsonCommand);
 					chatTF.setText("");
@@ -200,9 +202,7 @@ public class MainGameScreen extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				ChatResponse respuestaChat = new ChatResponse("Pepe", chatTF.getText());
-				String chat = gson.toJson(respuestaChat);
-				Command commandChat = new Command("Chat", chat);
+				Command commandChat = new Command("GameChat", chatTF.getText());
 				String gsonCommand = gson.toJson(commandChat);
 				ps.println(gsonCommand);
 				chatTF.setText("");
@@ -357,7 +357,7 @@ public class MainGameScreen extends JFrame {
 	public void playTurnPublic(MovementResponsePublic respuesta) {
 		ClientPlayer currentClientPlayer = null;
 		for (int i = 0; i < clientPlayersList.size(); i++) {
-			if (respuesta.playerID.equals(clientPlayersList.get(i).getCharacter())) {
+			if (respuesta.playerID.equals(clientPlayersList.get(i).getPlayerName())) {
 				currentClientPlayer = clientPlayersList.get(i);
 			}
 		}
@@ -370,7 +370,7 @@ public class MainGameScreen extends JFrame {
 		ClientPlayer currentClientPlayer = null;
 		movementsLeft = respuesta.movementsLeft;
 		for (int i = 0; i < clientPlayersList.size(); i++) {
-			if (respuesta.playerID.equals(clientPlayersList.get(i).getCharacter())) {
+			if (respuesta.playerID.equals(clientPlayersList.get(i).getPlayerName())) {
 				currentClientPlayer = clientPlayersList.get(i);
 			}
 		}

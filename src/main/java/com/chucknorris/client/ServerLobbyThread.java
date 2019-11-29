@@ -6,12 +6,14 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import com.chucknorris.Command;
+import com.chucknorris.client.endgame.Endgame;
 import com.chucknorris.client.lobby.LobbyFrame;
 import com.chucknorris.client.lobby.UpdateOrCreateLobbyResponse;
 import com.chucknorris.client.sala.ClientRealSala;
 import com.chucknorris.client.sala.SalaFrame;
 import com.chucknorris.client.sala.UpdateOrCreateSalaResponse;
 import com.chucknorris.client.tablero.MainGameScreen;
+import com.chucknorris.gui.minigame.userinterface.ClientGameWindow;
 import com.google.gson.Gson;
 
 public class ServerLobbyThread extends Thread {
@@ -94,6 +96,39 @@ public class ServerLobbyThread extends Thread {
 					case "TirarDado":
 						gameFrame.habilitarDado();
 						break;
+					case "MovementResponsePublic":
+						MovementResponsePublic respuestaMovPub = gson.fromJson(brigadaB.getCommandJSON(),
+								MovementResponsePublic.class);
+						gameFrame.playTurnPublic(respuestaMovPub);
+						break;
+					case "MovementResponsePrivate":
+						MovementResponsePrivate respuestaMovPriv = gson.fromJson(brigadaB.getCommandJSON(),
+								MovementResponsePrivate.class);
+						gameFrame.playTurnPrivate(respuestaMovPriv);
+						break;
+					case "EndTurn":
+						EndTurnResponse respuestaEndTurn = gson.fromJson(brigadaB.getCommandJSON(), EndTurnResponse.class);
+						gameFrame.endTurnIndeed(respuestaEndTurn);
+						break;
+					case "EndGame":
+						new Endgame(brigadaB.getCommandJSON()).setVisible(true);
+						gameFrame.dispose();
+						break;
+					case "GameChat":
+						respuestaChat = gson.fromJson(brigadaB.getCommandJSON(),ChatResponse.class);
+						gameFrame.addChatText("\"" + respuestaChat.playerID + "\" : " + respuestaChat.mensaje);
+						break;
+					case "Compra":
+						ActualizarCompraResponse respuestaCompra = gson.fromJson(brigadaB.getCommandJSON(),
+								ActualizarCompraResponse.class);
+						gameFrame.updateAfterCompra(respuestaCompra.lista);
+						break;
+						/*
+					case "StartMinigame":
+						minijuego = new ClientGameWindow(clientSocketMinigame, inputStreamMG);
+						minijuego.startGame();
+						break;
+						*/
 				}
 			}
 			sc.close();

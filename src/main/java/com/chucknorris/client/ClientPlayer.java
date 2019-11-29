@@ -23,7 +23,7 @@ public class ClientPlayer {
 	}
 
 	public ClientPlayer(Player player) {
-		this.playerName = player.getCharacter();
+		this.playerName = player.getPlayerID();
 		this.character = player.getCharacter();
 		this.position = player.getNodeLocation().getPositionCoords();
 		this.pesos = player.getPesos();

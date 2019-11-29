@@ -12,13 +12,20 @@ import java.util.Scanner;
 
 import com.chucknorris.Command;
 import com.chucknorris.User;
+import com.chucknorris.client.ActualizarCompraResponse;
 import com.chucknorris.client.ChatResponse;
 import com.chucknorris.client.ClientLobbySala;
+import com.chucknorris.client.ClientNode;
+import com.chucknorris.client.ClientPlayer;
+import com.chucknorris.client.EndTurnResponse;
 import com.chucknorris.client.GameInformation;
 import com.chucknorris.client.GameParametersResponse;
+import com.chucknorris.client.MovementResponsePrivate;
+import com.chucknorris.client.MovementResponsePublic;
 import com.chucknorris.client.lobby.UpdateOrCreateLobbyResponse;
 import com.chucknorris.client.sala.ClientRealSala;
 import com.chucknorris.game.Game;
+import com.chucknorris.game.GameResponse;
 import com.chucknorris.player.Cristina;
 import com.chucknorris.player.DelCanio;
 import com.chucknorris.player.Espert;
@@ -34,8 +41,11 @@ public class ClientLobbyThread extends Thread {
 	private Socket clientSocket = null;
 	private String playerID;
 	private String salaActual;
+	private String character;
 	private Map<String, ClientLobbyThread> threadsMap;
 	private Map<String, Sala> salas;
+	private int diceResult = 0;
+	private List<ClientNode> bifOptions;
 
 	public ClientLobbyThread(String playerID, Socket clientSocket, Map<String, ClientLobbyThread> threadsMap,
 			Map<String, Sala> salas) {
@@ -58,6 +68,9 @@ public class ClientLobbyThread extends Thread {
 		try {
 			Scanner sc = new Scanner(inputStream);
 			int num;
+			MovementResponsePublic respuestaPublica;
+			MovementResponsePrivate respuestaPrivada;
+
 			String usersMessage;
 			while ((num = inputStream.read()) > 0) {
 				String hola = String.valueOf((char) num);
@@ -147,10 +160,10 @@ public class ClientLobbyThread extends Thread {
 					}
 					break;
 				case "SalaChat":
-					ChatResponse respuesta1 = new ChatResponse(playerID, brigadaB.getCommandJSON());
+					ChatResponse respuestaSalaChat = new ChatResponse(playerID, brigadaB.getCommandJSON());
 					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 							.entrySet()) {
-						this.sendSala(new Command("SalaChat", gson.toJson(respuesta1)), this.salaActual,
+						this.sendSala(new Command("SalaChat", gson.toJson(respuestaSalaChat)), this.salaActual,
 								entry.getKey());
 					}
 					break;
@@ -180,7 +193,7 @@ public class ClientLobbyThread extends Thread {
 							this.send(new Command("UpdateLobby", usersMessage), entry.getKey());
 						}
 					}
-					
+
 					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 							.entrySet()) {
 						this.sendSala(new Command("StartGame", gson.toJson(infoJuego)), this.salaActual,
@@ -191,6 +204,174 @@ public class ClientLobbyThread extends Thread {
 							this.salas.get(this.salaActual).players
 									.get(this.salas.get(this.salaActual).juego.getCurrentTurn()
 											% this.salas.get(this.salaActual).players.size()));
+					break;
+				case "BifurcationResponse":
+					Player bifCurrentPlayer = this.salas.get(this.salaActual).juego.getPlayerList()
+							.get(this.salas.get(this.salaActual).juego.getCurrentTurn()
+									% this.salas.get(this.salaActual).players.size());
+					BifurcationResponse bifResponse = gson.fromJson(brigadaB.getCommandJSON(),
+							BifurcationResponse.class);
+					GameResponse respuesta1 = this.salas.get(this.salaActual).juego.resolveIntersection(
+							bifCurrentPlayer, bifCurrentPlayer.getNodeLocation().nextNodes().get(bifResponse.decision),
+							bifResponse.movementsLeft);
+					List<Player> bifListaPlayers = this.salas.get(this.salaActual).juego.getPlayerList();
+					List<ClientPlayer> bifClientPlayers = new ArrayList<ClientPlayer>();
+					for (int i = 0; i < bifListaPlayers.size(); i++) {
+						Player playerToClient = bifListaPlayers.get(i);
+						ClientPlayer clientToList = new ClientPlayer(playerToClient);
+						bifClientPlayers.add(clientToList);
+					}
+					respuestaPublica = new MovementResponsePublic(diceResult, respuesta1.playerId, respuesta1.nodePath,
+							bifClientPlayers);
+					List<ClientNode> bifOptions = new ArrayList<ClientNode>();
+					if (respuesta1.movementsLeft != 0) {
+						for (int i = 0; i < bifCurrentPlayer.getNodeLocation().nextNodes().size(); i++) {
+							bifOptions.add(new ClientNode(bifCurrentPlayer.getNodeLocation().nextNodes().get(i)));
+						}
+					} else {
+						bifOptions = null;
+					}
+
+					respuestaPrivada = new MovementResponsePrivate(diceResult, respuesta1.playerId, respuesta1.nodePath,
+							bifClientPlayers, bifOptions, respuesta1.compraDolares, respuesta1.movementsLeft);
+					String privGson = gson.toJson(respuestaPrivada);
+					Command privCommand = new Command("MovementResponsePrivate", privGson);
+
+					String publicGson = gson.toJson(respuestaPublica);
+					Command publicCommand = new Command("MovementResponsePublic", publicGson);
+
+					this.sendSala(privCommand, this.salaActual, this.playerID);
+
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+							.entrySet()) {
+						if (entry.getKey() != this.playerID) {
+							this.sendSala(publicCommand, this.salaActual, entry.getKey());
+						}
+					}
+					break;
+				case "TirarDado":
+					Player diceCurrentPlayer = this.salas.get(this.salaActual).juego.getPlayerList()
+							.get(this.salas.get(this.salaActual).juego.getCurrentTurn() % 4); // asdsad//
+					GameResponse gameResponse = this.salas.get(this.salaActual).juego.play(diceCurrentPlayer);
+					this.diceResult = gameResponse.diceResult;
+					List<Player> dicePlayers = this.salas.get(this.salaActual).juego.getPlayerList();
+					List<ClientPlayer> diceClientPlayers = new ArrayList<ClientPlayer>();
+					for (int i = 0; i < dicePlayers.size(); i++) {
+						Player playerToClient = dicePlayers.get(i);
+						ClientPlayer clientToList = new ClientPlayer(playerToClient);
+						diceClientPlayers.add(clientToList);
+					}
+					respuestaPublica = new MovementResponsePublic(gameResponse.diceResult, gameResponse.playerId,
+							gameResponse.nodePath, diceClientPlayers);
+					List<ClientNode> diceOptions = new ArrayList<ClientNode>();
+					if (gameResponse.movementsLeft != 0) {
+						for (int i = 0; i < diceCurrentPlayer.getNodeLocation().nextNodes().size(); i++) {
+							diceOptions.add(new ClientNode(diceCurrentPlayer.getNodeLocation().nextNodes().get(i)));
+						}
+					} else {
+						bifOptions = null;
+					}
+
+					respuestaPrivada = new MovementResponsePrivate(gameResponse.diceResult, gameResponse.playerId,
+							gameResponse.nodePath, diceClientPlayers, diceOptions, gameResponse.compraDolares,
+							gameResponse.movementsLeft);
+					String privGson2 = gson.toJson(respuestaPrivada);
+					Command privCommand2 = new Command("MovementResponsePrivate", privGson2);
+
+					String publicGson2 = gson.toJson(respuestaPublica);
+					Command publicCommand2 = new Command("MovementResponsePublic", publicGson2);
+
+					this.sendSala(privCommand2, this.salaActual, this.playerID);
+
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+							.entrySet()) {
+						if (entry.getKey() != this.playerID) {
+							this.sendSala(publicCommand2, this.salaActual, entry.getKey());
+						}
+					}
+					break;
+				case "EndTurn":
+					boolean cfinish = false;
+					this.salas.get(this.salaActual).juego.endTurn();
+
+					Player ganador = new Espert(0, 0, 0);
+					for (Player player : this.salas.get(this.salaActual).juego.getPlayerList()) {
+						if (player.getDolares() >= ganador.getDolares()) {
+							ganador = player;
+						}
+					}
+					if (ganador.getDolares() > 200) {
+						for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+								.entrySet()) {
+							this.sendSala(new Command("EndGame", ganador.getCharacter()), this.salaActual,
+									entry.getKey());
+
+						}
+						cfinish = true;
+					}
+
+					Player endCurrentPlayer = this.salas.get(this.salaActual).juego.getPlayerList()
+							.get(this.salas.get(this.salaActual).juego.getCurrentTurn() % 4);
+
+					EndTurnResponse endTurnResponse = new EndTurnResponse(
+							this.salas.get(this.salaActual).juego.getCurrentTurn(),
+							this.salas.get(this.salaActual).juego.getPrecioDolar(), endCurrentPlayer);
+					String fin = gson.toJson(endTurnResponse);
+					Command enviar = new Command("EndTurn", fin);
+
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+							.entrySet()) {
+						this.sendSala(enviar, this.salaActual, entry.getKey());
+
+					}
+
+					Thread.sleep(1000);
+					this.sendSala(new Command("TirarDado", ""), this.salaActual,
+							this.salas.get(this.salaActual).players
+									.get(this.salas.get(this.salaActual).juego.getCurrentTurn()
+											% this.salas.get(this.salaActual).players.size()));
+
+					Thread.sleep(1000);
+					if (this.salas.get(this.salaActual).juego.getCurrentTurn() % 4 == 0) {
+						this.salas.get(this.salaActual).juego.aumentarPrecioDolar();
+						if (!cfinish) {
+							Command minigameCommand = new Command("StartMinigame", "");
+							for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+									.entrySet()) {
+								this.sendSala(minigameCommand, this.salaActual, entry.getKey());
+
+							}
+						}
+					}
+
+					break;
+				case "Compra":
+					Player compraCurrentPlayer = this.salas.get(this.salaActual).juego.getPlayerList()
+							.get(this.salas.get(this.salaActual).juego.getCurrentTurn() % 4);
+					double pesos = Double.valueOf(brigadaB.getCommandJSON());
+					compraCurrentPlayer.buyDolares(pesos, this.salas.get(this.salaActual).juego.getPrecioDolar());
+					List<ClientPlayer> compraClientPlayers = new ArrayList<ClientPlayer>();
+					for (int i = 0; i < this.salas.get(this.salaActual).juego.getPlayerList().size(); i++) {
+						Player playerToClient = this.salas.get(this.salaActual).juego.getPlayerList().get(i);
+						ClientPlayer clientToList = new ClientPlayer(playerToClient);
+						compraClientPlayers.add(clientToList);
+					}
+
+					String compraGson = gson.toJson(new ActualizarCompraResponse(compraClientPlayers));
+					Command compraCommand = new Command("Compra", compraGson);
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+							.entrySet()) {
+						this.sendSala(compraCommand, this.salaActual, entry.getKey());
+
+					}
+					break;
+				case "GameChat":
+					ChatResponse respuestaGameChat = new ChatResponse(playerID, brigadaB.getCommandJSON());
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+							.entrySet()) {
+						this.sendSala(new Command("GameChat", gson.toJson(respuestaGameChat)), this.salaActual,
+								entry.getKey());
+					}
 					break;
 				// Pensar caso de exit Lobby
 				}
