@@ -265,9 +265,6 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 					break;
 				}
 			}
-
-			if (mainCharacter4.getState() == 3)
-				System.out.println("4");
 			if (mainCharacter.getState() == 3 && mainCharacter2.getState() == 3 && mainCharacter3.getState() == 3
 					&& mainCharacter4.getState() == 3) {
 				gameState = GAME_OVER_STATE;
