@@ -32,9 +32,8 @@ public class Server {
 			System.out.println(e);
 		}
 		Map<String, ClientLobbyThread> threadsMap = new HashMap<String, ClientLobbyThread>();
-		Map<String, Boolean> mapaDeVivos = null;
-		Map<String, Integer> puntajes = null;
-		Stack<String> posiciones = null;
+		List<String> mapaDeVivos = new ArrayList<String>();
+		Map<String, Integer> puntajes = new HashMap<String, Integer>();
 
 		InputStream inputStream;
 		int num;
@@ -49,8 +48,7 @@ public class Server {
 				String hola = String.valueOf((char) num);
 				hola = hola + sc.nextLine();
 				// Validacion de personaje
-				ClientLobbyThread newClient = new ClientLobbyThread(hola, clientSocketLobby, threadsMap, salas,
-						posiciones, puntajes, mapaDeVivos);
+				ClientLobbyThread newClient = new ClientLobbyThread(hola, clientSocketLobby, threadsMap, salas,puntajes, mapaDeVivos);
 				// ClientLobbyThread tendria que consultar los datos de sus playerId para
 				// mandarlo a los frames
 				System.out.println("Ese alguien era: " + hola);

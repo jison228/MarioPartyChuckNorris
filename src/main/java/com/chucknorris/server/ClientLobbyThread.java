@@ -49,20 +49,17 @@ public class ClientLobbyThread extends Thread {
 	private Map<String, Sala> salas;
 	private int diceResult = 0;
 	private List<ClientNode> bifOptions;
-	static Semaphore semaphoreDeMuertos = new Semaphore(1);
-	
 	
 	private int espertScore;
 	private int cristinaScore;
 	private int macriScore;
 	private int delCanoScore;
-	private Map<String,Boolean> mapaDeVivos;
+	private List<String> mapaDeVivos;
 	private Map<String,Integer> puntajes;
-	private Stack<String> posiciones;
 
 	public ClientLobbyThread(String playerID, Socket clientSocket, Map<String, ClientLobbyThread> threadsMap,
-			Map<String, Sala> salas, Stack<String> posiciones, Map<String,Integer> puntajes, Map<String,Boolean> mapaDeVivos) {
-		this.posiciones = posiciones;
+			Map<String, Sala> salas, Map<String,Integer> puntajes, List<String> mapaDeVivos) {
+
 		this.puntajes = puntajes;
 		this.mapaDeVivos = mapaDeVivos;
 		this.clientSocket = clientSocket;
@@ -356,12 +353,11 @@ public class ClientLobbyThread extends Thread {
 					if (this.salas.get(this.salaActual).juego.getCurrentTurn() % 4 == 0) {
 						this.salas.get(this.salaActual).juego.aumentarPrecioDolar();
 						if (!cfinish) {
-							this.mapaDeVivos = new HashMap<String, Boolean>();
-							this.mapaDeVivos.put("Espert", true);
-							this.mapaDeVivos.put("Cristina", true);
-							this.mapaDeVivos.put("Macri", true);
-							this.mapaDeVivos.put("Del Caño", true);
-							posiciones = new Stack<String>();
+							this.mapaDeVivos = new ArrayList<String>();
+							this.mapaDeVivos.add("Espert");
+							this.mapaDeVivos.add("Cristina");
+							this.mapaDeVivos.add("Macri");
+							this.mapaDeVivos.add("Del Caño");
 							puntajes = new HashMap<String,Integer>();
 
 							
@@ -418,47 +414,42 @@ public class ClientLobbyThread extends Thread {
 					break;
 				case "MeMoriSoyEspert":
 					this.espertScore = Integer.parseInt(brigadaB.getCommandJSON());
-					semaphoreDeMuertos.acquireUninterruptibly();
-					//this.resolverPosicionConSemaforos(this.playerID, "Espert",espertScore);
+
 					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 							.entrySet()) {
 						this.sendSala(new Command("MinigameMurioEspert","1"), this.salaActual,
 								entry.getKey());
 					}
-					semaphoreDeMuertos.release();
+					this.resolverPosicionConSemaforos("Espert",espertScore);
 					break;
 				case "MeMoriSoyCristina":
 					this.cristinaScore = Integer.parseInt(brigadaB.getCommandJSON());
-					semaphoreDeMuertos.acquireUninterruptibly();
-					//this.resolverPosicionConSemaforos(this.playerID, "Cristina",cristinaScore);
+
 					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 							.entrySet()) {
 						this.sendSala(new Command("MinigameMurioCristina", "2"), this.salaActual,
 								entry.getKey());
 					}
-					semaphoreDeMuertos.release();
+					this.resolverPosicionConSemaforos("Cristina",cristinaScore);
 					break;
 				case "MeMoriSoyMacri":
 					this.macriScore = Integer.parseInt(brigadaB.getCommandJSON());
-					semaphoreDeMuertos.acquireUninterruptibly();
-					//this.resolverPosicionConSemaforos(this.playerID, "Macri",macriScore);
+
 					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 							.entrySet()) {
 						this.sendSala(new Command("MinigameMurioMacri","3"), this.salaActual,
 								entry.getKey());
 					}
-					semaphoreDeMuertos.release();
+					this.resolverPosicionConSemaforos("Macri",macriScore);
 					break;
 				case "MeMoriSoyDelCaño":
 					this.delCanoScore = Integer.parseInt(brigadaB.getCommandJSON());
-					semaphoreDeMuertos.acquireUninterruptibly();
-					//this.resolverPosicionConSemaforos(this.playerID, "Del Caño",delCanoScore);
 					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 							.entrySet()) {
 						this.sendSala(new Command("MinigameMurioDelCaño", "4"), this.salaActual,
 								entry.getKey());
 					}
-					semaphoreDeMuertos.release();
+					this.resolverPosicionConSemaforos("Del Caño",delCanoScore);
 					break;
 				// Pensar caso de exit Lobby
 				}
@@ -541,9 +532,29 @@ public class ClientLobbyThread extends Thread {
 		return this.playerID;
 	}
 	
-	public void resolverPosicionConSemaforos(String playerId, String character,int puntaje) {
-		posiciones.push(playerId);
-		puntajes.put(playerId,puntaje);
+	public void resolverPosicionConSemaforos(String character,int puntaje) {
 		mapaDeVivos.remove(character);
+		String playerMuerto = null;
+		for(int i = 0; i < this.salas.get(this.salaActual).juego.getPlayerList().size(); i++) {
+			if(this.salas.get(this.salaActual).juego.getPlayerList().get(i).getCharacter().equals(character)) {
+				playerMuerto = this.salas.get(this.salaActual).juego.getPlayerList().get(i).getPlayerID();
+			}
+		}
+		puntajes.put(playerMuerto,puntaje);
+		
+		if(mapaDeVivos.isEmpty()) {
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+					.entrySet()) {
+				this.sendSala(new Command("FinishMiniGame", " "), this.salaActual,
+						entry.getKey());
+			}
+		}
+
 	}
 }

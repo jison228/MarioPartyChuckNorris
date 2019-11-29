@@ -128,6 +128,7 @@ public class ServerLobbyThread extends Thread {
 				case "StartMinigame":
 					minijuego = new ClientGameWindow(serverSocket, serverSocket.getInputStream());
 					minijuego.startGame();
+					//gameFrame.setVisible(false);
 					break;
 				case "MandaleMecha":
 					minijuego.mandaleMecha(brigadaB.getCommandJSON());
@@ -155,6 +156,10 @@ public class ServerLobbyThread extends Thread {
 					break;
 				case "MinigameMurioDelCaño":
 					minijuego.ripDelCano(Integer.parseInt(brigadaB.getCommandJSON()));
+					break;
+				case "FinishMiniGame":
+					minijuego.dispose();
+					//gameFrame.setVisible(true);
 					break;
 				}
 			}
