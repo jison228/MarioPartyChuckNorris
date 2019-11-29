@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Stack;
 
 import com.chucknorris.Command;
 import com.chucknorris.User;
@@ -31,6 +32,9 @@ public class Server {
 			System.out.println(e);
 		}
 		Map<String, ClientLobbyThread> threadsMap = new HashMap<String, ClientLobbyThread>();
+		Map<String, Boolean> mapaDeVivos = null;
+		Map<String, Integer> puntajes = null;
+		Stack<String> posiciones = null;
 
 		InputStream inputStream;
 		int num;
@@ -45,7 +49,8 @@ public class Server {
 				String hola = String.valueOf((char) num);
 				hola = hola + sc.nextLine();
 				// Validacion de personaje
-				ClientLobbyThread newClient = new ClientLobbyThread(hola, clientSocketLobby, threadsMap, salas);
+				ClientLobbyThread newClient = new ClientLobbyThread(hola, clientSocketLobby, threadsMap, salas,
+						posiciones, puntajes, mapaDeVivos);
 				// ClientLobbyThread tendria que consultar los datos de sus playerId para
 				// mandarlo a los frames
 				System.out.println("Ese alguien era: " + hola);
@@ -76,7 +81,7 @@ public class Server {
 		}
 		List<ClientLobbySala> listaClientSalas = new ArrayList<ClientLobbySala>();
 		for (Map.Entry<String, Sala> entry : salas.entrySet()) {
-			listaClientSalas.add(new ClientLobbySala(entry.getKey(),entry.getValue().players.size(),
+			listaClientSalas.add(new ClientLobbySala(entry.getKey(), entry.getValue().players.size(),
 					entry.getValue().threadsMap.size(), entry.getValue().playing));// Tendria que consultar en la base
 																					// de datos sus caracteristicas
 		}

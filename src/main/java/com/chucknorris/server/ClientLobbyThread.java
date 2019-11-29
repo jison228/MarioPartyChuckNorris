@@ -6,9 +6,12 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Stack;
+import java.util.concurrent.Semaphore;
 
 import com.chucknorris.Command;
 import com.chucknorris.User;
@@ -46,9 +49,22 @@ public class ClientLobbyThread extends Thread {
 	private Map<String, Sala> salas;
 	private int diceResult = 0;
 	private List<ClientNode> bifOptions;
+	static Semaphore semaphoreDeMuertos = new Semaphore(1);
+	
+	
+	private int espertScore;
+	private int cristinaScore;
+	private int macriScore;
+	private int delCanoScore;
+	private Map<String,Boolean> mapaDeVivos;
+	private Map<String,Integer> puntajes;
+	private Stack<String> posiciones;
 
 	public ClientLobbyThread(String playerID, Socket clientSocket, Map<String, ClientLobbyThread> threadsMap,
-			Map<String, Sala> salas) {
+			Map<String, Sala> salas, Stack<String> posiciones, Map<String,Integer> puntajes, Map<String,Boolean> mapaDeVivos) {
+		this.posiciones = posiciones;
+		this.puntajes = puntajes;
+		this.mapaDeVivos = mapaDeVivos;
 		this.clientSocket = clientSocket;
 		this.threadsMap = threadsMap;
 		this.playerID = playerID;
@@ -181,7 +197,7 @@ public class ClientLobbyThread extends Thread {
 							parametros.pesosIniciales, parametros.dolaresIniciales, parametros.salarioInicial));
 					this.salas.get(this.salaActual).juego = new Game(jugadores, parametros.mapName, parametros.diceMin,
 							parametros.diceMax, parametros.precioDolar);
-
+					
 					GameInformation infoJuego = new GameInformation(parametros.mapName, jugadores,
 							this.salas.get(this.salaActual).juego.getGameMap(), parametros.precioDolar);
 
@@ -291,6 +307,11 @@ public class ClientLobbyThread extends Thread {
 					}
 					break;
 				case "EndTurn":
+					for(int i = 0; i < this.salas.get(this.salaActual).juego.getPlayerList().size(); i++) {
+						if(this.salas.get(this.salaActual).juego.getPlayerList().get(i).getPlayerID().equals(this.playerID)) {
+							this.character = this.salas.get(this.salaActual).juego.getPlayerList().get(i).getCharacter();
+						}
+					}
 					boolean cfinish = false;
 					this.salas.get(this.salaActual).juego.endTurn();
 
@@ -335,11 +356,19 @@ public class ClientLobbyThread extends Thread {
 					if (this.salas.get(this.salaActual).juego.getCurrentTurn() % 4 == 0) {
 						this.salas.get(this.salaActual).juego.aumentarPrecioDolar();
 						if (!cfinish) {
+							this.mapaDeVivos = new HashMap<String, Boolean>();
+							this.mapaDeVivos.put("Espert", true);
+							this.mapaDeVivos.put("Cristina", true);
+							this.mapaDeVivos.put("Macri", true);
+							this.mapaDeVivos.put("Del Caño", true);
+							posiciones = new Stack<String>();
+							puntajes = new HashMap<String,Integer>();
+
+							
 							Command minigameCommand = new Command("StartMinigame", "");
 							for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 									.entrySet()) {
 								this.sendSala(minigameCommand, this.salaActual, entry.getKey());
-
 							}
 						}
 					}
@@ -372,6 +401,64 @@ public class ClientLobbyThread extends Thread {
 						this.sendSala(new Command("GameChat", gson.toJson(respuestaGameChat)), this.salaActual,
 								entry.getKey());
 					}
+					break;
+				case "MandaleMecha":
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+							.entrySet()) {
+						this.sendSala(new Command("MandaleMecha", entry.getValue().character), this.salaActual,
+								entry.getKey());
+					}
+				break;
+				case "JumpMinigame":
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+							.entrySet()) {
+						this.sendSala(new Command("MinigameJump" + brigadaB.getCommandJSON(), "a"), this.salaActual,
+								entry.getKey());
+					}
+					break;
+				case "MeMoriSoyEspert":
+					this.espertScore = Integer.parseInt(brigadaB.getCommandJSON());
+					semaphoreDeMuertos.acquireUninterruptibly();
+					//this.resolverPosicionConSemaforos(this.playerID, "Espert",espertScore);
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+							.entrySet()) {
+						this.sendSala(new Command("MinigameMurioEspert","1"), this.salaActual,
+								entry.getKey());
+					}
+					semaphoreDeMuertos.release();
+					break;
+				case "MeMoriSoyCristina":
+					this.cristinaScore = Integer.parseInt(brigadaB.getCommandJSON());
+					semaphoreDeMuertos.acquireUninterruptibly();
+					//this.resolverPosicionConSemaforos(this.playerID, "Cristina",cristinaScore);
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+							.entrySet()) {
+						this.sendSala(new Command("MinigameMurioCristina", "2"), this.salaActual,
+								entry.getKey());
+					}
+					semaphoreDeMuertos.release();
+					break;
+				case "MeMoriSoyMacri":
+					this.macriScore = Integer.parseInt(brigadaB.getCommandJSON());
+					semaphoreDeMuertos.acquireUninterruptibly();
+					//this.resolverPosicionConSemaforos(this.playerID, "Macri",macriScore);
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+							.entrySet()) {
+						this.sendSala(new Command("MinigameMurioMacri","3"), this.salaActual,
+								entry.getKey());
+					}
+					semaphoreDeMuertos.release();
+					break;
+				case "MeMoriSoyDelCaño":
+					this.delCanoScore = Integer.parseInt(brigadaB.getCommandJSON());
+					semaphoreDeMuertos.acquireUninterruptibly();
+					//this.resolverPosicionConSemaforos(this.playerID, "Del Caño",delCanoScore);
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+							.entrySet()) {
+						this.sendSala(new Command("MinigameMurioDelCaño", "4"), this.salaActual,
+								entry.getKey());
+					}
+					semaphoreDeMuertos.release();
 					break;
 				// Pensar caso de exit Lobby
 				}
@@ -452,5 +539,11 @@ public class ClientLobbyThread extends Thread {
 
 	public String getPlayerID() {
 		return this.playerID;
+	}
+	
+	public void resolverPosicionConSemaforos(String playerId, String character,int puntaje) {
+		posiciones.push(playerId);
+		puntajes.put(playerId,puntaje);
+		mapaDeVivos.remove(character);
 	}
 }

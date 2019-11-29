@@ -26,7 +26,8 @@ public class ServerLobbyThread extends Thread {
 	private String playerID;
 	private ClientRealSala salaReal;
 	private MainGameScreen gameFrame;
-	
+	private ClientGameWindow minijuego;
+
 	public ServerLobbyThread(Socket serverSocket, String playerID) {
 		this.serverSocket = serverSocket;
 		this.playerID = playerID;
@@ -52,87 +53,113 @@ public class ServerLobbyThread extends Thread {
 				Command brigadaB = gson.fromJson(hola, Command.class);
 				// MARIO SANTOS, LOGISTICA Y PLANIFICACION
 				switch (brigadaB.getCommandName()) {
-					case "OpenLobby" :
-						System.out.println("SEEEE");
-						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateLobbyResponse.class);
-						lobbyFrame = new LobbyFrame(playerID,respuesta.usuarios, respuesta.salas, serverSocket);
-						lobbyFrame.setVisible(true);
-						break;
-					case "UpdateLobby":
-						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateLobbyResponse.class);
-						lobbyFrame.updateLobby(respuesta.usuarios, respuesta.salas);
-						break;
-					case "UpdateSala":
-						salaReal = gson.fromJson(brigadaB.getCommandJSON(), ClientRealSala.class);
-						salaFrame.updateSalaFrame(salaReal);
-						break;
-					case "LeaveSala":
-						respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateLobbyResponse.class);
-						lobbyFrame = new LobbyFrame(playerID, respuesta.usuarios, respuesta.salas, serverSocket);
-						lobbyFrame.setVisible(true);
-						salaFrame.dispose();
-						break;
-					case "ChatLobby":
-						respuestaChat = gson.fromJson(brigadaB.getCommandJSON(),ChatResponse.class);
-						lobbyFrame.addChatText("\"" + respuestaChat.playerID + "\" : " + respuestaChat.mensaje);
-						break;
-					case "SalaChat":
-						respuestaChat = gson.fromJson(brigadaB.getCommandJSON(),ChatResponse.class);
-						salaFrame.addChatText("\"" + respuestaChat.playerID + "\" : " + respuestaChat.mensaje);
-						break;
-					case "OpenSala":
-						salaReal = gson.fromJson(brigadaB.getCommandJSON(), ClientRealSala.class);
-						salaFrame = new SalaFrame(playerID, salaReal, serverSocket);
-						salaFrame.setVisible(true);
-						lobbyFrame.dispose();
-						break;
-					case "StartGame":
-						GameInformation gameInfo = gson.fromJson(brigadaB.getCommandJSON(), GameInformation.class);
-						// frame y pasarle el gameinformation
-						gameFrame = new MainGameScreen(gameInfo, serverSocket);
-						gameFrame.setVisible(true);
-						salaFrame.dispose();
-						break;
-					case "TirarDado":
-						gameFrame.habilitarDado();
-						break;
-					case "MovementResponsePublic":
-						MovementResponsePublic respuestaMovPub = gson.fromJson(brigadaB.getCommandJSON(),
-								MovementResponsePublic.class);
-						gameFrame.playTurnPublic(respuestaMovPub);
-						break;
-					case "MovementResponsePrivate":
-						MovementResponsePrivate respuestaMovPriv = gson.fromJson(brigadaB.getCommandJSON(),
-								MovementResponsePrivate.class);
-						gameFrame.playTurnPrivate(respuestaMovPriv);
-						break;
-					case "EndTurn":
-						EndTurnResponse respuestaEndTurn = gson.fromJson(brigadaB.getCommandJSON(), EndTurnResponse.class);
-						gameFrame.endTurnIndeed(respuestaEndTurn);
-						break;
-					case "EndGame":
-						new Endgame(brigadaB.getCommandJSON()).setVisible(true);
-						gameFrame.dispose();
-						break;
-					case "GameChat":
-						respuestaChat = gson.fromJson(brigadaB.getCommandJSON(),ChatResponse.class);
-						gameFrame.addChatText("\"" + respuestaChat.playerID + "\" : " + respuestaChat.mensaje);
-						break;
-					case "Compra":
-						ActualizarCompraResponse respuestaCompra = gson.fromJson(brigadaB.getCommandJSON(),
-								ActualizarCompraResponse.class);
-						gameFrame.updateAfterCompra(respuestaCompra.lista);
-						break;
-						/*
-					case "StartMinigame":
-						minijuego = new ClientGameWindow(clientSocketMinigame, inputStreamMG);
-						minijuego.startGame();
-						break;
-						*/
+				case "OpenLobby":
+					System.out.println("SEEEE");
+					respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateLobbyResponse.class);
+					lobbyFrame = new LobbyFrame(playerID, respuesta.usuarios, respuesta.salas, serverSocket);
+					lobbyFrame.setVisible(true);
+					break;
+				case "UpdateLobby":
+					respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateLobbyResponse.class);
+					lobbyFrame.updateLobby(respuesta.usuarios, respuesta.salas);
+					break;
+				case "UpdateSala":
+					salaReal = gson.fromJson(brigadaB.getCommandJSON(), ClientRealSala.class);
+					salaFrame.updateSalaFrame(salaReal);
+					break;
+				case "LeaveSala":
+					respuesta = gson.fromJson(brigadaB.getCommandJSON(), UpdateOrCreateLobbyResponse.class);
+					lobbyFrame = new LobbyFrame(playerID, respuesta.usuarios, respuesta.salas, serverSocket);
+					lobbyFrame.setVisible(true);
+					salaFrame.dispose();
+					break;
+				case "ChatLobby":
+					respuestaChat = gson.fromJson(brigadaB.getCommandJSON(), ChatResponse.class);
+					lobbyFrame.addChatText("\"" + respuestaChat.playerID + "\" : " + respuestaChat.mensaje);
+					break;
+				case "SalaChat":
+					respuestaChat = gson.fromJson(brigadaB.getCommandJSON(), ChatResponse.class);
+					salaFrame.addChatText("\"" + respuestaChat.playerID + "\" : " + respuestaChat.mensaje);
+					break;
+				case "OpenSala":
+					salaReal = gson.fromJson(brigadaB.getCommandJSON(), ClientRealSala.class);
+					salaFrame = new SalaFrame(playerID, salaReal, serverSocket);
+					salaFrame.setVisible(true);
+					lobbyFrame.dispose();
+					break;
+				case "StartGame":
+					GameInformation gameInfo = gson.fromJson(brigadaB.getCommandJSON(), GameInformation.class);
+					// frame y pasarle el gameinformation
+					gameFrame = new MainGameScreen(gameInfo, serverSocket);
+					gameFrame.setVisible(true);
+					salaFrame.dispose();
+					break;
+				case "TirarDado":
+					gameFrame.habilitarDado();
+					break;
+				case "MovementResponsePublic":
+					MovementResponsePublic respuestaMovPub = gson.fromJson(brigadaB.getCommandJSON(),
+							MovementResponsePublic.class);
+					gameFrame.playTurnPublic(respuestaMovPub);
+					break;
+				case "MovementResponsePrivate":
+					MovementResponsePrivate respuestaMovPriv = gson.fromJson(brigadaB.getCommandJSON(),
+							MovementResponsePrivate.class);
+					gameFrame.playTurnPrivate(respuestaMovPriv);
+					break;
+				case "EndTurn":
+					EndTurnResponse respuestaEndTurn = gson.fromJson(brigadaB.getCommandJSON(), EndTurnResponse.class);
+					gameFrame.endTurnIndeed(respuestaEndTurn);
+					break;
+				case "EndGame":
+					new Endgame(brigadaB.getCommandJSON()).setVisible(true);
+					gameFrame.dispose();
+					break;
+				case "GameChat":
+					respuestaChat = gson.fromJson(brigadaB.getCommandJSON(), ChatResponse.class);
+					gameFrame.addChatText("\"" + respuestaChat.playerID + "\" : " + respuestaChat.mensaje);
+					break;
+				case "Compra":
+					ActualizarCompraResponse respuestaCompra = gson.fromJson(brigadaB.getCommandJSON(),
+							ActualizarCompraResponse.class);
+					gameFrame.updateAfterCompra(respuestaCompra.lista);
+					break;
+
+				case "StartMinigame":
+					minijuego = new ClientGameWindow(serverSocket, serverSocket.getInputStream());
+					minijuego.startGame();
+					break;
+				case "MandaleMecha":
+					minijuego.mandaleMecha(brigadaB.getCommandJSON());
+					break;
+				case "MinigameJumpEspert":
+					minijuego.minigameJumpEspert();
+					break;
+				case "MinigameJumpCristina":
+					minijuego.minigameJumpCristina();
+					break;
+				case "MinigameJumpMacri":
+					minijuego.minigameJumpMacri();
+					break;
+				case "MinigameJumpDel Caño":
+					minijuego.minigameJumpDelCano();
+					break;
+				case "MinigameMurioEspert":
+					minijuego.ripEspert(Integer.parseInt(brigadaB.getCommandJSON()));;
+					break;
+				case "MinigameMurioCristina":
+					minijuego.ripCristina(Integer.parseInt(brigadaB.getCommandJSON()));
+					break;
+				case "MinigameMurioMacri":
+					minijuego.ripMacri(Integer.parseInt(brigadaB.getCommandJSON()));
+					break;
+				case "MinigameMurioDelCaño":
+					minijuego.ripDelCano(Integer.parseInt(brigadaB.getCommandJSON()));
+					break;
 				}
 			}
 			sc.close();
-		}  catch (IOException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

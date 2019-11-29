@@ -103,12 +103,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 		this.serverSocket = serverSocket;
 		this.listaGanadores = listaGanadores;
 		tiersScore[0] = 200;
-		try {
-			checkSocket();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		
 		tier = 0;
 		for (int i = 1; i < 10; i++) {
 			tiersScore[i] += tiersScore[i - 1] + 200;
@@ -280,79 +275,10 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 			}
 		}
 	}
-
-	public void checkSocket() throws IOException {
-		new Thread(() -> {
-			int num;
-			Scanner sc = new Scanner(inputStream);
-			try {
-				while ((num = inputStream.read()) > 0) {
-					String hola = String.valueOf((char) num);
-					hola = hola + sc.next();
-
-					Command brigadaB = gson.fromJson(hola, Command.class);
-					// MARIO SANTOS, LOGISTICA Y PLANIFICACION
-					switch (brigadaB.getCommandName()) {
-					case "MinigameJumpEspert":
-						mainCharacter.jump();
-						break;
-					case "MinigameJumpCristina":
-						mainCharacter2.jump();
-						break;
-					case "MinigameJumpMacri":
-						mainCharacter3.jump();
-						break;
-					case "MinigameJumpDelCaño":
-						mainCharacter4.jump();
-						break;
-					case "MinigameMurioEspert":
-						mainCharacter.playDeadSound();
-						posicionJugador1 = Integer.parseInt(brigadaB.getCommandJSON());
-						mainCharacter.dead(true);
-						mainCharacter.setSpeedX(0);
-						break;
-					case "MinigameMurioCristina":
-						mainCharacter3.playDeadSound();
-						posicionJugador3 = Integer.parseInt(brigadaB.getCommandJSON());
-						mainCharacter3.dead(true);
-						mainCharacter3.setSpeedX(0);
-						break;
-					case "MinigameMurioMacri":
-						mainCharacter2.playDeadSound();
-						posicionJugador2 = Integer.parseInt(brigadaB.getCommandJSON());
-						mainCharacter2.dead(true);
-						mainCharacter2.setSpeedX(0);
-						break;
-					case "MinigameMurioDelCaño":
-						mainCharacter4.playDeadSound();
-						posicionJugador4 = Integer.parseInt(brigadaB.getCommandJSON());
-						mainCharacter4.dead(true);
-						mainCharacter4.setSpeedX(0);
-						break;
-					case "MandaleMecha":
-						// RECIBO MI NOMBRE DEL SERVER ACA
-						this.miIdentidad = brigadaB.getCommandJSON();
-						// musica1.play();
-						try {
-							clip.open(stream);
-						} catch (LineUnavailableException | IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						clip.start();
-						gameState = GAME_PLAYING_STATE;
-						isKeyPressed = true;
-						break;
-					}
-				}
-			} catch (JsonSyntaxException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}).start();
-
-	}
-
+/*
+					
+					
+*/
 	public void paint(Graphics e) {
 		this.g = e;
 		g.setColor(Color.decode("#f7f7f7"));
@@ -526,10 +452,64 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 		// TODO Auto-generated method stub
 
 	}
-	/*
-	 * private void resetGame() { enemiesManager.reset(); mainCharacter.dead(false);
-	 * mainCharacter.reset();
-	 * 
-	 * }
-	 */
+	
+	public void mandaleMecha(String miIdentidad) {
+	
+		this.miIdentidad = miIdentidad;
+		// musica1.play();
+		try {
+			clip.open(stream);
+		} catch (LineUnavailableException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		clip.start();
+		gameState = GAME_PLAYING_STATE;
+		isKeyPressed = true;
+
+	}
+	
+	public void minigameJumpEspert() {
+		mainCharacter.jump();
+	}
+	
+	public void minigameJumpCristina() {
+		mainCharacter2.jump();
+	}
+	
+	public void minigameJumpMacri() {
+		mainCharacter3.jump();
+	}
+	
+	public void minigameJumpDelCano() {
+		mainCharacter4.jump();
+	}
+	
+	public void ripEspert(int pos) {
+		mainCharacter.playDeadSound();
+		posicionJugador1 = pos;
+		mainCharacter.dead(true);
+		mainCharacter.setSpeedX(0);
+	}
+	
+	public void ripMacri(int pos) {
+		mainCharacter3.playDeadSound();
+		posicionJugador3 = pos;
+		mainCharacter3.dead(true);
+		mainCharacter3.setSpeedX(0);
+	}
+	
+	public void ripCristina(int pos) {
+		mainCharacter2.playDeadSound();
+		posicionJugador2 = pos;
+		mainCharacter2.dead(true);
+		mainCharacter2.setSpeedX(0);
+	}
+	
+	public void ripDelCano(int pos) {
+		mainCharacter4.playDeadSound();
+		posicionJugador4 = pos;
+		mainCharacter4.dead(true);
+		mainCharacter4.setSpeedX(0);
+	}
 }

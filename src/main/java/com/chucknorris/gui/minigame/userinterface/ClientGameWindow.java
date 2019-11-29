@@ -31,6 +31,41 @@ public class ClientGameWindow extends JFrame {
 		gameScreen.startGame();
 	}
 	
+	public void mandaleMecha(String miIdentidad) {
+		this.gameScreen.mandaleMecha(miIdentidad);
+	}
+	
+	public void minigameJumpEspert() {
+		this.gameScreen.minigameJumpEspert();
+	}
+	
+	public void minigameJumpCristina() {
+		this.gameScreen.minigameJumpCristina();
+	}
+	
+	public void minigameJumpMacri() {
+		this.gameScreen.minigameJumpMacri();
+	}
+	
+	public void minigameJumpDelCano() {
+		this.gameScreen.minigameJumpDelCano();
+	}
+	
+	public void ripEspert(int pos) {
+		this.gameScreen.ripEspert(pos);
+	}
+	
+	public void ripMacri(int pos) {
+		this.gameScreen.ripMacri(pos);
+	}
+	
+	public void ripCristina(int pos) {
+		this.gameScreen.ripCristina(pos);
+	}
+	
+	public void ripDelCano(int pos) {
+		this.gameScreen.ripDelCano(pos);
+	}
 	
 	public static void main(String args[]) {
 //		(new ClientGameWindow()).startGame();
