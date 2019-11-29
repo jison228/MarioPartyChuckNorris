@@ -543,6 +543,31 @@ public class ClientLobbyThread extends Thread {
 		puntajes.put(playerMuerto,puntaje);
 		
 		if(mapaDeVivos.isEmpty()) {
+			int puntajeMax = 0;
+			String playerGanador = null;
+			for(Map.Entry<String, Integer> entry : puntajes.entrySet()) {
+				if(entry.getValue()>=puntajeMax) {
+					puntajeMax = entry.getValue();
+					playerGanador = entry.getKey();
+				}
+			}
+			
+			for(int i = 0; i < this.salas.get(this.salaActual).juego.getPlayerList().size(); i++) {
+				Player ganadorMinigame = this.salas.get(this.salaActual).juego.getPlayerList().get(i);
+				if(ganadorMinigame.getPlayerID().equals(playerGanador)) {
+					ganadorMinigame.addPesos(ganadorMinigame.getPesos()*0.5);
+				}
+			}
+			
+			List<ClientPlayer> compraClientPlayers = new ArrayList<ClientPlayer>();
+			for (int i = 0; i < this.salas.get(this.salaActual).juego.getPlayerList().size(); i++) {
+				Player playerToClient = this.salas.get(this.salaActual).juego.getPlayerList().get(i);
+				ClientPlayer clientToList = new ClientPlayer(playerToClient);
+				compraClientPlayers.add(clientToList);
+			}
+
+			String compraGson = gson.toJson(new ActualizarCompraResponse(compraClientPlayers));
+			
 			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
@@ -551,7 +576,7 @@ public class ClientLobbyThread extends Thread {
 			}
 			for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 					.entrySet()) {
-				this.sendSala(new Command("FinishMiniGame", " "), this.salaActual,
+				this.sendSala(new Command("FinishMiniGame", compraGson), this.salaActual,
 						entry.getKey());
 			}
 		}

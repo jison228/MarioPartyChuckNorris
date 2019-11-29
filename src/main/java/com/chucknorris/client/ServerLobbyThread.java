@@ -159,6 +159,9 @@ public class ServerLobbyThread extends Thread {
 					break;
 				case "FinishMiniGame":
 					minijuego.dispose();
+					ActualizarCompraResponse respuestaCompra1 = gson.fromJson(brigadaB.getCommandJSON(),
+							ActualizarCompraResponse.class);
+					gameFrame.updateAfterCompra(respuestaCompra1.lista);
 					//gameFrame.setVisible(true);
 					break;
 				}
