@@ -145,7 +145,7 @@ public class ServerLobbyThread extends Thread {
 					minijuego.minigameJumpDelCano();
 					break;
 				case "MinigameMurioEspert":
-					minijuego.ripEspert(Integer.parseInt(brigadaB.getCommandJSON()));;
+					minijuego.ripEspert(Integer.parseInt(brigadaB.getCommandJSON()));
 					break;
 				case "MinigameMurioCristina":
 					minijuego.ripCristina(Integer.parseInt(brigadaB.getCommandJSON()));

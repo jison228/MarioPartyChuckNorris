@@ -95,15 +95,17 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 	public Stack<String> listaGanadores;
 	private Gson gson = new Gson();
 	private ClientGameWindow frame;
+	private boolean alive;
 
 	public ClientGameScreen(Stack<String> listaGanadores, Socket serverSocket, InputStream inputStream,
 			ClientGameWindow frame) {
+		this.alive = true;
 		this.frame = frame;
 		this.inputStream = inputStream;
 		this.serverSocket = serverSocket;
 		this.listaGanadores = listaGanadores;
 		tiersScore[0] = 200;
-		
+
 		tier = 0;
 		for (int i = 1; i < 10; i++) {
 			tiersScore[i] += tiersScore[i - 1] + 200;
@@ -186,29 +188,33 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 				mainCharacter2.setSpeedX(tiersSpeed[tier]);
 				mainCharacter3.setSpeedX(tiersSpeed[tier]);
 				mainCharacter4.setSpeedX(tiersSpeed[tier]);
-				tier++;
+				if (tier < 9)
+					tier++;
 			}
-			switch (miIdentidad) {
-			case "Espert":
-				// AVISARLE AL SERVER QUE MORI
-				if (enemiesManager.isCollision()) {
-					PrintStream ps = null;
-					try {
-						ps = new PrintStream(serverSocket.getOutputStream(), true);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					Command bif = new Command("MeMoriSoyEspert", String.valueOf(mainCharacter.score));
-					String send = gson.toJson(bif);
-					ps.println(send);
-					// FIN DE AVISADA DE ME MORI
-				}
-				break;
-			case "Macri":
-				if (enemiesManager3.isCollision()) {
+
+			if (alive) {
+				switch (miIdentidad) {
+				case "Espert":
 					// AVISARLE AL SERVER QUE MORI
 					if (enemiesManager.isCollision()) {
+						alive = false;
+						PrintStream ps = null;
+						try {
+							ps = new PrintStream(serverSocket.getOutputStream(), true);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						Command bif = new Command("MeMoriSoyEspert", String.valueOf(mainCharacter.score));
+						String send = gson.toJson(bif);
+						ps.println(send);
+						// FIN DE AVISADA DE ME MORI
+					}
+					break;
+				case "Macri":
+
+					if (enemiesManager3.isCollision()) {
+						alive = false;
 						PrintStream ps = null;
 						try {
 							ps = new PrintStream(serverSocket.getOutputStream(), true);
@@ -221,12 +227,11 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 						ps.println(send);
 						// FIN DE AVISADA DE ME MORI
 					}
-				}
-				break;
-			case "Cristina":
-				if (enemiesManager2.isCollision()) {
-					// AVISARLE AL SERVER QUE MORI
-					if (enemiesManager.isCollision()) {
+					break;
+				case "Cristina":
+
+					if (enemiesManager2.isCollision()) {
+						alive = false;
 						PrintStream ps = null;
 						try {
 							ps = new PrintStream(serverSocket.getOutputStream(), true);
@@ -238,13 +243,12 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 						String send = gson.toJson(bif);
 						ps.println(send);
 						// FIN DE AVISADA DE ME MORI
+
 					}
-				}
-				break;
-			case "Del Caño":
-				if (enemiesManager4.isCollision()) {
-					// AVISARLE AL SERVER QUE MORI
-					if (enemiesManager.isCollision()) {
+					break;
+				case "Del Caño":
+					if (enemiesManager4.isCollision()) {
+						alive = false;
 						PrintStream ps = null;
 						try {
 							ps = new PrintStream(serverSocket.getOutputStream(), true);
@@ -256,10 +260,14 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 						String send = gson.toJson(bif);
 						ps.println(send);
 						// FIN DE AVISADA DE ME MORI
+
 					}
+					break;
 				}
-				break;
 			}
+
+			if (mainCharacter4.getState() == 3)
+				System.out.println("4");
 			if (mainCharacter.getState() == 3 && mainCharacter2.getState() == 3 && mainCharacter3.getState() == 3
 					&& mainCharacter4.getState() == 3) {
 				gameState = GAME_OVER_STATE;
@@ -275,10 +283,11 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 			}
 		}
 	}
-/*
-					
-					
-*/
+
+	/*
+						
+						
+	*/
 	public void paint(Graphics e) {
 		this.g = e;
 		g.setColor(Color.decode("#f7f7f7"));
@@ -452,10 +461,11 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public void mandaleMecha(String miIdentidad) {
-	
+
 		this.miIdentidad = miIdentidad;
+		System.out.println(miIdentidad);
 		// musica1.play();
 		try {
 			clip.open(stream);
@@ -468,44 +478,44 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 		isKeyPressed = true;
 
 	}
-	
+
 	public void minigameJumpEspert() {
 		mainCharacter.jump();
 	}
-	
+
 	public void minigameJumpCristina() {
 		mainCharacter2.jump();
 	}
-	
+
 	public void minigameJumpMacri() {
 		mainCharacter3.jump();
 	}
-	
+
 	public void minigameJumpDelCano() {
 		mainCharacter4.jump();
 	}
-	
+
 	public void ripEspert(int pos) {
 		mainCharacter.playDeadSound();
 		posicionJugador1 = pos;
 		mainCharacter.dead(true);
 		mainCharacter.setSpeedX(0);
 	}
-	
+
 	public void ripMacri(int pos) {
 		mainCharacter3.playDeadSound();
 		posicionJugador3 = pos;
 		mainCharacter3.dead(true);
 		mainCharacter3.setSpeedX(0);
 	}
-	
+
 	public void ripCristina(int pos) {
 		mainCharacter2.playDeadSound();
 		posicionJugador2 = pos;
 		mainCharacter2.dead(true);
 		mainCharacter2.setSpeedX(0);
 	}
-	
+
 	public void ripDelCano(int pos) {
 		mainCharacter4.playDeadSound();
 		posicionJugador4 = pos;
