@@ -25,18 +25,18 @@ public class UsersPanel extends JPanel {
 
 			int separacion = i * 130;
 			g.setColor(Color.pink);
-			g.fillRect(10, 10 + separacion, 450, 120);
+			g.fillRect(10, 10 + separacion, 250, 90);
 
 			g.setColor(Color.RED);
-			g.fillRect(20, 20 + separacion, 100, 100);
+			g.fillRect(20, 20 + separacion, 70, 70);
 
 			g.setColor(Color.BLACK);
-			g.setFont(new Font("Tahoma", Font.BOLD, 25));
-			g.drawString(usuarios.get(i).getPlayerID(), 132, 43 + separacion);
+			g.setFont(new Font("Tahoma", Font.BOLD, 20));
+			g.drawString(usuarios.get(i).getPlayerID(), 100, 43 + separacion);
 
-			g.setFont(new Font("Courier", Font.BOLD, 18));
-			g.drawString("Partidas ganadas: " + usuarios.get(i).getPartidasGanadas(), 136, 80 + separacion);
-			g.drawString("Maximo Puntaje: " + usuarios.get(i).getMaximoPuntaje(), 136, 110 + separacion);
+			g.setFont(new Font("Courier", Font.BOLD, 13));
+			g.drawString("Partidas ganadas: " + usuarios.get(i).getPartidasGanadas(), 102, 60 + separacion);
+			g.drawString("Maximo Puntaje: " + usuarios.get(i).getMaximoPuntaje(), 102, 80 + separacion);
 		}
 
 	}
