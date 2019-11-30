@@ -57,7 +57,7 @@ public class ServerThread extends Thread {
 					minijuego.startGame();
 					break;
 				case "EndGame":
-					new EndgameFrame(brigadaB.getCommandJSON()).setVisible(true);
+					new EndgameFrame(brigadaB.getCommandJSON(),null).setVisible(true);
 					frame.dispose();
 					break;
 				case "Compra":

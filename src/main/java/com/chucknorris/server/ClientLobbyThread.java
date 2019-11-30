@@ -200,7 +200,7 @@ public class ClientLobbyThread extends Thread {
 							GameParametersResponse.class);
 					List<Player> jugadores = new ArrayList<Player>();
 					jugadores.add(new Espert(this.salas.get(this.salaActual).players.get(0), parametros.pesosIniciales,
-							parametros.dolaresIniciales, parametros.salarioInicial));
+							410, parametros.salarioInicial));
 					jugadores.add(new Cristina(this.salas.get(this.salaActual).players.get(1),
 							parametros.pesosIniciales, parametros.dolaresIniciales, parametros.salarioInicial));
 					jugadores.add(new Macri(this.salas.get(this.salaActual).players.get(2), parametros.pesosIniciales,
