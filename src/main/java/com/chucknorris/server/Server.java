@@ -15,15 +15,20 @@ import com.chucknorris.Command;
 import com.chucknorris.User;
 import com.chucknorris.client.ClientLobbySala;
 import com.chucknorris.client.lobby.UpdateOrCreateLobbyResponse;
+import com.jwt.hibernate.Jugador;
+import com.jwt.hibernate.JugadorDAO;
 import com.google.gson.Gson;
 
 public class Server {
+	
 	private static ServerSocket serverSocketLobby = null;
 	private static Socket clientSocketLobby = null;
 	private static final int portLobbyNumber = 22222;
 	private static Gson gson;
 
 	public static void main(String args[]) throws Exception {
+		
+		
 		Map<String, Sala> salas = new HashMap<String, Sala>();
 		gson = new Gson();
 		try {
@@ -48,19 +53,26 @@ public class Server {
 				num = inputStream.read(); // Hacer un case dependiendo si es iniciar sesion o registrar
 				String hola = String.valueOf((char) num);
 				hola = hola + sc.nextLine();
+				NamePasswordResponse nyc = gson.fromJson(hola, NamePasswordResponse.class);
 				// Validacion de personaje
-				
-				if(threadsMap.containsKey(hola)) {
+				Jugador pepe = JugadorDAO.loguear(nyc.name, nyc.password);
+				if(pepe==null) {
+					ps = new PrintStream(clientSocketLobby.getOutputStream());
+					ps.println(gson.toJson(new Command("FatalError", "Nombre o Contraseña Incorrectos")));
+					clientSocketLobby.close();
+					continue;
+				}
+				if(threadsMap.containsKey(nyc.name)) {
 					ps = new PrintStream(clientSocketLobby.getOutputStream());
 					ps.println(gson.toJson(new Command("FatalError", "Ya se encuentra conectado alguien con ese nombre")));
 					clientSocketLobby.close();
 					continue;
 				}
-				ClientLobbyThread newClient = new ClientLobbyThread(hola, clientSocketLobby, threadsMap, salas,puntajes, mapaDeVivos);
+				ClientLobbyThread newClient = new ClientLobbyThread(nyc.name, clientSocketLobby, threadsMap, salas,puntajes, mapaDeVivos);
 				// ClientLobbyThread tendria que consultar los datos de sus playerId para
 				// mandarlo a los frames
-				System.out.println("Ese alguien era: " + hola);
-				threadsMap.put(hola, newClient);
+				System.out.println("Ese alguien era: " + nyc.name);
+				threadsMap.put(nyc.name, newClient);
 				newClient.start();
 
 				String usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
