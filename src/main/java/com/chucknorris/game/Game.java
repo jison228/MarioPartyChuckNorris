@@ -39,6 +39,37 @@ public class Game {
 		this.precioDolar = precioDolar;
 	}
 	
+	public GameResponseGUI playGUI(Player player) {
+		int diceResult = dice.roll();
+		
+		Queue<Node> nodePath = new LinkedList<Node>();
+		
+		int movementsLeft = gameMap.movePlayerGUI(player, diceResult, nodePath);
+		
+		applyRewardIfApplies(player, movementsLeft);
+		
+		GameResponseGUI resultado = new GameResponseGUI();
+		resultado.movementsLeft = movementsLeft;
+		resultado.diceResult = diceResult;
+		resultado.nodePath = nodePath;
+		
+		return resultado;
+	}
+	
+	public GameResponseGUI resolveIntersectionGUI(Player player, Node nextNode, int movementsLeft) {
+		Queue<Node> nodePath = new LinkedList<Node>();
+		
+		movementsLeft = gameMap.movePlayerFromIntersectionGUI(player, nextNode, movementsLeft, nodePath);
+		
+		applyRewardIfApplies(player, movementsLeft);
+		
+		GameResponseGUI resultado = new GameResponseGUI();
+		resultado.movementsLeft = movementsLeft;
+		resultado.nodePath = nodePath;
+		
+		return resultado;
+	}
+	
 	public Game(GameInformation info) {
 		this.players = info.players;
 		this.gameMap = info.gameMap;
