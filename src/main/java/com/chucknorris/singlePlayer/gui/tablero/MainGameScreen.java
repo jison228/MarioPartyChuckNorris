@@ -28,7 +28,7 @@ import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
 import com.chucknorris.gamemap.nodes.Node;
 import com.chucknorris.gui.GameInformation;
-//import com.chucknorris.singlePlayer.gui.minigame.userinterface.GameWindow;
+import com.chucknorris.singlePlayer.gui.minigame.userinterface.GameWindow;
 import com.chucknorris.player.Cristina;
 import com.chucknorris.player.DelCanio;
 import com.chucknorris.player.Espert;
@@ -58,7 +58,7 @@ public class MainGameScreen extends JFrame {
 	private InfoPanel characterPanel;
 	private JLabel diceImage;
 	private DescriptionPanel panelDescrip;
-	//private GameWindow minijuego;
+	private GameWindow minijuego;
 
 	/**
 	 * Launch the application.
@@ -288,6 +288,58 @@ public class MainGameScreen extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				endTurnIndeed();
 				btnTirarDado.setVisible(true);
+				minijuego = new GameWindow();
+				minijuego.startGame();
+				minijuego.addWindowListener(new WindowListener() {
+					
+					@Override
+					public void windowOpened(WindowEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void windowIconified(WindowEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void windowDeiconified(WindowEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void windowDeactivated(WindowEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void windowClosing(WindowEvent e) {
+						// TODO Auto-generated method stub
+					}
+					
+					@Override
+					public void windowClosed(WindowEvent e) {
+						String ganador1 = minijuego.listaGanadores.pop();
+						String ganador2 = minijuego.listaGanadores.pop();
+						for(Player player:partida.getPlayerList()) {
+							if(player.getCharacter().equals(ganador1)|| player.getCharacter().equals(ganador2)) {
+								player.addPesosByPercentage(50);
+								player.addDolaresByPercentage(50);
+							}
+						}
+						repaint();
+					}
+					
+					@Override
+					public void windowActivated(WindowEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			}
 		});
 		btnEndTurn.setVisible(false);
