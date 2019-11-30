@@ -54,6 +54,7 @@ public class SalaPlayersPanel extends JPanel {
 		}
 
 		for (int i = 0; i < 4; i++) {
+			
 			g2d.setColor(Color.orange);
 			g2d.drawRect(0, 77 + i * 110, 326, 96);
 			g2d.setColor(Color.BLACK);
@@ -63,12 +64,22 @@ public class SalaPlayersPanel extends JPanel {
 
 		for (int i = 0; i < players.size(); i++) {
 
+			BufferedImage image = null;
+			
+			try {
+				image = ImageIO.read(new File("images/users/" + players.get(i).getPlayerID() + ".jpg"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			int separacion = i * 110;
+			
 			g.setColor(Color.pink);
 			g.fillRect(3, 80 + separacion, 320, 90);
 
 			g.setColor(Color.RED);
-			g.fillRect(13, 90 + separacion, 70, 70);
+			g.drawImage(image, 13, 90 + separacion, this);
 
 			g.setColor(Color.BLACK);
 			g.setFont(new Font("Tahoma", Font.BOLD, 20));

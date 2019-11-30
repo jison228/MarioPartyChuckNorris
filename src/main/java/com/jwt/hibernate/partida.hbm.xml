@@ -3,7 +3,7 @@
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 29-may-2018 14:36:52 by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
-<class name="com.jwt.hibernate.Jugador" table="PARTIDA">
+<class name="com.jwt.hibernate.Partida" table="PARTIDA">
 		<id column="id" name="id" type="string" />
 		<property column="winner" name="winner" type="string"></property>
 		<property column="player1" name="player1" type="string"></property>
