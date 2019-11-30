@@ -30,6 +30,6 @@ public class DelCanio extends Player {
 
 	@Override
 	public String getPowerupDescription() {
-		return "Divide los pesos de todos de forma equitativa\nÂ¡VIVA EL COMUNISMO!";
+		return "Divide los pesos de todos de forma equitativa\n¡VIVA EL COMUNISMO!";
 	}
 }

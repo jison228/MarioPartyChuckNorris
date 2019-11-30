@@ -32,7 +32,7 @@ public class Cristina extends Player{
 	
 	@Override
 	public String getPowerupDescription() {
-		return "Regala planes sociales a los más pobres\n(30% del más rico)\n\"MACRI GATO\"";
+		return "Regala planes sociales a los mas pobres\n(30% del mas rico)\n\"MACRI GATO\"";
 	}
 
 }
