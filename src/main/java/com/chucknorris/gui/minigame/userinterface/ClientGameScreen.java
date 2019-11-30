@@ -192,7 +192,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 					tier++;
 			}
 
-			if (alive) {
+			if (alive && miIdentidad!=null) {
 				switch (miIdentidad) {
 				case "Espert":
 					// AVISARLE AL SERVER QUE MORI
@@ -265,7 +265,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 					break;
 				}
 			}
-			
+
 		}
 	}
 
@@ -390,7 +390,8 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 				}
 				Command bif = new Command("JumpMinigame", this.miIdentidad);
 				String send = gson.toJson(bif);
-				ps.println(send);
+				if (miIdentidad != null)
+					ps.println(send);
 			}
 		}
 	}
@@ -429,6 +430,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 			}
 		}
 		semaphore.release();
+
 	}
 
 	@Override
@@ -485,7 +487,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 		posicionJugador1 = pos;
 		mainCharacter.dead(true);
 		mainCharacter.setSpeedX(0);
-		//estanMuertos();
+		// estanMuertos();
 	}
 
 	public void ripMacri(int pos) {
@@ -493,7 +495,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 		posicionJugador3 = pos;
 		mainCharacter3.dead(true);
 		mainCharacter3.setSpeedX(0);
-		//estanMuertos();
+		// estanMuertos();
 	}
 
 	public void ripCristina(int pos) {
@@ -501,7 +503,7 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 		posicionJugador2 = pos;
 		mainCharacter2.dead(true);
 		mainCharacter2.setSpeedX(0);
-		//estanMuertos();
+		// estanMuertos();
 	}
 
 	public void ripDelCano(int pos) {
@@ -509,28 +511,17 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 		posicionJugador4 = pos;
 		mainCharacter4.dead(true);
 		mainCharacter4.setSpeedX(0);
-		//estanMuertos();
+		// estanMuertos();
 	}
-/*
-	private void estanMuertos() {
-		if (mainCharacter.getState() == 3 && mainCharacter2.getState() == 3 && mainCharacter3.getState() == 3 && mainCharacter4.getState() == 3) {
-			System.out.println("entra?");
-			gameState = GAME_OVER_STATE;
-			// musica1.stop();
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			frame.dispose();
-			clip.close();
-		}
-	}
-	*/
 	/*
-	public void cerrate() {
-		gameState = GAME_OVER_STATE;
-	}
-	*/
+	 * private void estanMuertos() { if (mainCharacter.getState() == 3 &&
+	 * mainCharacter2.getState() == 3 && mainCharacter3.getState() == 3 &&
+	 * mainCharacter4.getState() == 3) { System.out.println("entra?"); gameState =
+	 * GAME_OVER_STATE; // musica1.stop(); try { Thread.sleep(5000); } catch
+	 * (InterruptedException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); } frame.dispose(); clip.close(); } }
+	 */
+	/*
+	 * public void cerrate() { gameState = GAME_OVER_STATE; }
+	 */
 }

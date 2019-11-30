@@ -23,20 +23,20 @@ public class UsersPanel extends JPanel {
 	public void paint(Graphics g) {
 		for (int i = 0; i < usuarios.size(); i++) {
 
-			int separacion = i * 130;
+			int separacion = i < 6? i * 100 : (i - 6) * 100;
 			g.setColor(Color.pink);
-			g.fillRect(10, 10 + separacion, 250, 90);
+			g.fillRect(5 + (i/6) * 255, 10 + separacion, 250, 90);
 
 			g.setColor(Color.RED);
-			g.fillRect(20, 20 + separacion, 70, 70);
+			g.fillRect(15 + (i/6) * 255 , 20 + separacion, 70, 70);
 
 			g.setColor(Color.BLACK);
 			g.setFont(new Font("Tahoma", Font.BOLD, 20));
-			g.drawString(usuarios.get(i).getPlayerID(), 100, 43 + separacion);
+			g.drawString(usuarios.get(i).getPlayerID(), 90 + (i/6) * 255 , 43 + separacion);
 
 			g.setFont(new Font("Courier", Font.BOLD, 13));
-			g.drawString("Partidas ganadas: " + usuarios.get(i).getPartidasGanadas(), 102, 60 + separacion);
-			g.drawString("Maximo Puntaje: " + usuarios.get(i).getMaximoPuntaje(), 102, 80 + separacion);
+			g.drawString("Partidas ganadas: " + usuarios.get(i).getPartidasGanadas(), 92 + (i/6) * 255 , 60 + separacion);
+			g.drawString("Maximo Puntaje: " + usuarios.get(i).getMaximoPuntaje(), 92 + (i/6) * 255 , 80 + separacion);
 		}
 
 	}
