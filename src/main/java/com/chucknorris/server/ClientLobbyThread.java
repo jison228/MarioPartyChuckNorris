@@ -485,7 +485,14 @@ public class ClientLobbyThread extends Thread {
 									JugadorDAO.partidasDe(this.playerID)))),
 							this.playerID);
 					break;
-
+				case "Desconectado":
+					this.threadsMap.remove(this.playerID);
+					usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
+					for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
+						this.send(new Command("UpdateLobby", usersMessage), entry.getKey());
+					}
+					this.clientSocket.close();
+					break;
 				// Pensar caso de exit Lobby
 				}
 			}
