@@ -13,12 +13,16 @@ public class Sala {
 	public boolean playing;
 	public String name;
 	public Game juego;
+	public String password;
+	public boolean priv;
 	
-	public Sala(String name) {
+	public Sala(String name, String password, boolean priv) {
 		this.players = new ArrayList<String>();
 		this.threadsMap = new HashMap<String, ClientLobbyThread>();
 		this.playing = false;
 		this.name = name;
 		this.juego = null;
+		this.password = password;
+		this.priv = priv;
 	}
 }

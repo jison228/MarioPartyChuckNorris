@@ -11,6 +11,7 @@ import com.chucknorris.client.lobby.LobbyFrame;
 import com.chucknorris.client.lobby.UpdateOrCreateLobbyResponse;
 import com.chucknorris.client.sala.ClientRealSala;
 import com.chucknorris.client.sala.SalaFrame;
+import com.chucknorris.client.sala.SalaParametersResponse;
 import com.chucknorris.client.sala.UpdateOrCreateSalaResponse;
 import com.chucknorris.client.tablero.MainGameScreen;
 import com.chucknorris.gui.minigame.userinterface.ClientGameWindow;
@@ -163,6 +164,12 @@ public class ServerLobbyThread extends Thread {
 							ActualizarCompraResponse.class);
 					gameFrame.updateAfterCompra(respuestaCompra1.lista);
 					//gameFrame.setVisible(true);
+					break;
+				case "Error":
+					new ErrorMessage(brigadaB.getCommandJSON()).setVisible(true);
+					break;
+				case "UpdateOpciones":
+					salaFrame.updateOptions(gson.fromJson(brigadaB.getCommandJSON(),SalaParametersResponse.class));
 					break;
 				}
 			}

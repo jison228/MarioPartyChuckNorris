@@ -17,17 +17,19 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.chucknorris.Command;
+import com.chucknorris.server.SalaResponse;
 import com.google.gson.Gson;
 
-public class NewSalaFrame extends JFrame {
+public class NewSalaFramePrivate extends JFrame {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField textFieldNombre;
 	private Gson gson;
+	private JTextField textFieldPassword;
 
 	/**
 	 * Launch the application.
@@ -36,7 +38,7 @@ public class NewSalaFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					NewSalaFrame frame = new NewSalaFrame(null);
+					NewSalaFramePrivate frame = new NewSalaFramePrivate(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,10 +50,10 @@ public class NewSalaFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public NewSalaFrame(Socket servidor) {
+	public NewSalaFramePrivate(Socket servidor) {
 		gson = new Gson();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 391, 158);
+		setBounds(100, 100, 426, 222);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -61,7 +63,7 @@ public class NewSalaFrame extends JFrame {
 		JLabel lblCrearSala = new JLabel("Crear Sala");
 		lblCrearSala.setFont(new Font("Tahoma", Font.BOLD, 28));
 		lblCrearSala.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCrearSala.setBounds(10, 10, 357, 25);
+		lblCrearSala.setBounds(10, 10, 386, 25);
 		contentPane.add(lblCrearSala);
 
 		JLabel lblNombreSala = new JLabel("Nombre de la Sala:");
@@ -69,18 +71,19 @@ public class NewSalaFrame extends JFrame {
 		lblNombreSala.setBounds(10, 58, 145, 37);
 		contentPane.add(lblNombreSala);
 
-		textField = new JTextField();
-		textField.setBounds(165, 58, 126, 37);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textFieldNombre = new JTextField();
+		textFieldNombre.setBounds(165, 58, 126, 37);
+		contentPane.add(textFieldNombre);
+		textFieldNombre.setColumns(10);
 
 		JButton btnCrear = new JButton("Crear");
 		btnCrear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if (!textField.getText().equals("")) {
+					if (!textFieldNombre.getText().equals("") && !textFieldPassword.getText().equals("")) {
 						PrintStream ps = new PrintStream(servidor.getOutputStream(), true);
-						Command enviarNombreSala = new Command("CreateSala", textField.getText());
+						SalaResponse sr = new SalaResponse(textFieldNombre.getText(), textFieldPassword.getText(),true);
+						Command enviarNombreSala = new Command("CreateSala", gson.toJson(sr));
 						ps.println(gson.toJson(enviarNombreSala));
 						dispose();
 					}
@@ -91,7 +94,26 @@ public class NewSalaFrame extends JFrame {
 
 			}
 		});
-		btnCrear.setBounds(296, 58, 71, 37);
+		btnCrear.setBounds(301, 60, 95, 37);
 		contentPane.add(btnCrear);
+		
+		JLabel lblContrasea = new JLabel("Contrase\u00F1a:");
+		lblContrasea.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblContrasea.setBounds(10, 116, 145, 37);
+		contentPane.add(lblContrasea);
+		
+		textFieldPassword = new JTextField();
+		textFieldPassword.setColumns(10);
+		textFieldPassword.setBounds(165, 116, 126, 37);
+		contentPane.add(textFieldPassword);
+		
+		JButton btnCancelar = new JButton("Cancelar\r\n");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnCancelar.setBounds(301, 116, 95, 37);
+		contentPane.add(btnCancelar);
 	}
 }

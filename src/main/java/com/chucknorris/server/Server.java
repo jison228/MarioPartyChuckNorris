@@ -80,7 +80,7 @@ public class Server {
 		List<ClientLobbySala> listaClientSalas = new ArrayList<ClientLobbySala>();
 		for (Map.Entry<String, Sala> entry : salas.entrySet()) {
 			listaClientSalas.add(new ClientLobbySala(entry.getKey(), entry.getValue().players.size(),
-					entry.getValue().threadsMap.size(), entry.getValue().playing));// Tendria que consultar en la base
+					entry.getValue().threadsMap.size(), entry.getValue().playing, entry.getValue().priv));// Tendria que consultar en la base
 																					// de datos sus caracteristicas
 		}
 		return new UpdateOrCreateLobbyResponse(listaUser, listaClientSalas);

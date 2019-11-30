@@ -43,8 +43,8 @@ public class CompraDolaresFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ClientPlayer p = new ClientPlayer("Nombre", "Espert", null, 50, 50, 100, null);
-					CompraDolaresFrame frame = new CompraDolaresFrame(p, 20.0,null);
+					ClientPlayer p = new ClientPlayer("Nombre", "Espert", null, 550, 50, 100, null);
+					CompraDolaresFrame frame = new CompraDolaresFrame(p, 23.0,null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -112,7 +112,7 @@ public class CompraDolaresFrame extends JFrame {
 				if (Double.valueOf(pesosTF.getValue().toString()) >= player.getPesos()) {
 					pesosTF.setValue(player.getPesos());
 				}
-				dolaresLbl.setText(Double.toString((Double.valueOf(pesosTF.getValue().toString()) / precioDolar)));
+				dolaresLbl.setText(Double.toString(Math.round((Double.valueOf(pesosTF.getValue().toString()) / precioDolar) * 100.0)/100.0));
 				btnComprar.setVisible(true);
 			}
 		});

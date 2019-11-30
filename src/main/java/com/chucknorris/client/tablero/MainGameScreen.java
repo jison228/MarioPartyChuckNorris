@@ -10,6 +10,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -29,7 +31,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.chucknorris.Command;
-import com.chucknorris.client.ChatResponse;
 import com.chucknorris.client.ClientPlayer;
 import com.chucknorris.client.EndTurnResponse;
 import com.chucknorris.client.GameInformation;
@@ -184,6 +185,8 @@ public class MainGameScreen extends JFrame {
 					String gsonCommand = gson.toJson(commandChat);
 					ps.println(gsonCommand);
 					chatTF.setText("");
+					chatTF.transferFocus();
+					setFocusable(true);
 				}
 
 			}
@@ -193,6 +196,7 @@ public class MainGameScreen extends JFrame {
 		chatBtn = new JButton();
 		chatBtn.setText("Enviar");
 		chatBtn.setBounds(1200, 650, 70, 25);
+		chatBtn.setFocusable(false);
 		chatBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PrintStream ps = null;
@@ -206,6 +210,8 @@ public class MainGameScreen extends JFrame {
 				String gsonCommand = gson.toJson(commandChat);
 				ps.println(gsonCommand);
 				chatTF.setText("");
+				chatTF.transferFocus();
+				setFocusable(true);
 			}
 		});
 		contentPane.add(chatBtn);
@@ -352,6 +358,7 @@ public class MainGameScreen extends JFrame {
 		btnEndTurn.setBounds(0, 25, 120, 120);
 		buttonPanel.add(btnEndTurn);
 		btnTirarDado.setVisible(false);
+		setFocusable(true);
 	}
 
 	public void playTurnPublic(MovementResponsePublic respuesta) {

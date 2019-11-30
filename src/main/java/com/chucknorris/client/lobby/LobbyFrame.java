@@ -1,6 +1,5 @@
 package com.chucknorris.client.lobby;
 
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
@@ -11,7 +10,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,6 +26,7 @@ import javax.swing.border.EmptyBorder;
 import com.chucknorris.Command;
 import com.chucknorris.User;
 import com.chucknorris.client.ClientLobbySala;
+import com.chucknorris.server.SalaResponse;
 import com.google.gson.Gson;
 
 public class LobbyFrame extends JFrame {
@@ -45,10 +44,12 @@ public class LobbyFrame extends JFrame {
 	private JButton crearSalaBtn;
 	private String playerID;
 	private JButton salirJuego;
-	private NewSalaFrame nuevasala;
+	private NewSalaFramePrivate nuevasala;
 	private JPanel panelDeBotones;
 	private PrintStream ps;
 	private Gson gson;
+	private Socket servidor;
+	private JButton btnCrearSalaPublica;
 
 	/**
 	 * Launch the application.
@@ -75,10 +76,10 @@ public class LobbyFrame extends JFrame {
 					chabones.add(new User("Peronista", 9, 1200));
 
 					List<ClientLobbySala> salas = new ArrayList<ClientLobbySala>();
-					salas.add(new ClientLobbySala("Primer Sala", 4, 4, false));
-					salas.add(new ClientLobbySala("Segunda Sala", 4, 4, true));
-					salas.add(new ClientLobbySala("Tercer Sala", 1, 3, false));
-					salas.add(new ClientLobbySala("Primer Sala", 3, 4, false));
+					salas.add(new ClientLobbySala("Primer Sala", 4, 4, false, true));
+					salas.add(new ClientLobbySala("Segunda Sala", 4, 4, true, true));
+					salas.add(new ClientLobbySala("Tercer Sala", 1, 3, false, false));
+					salas.add(new ClientLobbySala("Primer Sala", 3, 4, false, false));
 
 					LobbyFrame frame = new LobbyFrame("Roberto", chabones, salas, null);
 
@@ -97,6 +98,7 @@ public class LobbyFrame extends JFrame {
 		if (servidor != null) {
 			try {
 				ps = new PrintStream(servidor.getOutputStream(), true);
+				this.servidor = servidor;
 			} catch (IOException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -115,20 +117,28 @@ public class LobbyFrame extends JFrame {
 		panelDeBotones = new JPanel();
 		panelDeBotones.setLayout(null);
 		panelDeBotones.setBounds(900, 0, 100, 380);
+		panelDeBotones = new JPanel();
+		panelDeBotones.setLayout(null);
+		panelDeBotones.setBounds(900, 0, 100, 380);
 		for (int i = 0; i < salas.size(); i++) {
-			String specOrPlay = salas.get(i).cantPlayers == 4 ? "Spec" : "Play";
+			ClientLobbySala salita = salas.get(i);
+			String specOrPlay = salita.cantPlayers == 4 ? "Spec" : "Play";
 			JButton enter = new JButton(specOrPlay);
 			enter.setBounds(0, 10 + i * 70, 90, 68);
 			enter.setFocusable(true);
 			enter.transferFocus();
-			if (salas.get(i).playing) {
+			if (salita.playing) {
 				enter.setEnabled(false);
 			}
-			String nombreSala = salas.get(i).name;
 			enter.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					ps.println(gson.toJson(new Command("JoinSala", nombreSala)));
+					if (salita.priv) {
+						new JoinSalaFrame(salita.name, servidor).setVisible(true);
+					}
+					else
+						ps.println(gson
+								.toJson(new Command("JoinSala", gson.toJson(new SalaResponse(salita.name, "NoPassword", true)))));
 				}
 			});
 			panelDeBotones.add(enter);
@@ -208,11 +218,11 @@ public class LobbyFrame extends JFrame {
 		lobbyPane.add(chatBtn);
 
 		// CrearSala
-		crearSalaBtn = new JButton("Crear Sala");
-		crearSalaBtn.setBounds(500, 390, 100, 50);
+		crearSalaBtn = new JButton("Crear Sala Privada");
+		crearSalaBtn.setBounds(510, 390, 156, 50);
 		crearSalaBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				nuevasala = new NewSalaFrame(servidor);
+				nuevasala = new NewSalaFramePrivate(servidor);
 				nuevasala.setVisible(true);
 			}
 		});
@@ -220,13 +230,22 @@ public class LobbyFrame extends JFrame {
 
 		// Salir Sala
 		salirJuego = new JButton("Salir Juego");
-		salirJuego.setBounds(880, 390, 100, 50);
+		salirJuego.setBounds(852, 390, 128, 50);
 		salirJuego.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
 		lobbyPane.add(salirJuego);
+
+		btnCrearSalaPublica = new JButton("Crear Sala Publica");
+		btnCrearSalaPublica.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new NewSalaFramePublic(servidor).setVisible(true);
+			}
+		});
+		btnCrearSalaPublica.setBounds(686, 390, 156, 50);
+		lobbyPane.add(btnCrearSalaPublica);
 
 	}
 
@@ -235,30 +254,36 @@ public class LobbyFrame extends JFrame {
 		panelDeBotones.setLayout(null);
 		panelDeBotones.setBounds(900, 0, 100, 380);
 		for (int i = 0; i < salas.size(); i++) {
+			ClientLobbySala salita = salas.get(i);
 			String specOrPlay = salas.get(i).cantPlayers == 4 ? "Spec" : "Play";
 			JButton enter = new JButton(specOrPlay);
 			enter.setBounds(0, 10 + i * 70, 90, 68);
 			enter.setFocusable(true);
 			enter.transferFocus();
-			if (salas.get(i).playing) {
+			if (salita.playing) {
 				enter.setEnabled(false);
 			}
 			String nombreSala = salas.get(i).name;
 			enter.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					ps.println(gson.toJson(new Command("JoinSala", nombreSala)));
+					if (salita.priv) {
+						new JoinSalaFrame(nombreSala, servidor).setVisible(true);
+					}
+					else
+						ps.println(gson
+								.toJson(new Command("JoinSala", gson.toJson(new SalaResponse(nombreSala, "", true)))));
 				}
 			});
 			panelDeBotones.add(enter);
 		}
 		lobbyPane.add(panelDeBotones);
-		
+
 		panelUsuarios.updatePanel(usuarios);
 		panelSalas.updatePanel(salas);
 		lobbyPane.paintImmediately(lobbyPane.getBounds());
 		panelDeBotones.repaint();
-		}
+	}
 
 	public void addChatText(String mensaje) {
 		chatTA.append(

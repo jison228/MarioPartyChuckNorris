@@ -36,8 +36,8 @@ public class JPanelPlayers extends JPanel {
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("Courier New", Font.BOLD, 30));
 		g.drawString("CANDIDATOS", 45, 30);
-		g.setFont(new Font("Courier New", Font.BOLD, 10));
-		g.drawString("(Gana el que llega a 500 dolares)", 30, 40);
+		g.setFont(new Font("Courier New", Font.BOLD, 15));
+		g.drawString("(Gana el que llega a 420 U$S)", 10, 45);
 
 		for (int i =0; i<clientPlayerList.size();i++) {
 			g.setColor(Color.ORANGE);
@@ -53,7 +53,7 @@ public class JPanelPlayers extends JPanel {
 
 			g.setColor(Color.BLACK);
 			g.setFont(new Font("Tahoma", Font.BOLD, 18));
-			g.drawString(clientPlayerList.get(i).getCharacter(), 10, 80 + i * 110);
+			g.drawString(clientPlayerList.get(i).getCharacter() + " (" + clientPlayerList.get(i).getPlayerName() + ")", 10, 80 + i * 110);
 			g.setColor(Color.darkGray);
 			g.fillRect(70, 107 + i * 110, 65, 17);
 			g.fillRect(170, 107 + i * 110, 75, 17);

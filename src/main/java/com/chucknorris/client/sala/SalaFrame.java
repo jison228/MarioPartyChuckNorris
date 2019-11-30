@@ -58,6 +58,8 @@ public class SalaFrame extends JFrame {
 	private TextArea chatTA;
 	private JTextField chatTF;
 	private JButton chatBtn;
+	private MapImagePanel lblImagenDelMapa;
+	private boolean update;
 
 	/**
 	 * Launch the application.
@@ -93,6 +95,7 @@ public class SalaFrame extends JFrame {
 	 */
 	public SalaFrame(String playerID, ClientRealSala sala, Socket servidor) {
 		gson = new Gson();
+		update = true;
 		this.playerID = playerID;
 		try {
 			if (servidor != null)
@@ -145,9 +148,9 @@ public class SalaFrame extends JFrame {
 		btnJugar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GameParametersResponse parametros = new GameParametersResponse((String) comboBoxMap.getSelectedItem(),
-						(Double)comboBoxPrecioDolar.getSelectedItem(), (Double)comboBoxPesos.getSelectedItem(),
-						(Double)comboBoxDolares.getSelectedItem(), (Double)comboBoxSalario.getSelectedItem(),
-						(Integer)comboBoxMin.getSelectedItem(), (Integer)comboBoxMax.getSelectedItem());
+						(Double) comboBoxPrecioDolar.getSelectedItem(), (Double) comboBoxPesos.getSelectedItem(),
+						(Double) comboBoxDolares.getSelectedItem(), (Double) comboBoxSalario.getSelectedItem(),
+						(Integer) comboBoxMin.getSelectedItem(), (Integer) comboBoxMax.getSelectedItem());
 				ps.println(gson.toJson(new Command("StartGame", gson.toJson(parametros))));
 			}
 		});
@@ -170,6 +173,7 @@ public class SalaFrame extends JFrame {
 		optionsPanel.add(btnCambiar);
 
 		comboBoxMap = new JComboBox<String>();
+
 		comboBoxMap.setBackground(new Color(255, 250, 205));
 		comboBoxMap.setBounds(340, 127, 200, 21);
 		optionsPanel.add(comboBoxMap);
@@ -183,9 +187,7 @@ public class SalaFrame extends JFrame {
 		lblMapa.setBounds(340, 92, 200, 25);
 		optionsPanel.add(lblMapa);
 
-		JLabel lblImagenDelMapa = new JLabel("IMAGEN DEL MAPA");
-		lblImagenDelMapa.setForeground(Color.BLACK);
-		lblImagenDelMapa.setHorizontalAlignment(SwingConstants.CENTER);
+		lblImagenDelMapa = new MapImagePanel(comboBoxMap.getSelectedItem().toString() + ".jpg");
 		lblImagenDelMapa.setBounds(240, 158, 300, 150);
 		optionsPanel.add(lblImagenDelMapa);
 
@@ -211,6 +213,7 @@ public class SalaFrame extends JFrame {
 		optionsPanel.add(lblMax);
 
 		comboBoxMin = new JComboBox<Integer>();
+
 		comboBoxMin.setBackground(new Color(255, 250, 205));
 		comboBoxMin.setFont(new Font("Tahoma", Font.BOLD, 18));
 		comboBoxMin.setBounds(340, 384, 75, 21);
@@ -223,6 +226,7 @@ public class SalaFrame extends JFrame {
 		comboBoxMin.addItem(6);
 
 		comboBoxMax = new JComboBox<Integer>();
+
 		comboBoxMax.setBackground(new Color(255, 250, 205));
 		comboBoxMax.setFont(new Font("Tahoma", Font.BOLD, 18));
 		comboBoxMax.setBounds(465, 384, 75, 21);
@@ -240,6 +244,7 @@ public class SalaFrame extends JFrame {
 		optionsPanel.add(lblSalarioInicial);
 
 		comboBoxSalario = new JComboBox<Double>();
+
 		comboBoxSalario.setBackground(new Color(255, 250, 205));
 		comboBoxSalario.setBounds(10, 387, 146, 21);
 		optionsPanel.add(comboBoxSalario);
@@ -257,6 +262,7 @@ public class SalaFrame extends JFrame {
 		optionsPanel.add(lblPesosIniciales);
 
 		comboBoxPesos = new JComboBox<Double>();
+
 		comboBoxPesos.setBackground(new Color(255, 250, 205));
 		comboBoxPesos.setBounds(10, 128, 146, 21);
 		optionsPanel.add(comboBoxPesos);
@@ -273,6 +279,7 @@ public class SalaFrame extends JFrame {
 		optionsPanel.add(lblDolaresIniciales);
 
 		comboBoxDolares = new JComboBox<Double>();
+
 		comboBoxDolares.setBackground(new Color(255, 250, 205));
 		comboBoxDolares.setBounds(10, 259, 146, 21);
 		optionsPanel.add(comboBoxDolares);
@@ -288,6 +295,7 @@ public class SalaFrame extends JFrame {
 		optionsPanel.add(lblPrecioDolar);
 
 		comboBoxPrecioDolar = new JComboBox<Double>();
+
 		comboBoxPrecioDolar.setFont(new Font("Tahoma", Font.BOLD, 18));
 		comboBoxPrecioDolar.setBackground(new Color(255, 250, 205));
 		comboBoxPrecioDolar.setBounds(210, 387, 75, 21);
@@ -359,8 +367,43 @@ public class SalaFrame extends JFrame {
 		});
 		contentPane.add(chatBtn);
 
-		updateBotones(sala);
+		comboBoxMap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sendOptions();
+			}
+		});
+		comboBoxPrecioDolar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sendOptions();
+			}
+		});
+		comboBoxDolares.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sendOptions();
+			}
+		});
+		comboBoxPesos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sendOptions();
+			}
+		});
+		comboBoxSalario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sendOptions();
+			}
+		});
+		comboBoxMax.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sendOptions();
+			}
+		});
+		comboBoxMin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sendOptions();
+			}
+		});
 
+		updateBotones(sala);
 	}
 
 	public void updateSalaFrame(ClientRealSala sala) {
@@ -420,5 +463,36 @@ public class SalaFrame extends JFrame {
 	public void addChatText(String mensaje) {
 		chatTA.append(
 				new SimpleDateFormat("HH:mm:ss").format(new Date(System.currentTimeMillis())) + " " + mensaje + "\n");
+	}
+
+	public void updateOptions(SalaParametersResponse opciones) {
+		update = false;
+		this.comboBoxMap.setSelectedItem(opciones.mapName);
+		this.comboBoxPesos.setSelectedItem(opciones.pesosIniciales);
+		this.comboBoxDolares.setSelectedItem(opciones.dolaresIniciales);
+		this.comboBoxPrecioDolar.setSelectedItem(opciones.precioDolar);
+		this.comboBoxMin.setSelectedItem(opciones.diceMin);
+		this.comboBoxMax.setSelectedItem(opciones.diceMax);
+
+		this.lblImagenDelMapa.updateImage(comboBoxMap.getSelectedItem().toString() + ".jpg");
+		contentPane.repaint();
+		update = true;
+	}
+
+	private void sendOptions() {
+		if (update) {
+			SalaParametersResponse spr = new SalaParametersResponse((String) comboBoxMap.getSelectedItem(),
+					(Double) comboBoxPesos.getSelectedItem(), (Double) comboBoxDolares.getSelectedItem(),
+					(Double) comboBoxSalario.getSelectedItem(), (Double) comboBoxPrecioDolar.getSelectedItem(),
+					(Integer) comboBoxMin.getSelectedItem(), (Integer) comboBoxMax.getSelectedItem());
+			PrintStream ps = null;
+			try {
+				ps = new PrintStream(servidor.getOutputStream(), true);
+				ps.println(gson.toJson(new Command("UpdateOpciones", gson.toJson(spr))));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 	}
 }

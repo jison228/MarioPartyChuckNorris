@@ -48,17 +48,16 @@ public class ClientLobbyThread extends Thread {
 	private Map<String, ClientLobbyThread> threadsMap;
 	private Map<String, Sala> salas;
 	private int diceResult = 0;
-	private List<ClientNode> bifOptions;
-	
+
 	private int espertScore;
 	private int cristinaScore;
 	private int macriScore;
 	private int delCanoScore;
 	private List<String> mapaDeVivos;
-	private Map<String,Integer> puntajes;
+	private Map<String, Integer> puntajes;
 
 	public ClientLobbyThread(String playerID, Socket clientSocket, Map<String, ClientLobbyThread> threadsMap,
-			Map<String, Sala> salas, Map<String,Integer> puntajes, List<String> mapaDeVivos) {
+			Map<String, Sala> salas, Map<String, Integer> puntajes, List<String> mapaDeVivos) {
 
 		this.puntajes = puntajes;
 		this.mapaDeVivos = mapaDeVivos;
@@ -107,41 +106,51 @@ public class ClientLobbyThread extends Thread {
 					}
 					break;
 				case "JoinSala":
-					if (this.salas.get(brigadaB.getCommandJSON()).players.size() < 4)
-						this.salas.get(brigadaB.getCommandJSON()).players.add(playerID);
-					this.salas.get(brigadaB.getCommandJSON()).threadsMap.put(playerID, this);
-					this.salaActual = brigadaB.getCommandJSON();
+					SalaResponse respuestaSala1 = gson.fromJson(brigadaB.getCommandJSON(), SalaResponse.class);
+					if (this.salas.get(respuestaSala1.name).priv
+							&& !this.salas.get(respuestaSala1.name).password.equals(respuestaSala1.password)) {
+						this.send(new Command("Error", "Contraseña de la Sala Incorrecta"), this.playerID);
+						break;
+					}
+					if (this.salas.get(respuestaSala1.name).players.size() < 4)
+						this.salas.get(respuestaSala1.name).players.add(playerID);
+					this.salas.get(respuestaSala1.name).threadsMap.put(playerID, this);
+					this.salaActual = respuestaSala1.name;
 					threadsMap.remove(playerID);
 					usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
 					for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
 						this.send(new Command("UpdateLobby", usersMessage), entry.getKey());
 					}
-					usersMessage = gson.toJson(createSalaResponse(this.salas.get(brigadaB.getCommandJSON())));
-					this.sendSala(new Command("OpenSala", usersMessage), brigadaB.getCommandJSON(), playerID);
-					for (Map.Entry<String, ClientLobbyThread> entry : this.salas
-							.get(brigadaB.getCommandJSON()).threadsMap.entrySet()) {
+					usersMessage = gson.toJson(createSalaResponse(this.salas.get(respuestaSala1.name)));
+					this.sendSala(new Command("OpenSala", usersMessage), respuestaSala1.name, playerID);
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(respuestaSala1.name).threadsMap
+							.entrySet()) {
 						if (entry.getKey() != playerID) {
-							this.sendSala(new Command("UpdateSala", usersMessage), brigadaB.getCommandJSON(),
-									entry.getKey());
+							this.sendSala(new Command("UpdateSala", usersMessage), respuestaSala1.name, entry.getKey());
 						}
 					}
 					break;
 				case "CreateSala":
 					if (salas.size() < 4) {
-						Sala nuevaSala = new Sala(brigadaB.getCommandJSON());
+						SalaResponse respuestaSala = gson.fromJson(brigadaB.getCommandJSON(), SalaResponse.class);
+						if(this.salas.containsKey(respuestaSala.name)) {
+							this.send(new Command("Error", "Ya existe una sala con este nombre"),this.playerID);
+							break;
+						}
+						Sala nuevaSala = new Sala(respuestaSala.name, respuestaSala.password, respuestaSala.priv);
 						nuevaSala.players.add(playerID);
 						nuevaSala.threadsMap.put(playerID, this);
-						this.salas.put(brigadaB.getCommandJSON(), nuevaSala);
+						this.salas.put(respuestaSala.name, nuevaSala);
 						threadsMap.remove(playerID);
 						usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
-						this.salaActual = brigadaB.getCommandJSON();
+						this.salaActual = respuestaSala.name;
 						for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
 							this.send(new Command("UpdateLobby", usersMessage), entry.getKey());
 						}
 						usersMessage = gson.toJson(createSalaResponse(nuevaSala));
-						this.sendSala(new Command("OpenSala", usersMessage), brigadaB.getCommandJSON(), playerID);
+						this.sendSala(new Command("OpenSala", usersMessage), respuestaSala.name, playerID);
 					} else {
-						// Avisarle que se llego la capacidad maxima de salas
+						this.send(new Command("Error", "Ya no se pueden crear mas salas"),this.playerID);
 					}
 					break;
 				case "LeaveSala":
@@ -194,13 +203,12 @@ public class ClientLobbyThread extends Thread {
 							parametros.pesosIniciales, parametros.dolaresIniciales, parametros.salarioInicial));
 					this.salas.get(this.salaActual).juego = new Game(jugadores, parametros.mapName, parametros.diceMin,
 							parametros.diceMax, parametros.precioDolar);
-					
+
 					GameInformation infoJuego = new GameInformation(parametros.mapName, jugadores,
 							this.salas.get(this.salaActual).juego.getGameMap(), parametros.precioDolar);
 
 					this.salas.get(this.salaActual).playing = true;
 					usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
-					this.send(new Command("LeaveSala", usersMessage), this.playerID);
 					for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
 						if (!entry.getKey().equals(this.playerID)) {
 							this.send(new Command("UpdateLobby", usersMessage), entry.getKey());
@@ -304,9 +312,11 @@ public class ClientLobbyThread extends Thread {
 					}
 					break;
 				case "EndTurn":
-					for(int i = 0; i < this.salas.get(this.salaActual).juego.getPlayerList().size(); i++) {
-						if(this.salas.get(this.salaActual).juego.getPlayerList().get(i).getPlayerID().equals(this.playerID)) {
-							this.character = this.salas.get(this.salaActual).juego.getPlayerList().get(i).getCharacter();
+					for (int i = 0; i < this.salas.get(this.salaActual).juego.getPlayerList().size(); i++) {
+						if (this.salas.get(this.salaActual).juego.getPlayerList().get(i).getPlayerID()
+								.equals(this.playerID)) {
+							this.character = this.salas.get(this.salaActual).juego.getPlayerList().get(i)
+									.getCharacter();
 						}
 					}
 					boolean cfinish = false;
@@ -318,7 +328,7 @@ public class ClientLobbyThread extends Thread {
 							ganador = player;
 						}
 					}
-					if (ganador.getDolares() > 200) {
+					if (ganador.getDolares() >= 420) {
 						for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 								.entrySet()) {
 							this.sendSala(new Command("EndGame", ganador.getCharacter()), this.salaActual,
@@ -358,9 +368,8 @@ public class ClientLobbyThread extends Thread {
 							this.mapaDeVivos.add("Cristina");
 							this.mapaDeVivos.add("Macri");
 							this.mapaDeVivos.add("Del Caño");
-							puntajes = new HashMap<String,Integer>();
+							puntajes = new HashMap<String, Integer>();
 
-							
 							Command minigameCommand = new Command("StartMinigame", "");
 							for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 									.entrySet()) {
@@ -404,7 +413,7 @@ public class ClientLobbyThread extends Thread {
 						this.sendSala(new Command("MandaleMecha", entry.getValue().character), this.salaActual,
 								entry.getKey());
 					}
-				break;
+					break;
 				case "JumpMinigame":
 					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 							.entrySet()) {
@@ -417,39 +426,42 @@ public class ClientLobbyThread extends Thread {
 
 					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 							.entrySet()) {
-						this.sendSala(new Command("MinigameMurioEspert","1"), this.salaActual,
-								entry.getKey());
+						this.sendSala(new Command("MinigameMurioEspert", "1"), this.salaActual, entry.getKey());
 					}
-					this.resolverPosicionConSemaforos("Espert",espertScore);
+					this.resolverPosicionConSemaforos("Espert", espertScore);
 					break;
 				case "MeMoriSoyCristina":
 					this.cristinaScore = Integer.parseInt(brigadaB.getCommandJSON());
 
 					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 							.entrySet()) {
-						this.sendSala(new Command("MinigameMurioCristina", "2"), this.salaActual,
-								entry.getKey());
+						this.sendSala(new Command("MinigameMurioCristina", "2"), this.salaActual, entry.getKey());
 					}
-					this.resolverPosicionConSemaforos("Cristina",cristinaScore);
+					this.resolverPosicionConSemaforos("Cristina", cristinaScore);
 					break;
 				case "MeMoriSoyMacri":
 					this.macriScore = Integer.parseInt(brigadaB.getCommandJSON());
 
 					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 							.entrySet()) {
-						this.sendSala(new Command("MinigameMurioMacri","3"), this.salaActual,
-								entry.getKey());
+						this.sendSala(new Command("MinigameMurioMacri", "3"), this.salaActual, entry.getKey());
 					}
-					this.resolverPosicionConSemaforos("Macri",macriScore);
+					this.resolverPosicionConSemaforos("Macri", macriScore);
 					break;
 				case "MeMoriSoyDelCaño":
 					this.delCanoScore = Integer.parseInt(brigadaB.getCommandJSON());
 					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 							.entrySet()) {
-						this.sendSala(new Command("MinigameMurioDelCaño", "4"), this.salaActual,
-								entry.getKey());
+						this.sendSala(new Command("MinigameMurioDelCaño", "4"), this.salaActual, entry.getKey());
 					}
-					this.resolverPosicionConSemaforos("Del Caño",delCanoScore);
+					this.resolverPosicionConSemaforos("Del Caño", delCanoScore);
+					break;
+				case "UpdateOpciones":
+					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
+							.entrySet()) {
+						this.sendSala(new Command("UpdateOpciones", brigadaB.getCommandJSON()), this.salaActual, entry.getKey());
+					}
+					
 					break;
 				// Pensar caso de exit Lobby
 				}
@@ -501,7 +513,7 @@ public class ClientLobbyThread extends Thread {
 		List<ClientLobbySala> listaClientSalas = new ArrayList<ClientLobbySala>();
 		for (Map.Entry<String, Sala> entry : salas.entrySet()) {
 			listaClientSalas.add(new ClientLobbySala(entry.getKey(), entry.getValue().players.size(),
-					entry.getValue().threadsMap.size(), entry.getValue().playing));// Tendria que consultar en la base
+					entry.getValue().threadsMap.size(), entry.getValue().playing, entry.getValue().priv));// Tendria que consultar en la base
 																					// de datos sus caracteristicas
 		}
 		return new UpdateOrCreateLobbyResponse(listaUser, listaClientSalas);
@@ -531,34 +543,34 @@ public class ClientLobbyThread extends Thread {
 	public String getPlayerID() {
 		return this.playerID;
 	}
-	
-	public void resolverPosicionConSemaforos(String character,int puntaje) {
+
+	public void resolverPosicionConSemaforos(String character, int puntaje) {
 		mapaDeVivos.remove(character);
 		String playerMuerto = null;
-		for(int i = 0; i < this.salas.get(this.salaActual).juego.getPlayerList().size(); i++) {
-			if(this.salas.get(this.salaActual).juego.getPlayerList().get(i).getCharacter().equals(character)) {
+		for (int i = 0; i < this.salas.get(this.salaActual).juego.getPlayerList().size(); i++) {
+			if (this.salas.get(this.salaActual).juego.getPlayerList().get(i).getCharacter().equals(character)) {
 				playerMuerto = this.salas.get(this.salaActual).juego.getPlayerList().get(i).getPlayerID();
 			}
 		}
-		puntajes.put(playerMuerto,puntaje);
-		
-		if(mapaDeVivos.isEmpty()) {
+		puntajes.put(playerMuerto, puntaje);
+
+		if (mapaDeVivos.isEmpty()) {
 			int puntajeMax = 0;
 			String playerGanador = null;
-			for(Map.Entry<String, Integer> entry : puntajes.entrySet()) {
-				if(entry.getValue()>=puntajeMax) {
+			for (Map.Entry<String, Integer> entry : puntajes.entrySet()) {
+				if (entry.getValue() >= puntajeMax) {
 					puntajeMax = entry.getValue();
 					playerGanador = entry.getKey();
 				}
 			}
-			
-			for(int i = 0; i < this.salas.get(this.salaActual).juego.getPlayerList().size(); i++) {
+
+			for (int i = 0; i < this.salas.get(this.salaActual).juego.getPlayerList().size(); i++) {
 				Player ganadorMinigame = this.salas.get(this.salaActual).juego.getPlayerList().get(i);
-				if(ganadorMinigame.getPlayerID().equals(playerGanador)) {
-					ganadorMinigame.addPesos(ganadorMinigame.getPesos()*0.5);
+				if (ganadorMinigame.getPlayerID().equals(playerGanador)) {
+					ganadorMinigame.addPesos(ganadorMinigame.getPesos() * 0.5);
 				}
 			}
-			
+
 			List<ClientPlayer> compraClientPlayers = new ArrayList<ClientPlayer>();
 			for (int i = 0; i < this.salas.get(this.salaActual).juego.getPlayerList().size(); i++) {
 				Player playerToClient = this.salas.get(this.salaActual).juego.getPlayerList().get(i);
@@ -567,17 +579,15 @@ public class ClientLobbyThread extends Thread {
 			}
 
 			String compraGson = gson.toJson(new ActualizarCompraResponse(compraClientPlayers));
-			
+
 			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
-					.entrySet()) {
-				this.sendSala(new Command("FinishMiniGame", compraGson), this.salaActual,
-						entry.getKey());
+			for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap.entrySet()) {
+				this.sendSala(new Command("FinishMiniGame", compraGson), this.salaActual, entry.getKey());
 			}
 		}
 
