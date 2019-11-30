@@ -102,7 +102,6 @@ public class EstadisticasScreen extends JFrame {
 		lblUsuario.setBounds(771, 137, 128, 68);
 		mainPane.add(lblUsuario);
 
-
 		maxPuntajeTF = new JTextField();
 		maxPuntajeTF.setHorizontalAlignment(SwingConstants.CENTER);
 		maxPuntajeTF.setFont(new Font("Monospaced", Font.PLAIN, 25));
