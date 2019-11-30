@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import com.chucknorris.Command;
-import com.chucknorris.client.endgame.Endgame;
+import com.chucknorris.client.endgame.EndgameFrame;
 import com.chucknorris.client.tablero.MainGameScreen;
 import com.chucknorris.gui.minigame.userinterface.ClientGameWindow;
 import com.google.gson.Gson;
@@ -57,7 +57,7 @@ public class ServerThread extends Thread {
 					minijuego.startGame();
 					break;
 				case "EndGame":
-					new Endgame(brigadaB.getCommandJSON()).setVisible(true);
+					new EndgameFrame(brigadaB.getCommandJSON()).setVisible(true);
 					frame.dispose();
 					break;
 				case "Compra":

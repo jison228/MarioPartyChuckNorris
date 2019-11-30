@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import com.chucknorris.Command;
-import com.chucknorris.client.endgame.Endgame;
+import com.chucknorris.client.endgame.EndgameFrame;
 import com.chucknorris.client.lobby.LobbyFrame;
 import com.chucknorris.client.lobby.UpdateOrCreateLobbyResponse;
 import com.chucknorris.client.sala.ClientRealSala;
@@ -113,7 +113,7 @@ public class ServerLobbyThread extends Thread {
 					gameFrame.endTurnIndeed(respuestaEndTurn);
 					break;
 				case "EndGame":
-					new Endgame(brigadaB.getCommandJSON()).setVisible(true);
+					new EndgameFrame(brigadaB.getCommandJSON(),serverSocket).setVisible(true);
 					gameFrame.dispose();
 					break;
 				case "GameChat":
@@ -125,12 +125,13 @@ public class ServerLobbyThread extends Thread {
 							ActualizarCompraResponse.class);
 					gameFrame.updateAfterCompra(respuestaCompra.lista);
 					break;
-
+					
 				case "StartMinigame":
 					minijuego = new ClientGameWindow(serverSocket, serverSocket.getInputStream());
 					minijuego.startGame();
 					//gameFrame.setVisible(false);
-					break;
+					break;	
+					
 				case "MandaleMecha":
 					minijuego.mandaleMecha(brigadaB.getCommandJSON());
 					break;
@@ -159,6 +160,7 @@ public class ServerLobbyThread extends Thread {
 					minijuego.ripDelCano(Integer.parseInt(brigadaB.getCommandJSON()));
 					break;
 				case "FinishMiniGame":
+					minijuego.stopMusic();
 					minijuego.dispose();
 					ActualizarCompraResponse respuestaCompra1 = gson.fromJson(brigadaB.getCommandJSON(),
 							ActualizarCompraResponse.class);
@@ -167,6 +169,10 @@ public class ServerLobbyThread extends Thread {
 					break;
 				case "Error":
 					new ErrorMessage(brigadaB.getCommandJSON()).setVisible(true);
+					break;
+				case "FatalError":
+					new ErrorMessage(brigadaB.getCommandJSON()).setVisible(true);
+					serverSocket.close();
 					break;
 				case "UpdateOpciones":
 					salaFrame.updateOptions(gson.fromJson(brigadaB.getCommandJSON(),SalaParametersResponse.class));

@@ -53,7 +53,7 @@ public class NewSalaFramePublic extends JFrame {
 	public NewSalaFramePublic(Socket servidor) {
 		gson = new Gson();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 366, 201);
+		setBounds(100, 100, 366, 213);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

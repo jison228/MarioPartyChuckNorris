@@ -10,8 +10,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -37,7 +35,6 @@ import com.chucknorris.client.GameInformation;
 import com.chucknorris.client.MovementResponsePrivate;
 import com.chucknorris.client.MovementResponsePublic;
 import com.chucknorris.client.compradolares.CompraDolaresFrame;
-import com.chucknorris.client.endgame.Endgame;
 import com.chucknorris.commons.Position;
 import com.chucknorris.gamemap.GameMap;
 import com.chucknorris.gamemap.initiallizer.file.reader.csv.MapFileCSVReader;
@@ -66,7 +63,6 @@ public class MainGameScreen extends JFrame {
 	private InfoPanel characterPanel;
 	private JLabel diceImage;
 	private DescriptionPanel panelDescrip;
-	private Endgame finPartida;
 	private JPanelPlayers playersPanel;
 	private List<ClientPlayer> clientPlayersList;
 	private CompraDolaresFrame compraDolaresFrame;
@@ -406,12 +402,6 @@ public class MainGameScreen extends JFrame {
 		repaint();
 	}
 
-	public void announceWinner(ClientPlayer ganador) {
-		finPartida = new Endgame(ganador.getCharacter());
-		finPartida.setVisible(true);
-		dispose();
-	}
-
 	private void moverJugador(int diceResult, ClientPlayer currentPlayer, Queue<Position> nodePath) {
 		diceImage.setVisible(true); // Solo al Player que corresponde
 		diceImage.setIcon(new ImageIcon("images/dice/" + diceResult + ".png"));
@@ -462,6 +452,7 @@ public class MainGameScreen extends JFrame {
 	}
 
 	public void addChatText(String mensaje) {
-		chatTA.append(new SimpleDateFormat("HH:mm:ss").format(new Date(System.currentTimeMillis())) + " " + mensaje + "\n");
+		chatTA.append(
+				new SimpleDateFormat("HH:mm:ss").format(new Date(System.currentTimeMillis())) + " " + mensaje + "\n");
 	}
 }

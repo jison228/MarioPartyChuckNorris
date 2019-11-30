@@ -513,6 +513,10 @@ public class ClientGameScreen extends JPanel implements Runnable, KeyListener {
 		mainCharacter4.setSpeedX(0);
 		// estanMuertos();
 	}
+	
+	public void stopMusic() {
+		clip.close();
+	}
 	/*
 	 * private void estanMuertos() { if (mainCharacter.getState() == 3 &&
 	 * mainCharacter2.getState() == 3 && mainCharacter3.getState() == 3 &&

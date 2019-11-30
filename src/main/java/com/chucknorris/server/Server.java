@@ -2,6 +2,7 @@ package com.chucknorris.server;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Stack;
 
 import com.chucknorris.Command;
 import com.chucknorris.User;
@@ -34,6 +34,7 @@ public class Server {
 		Map<String, ClientLobbyThread> threadsMap = new HashMap<String, ClientLobbyThread>();
 		List<String> mapaDeVivos = new ArrayList<String>();
 		Map<String, Integer> puntajes = new HashMap<String, Integer>();
+		PrintStream ps;
 
 		InputStream inputStream;
 		int num;
@@ -48,6 +49,13 @@ public class Server {
 				String hola = String.valueOf((char) num);
 				hola = hola + sc.nextLine();
 				// Validacion de personaje
+				
+				if(threadsMap.containsKey(hola)) {
+					ps = new PrintStream(clientSocketLobby.getOutputStream());
+					ps.println(gson.toJson(new Command("FatalError", "Ya se encuentra conectado alguien con ese nombre")));
+					clientSocketLobby.close();
+					continue;
+				}
 				ClientLobbyThread newClient = new ClientLobbyThread(hola, clientSocketLobby, threadsMap, salas,puntajes, mapaDeVivos);
 				// ClientLobbyThread tendria que consultar los datos de sus playerId para
 				// mandarlo a los frames

@@ -105,6 +105,12 @@ public class ClientLobbyThread extends Thread {
 						this.sendSala(new Command("UpdateSala", usersMessage), this.salaActual, entry.getKey());
 					}
 					break;
+					
+				case "BackToSala":
+					usersMessage = gson.toJson(createSalaResponse(this.salas.get(this.salaActual)));
+					this.sendSala(new Command("OpenSala", usersMessage), this.salaActual, playerID);
+					break;
+				
 				case "JoinSala":
 					SalaResponse respuestaSala1 = gson.fromJson(brigadaB.getCommandJSON(), SalaResponse.class);
 					if (this.salas.get(respuestaSala1.name).priv
@@ -329,11 +335,18 @@ public class ClientLobbyThread extends Thread {
 						}
 					}
 					if (ganador.getDolares() >= 420) {
+						this.salas.get(this.salaActual).playing = false;
 						for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 								.entrySet()) {
 							this.sendSala(new Command("EndGame", ganador.getCharacter()), this.salaActual,
 									entry.getKey());
-
+						}
+						
+						usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
+						for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
+							if (!entry.getKey().equals(this.playerID)) {
+								this.send(new Command("UpdateLobby", usersMessage), entry.getKey());
+							}
 						}
 						cfinish = true;
 					}

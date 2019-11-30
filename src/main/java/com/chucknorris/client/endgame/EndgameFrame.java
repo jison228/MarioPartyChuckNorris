@@ -4,6 +4,9 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,9 +15,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import com.chucknorris.Command;
 import com.chucknorris.gui.titulo.TitleImagePanel;
+import com.google.gson.Gson;
 
-public class Endgame extends JFrame {
+public class EndgameFrame extends JFrame {
 	/**
 	 * 
 	 */
@@ -22,11 +27,13 @@ public class Endgame extends JFrame {
 	private JPanel mainPane;
 	private JLabel txt1;
 	private JLabel textFieldGanador;
+	private Gson gson = new Gson();
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Endgame frame = new Endgame("Cristina");
+					EndgameFrame frame = new EndgameFrame("Cristina",null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -35,7 +42,7 @@ public class Endgame extends JFrame {
 		});
 	}
 	
-	public Endgame(String ganador) {
+	public EndgameFrame(String ganador,Socket servidor) {
 		// JFrame config
 		setTitle("RESULTADOS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,6 +91,15 @@ public class Endgame extends JFrame {
 		btnQuit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
+				PrintStream ps;
+				try {
+					ps = new PrintStream(servidor.getOutputStream());
+					ps.println(gson.toJson(new Command("BackToSala"," ")));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			}
 		});
 
