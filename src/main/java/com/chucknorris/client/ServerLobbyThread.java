@@ -3,19 +3,23 @@ package com.chucknorris.client;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.util.List;
 import java.util.Scanner;
 
 import com.chucknorris.Command;
 import com.chucknorris.client.endgame.EndgameFrame;
+import com.chucknorris.client.lobby.EstadisticasScreen;
 import com.chucknorris.client.lobby.LobbyFrame;
 import com.chucknorris.client.lobby.UpdateOrCreateLobbyResponse;
 import com.chucknorris.client.sala.ClientRealSala;
 import com.chucknorris.client.sala.SalaFrame;
 import com.chucknorris.client.sala.SalaParametersResponse;
-import com.chucknorris.client.sala.UpdateOrCreateSalaResponse;
 import com.chucknorris.client.tablero.MainGameScreen;
 import com.chucknorris.gui.minigame.userinterface.ClientGameWindow;
 import com.google.gson.Gson;
+import com.jwt.hibernate.Jugador;
+import com.jwt.hibernate.Partida;
+
 
 public class ServerLobbyThread extends Thread {
 	private InputStream inputStream = null;
@@ -177,6 +181,13 @@ public class ServerLobbyThread extends Thread {
 				case "UpdateOpciones":
 					salaFrame.updateOptions(gson.fromJson(brigadaB.getCommandJSON(),SalaParametersResponse.class));
 					break;
+				case "Stats":
+					
+					EstadisticasResponse stats = gson.fromJson(brigadaB.getCommandJSON(), EstadisticasResponse.class);
+
+					new EstadisticasScreen(stats.player,stats.partidas).setVisible(true);
+					break;
+
 				}
 			}
 			sc.close();

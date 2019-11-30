@@ -119,7 +119,7 @@ public class LobbyFrame extends JFrame {
 		panelDeBotones.setBounds(900, 0, 100, 380);
 		panelDeBotones = new JPanel();
 		panelDeBotones.setLayout(null);
-		panelDeBotones.setBounds(900, 0, 100, 380);
+		panelDeBotones.setBounds(900, 0, 100, 318);
 		for (int i = 0; i < salas.size(); i++) {
 			ClientLobbySala salita = salas.get(i);
 			String specOrPlay = salita.cantPlayers == 4 ? "Spec" : "Play";
@@ -151,7 +151,7 @@ public class LobbyFrame extends JFrame {
 		panelUsuarios.setLayout(null);
 
 		this.panelSalas = new SalasPanel(salas);
-		this.panelSalas.setBounds(500, 0, 400, 380);
+		this.panelSalas.setBounds(500, 0, 400, 318);
 		lobbyPane.add(panelSalas);
 
 		// CHAT
@@ -246,6 +246,15 @@ public class LobbyFrame extends JFrame {
 		});
 		btnCrearSalaPublica.setBounds(686, 390, 156, 50);
 		lobbyPane.add(btnCrearSalaPublica);
+		
+		JButton btnVerEstadisticas = new JButton("Ver estadisticas");
+		btnVerEstadisticas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ps.println(gson.toJson(new Command("Stats"," ")));
+			}
+		});
+		btnVerEstadisticas.setBounds(686, 328, 156, 50);
+		lobbyPane.add(btnVerEstadisticas);
 
 	}
 

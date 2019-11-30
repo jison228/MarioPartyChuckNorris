@@ -1,24 +1,23 @@
 package com.chucknorris.client.lobby;
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import com.chucknorris.gui.gameoptions.NewGameScreen;
-
 import java.awt.Font;
-import javax.swing.JButton;
-
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.event.ActionEvent;
-import javax.swing.JTable;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import com.jwt.hibernate.Jugador;
+import com.jwt.hibernate.Partida;
+
+import javassist.bytecode.analysis.Analyzer;
 
 public class EstadisticasScreen extends JFrame {
 
@@ -40,7 +39,7 @@ public class EstadisticasScreen extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					EstadisticasScreen frame = new EstadisticasScreen();
+					EstadisticasScreen frame = new EstadisticasScreen(null,null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,20 +51,10 @@ public class EstadisticasScreen extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public EstadisticasScreen() {
-		player = new Jugador();
-		List<Partida> listaDePartidas = new ArrayList<Partida>();
-		Partida partida1 = new Partida(5788, "Jason", "Pepe", "asd", "3434", "Facu");
-		Partida partida2 = new Partida(5788, "asd", "Pepe", "asd", "3434", "Facu");
-		Partida partida3 = new Partida(5788, "fe", "Pepe", "asd", "3434", "Facu");
-		Partida partida4 = new Partida(5788, "Jason", "Pepe", "asd", "3434", "Facu");
-		Partida partida5 = new Partida(5788, "34", "Pepe", "asd", "3434", "Facu");
-		listaDePartidas.add(partida1);
-		listaDePartidas.add(partida2);
-		listaDePartidas.add(partida3);
-		listaDePartidas.add(partida4);
-		listaDePartidas.add(partida5);
-		this.player.setUsername("Jason");
+	public EstadisticasScreen(Jugador player, List<Partida> partidas) {
+		this.player = player;
+		List<Partida> listaDePartidas = partidas;
+		mainPane.anadirPartida(listaDePartidas, player.getUsername());
 		// JFrame config
 		setTitle("Mis estadísticas");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -113,20 +102,6 @@ public class EstadisticasScreen extends JFrame {
 		lblUsuario.setBounds(771, 137, 128, 68);
 		mainPane.add(lblUsuario);
 
-		JButton btnRefrescar = new JButton("Refrescar");
-		btnRefrescar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mainPane.anadirPartida(listaDePartidas, player.getUsername());
-				mainPane.repaint();
-				userTF.setText(player.getUsername());
-				winsTF.setText(String.valueOf(player.getWins()));
-				maxPuntajeTF.setText(String.valueOf(player.getMaxminigame()));
-			}
-		});
-		btnRefrescar.setFont(new Font("Monospaced", Font.BOLD, 25));
-		btnRefrescar.setFocusable(false);
-		btnRefrescar.setBounds(705, 569, 254, 60);
-		mainPane.add(btnRefrescar);
 
 		maxPuntajeTF = new JTextField();
 		maxPuntajeTF.setHorizontalAlignment(SwingConstants.CENTER);

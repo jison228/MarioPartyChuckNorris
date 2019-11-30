@@ -55,7 +55,18 @@ public class Server {
 				hola = hola + sc.nextLine();
 				NamePasswordResponse nyc = gson.fromJson(hola, NamePasswordResponse.class);
 				// Validacion de personaje
-				Jugador pepe = JugadorDAO.loguear(nyc.name, nyc.password);
+				Jugador pepe = null;
+				if(!nyc.reg)
+					pepe = JugadorDAO.loguear(nyc.name, nyc.password);
+				else {
+					pepe = JugadorDAO.registrar(nyc.name, nyc.password);
+					if(pepe==null) {
+						ps = new PrintStream(clientSocketLobby.getOutputStream());
+						ps.println(gson.toJson(new Command("FatalError", "Nombre ya registrado")));
+						clientSocketLobby.close();
+						continue;
+					}
+				}
 				if(pepe==null) {
 					ps = new PrintStream(clientSocketLobby.getOutputStream());
 					ps.println(gson.toJson(new Command("FatalError", "Nombre o Contraseña Incorrectos")));
@@ -76,9 +87,9 @@ public class Server {
 				newClient.start();
 
 				String usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
-				newClient.send(new Command("OpenLobby", usersMessage), hola);
+				newClient.send(new Command("OpenLobby", usersMessage), nyc.name);
 				for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
-					if (!entry.getKey().equals(hola)) {
+					if (!entry.getKey().equals(nyc.name)) {
 						newClient.send(new Command("UpdateLobby", usersMessage), entry.getKey());
 					}
 

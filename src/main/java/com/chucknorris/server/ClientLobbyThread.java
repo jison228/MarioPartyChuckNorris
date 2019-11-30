@@ -21,6 +21,7 @@ import com.chucknorris.client.ClientLobbySala;
 import com.chucknorris.client.ClientNode;
 import com.chucknorris.client.ClientPlayer;
 import com.chucknorris.client.EndTurnResponse;
+import com.chucknorris.client.EstadisticasResponse;
 import com.chucknorris.client.GameInformation;
 import com.chucknorris.client.GameParametersResponse;
 import com.chucknorris.client.MovementResponsePrivate;
@@ -35,6 +36,7 @@ import com.chucknorris.player.Espert;
 import com.chucknorris.player.Macri;
 import com.chucknorris.player.Player;
 import com.google.gson.Gson;
+import com.jwt.hibernate.JugadorDAO;
 
 public class ClientLobbyThread extends Thread {
 	private Gson gson;
@@ -105,12 +107,12 @@ public class ClientLobbyThread extends Thread {
 						this.sendSala(new Command("UpdateSala", usersMessage), this.salaActual, entry.getKey());
 					}
 					break;
-					
+
 				case "BackToSala":
 					usersMessage = gson.toJson(createSalaResponse(this.salas.get(this.salaActual)));
 					this.sendSala(new Command("OpenSala", usersMessage), this.salaActual, playerID);
 					break;
-				
+
 				case "JoinSala":
 					SalaResponse respuestaSala1 = gson.fromJson(brigadaB.getCommandJSON(), SalaResponse.class);
 					if (this.salas.get(respuestaSala1.name).priv
@@ -139,8 +141,8 @@ public class ClientLobbyThread extends Thread {
 				case "CreateSala":
 					if (salas.size() < 4) {
 						SalaResponse respuestaSala = gson.fromJson(brigadaB.getCommandJSON(), SalaResponse.class);
-						if(this.salas.containsKey(respuestaSala.name)) {
-							this.send(new Command("Error", "Ya existe una sala con este nombre"),this.playerID);
+						if (this.salas.containsKey(respuestaSala.name)) {
+							this.send(new Command("Error", "Ya existe una sala con este nombre"), this.playerID);
 							break;
 						}
 						Sala nuevaSala = new Sala(respuestaSala.name, respuestaSala.password, respuestaSala.priv);
@@ -156,7 +158,7 @@ public class ClientLobbyThread extends Thread {
 						usersMessage = gson.toJson(createSalaResponse(nuevaSala));
 						this.sendSala(new Command("OpenSala", usersMessage), respuestaSala.name, playerID);
 					} else {
-						this.send(new Command("Error", "Ya no se pueden crear mas salas"),this.playerID);
+						this.send(new Command("Error", "Ya no se pueden crear mas salas"), this.playerID);
 					}
 					break;
 				case "LeaveSala":
@@ -341,7 +343,7 @@ public class ClientLobbyThread extends Thread {
 							this.sendSala(new Command("EndGame", ganador.getCharacter()), this.salaActual,
 									entry.getKey());
 						}
-						
+
 						usersMessage = gson.toJson(createLobbyResponse(threadsMap, salas));
 						for (Map.Entry<String, ClientLobbyThread> entry : threadsMap.entrySet()) {
 							if (!entry.getKey().equals(this.playerID)) {
@@ -472,10 +474,18 @@ public class ClientLobbyThread extends Thread {
 				case "UpdateOpciones":
 					for (Map.Entry<String, ClientLobbyThread> entry : this.salas.get(this.salaActual).threadsMap
 							.entrySet()) {
-						this.sendSala(new Command("UpdateOpciones", brigadaB.getCommandJSON()), this.salaActual, entry.getKey());
+						this.sendSala(new Command("UpdateOpciones", brigadaB.getCommandJSON()), this.salaActual,
+								entry.getKey());
 					}
-					
+
 					break;
+				case "Stats":
+					this.send(new Command("Stats",
+							gson.toJson(new EstadisticasResponse(JugadorDAO.obtenerWinsYMaxDe(this.playerID),
+									JugadorDAO.partidasDe(this.playerID)))),
+							this.playerID);
+					break;
+
 				// Pensar caso de exit Lobby
 				}
 			}
@@ -526,8 +536,11 @@ public class ClientLobbyThread extends Thread {
 		List<ClientLobbySala> listaClientSalas = new ArrayList<ClientLobbySala>();
 		for (Map.Entry<String, Sala> entry : salas.entrySet()) {
 			listaClientSalas.add(new ClientLobbySala(entry.getKey(), entry.getValue().players.size(),
-					entry.getValue().threadsMap.size(), entry.getValue().playing, entry.getValue().priv));// Tendria que consultar en la base
-																					// de datos sus caracteristicas
+					entry.getValue().threadsMap.size(), entry.getValue().playing, entry.getValue().priv));// Tendria que
+																											// consultar
+																											// en la
+																											// base
+			// de datos sus caracteristicas
 		}
 		return new UpdateOrCreateLobbyResponse(listaUser, listaClientSalas);
 	}

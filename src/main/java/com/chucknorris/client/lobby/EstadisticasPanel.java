@@ -12,6 +12,8 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import com.jwt.hibernate.Partida;
+
 public class EstadisticasPanel extends JPanel {
 	/**
 	 * 

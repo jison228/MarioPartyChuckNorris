@@ -83,6 +83,11 @@ public class TitleScreen extends JFrame {
 		mainPane.add(btnQuit);
 		
 		JButton btnRegistrarse = new JButton("Registrarse");
+		btnRegistrarse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new RegisterScreen().setVisible(true);
+			}
+		});
 		btnRegistrarse.setFont(new Font("Monospaced", Font.BOLD, 25));
 		btnRegistrarse.setFocusable(false);
 		btnRegistrarse.setBounds(440, 411, 400, 80);

@@ -22,7 +22,7 @@ import com.chucknorris.client.ServerLobbyThread;
 import com.chucknorris.server.NamePasswordResponse;
 import com.google.gson.Gson;
 
-public class LogInScreen extends JFrame {
+public class RegisterScreen extends JFrame {
 
 	/**
 	 * 
@@ -41,7 +41,7 @@ public class LogInScreen extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LogInScreen frame = new LogInScreen();
+					RegisterScreen frame = new RegisterScreen();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,7 +53,7 @@ public class LogInScreen extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public LogInScreen() {
+	public RegisterScreen() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 301);
 		contentPane = new JPanel();
@@ -61,7 +61,7 @@ public class LogInScreen extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblIniciarSesin = new JLabel("Iniciar Sesi\u00F3n");
+		JLabel lblIniciarSesin = new JLabel("Registrarse");
 		lblIniciarSesin.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIniciarSesin.setFont(new Font("Rockwell", Font.BOLD, 32));
 		lblIniciarSesin.setBounds(101, 10, 244, 59);
@@ -92,7 +92,7 @@ public class LogInScreen extends JFrame {
 				PrintStream ps;
 				try {
 					ps = new PrintStream(serverSocket.getOutputStream(), true);
-					ps.println(gson.toJson(new NamePasswordResponse(nickTF.getText(), passwordTF.getText(),false)));
+					ps.println(gson.toJson(new NamePasswordResponse(nickTF.getText(), passwordTF.getText(),true)));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

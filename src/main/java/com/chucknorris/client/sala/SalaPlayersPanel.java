@@ -75,8 +75,8 @@ public class SalaPlayersPanel extends JPanel {
 			g.drawString(players.get(i).getPlayerID(), 98, 110 + separacion);
 
 			g.setFont(new Font("Courier", Font.BOLD, 13));
-			g.drawString("Partidas ganadas: " + players.get(i).getPartidasGanadas(), 99, 130 + separacion);
-			g.drawString("Maximo Puntaje: " + players.get(i).getMaximoPuntaje(), 99, 150 + separacion);
+			//g.drawString("Partidas ganadas: " + players.get(i).getPartidasGanadas(), 99, 130 + separacion);
+			//g.drawString("Maximo Puntaje: " + players.get(i).getMaximoPuntaje(), 99, 150 + separacion);
 		}
 
 	}
