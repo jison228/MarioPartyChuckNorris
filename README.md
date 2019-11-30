@@ -18,3 +18,6 @@ Verifiquen que puedan correr los test.
 
 Definiciones
 https://docs.google.com/document/d/11KtKTFufkLIPZ7K21IyzOuaYlwohRvTAsLvvUIJa__A/edit?ouid=104613001508365799352&usp=docs_home&ths=true
+
+Dirección del Servidor y Cliente:
+https://drive.google.com/drive/folders/1zgggQp7E6jE1NpZBCuwO3wFoVZftMKs-
